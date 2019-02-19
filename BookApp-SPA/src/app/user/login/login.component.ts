@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "src/app/_services/auth.service";
 import { Router } from "@angular/router";
+import { AlertifyService } from "src/app/_services/alertify.service";
 
 @Component({
   selector: "app-login",
@@ -11,7 +12,11 @@ import { Router } from "@angular/router";
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private alertify: AlertifyService
+  ) {}
 
   ngOnInit() {
     this.createForm();
@@ -31,6 +36,8 @@ export class LoginComponent implements OnInit {
     this.authService.login(this.loginForm.value).subscribe(
       next => {
         console.log("logged in sucessfully");
+        this.alertify.success("You are logged in!");
+
       },
       error => {
         console.log("Failed to login");

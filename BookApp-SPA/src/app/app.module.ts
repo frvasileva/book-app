@@ -24,6 +24,7 @@ import { BookSaverService } from "./books/bookSaver.service";
 import { bookListReducer } from "./books/books-list/store/bookList.reducer";
 import { messageReducer } from "./messages/store/message.reducer";
 import { AuthService } from "./_services/auth.service";
+import { AlertifyService } from "./_services/alertify.service";
 
 @NgModule({
   declarations: [
@@ -55,7 +56,8 @@ import { AuthService } from "./_services/auth.service";
     AuthorService,
     UserService,
     MessageService,
-    BookSaverService
+    BookSaverService,
+    AlertifyService
   ],
   bootstrap: [AppComponent]
 })

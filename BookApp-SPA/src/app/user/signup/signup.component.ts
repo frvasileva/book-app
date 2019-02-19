@@ -2,6 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "src/app/_services/auth.service";
 import { Router } from "@angular/router";
+import { AlertifyService } from "src/app/_services/alertify.service";
 
 @Component({
   selector: "app-signup",
@@ -11,7 +12,11 @@ import { Router } from "@angular/router";
 export class SignupComponent implements OnInit {
   signUpForm: FormGroup;
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(
+    private authService: AuthService,
+    private router: Router,
+    private alertify: AlertifyService
+  ) {}
 
   ngOnInit() {
     this.createForm();
@@ -33,6 +38,7 @@ export class SignupComponent implements OnInit {
     this.authService.reigster(this.signUpForm.value).subscribe(
       next => {
         console.log("sucessfull registration ");
+        this.alertify.success("You are logged in!");
       },
       error => {
         console.log("Failed to register");
