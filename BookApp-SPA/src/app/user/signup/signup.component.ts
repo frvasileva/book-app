@@ -37,11 +37,10 @@ export class SignupComponent implements OnInit {
 
     this.authService.reigster(this.signUpForm.value).subscribe(
       next => {
-        console.log("sucessfull registration ");
-        this.alertify.success("You are logged in!");
+        this.alertify.success("sucessfull registration!");
       },
       error => {
-        console.log("Failed to register");
+        this.alertify.error("Failed to register");
       }
     );
   }

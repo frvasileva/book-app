@@ -3,6 +3,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgModule } from "@angular/core";
 import { HttpClientModule } from "@angular/common/http";
 import { StoreModule } from "@ngrx/store";
+import { BsDropdownModule } from "ngx-bootstrap";
 
 import { AppComponent } from "./app.component";
 import { LayoutComponent } from "./ui-core/layout/layout.component";
@@ -45,6 +46,8 @@ import { AlertifyService } from "./_services/alertify.service";
     FormsModule,
     AppRoutingModule,
     ReactiveFormsModule,
+    BsDropdownModule.forRoot(),
+
     StoreModule.forRoot({
       bookList: bookListReducer,
       messageList: messageReducer
