@@ -1,0 +1,28 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-4">
+      <img src="{{ userProfile.avatarPath }}" width="200" />
+    </div>
+    <div class="col-md-8">
+      <span>{{ userProfile.username }}</span>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Books: </h1>
+      <p *ngFor="let item of userProfile.books">
+        {{ item.title }}
+        
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-12">
+      <h1>Art: </h1>
+      <p *ngFor="let item of userProfile.arts">
+        {{ item.title }}
+      </p>
+    </div>
+  </div>
+</div>

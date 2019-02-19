@@ -1,0 +1,28 @@
+.book-list-item {
+  font-family: "Open Sans", sans-serif;
+  padding: 10px;
+  border: 1px solid gainsboro;
+  max-width: 300px;
+  margin-bottom: 30px;
+}
+
+.book-list-item:hover {
+  border-color: gray;
+  transition: 0.2s ease-out;
+  background-color: floralwhite;
+}
+
+.book-title {
+  font-size: 18px;
+  font-weight: bold;
+  font-family: "Roboto Slab", serif;
+}
+
+.book-author {
+  font-size: 16px;
+}
+
+.book-list-item img {
+  width: 100%;
+  margin-bottom: 10px;
+}

@@ -1,4 +1,18 @@
 /* You can add global styles to this file, and also import other style files */
+@import "~bootstrap/dist/css/bootstrap.css";
+@import "~font-awesome/css/font-awesome.css";
 
-@import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
-@import '../node_modules/font-awesome/css/font-awesome.min.css';
+// fonts
+@import url("https://fonts.googleapis.com/css?family=Open+Sans:400,700|Roboto+Slab&subset=cyrillic");
+@import url("//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap-glyphicons.css");
+
+@import "src/app/ui-style/variables.scss";
+@import "src/app/ui-style/form-elements.scss";
+@import "src/app/ui-style/buttons.scss";
+@import "src/app/ui-style/href.scss";
+
+body {
+  font-family: $main-font;
+  color: black;
+  font-size: 18px;
+}

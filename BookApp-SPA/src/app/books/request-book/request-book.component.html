@@ -1,0 +1,36 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-wrapper">
+        <h1 class="form-title">Request book</h1>
+        <form [formGroup]="requestBookForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="description">Message:</label>
+            <textarea
+              class="form-control"
+              id="description"
+              formControlName="message"
+            >
+            </textarea>
+            <span
+              class="error-message"
+              *ngIf="
+                !requestBookForm.get('message').valid &&
+                requestBookForm.get('message').touched
+              "
+            >
+              This field is required
+            </span>
+          </div>
+          <button
+            class="button primary"
+            type="submit"
+            [disabled]="!requestBookForm.valid"
+          >
+            Request book
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

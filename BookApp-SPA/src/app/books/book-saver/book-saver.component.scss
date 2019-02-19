@@ -1,0 +1,35 @@
+@import "src/app/ui-style/variables.scss";
+
+.user-list {
+  padding: 0;
+  border: 1px solid $light-background;
+}
+
+.user-list li {
+  text-decoration: none;
+  list-style-type: none;
+  margin: 0;
+  padding: 5px 15px;
+  font-size: 14px;
+
+  &:hover {
+    cursor: pointer;
+    background-color: $lighter-background;
+    color: $white;
+  }
+}
+
+.search-wrapper input {
+  display: inline;
+}
+
+.user-list-item {
+  display: flex;
+}
+
+.user-item-list-label {
+  flex: 1;
+}
+.user-item-list-add-button {
+  flex: 0;
+}

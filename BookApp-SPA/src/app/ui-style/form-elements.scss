@@ -1,0 +1,55 @@
+// put in another file
+.error-message {
+  color: $main-highlight;
+  font-size: 14px;
+}
+
+form label {
+  color: $main-color-darker;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+//bootstrap overwrites:
+
+@mixin border($border-color) {
+  border: 1px solid $border-color;
+  border-left-width: 4px;
+  border-top: 0;
+  border-right: 0;
+}
+
+.form-wrapper {
+  margin: 60px auto;
+  padding: 30px;
+  border: 1px solid $main-color;
+
+  .form-title {
+    font-size: 36px;
+    font-family: $secondary-font;
+    color: $main-color;
+    margin-bottom: 40px;
+  }
+}
+.form-group {
+  margin-bottom: 40px;
+}
+
+.form-control {
+  font-family: $secondary-font;
+  @include border($main-color);
+  transition: 0.2s;
+  border-radius: 0;
+  padding: 25px;
+  font-size: 16px;
+
+  &:focus {
+    @include border($main-color);
+    box-shadow: none;
+  }
+
+  &.ng-invalid.ng-touched {
+    @include border($main-highlight);
+    transition: 1s;
+  }
+}

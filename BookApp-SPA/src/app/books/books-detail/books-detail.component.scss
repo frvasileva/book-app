@@ -1,0 +1,53 @@
+@import "src/app/ui-style/variables.scss";
+
+.books-detail-top {
+  background: #eee;
+}
+
+.book-header {
+  width: 50%;
+  display: inline-block;
+}
+
+.book-title {
+}
+
+.book-author {
+}
+
+.book-cover {
+  width: 50%;
+  display: inline-block;
+}
+
+.book-list-item {
+  color: black;
+  font-family: $secondary-font;
+  font-size: 16px;
+  line-height: 26px;
+  min-height: 800px;
+
+  .caption {
+    margin-top: 50px;
+  }
+
+  .book-attributes {
+    float: left;
+    padding: 0 20px 20px 0;
+  }
+
+  .book-attributes img {
+    margin-bottom: 30px;
+  }
+
+  .book-attributes a {
+    display: block;
+  }
+}
+
+//TODO: TEMP styling! DELETE IT!
+.button {
+  display: block;
+  min-width: 330px;
+  margin-bottom: 10px;
+}

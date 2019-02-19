@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12"><h2>Authors:</h2></div>
+  </div>
+
+  <div class="row">
+    <div
+      class="col-sm-12 col-md-12"
+      *ngFor="let author of authors; let i = index"
+    >
+      <div class="author-list-item">
+        <h3>
+          <img src="{{ author.imagePath }}" />
+          <a class="nav-link" [routerLink]="['details', author.id]">
+            {{ author.name }}
+          </a>
+        </h3>
+        <p>{{ author.biography }}</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<form [formGroup]="addToListForm" (ngSubmit)="onSubmit()">
+  <div class="search-wrapper">
+    <input
+      type="text"
+      on-focus="onSaverFocus()"
+      on-focusout="onSaverFocusOut()"
+      (keyup)="onSaverFocus()"
+      formControlName="bookSaverListItem"
+    />
+    <button><span class="glyphicon glyphicon-plus"></span></button>
+  </div>
+
+  <ul class="user-list">
+    <li
+      class="user-list-item"
+      *ngFor="let item of this.userList"
+      (click)="this.itemSelected(item.label)"
+    >
+      <span class="user-item-list-label"> {{ item.label }}</span>
+      <button class="user-item-list-add-button">
+        <span class="glyphicon glyphicon-plus"></span>
+      </button>
+    </li>
+  </ul>
+</form>

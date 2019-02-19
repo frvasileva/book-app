@@ -1,21 +1,62 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { NgModule } from "@angular/core";
+import { HttpClientModule } from "@angular/common/http";
+import { StoreModule } from "@ngrx/store";
 
+import { AppComponent } from "./app.component";
+import { LayoutComponent } from "./ui-core/layout/layout.component";
+import { HeaderComponent } from "./ui-core/header/header.component";
+import { FooterComponent } from "./ui-core/footer/footer.component";
+import { HomeComponent } from "./ui-core/home/home.component";
+import { AboutComponent } from "./ui-core/about/about.component";
+import { AppRoutingModule } from "./app-routing.module";
+import { NotFoundComponent } from "./ui-core/not-found/not-found.component";
+import { ArticlesComponent } from "./articles/articles/articles.component";
+import { BookService } from "./books/books.service";
+import { AuthorService } from "./authors/author.service";
+import { UserService } from "./user/user.service";
+import { ContactComponent } from "./ui-core/contact/contact.component";
+import { QuotesComponent } from "./quotes/quotes/quotes.component";
+import { MessageService } from "./messages/message.service";
+import { BookSaverService } from "./books/bookSaver.service";
 
-import { AppComponent } from './app.component';
-import { ValueComponent } from './value/value.component';
+import { bookListReducer } from "./books/books-list/store/bookList.reducer";
+import { messageReducer } from "./messages/store/message.reducer";
+import { AuthService } from "./_services/auth.service";
 
 @NgModule({
   declarations: [
     AppComponent,
-    ValueComponent
+    HeaderComponent,
+    FooterComponent,
+    HomeComponent,
+    AboutComponent,
+    LayoutComponent,
+    NotFoundComponent,
+    ArticlesComponent,
+    ContactComponent,
+    QuotesComponent
   ],
   imports: [
     BrowserModule,
-    HttpClientModule
+    HttpClientModule,
+    FormsModule,
+    AppRoutingModule,
+    ReactiveFormsModule,
+    StoreModule.forRoot({
+      bookList: bookListReducer,
+      messageList: messageReducer
+    })
   ],
-  providers: [],
+  providers: [
+    AuthService,
+    BookService,
+    AuthorService,
+    UserService,
+    MessageService,
+    BookSaverService
+  ],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

@@ -1,0 +1,53 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-6">
+      <div class="form-wrapper">
+        <h1 class="form-title">Login</h1>
+        <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="">Email:</label>
+            <input
+              type="email"
+              class="form-control"
+              id="email"
+              formControlName="email"
+            />
+            <span
+              class="error-message"
+              *ngIf="
+                !loginForm.get('email').valid && loginForm.get('email').touched
+              "
+            >
+              This field is required</span
+            >
+          </div>
+          <div class="form-group">
+            <label for="password">Password:</label>
+            <input
+              type="password"
+              class="form-control"
+              id="password"
+              formControlName="password"
+            />
+            <span
+              class="error-message"
+              *ngIf="
+                !loginForm.get('password').valid &&
+                loginForm.get('password').touched
+              "
+              >This field is required</span
+            >
+          </div>
+
+          <button
+            class="button primary"
+            type="submit"
+            [disabled]="!loginForm.valid"
+          >
+            Login
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

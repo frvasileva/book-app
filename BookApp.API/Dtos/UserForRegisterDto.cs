@@ -5,9 +5,6 @@ namespace BookApp.API.Dtos
   public class UserForRegisterDto
   {
     [Required]
-    public string Username { get; set; }
-
-    [Required]
     [EmailAddress]
     public string Email { get; set; }
 
