@@ -35,12 +35,10 @@ export class LoginComponent implements OnInit {
   onSubmit() {
     this.authService.login(this.loginForm.value).subscribe(
       next => {
-        console.log("logged in sucessfully");
         this.alertify.success("You are logged in!");
-
       },
       error => {
-        console.log("Failed to login");
+        this.alertify.error("Failed to login");
       }
     );
   }
