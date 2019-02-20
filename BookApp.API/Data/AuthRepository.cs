@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using BookApp.API.Models;
 using Microsoft.EntityFrameworkCore;
@@ -22,6 +23,11 @@ namespace BookApp.API.Data
       if (!VerifyPasswordHash(password, user.PasswordHash, user.PasswordSalt))
         return null;
 
+      user.LastActive = DateTime.Now;
+      _context.Entry(user).Property("LastActive").IsModified = true;
+      
+      await _context.SaveChangesAsync();
+
       return user;
     }
 
@@ -45,6 +51,7 @@ namespace BookApp.API.Data
 
       user.PasswordHash = passwordHash;
       user.PasswordSalt = passwordSalt;
+      user.Created = DateTime.Now;
 
       await _context.Users.AddAsync(user);
 
