@@ -13,6 +13,10 @@
 @import "src/app/ui-style/buttons.scss";
 @import "src/app/ui-style/href.scss";
 
+html {
+  font-size: 100%;
+}
+
 body {
   font-family: $main-font;
   color: black;

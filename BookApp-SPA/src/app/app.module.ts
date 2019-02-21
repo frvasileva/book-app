@@ -26,6 +26,7 @@ import { bookListReducer } from "./books/books-list/store/bookList.reducer";
 import { messageReducer } from "./messages/store/message.reducer";
 import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
+import { ProfileService } from "./_services/profile.service";
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { AlertifyService } from "./_services/alertify.service";
     BookService,
     AuthorService,
     UserService,
+    ProfileService,
     MessageService,
     BookSaverService,
     AlertifyService
