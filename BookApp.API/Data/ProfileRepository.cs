@@ -1,3 +1,4 @@
+using System.Linq;
 using System.Threading.Tasks;
 using BookApp.API.Dtos;
 using Microsoft.EntityFrameworkCore;
@@ -15,7 +16,7 @@ namespace BookApp.API.Data
 
     public async Task<UserProfileDto> Get(int id)
     {
-      var user = await _context.Users.FirstOrDefaultAsync(x => x.Id == id);
+      var user = await _context.Users.Include(userr => userr.Books).FirstOrDefaultAsync();
 
       var profile = new UserProfileDto
       {
@@ -41,7 +42,7 @@ namespace BookApp.API.Data
 
       await _context.Users.AddAsync(user);
       await _context.SaveChangesAsync();
-      
+
       // return really updated object!
       return profile;
     }

@@ -13,6 +13,7 @@ namespace BookApp.API.Data
     public DbSet<Value> Values { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Publisher> Publishers { get; set; }
-    public DbSet<Message> Messages { get; set; }
+   // public DbSet<Message> Messages { get; set; }
+    public DbSet<Book> Books { get; set; }
   }
 }

@@ -3,77 +3,54 @@ using System;
 using BookApp.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190220164021_InitMigration")]
+    [Migration("20190221211418_InitMigration")]
     partial class InitMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028");
+                .HasAnnotation("ProductVersion", "2.2.1-servicing-10028")
+                .HasAnnotation("Relational:MaxIdentifierLength", 128)
+                .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("BookApp.API.Models.Book", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
 
                     b.Property<string>("PhotoPath");
 
+                    b.Property<int>("PublisherId");
+
                     b.Property<string>("Title");
 
-                    b.Property<int?>("UserId");
+                    b.Property<int>("UserId");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("PublisherId");
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Book");
-                });
-
-            modelBuilder.Entity("BookApp.API.Models.Message", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<string>("Content");
-
-                    b.Property<DateTime?>("DateRead");
-
-                    b.Property<bool>("IsRead");
-
-                    b.Property<DateTime>("MessageSent");
-
-                    b.Property<bool>("RecipientDeleted");
-
-                    b.Property<int>("RecipientId");
-
-                    b.Property<bool>("SenderDeleted");
-
-                    b.Property<int>("SenderId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RecipientId");
-
-                    b.HasIndex("SenderId");
-
-                    b.ToTable("Messages");
+                    b.ToTable("Books");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.Publisher", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
-
-                    b.Property<int?>("BookId");
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Description");
 
@@ -81,15 +58,14 @@ namespace DatingApp.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
-
                     b.ToTable("Publishers");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.User", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("AvatarPath");
 
@@ -121,7 +97,8 @@ namespace DatingApp.API.Migrations
             modelBuilder.Entity("BookApp.API.Models.Value", b =>
                 {
                     b.Property<int>("Id")
-                        .ValueGeneratedOnAdd();
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Name");
 
@@ -132,29 +109,15 @@ namespace DatingApp.API.Migrations
 
             modelBuilder.Entity("BookApp.API.Models.Book", b =>
                 {
-                    b.HasOne("BookApp.API.Models.User")
+                    b.HasOne("BookApp.API.Models.Publisher", "Publisher")
                         .WithMany("Books")
-                        .HasForeignKey("UserId");
-                });
-
-            modelBuilder.Entity("BookApp.API.Models.Message", b =>
-                {
-                    b.HasOne("BookApp.API.Models.User", "Recipient")
-                        .WithMany()
-                        .HasForeignKey("RecipientId")
+                        .HasForeignKey("PublisherId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("BookApp.API.Models.User", "Sender")
-                        .WithMany()
-                        .HasForeignKey("SenderId")
+                    b.HasOne("BookApp.API.Models.User", "User")
+                        .WithMany("Books")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("BookApp.API.Models.Publisher", b =>
-                {
-                    b.HasOne("BookApp.API.Models.Book")
-                        .WithMany("MessagesSent")
-                        .HasForeignKey("BookId");
                 });
 #pragma warning restore 612, 618
         }
