@@ -28,6 +28,7 @@ import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
 import { ProfileService } from "./_services/profile.service";
 import { ProfileResolver } from "./_resolvers/profile.resolver";
+import { BooksService } from "./_services/book.service";
 
 @NgModule({
   declarations: [
@@ -59,6 +60,7 @@ import { ProfileResolver } from "./_resolvers/profile.resolver";
     AuthService,
     BookService,
     AuthorService,
+    BooksService,
     UserService,
     ProfileService,
     MessageService,
