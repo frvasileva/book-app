@@ -5,6 +5,7 @@ import { SignupComponent } from "./signup/signup.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { UserComponent } from "./user.component";
 import { UsersListComponent } from "./users-list/users-list.component";
+import { ProfileResolver } from "../_resolvers/profile.resolver";
 
 const userRoutes: Routes = [
   {
@@ -13,7 +14,11 @@ const userRoutes: Routes = [
     children: [
       { path: "login", component: LoginComponent },
       { path: "sign-up", component: SignupComponent },
-      { path: "profile", component: ProfileComponent },
+      {
+        path: "profile",
+        component: ProfileComponent,
+        resolve: { profile: ProfileResolver }
+      },
       { path: "user-list", component: UsersListComponent }
     ]
   }

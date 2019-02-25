@@ -27,6 +27,7 @@ import { messageReducer } from "./messages/store/message.reducer";
 import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
 import { ProfileService } from "./_services/profile.service";
+import { ProfileResolver } from "./_resolvers/profile.resolver";
 
 @NgModule({
   declarations: [
@@ -62,7 +63,8 @@ import { ProfileService } from "./_services/profile.service";
     ProfileService,
     MessageService,
     BookSaverService,
-    AlertifyService
+    AlertifyService,
+    ProfileResolver
   ],
   bootstrap: [AppComponent]
 })

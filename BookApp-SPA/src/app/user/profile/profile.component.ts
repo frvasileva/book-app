@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { ProfileService } from "src/app/_services/profile.service";
+import { ActivatedRoute } from "@angular/router";
+import { Profile } from "src/app/_models/profile";
+import { AlertifyService } from "src/app/_services/alertify.service";
 
 @Component({
   selector: "app-profile",
@@ -7,10 +10,12 @@ import { ProfileService } from "src/app/_services/profile.service";
   styleUrls: ["./profile.component.scss"]
 })
 export class ProfileComponent implements OnInit {
-  profile: any;
+  profile: Profile;
 
   constructor(
-    private profileService: ProfileService
+    private profileService: ProfileService,
+    private route: ActivatedRoute,
+    private alertify: AlertifyService
   ) {}
 
   ngOnInit() {
@@ -18,9 +23,13 @@ export class ProfileComponent implements OnInit {
   }
 
   getUserProfile(userId: string) {
-    this.profileService.getUserProfile(userId).subscribe(response => {
-      console.log("user profile Fani: ", response);
-      this.profile = response;
-    });
+    this.route.data.subscribe(
+      data => {
+        this.profile = data.profile;
+      },
+      error => {
+        this.alertify.error(error);
+      }
+    );
   }
 }

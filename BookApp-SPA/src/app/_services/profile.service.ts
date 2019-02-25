@@ -13,6 +13,7 @@ export class ProfileService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getUserProfile(userId: string) {
-    return this.http.get(this.baseUrl + "get/1");
+    console.log(this.http.get(this.baseUrl + "get/1"));
+    return this.http.get(this.baseUrl + "get");
   }
 }

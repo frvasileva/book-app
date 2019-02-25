@@ -18,7 +18,7 @@ namespace BookApp.API.Controllers
       _config = config;
     }
 
-    [HttpGet("get/{userId}")]
+    [HttpGet("get/{userId?}")]
     public async Task<IActionResult> GetUserProfile(int userId)
     {
       var profile = await _repo.Get(userId);
