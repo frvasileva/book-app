@@ -9,6 +9,7 @@ import { LoginComponent } from "./login/login.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { UserRoutingModule } from "./user-routing.module";
 import { UsersListComponent } from './users-list/users-list.component';
+import { BooksModule } from "../books/books.module";
 
 @NgModule({
   declarations: [
@@ -18,6 +19,6 @@ import { UsersListComponent } from './users-list/users-list.component';
     UserComponent,
     UsersListComponent
   ],
-  imports: [CommonModule, RouterModule, ReactiveFormsModule, UserRoutingModule]
+  imports: [CommonModule, RouterModule, ReactiveFormsModule, UserRoutingModule, BooksModule]
 })
 export class UserModule {}

@@ -9,6 +9,7 @@ import { AddBookComponent } from "./add-book/add-book.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RequestBookComponent } from "./request-book/request-book.component";
 import { BookSaverComponent } from "./book-saver/book-saver.component";
+import { BookCardItemComponent } from "./book-card-item/book-card-item.component";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { BookSaverComponent } from "./book-saver/book-saver.component";
     BooksComponent,
     AddBookComponent,
     RequestBookComponent,
-    BookSaverComponent
+    BookSaverComponent,
+    BookCardItemComponent
   ],
   imports: [
     CommonModule,
@@ -25,8 +27,7 @@ import { BookSaverComponent } from "./book-saver/book-saver.component";
     BooksRoutingModule,
     FormsModule,
     ReactiveFormsModule
-  ]
+  ],
+  exports: [BookCardItemComponent]
 })
-export class BooksModule {
-
-}
+export class BooksModule {}

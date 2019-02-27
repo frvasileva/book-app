@@ -1,0 +1,29 @@
+.card-wrapper {
+  display: inline-block; /* change the default display type to inline-block */
+  overflow: hidden; /* hide the overflow */
+
+  .book-cover-image {
+    width: 100%;
+    height: 300px;
+  }
+
+  &:hover {
+    color: black;
+  }
+
+  &:hover .book-cover-image {
+    transform: scale(1.05);
+    transition: transform 1.5s;
+    transform-style: preserve-3d;
+  }
+
+  .book-title {
+    margin-top: 20px;
+    font-size: 18px;
+  }
+
+  .book-author {
+    margin-top: 20px;
+    font-size: 14px;
+  }
+}
