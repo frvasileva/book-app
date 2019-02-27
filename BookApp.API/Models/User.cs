@@ -10,6 +10,9 @@ namespace BookApp.API.Models
     public string Email { get; set; }
     public string AvatarPath { get; set; }
     public string KnownAs { get; set; }
+
+    public string FriendlyUrl { get; set; }
+
     public byte[] PasswordHash { get; set; }
     public byte[] PasswordSalt { get; set; }
     public DateTime Created { get; set; }

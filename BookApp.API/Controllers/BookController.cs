@@ -1,5 +1,6 @@
 using System.Threading.Tasks;
 using BookApp.API.Data;
+using BookApp.API.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 
@@ -9,12 +10,14 @@ namespace BookApp.API.Controllers
   [ApiController]
   public class BookController : ControllerBase
   {
-    private readonly IConfiguration _config;
     private readonly IBookRepository _repo;
-    public BookController(IConfiguration config, IBookRepository repo)
+
+    private readonly DataContext _context;
+
+    public BookController(IBookRepository repo, DataContext context)
     {
       _repo = repo;
-      _config = config;
+      _context = context;
     }
 
     [HttpGet("get-books")]
@@ -39,6 +42,15 @@ namespace BookApp.API.Controllers
       return Ok(books);
     }
 
+
+    [HttpPost("add")]
+    public async Task<IActionResult> Add(BookCreateDto bookDto)
+    {
+      await _repo.AddBook(bookDto);
+      await _context.SaveChangesAsync();
+
+      return Ok(bookDto);
+    }
 
   }
 }

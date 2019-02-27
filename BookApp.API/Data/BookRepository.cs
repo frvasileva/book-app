@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using BookApp.API.Dtos;
+using BookApp.API.Helpers;
+using BookApp.API.Models;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.API.Data
@@ -11,6 +14,28 @@ namespace BookApp.API.Data
     public BookRepository(DataContext context)
     {
       _context = context;
+    }
+
+    public async Task<Book> AddBook(BookCreateDto bookDto)
+    {
+
+      var book = new Book
+      {
+        Title = bookDto.Title,
+        Description = bookDto.Description,
+        PhotoPath = bookDto.PhotoPath,
+        FriendlyUrl = Url.GenerateFriendlyUrl(bookDto.Title.ToString()),
+        PublisherId = 1,
+        Publisher = new Publisher(),
+        UserId = 1,
+        User = new User()
+      };
+
+
+      await _context.Books.AddAsync(book);
+      await _context.SaveChangesAsync();
+
+      return book;
     }
 
     public async Task<List<BookPreviewDto>> GetAll()
@@ -48,5 +73,7 @@ namespace BookApp.API.Data
 
       return bookDto;
     }
+
+
   }
 }
