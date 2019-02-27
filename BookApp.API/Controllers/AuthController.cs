@@ -9,6 +9,8 @@ using BookApp.API.Models;
 using System;
 using System.Text;
 using System.IdentityModel.Tokens.Jwt;
+using AutoMapper;
+
 
 namespace DatingApp.API.Controllers
 {
@@ -18,10 +20,13 @@ namespace DatingApp.API.Controllers
   {
     private readonly IAuthRepository _repo;
     private readonly IConfiguration _config;
-    public AuthController(IAuthRepository repo, IConfiguration config)
+    private readonly IMapper _mapper;
+
+    public AuthController(IAuthRepository repo, IConfiguration config, IMapper mapper)
     {
       _config = config;
       _repo = repo;
+      _mapper = mapper;
     }
     [HttpPost("register")]
     public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)

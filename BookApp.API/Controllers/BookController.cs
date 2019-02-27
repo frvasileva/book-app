@@ -3,6 +3,7 @@ using BookApp.API.Data;
 using BookApp.API.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using AutoMapper;
 
 namespace BookApp.API.Controllers
 {
@@ -11,13 +12,14 @@ namespace BookApp.API.Controllers
   public class BookController : ControllerBase
   {
     private readonly IBookRepository _repo;
-
     private readonly DataContext _context;
+    private readonly IMapper _mapper;
 
-    public BookController(IBookRepository repo, DataContext context)
+    public BookController(IBookRepository repo, DataContext context,IMapper mapper)
     {
       _repo = repo;
       _context = context;
+      _mapper = mapper;
     }
 
     [HttpGet("get-books")]
@@ -34,12 +36,13 @@ namespace BookApp.API.Controllers
     [HttpGet("get/{friendlyUrl?}")]
     public async Task<IActionResult> GetBook(string friendlyUrl)
     {
-      var books = await _repo.GetBook(friendlyUrl);
+      var book = await _repo.GetBook(friendlyUrl);
 
-      if (books == null)
+      if (book == null)
         return BadRequest("No books");
 
-      return Ok(books);
+    var bookToReturn = _mapper.Map<BookDetailsDto>(book);
+      return Ok(bookToReturn);
     }
 
 

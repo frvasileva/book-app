@@ -2,12 +2,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using BookApp.API.Dtos;
 using Microsoft.EntityFrameworkCore;
+using AutoMapper;
 
 namespace BookApp.API.Data
 {
   public class ProfileRepository : IProfileRepository
   {
-
     private readonly DataContext _context;
     public ProfileRepository(DataContext context)
     {

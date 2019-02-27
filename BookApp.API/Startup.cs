@@ -15,6 +15,7 @@ using BookApp.API.Data;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using AutoMapper;
 
 namespace DatingApp.API
 {
@@ -37,7 +38,7 @@ namespace DatingApp.API
             opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
           });
       services.AddCors();
-      
+      services.AddAutoMapper();
       services.AddScoped<IAuthRepository, AuthRepository>();
       services.AddScoped<IProfileRepository, ProfileRepository>();
       services.AddScoped<IBookRepository, BookRepository>();
