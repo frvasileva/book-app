@@ -6,6 +6,10 @@ import * as BookListActions from "../books-list/store/bookList.actions";
 import { Author } from "src/app/authors/author.model";
 import { BookAction } from "../bookAction.model";
 import { Router } from "@angular/router";
+import { BookCreateDto } from "src/app/_models/bookCreateDto";
+import { BookService } from "../books.service";
+import { BooksService } from "src/app/_services/book.service";
+import { AlertifyService } from "src/app/_services/alertify.service";
 
 @Component({
   selector: "app-add-book",
@@ -15,22 +19,13 @@ import { Router } from "@angular/router";
 export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
   bookTypes = ["paper", "ebook"];
-
-  fakeBook: Book = new Book(
-    "1",
-    "Winnie the pooh",
-    "ebook",
-    "The best book ever",
-    "https://about.canva.com/wp-content/uploads/sites/3/2015/01/children_bookcover.png",
-    "Сиела",
-    new Author("1", "Bla bla bla ", "Nice bio", ""),
-    ["dutch people"],
-    [new BookAction(true, "like", true, 5)]
-  );
+  addBookModel = {} as BookCreateDto;
 
   constructor(
-    private store: Store<{ bookList: { books: Book[] } }>,
-    private router: Router
+    //private store: Store<{ bookList: { books: Book[] } }>,
+    private router: Router,
+    private bookService: BooksService,
+    private alertify: AlertifyService
   ) {}
 
   ngOnInit() {
@@ -45,11 +40,23 @@ export class AddBookComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log("form values: ", this.addBookForm.value.bookData.title);
-    this.fakeBook.title = this.addBookForm.value.bookData.title;
-    this.fakeBook.author.name = this.addBookForm.value.author;
-    this.store.dispatch(new BookListActions.AddBookAction(this.fakeBook));
+    console.log("form values: ", this.addBookForm.value.bookData);
 
-    this.router.navigateByUrl("/books");
+    this.addBookModel.title = this.addBookForm.value.bookData.title;
+    this.addBookModel.description = this.addBookForm.value.bookData.description;
+    this.addBookModel.authorName = this.addBookForm.value.author;
+    this.addBookModel.photoPath =
+      "https://www.bookbaby.com/images/book-cover-design-basic.png";
+
+    this.bookService.addBook(this.addBookModel).subscribe(
+      next => {
+        this.alertify.success("Book added!");
+        //this.store.dispatch(new BookListActions.AddBookAction(this.fakeBook));
+        this.router.navigateByUrl("/books");
+      },
+      error => {
+        this.alertify.error("Failed to add book");
+      }
+    );
   }
 }

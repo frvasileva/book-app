@@ -9,8 +9,10 @@ namespace BookApp.API.Models
     public string Description { get; set; }
     public string PhotoPath { get; set; }
     public string FriendlyUrl { get; set; }
-    public Publisher Publisher { get; set; }
-    public int PublisherId { get; set; }
+    
+    // public Publisher Publisher { get; set; }
+    // public int PublisherId { get; set; }
+    
     public User User { get; set; }
     public int UserId { get; set; }
   }

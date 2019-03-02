@@ -9,15 +9,15 @@ namespace BookApp.API.Helpers
 
     public AutoMapperProfiles()
     {
-      CreateMap<BookCreateDto, Book>().ForMember(dest => dest.Publisher, opt =>
-      {
-        opt.MapFrom(src => new Publisher());
-      })
+      CreateMap<BookCreateDto, Book>()
+      // .ForMember(dest => dest.Publisher, opt =>
+      // {
+      //   opt.MapFrom(src => new Publisher());
+      // })
       .ForMember(dest => dest.FriendlyUrl, opt =>
       {
         opt.MapFrom(src => Url.GenerateFriendlyUrl(src.Title));
       });
-
       CreateMap<Book, BookDetailsDto>();
       CreateMap<Book, BookPreviewDto>();
     }
