@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using BookApp.API.Models;
@@ -11,9 +12,12 @@ namespace BookApp.API.Data
   public class BookRepository : IBookRepository
   {
     private readonly DataContext _context;
-    public BookRepository(DataContext context)
+    private readonly IMapper _mapper;
+
+    public BookRepository(DataContext context, IMapper mapper)
     {
       _context = context;
+      _mapper = mapper;
     }
 
     public async Task<Book> AddBook(BookCreateDto bookDto)

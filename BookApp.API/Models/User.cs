@@ -22,6 +22,7 @@ namespace BookApp.API.Models
     public string City { get; set; }
     public string Country { get; set; }
     public ICollection<Book> Books { get; set; }
+
     // public ICollection<Message> MessagesSent { get; set; }
     // public ICollection<Message> MessagesReceived { get; set; }
   }

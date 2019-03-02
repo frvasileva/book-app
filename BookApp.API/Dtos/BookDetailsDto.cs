@@ -10,6 +10,5 @@ namespace BookApp.API.Dtos
 
     public string PhotoPath { get; set; }
 
-
   }
 }

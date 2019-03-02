@@ -15,7 +15,7 @@ namespace BookApp.API.Controllers
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public BookController(IBookRepository repo, DataContext context,IMapper mapper)
+    public BookController(IBookRepository repo, DataContext context, IMapper mapper)
     {
       _repo = repo;
       _context = context;
@@ -41,7 +41,8 @@ namespace BookApp.API.Controllers
       if (book == null)
         return BadRequest("No books");
 
-    var bookToReturn = _mapper.Map<BookDetailsDto>(book);
+      var bookToReturn = _mapper.Map<BookDetailsDto>(book);
+      
       return Ok(bookToReturn);
     }
 
