@@ -22,24 +22,13 @@ namespace BookApp.API.Data
 
     public async Task<Book> AddBook(BookCreateDto bookDto)
     {
+      var result = _mapper.Map<Book>(bookDto);
 
-      var book = new Book
-      {
-        Title = bookDto.Title,
-        Description = bookDto.Description,
-        PhotoPath = bookDto.PhotoPath,
-        FriendlyUrl = Url.GenerateFriendlyUrl(bookDto.Title.ToString()),
-        PublisherId = 1,
-        Publisher = new Publisher(),
-        UserId = 1,
-        User = new User()
-      };
-
-
-      await _context.Books.AddAsync(book);
+      result.UserId = 1;
+      await _context.Books.AddAsync(result);
       await _context.SaveChangesAsync();
 
-      return book;
+      return result;
     }
 
     public async Task<List<BookPreviewDto>> GetAll()

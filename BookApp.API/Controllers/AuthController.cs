@@ -32,8 +32,8 @@ namespace DatingApp.API.Controllers
     public async Task<IActionResult> Register(UserForRegisterDto userForRegisterDto)
     {
       // TODO Uncomment later
-      // if (!ModelState.IsValid)
-      //   return BadRequest(ModelState);
+      if (!ModelState.IsValid)
+        return BadRequest(ModelState);
 
       userForRegisterDto.Email = userForRegisterDto.Email.ToLower();
 
