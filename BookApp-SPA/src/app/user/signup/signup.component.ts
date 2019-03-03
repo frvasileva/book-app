@@ -28,7 +28,8 @@ export class SignupComponent implements OnInit {
       password: new FormControl(null, [
         Validators.required,
         Validators.minLength(6)
-      ])
+      ]),
+      userAgreementChecked: new FormControl(null, Validators.requiredTrue)
     });
   }
 

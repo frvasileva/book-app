@@ -24,7 +24,7 @@ namespace BookApp.API.Data
     {
       var result = _mapper.Map<Book>(bookDto);
 
-      result.UserId = 1;
+      result.UserId = 2;
       await _context.Books.AddAsync(result);
       await _context.SaveChangesAsync();
 

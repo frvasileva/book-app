@@ -39,6 +39,25 @@
             >
           </div>
 
+          <div class="form-check">
+              <input
+              type="checkbox"
+              class="form-check-input"
+              id="userAgreementChecked"
+              formControlName="userAgreementChecked"
+            />
+            <label for="userAgreementChecked" class="form-check-label">I agree with terms of use..</label>
+
+            <span
+              class="error-message"
+              *ngIf="
+                !signUpForm.get('userAgreementChecked').valid &&
+                signUpForm.get('userAgreementChecked').touched
+              "
+              >This field is required</span
+            >
+          </div>
+
           <button
             class="button primary"
             type="submit"
