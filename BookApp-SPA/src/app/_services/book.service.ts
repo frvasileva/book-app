@@ -5,6 +5,9 @@ import { Router } from "@angular/router";
 import { map } from "rxjs/operators";
 
 import { BookCreateDto } from "../_models/bookCreateDto";
+import { Store } from "@ngrx/store";
+import { Book } from "../_models/books";
+import * as BookListActions from "../books/books-list/store/bookList.actions";
 
 @Injectable({
   providedIn: "root"
@@ -13,7 +16,11 @@ export class BooksService {
   baseUrl = "http://localhost:5000/api/book/";
   jwtHelper = new JwtHelperService();
 
-  constructor(private http: HttpClient, private router: Router) {}
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private store: Store<{ bookList: { books: Book[] } }>
+  ) {}
 
   addBook(model: BookCreateDto) {
     console.log("posted model: ", model);
@@ -29,5 +36,18 @@ export class BooksService {
   getBook(friendlyUrl: string = "dummy url") {
     console.log(this.http.get(this.baseUrl + "get/" + friendlyUrl));
     return this.http.get(this.baseUrl + "get/" + friendlyUrl);
+  }
+
+  getBooks() {
+    console.log(this.http.get(this.baseUrl + "get-books"));
+    return this.http.get(this.baseUrl + "get-books").subscribe(
+      data => {
+        this.store.dispatch(new BookListActions.GetBooksAction(data));
+      },
+
+      error => {
+        // this.alertify.error(error);
+      }
+    );
   }
 }

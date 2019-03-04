@@ -4,6 +4,7 @@ import { Book } from "../book.model";
 import { BookService } from "../books.service";
 import { Subscription, Observable } from "rxjs";
 import { Store } from "@ngrx/store";
+import { BooksService } from "src/app/_services/book.service";
 
 @Component({
   selector: "app-books-list",
@@ -15,18 +16,21 @@ export class BooksListComponent implements OnInit {
   subscription: Subscription;
 
   constructor(
-    private bookService: BookService,
+    private bookService: BooksService,
     private store: Store<{ bookList: { books: Book[] } }>
   ) {}
 
   ngOnInit() {
+    this.bookService.getBooks();
+
     this.bookListState = this.store.select("bookList");
-    console.log(this.bookListState);
+
+    console.log("book store on init", this.bookListState);
   }
 
   addToWantToReadList(bookId) {
     console.log(bookId);
-    this.bookService.addToWantToReadList(+bookId);
+    //this.bookService.addToWantToReadList(+bookId);
   }
 
   addToAlreadyRead(bookId) {
