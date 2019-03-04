@@ -1,10 +1,8 @@
 import { Component, OnInit } from "@angular/core";
-import { RouterModule } from "@angular/router";
 import { Book } from "../book.model";
-import { BookService } from "../books.service";
 import { Subscription, Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { BooksService } from "src/app/_services/book.service";
+import { BookService } from "src/app/_services/book.service";
 
 @Component({
   selector: "app-books-list",
@@ -16,7 +14,7 @@ export class BooksListComponent implements OnInit {
   subscription: Subscription;
 
   constructor(
-    private bookService: BooksService,
+    private bookService: BookService,
     private store: Store<{ bookList: { books: Book[] } }>
   ) {}
 

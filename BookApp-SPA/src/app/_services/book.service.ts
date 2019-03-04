@@ -12,7 +12,7 @@ import * as BookListActions from "../books/books-list/store/bookList.actions";
 @Injectable({
   providedIn: "root"
 })
-export class BooksService {
+export class BookService {
   baseUrl = "http://localhost:5000/api/book/";
   jwtHelper = new JwtHelperService();
 

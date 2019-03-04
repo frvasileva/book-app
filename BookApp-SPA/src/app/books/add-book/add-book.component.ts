@@ -7,8 +7,7 @@ import { Author } from "src/app/authors/author.model";
 import { BookAction } from "../bookAction.model";
 import { Router } from "@angular/router";
 import { BookCreateDto } from "src/app/_models/bookCreateDto";
-import { BookService } from "../books.service";
-import { BooksService } from "src/app/_services/book.service";
+import { BookService } from "src/app/_services/book.service";
 import { AlertifyService } from "src/app/_services/alertify.service";
 
 @Component({
@@ -24,7 +23,7 @@ export class AddBookComponent implements OnInit {
   constructor(
     //private store: Store<{ bookList: { books: Book[] } }>,
     private router: Router,
-    private bookService: BooksService,
+    private bookService: BookService,
     private alertify: AlertifyService
   ) {}
 

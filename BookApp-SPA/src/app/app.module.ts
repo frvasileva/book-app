@@ -17,7 +17,6 @@ import { AboutComponent } from "./ui-core/about/about.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { NotFoundComponent } from "./ui-core/not-found/not-found.component";
 import { ArticlesComponent } from "./articles/articles/articles.component";
-import { BookService } from "./books/books.service";
 import { AuthorService } from "./authors/author.service";
 import { UserService } from "./user/user.service";
 import { ContactComponent } from "./ui-core/contact/contact.component";
@@ -31,7 +30,7 @@ import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
 import { ProfileService } from "./_services/profile.service";
 import { ProfileResolver } from "./_resolvers/profile.resolver";
-import { BooksService } from "./_services/book.service";
+import { BookService } from "./_services/book.service";
 
 @NgModule({
   declarations: [
@@ -65,9 +64,8 @@ import { BooksService } from "./_services/book.service";
   ],
   providers: [
     AuthService,
-    BookService,
     AuthorService,
-    BooksService,
+    BookService,
     UserService,
     ProfileService,
     MessageService,
