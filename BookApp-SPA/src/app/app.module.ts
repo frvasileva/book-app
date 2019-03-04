@@ -5,6 +5,9 @@ import { HttpClientModule } from "@angular/common/http";
 import { StoreModule } from "@ngrx/store";
 import { BsDropdownModule } from "ngx-bootstrap";
 
+import { StoreDevtoolsModule } from "@ngrx/store-devtools";
+import { environment } from "../environments/environment"; // Angular CLI environemnt
+
 import { AppComponent } from "./app.component";
 import { LayoutComponent } from "./ui-core/layout/layout.component";
 import { HeaderComponent } from "./ui-core/header/header.component";
@@ -54,6 +57,10 @@ import { BooksService } from "./_services/book.service";
     StoreModule.forRoot({
       bookList: bookListReducer,
       messageList: messageReducer
+    }),
+    StoreDevtoolsModule.instrument({
+      maxAge: 25, // Retains last 25 states
+      logOnly: environment.production // Restrict extension to log-only mode
     })
   ],
   providers: [

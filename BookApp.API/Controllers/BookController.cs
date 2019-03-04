@@ -42,7 +42,7 @@ namespace BookApp.API.Controllers
         return BadRequest("No books");
 
       var bookToReturn = _mapper.Map<BookDetailsDto>(book);
-      
+
       return Ok(bookToReturn);
     }
 
@@ -50,6 +50,10 @@ namespace BookApp.API.Controllers
     [HttpPost("add")]
     public async Task<IActionResult> Add(BookCreateDto bookDto)
     {
+      //TODO: Check if author exists 
+      //TODO: If not -> create it
+      //TODO: Else: asign it to the correct author
+
       await _repo.AddBook(bookDto);
       await _context.SaveChangesAsync();
 
