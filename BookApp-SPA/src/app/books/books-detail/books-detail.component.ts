@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Router, Params } from "@angular/router";
 import { Book } from "../book.model";
-import { BookService } from "../books.service";
+import { BookService } from "src/app/_services/book.service";
 
 @Component({
   selector: "app-books-detail",
@@ -21,14 +21,14 @@ export class BooksDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.id = +params["id"];
-      this.book = this.bookService.getBook(this.id);
+    //  this.book = this.bookService.getBook(this.id);
       console.log(this.book);
     });
   }
 
   addToWantToReadList(bookId) {
     console.log(bookId);
-    this.bookService.addToWantToReadList(+bookId);
+   // this.bookService.addToWantToReadList(+bookId);
   }
 
   addToAlreadyRead(bookId) {
