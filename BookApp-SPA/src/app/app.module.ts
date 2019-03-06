@@ -5,9 +5,6 @@ import { HttpClientModule } from "@angular/common/http";
 import { StoreModule } from "@ngrx/store";
 import { BsDropdownModule } from "ngx-bootstrap";
 
-import { StoreDevtoolsModule } from "@ngrx/store-devtools";
-import { environment } from "../environments/environment"; // Angular CLI environemnt
-
 import { AppComponent } from "./app.component";
 import { LayoutComponent } from "./ui-core/layout/layout.component";
 import { HeaderComponent } from "./ui-core/header/header.component";
@@ -26,6 +23,8 @@ import { BookSaverService } from "./books/bookSaver.service";
 
 import { bookListReducer } from "./books/books-list/store/bookList.reducer";
 import { messageReducer } from "./messages/store/message.reducer";
+import { bookDetailsReducer } from "./_store/book-detail.reducer";
+
 import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
 import { ProfileService } from "./_services/profile.service";
@@ -55,13 +54,14 @@ import { BookService } from "./_services/book.service";
 
     StoreModule.forRoot({
       bookList: bookListReducer,
+      bookDetails: bookDetailsReducer,
       messageList: messageReducer
-     }),
-  // StoreDevtoolsModule.instrument({
-  //    maxAge: 25, // Retains last 25 states
-  //    logOnly: environment.production // Restrict extension to log-only mode
-  //  })
-   ],
+    })
+    // StoreDevtoolsModule.instrument({
+    //    maxAge: 25, // Retains last 25 states
+    //    logOnly: environment.production // Restrict extension to log-only mode
+    //  })
+  ],
   providers: [
     AuthService,
     AuthorService,
