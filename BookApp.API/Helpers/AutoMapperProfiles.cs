@@ -14,8 +14,25 @@ namespace BookApp.API.Helpers
       {
         opt.MapFrom(src => Url.GenerateFriendlyUrl(src.Title));
       });
-      CreateMap<Book, BookDetailsDto>();
-      CreateMap<Book, BookPreviewDto>();
+      CreateMap<Book, BookDetailsDto>().ForMember(dest => dest.PhotoPath, opt =>
+      {
+        opt.MapFrom(src => this.PhotoUrlMap(src.PhotoPath));
+      });
+      CreateMap<Book, BookPreviewDto>().ForMember(dest => dest.PhotoPath, opt =>
+      {
+        opt.MapFrom(src => this.PhotoUrlMap(src.PhotoPath));
+      });
     }
+
+    private string PhotoUrlMap(string photoPath)
+    {
+      if (photoPath == "" && photoPath != null)
+      {
+        return "http://www.prakashgold.com/Images/noimg.jpg";
+      }
+
+      return photoPath;
+    }
+
   }
 }

@@ -13,23 +13,13 @@
       class="col-sm-6 col-md-4"
       *ngFor="let book of (bookListState | async).books; let i = index"
     >
-      <div class="book-list-item">
-        <a class="nav-link" [routerLink]="['details', book.id]">
-          <img [src]="book.coverPath" [alt]="book.title" />
-        </a>
-        <div class="caption">
-          <h3 class="book-title">{{ book.title }}</h3>
-          <a
-            class="nav-link"
-            [routerLink]="['/authors/details', book.author.id]"
-            class="book-author"
-          >
-            {{ book.author.name }}
-          </a>
-        </div>
+      <app-book-card-item [book]="book"></app-book-card-item>
 
-        <div class="book-actions"><app-book-saver></app-book-saver></div>
+      <!--
+        <div class="book-actions">
+          <app-book-saver></app-book-saver>
+        </div>
       </div>
-    </div>
+    --></div>
   </div>
 </div>

@@ -59,6 +59,5 @@ namespace BookApp.API.Controllers
 
       return Ok(bookDto);
     }
-
   }
 }

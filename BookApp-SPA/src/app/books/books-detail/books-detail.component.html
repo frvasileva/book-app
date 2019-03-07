@@ -1,40 +1,12 @@
 <div class="books-detail-top">
   <div class="book-header">
-    <h3 class="book-title">{{ book.title }}</h3>
-    <a
-      class="nav-link"
-      [routerLink]="['/authors/details', book.author.id]"
-      class="book-author"
-    >
-      {{ book.author.name }}
-    </a>
+    <h3 class="book-title">{{ book?.title }}</h3>
+
+    <span>{{(bookDetailsState | async).details}}</span>
   </div>
   <div class="clearfix"></div>
   <div class="book-cover">
-    <img src="{{ book.coverPath }}" alt="..." width="300" class="cover" />
+    <img src="{{ book?.photoPath }}" alt="alt book text" width="300" class="cover" />
   </div>
 </div>
-<div class="book-description">{{ book.description }}</div>
-<div class="book-attributes">
-  <a
-    class="button primary"
-    [routerLink]="['/books/request-book', book.id]"
-    class="book-author"
-  >
-    Request book
-  </a>
-
-  <app-book-saver></app-book-saver>
-
-  <!-- <button class="button primary" (click)="this.addToWantToReadList(book.id)">Save/Want to read</button>
-  <button class="button action-btn" (click)="this.addToAlreadyRead(book.id)">Already read</button>
-  <button class="button" (click)="this.wantToShare(book.id)">Want to share</button> -->
-
-  <a
-    class="nav-link"
-    [routerLink]="['/books', book.bookType]"
-    class="book-author"
-  >
-    {{ book.bookType }}
-  </a>
-</div>
+<div class="book-description">{{ book?.description }}</div>

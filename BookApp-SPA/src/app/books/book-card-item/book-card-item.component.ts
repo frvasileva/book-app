@@ -10,6 +10,6 @@ export class BookCardItemComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log(this.book);
+    console.log("book card item", this.book);
   }
 }

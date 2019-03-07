@@ -11,7 +11,6 @@ import { BookService } from "src/app/_services/book.service";
 })
 export class BooksListComponent implements OnInit {
   bookListState: Observable<{ books: Book[] }>;
-  subscription: Subscription;
 
   constructor(
     private bookService: BookService,
@@ -20,7 +19,6 @@ export class BooksListComponent implements OnInit {
 
   ngOnInit() {
     this.bookService.getBooks();
-
     this.bookListState = this.store.select("bookList");
 
     console.log("book store on init", this.bookListState);

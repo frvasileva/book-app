@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Dtos;
@@ -34,37 +35,17 @@ namespace BookApp.API.Data
     public async Task<List<BookPreviewDto>> GetAll()
     {
       var bookList = await _context.Books.ToListAsync();
-      var bookListDto = new List<BookPreviewDto>();
+      var mappedBookList = _mapper.Map<List<BookPreviewDto>>(bookList);
 
-      foreach (var item in bookList)
-      {
-        var itm = new BookPreviewDto
-        {
-          Id = item.Id,
-          Title = item.Title,
-          Description = item.Description
-        };
-
-        bookListDto.Add(itm);
-      }
-
-      return bookListDto;
+      return mappedBookList;
     }
 
     public async Task<BookDetailsDto> GetBook(string friendlyUrl)
     {
-      // TODO - add friendly url and get the specific book!
-      var book = await _context.Books.FirstOrDefaultAsync();
+      var book = await _context.Books.Where(item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync();
+      var mappedBook = _mapper.Map<BookDetailsDto>(book);
 
-      var bookDto = new BookDetailsDto
-      {
-        Id = book.Id,
-        Title = book.Title,
-        Description = book.Description,
-        PhotoPath = book.PhotoPath
-      };
-
-      return bookDto;
+      return mappedBook;
     }
 
 

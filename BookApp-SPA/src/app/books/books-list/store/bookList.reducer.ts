@@ -20,7 +20,6 @@ export function bookListReducer(
       };
     }
     case BookListActions.ADD_BOOK: {
-      console.log({ ...state, books: [state.books], action });
       return {
         ...state,
         books: [...state.books, action.payload]

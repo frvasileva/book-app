@@ -8,6 +8,8 @@ import { BookCreateDto } from "../_models/bookCreateDto";
 import { Store } from "@ngrx/store";
 import { Book } from "../_models/books";
 import * as BookListActions from "../books/books-list/store/bookList.actions";
+import * as BookDetailsActions from "../_store/book-detail.actions";
+import { bookDetailsDto } from "../_models/bookDetailsDto";
 
 @Injectable({
   providedIn: "root"
@@ -34,8 +36,18 @@ export class BookService {
   }
 
   getBook(friendlyUrl: string = "dummy url") {
-    console.log(this.http.get(this.baseUrl + "get/" + friendlyUrl));
-    return this.http.get(this.baseUrl + "get/" + friendlyUrl);
+    //  return this.http.get(this.baseUrl + "get/" + friendlyUrl);
+
+    return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
+      data => {
+        this.store.dispatch(new BookDetailsActions.GetBookDetailAction(<bookDetailsDto>data));
+        console.log("get book data", data);
+      },
+
+      error => {
+        // this.alertify.error(error);
+      }
+    );
   }
 
   getBooks() {
