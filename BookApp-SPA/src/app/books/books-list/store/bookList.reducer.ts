@@ -1,9 +1,5 @@
 import * as BookListActions from "./bookList.actions";
 
-import { BookAction } from "../../bookAction.model";
-import { Book } from "../../book.model";
-import { Author } from "src/app/authors/author.model";
-
 const initialState = {
   books: []
 };

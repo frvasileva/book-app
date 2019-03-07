@@ -1,12 +1,15 @@
 <div class="books-detail-top">
   <div class="book-header">
     <h3 class="book-title">{{ book?.title }}</h3>
-
-    <span>{{(bookDetailsState | async).details}}</span>
   </div>
   <div class="clearfix"></div>
   <div class="book-cover">
-    <img src="{{ book?.photoPath }}" alt="alt book text" width="300" class="cover" />
+    <img
+      src="{{ book?.photoPath }}"
+      alt="alt book text"
+      width="300"
+      class="cover"
+    />
   </div>
 </div>
 <div class="book-description">{{ book?.description }}</div>
