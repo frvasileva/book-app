@@ -9,7 +9,5 @@ export class BookCardItemComponent implements OnInit {
   @Input() book: any;
   constructor() {}
 
-  ngOnInit() {
-    console.log("book card item", this.book);
-  }
+  ngOnInit() {}
 }

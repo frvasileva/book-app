@@ -29,7 +29,7 @@ export class BooksDetailComponent implements OnInit {
         .pipe(
           select((state: { bookDetails: { details: {} } }) => state.bookDetails)
         )
-        .subscribe(result => {
+        .subscribe((result) => {
           this.book = result;
         });
     });

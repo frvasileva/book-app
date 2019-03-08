@@ -1,6 +1,17 @@
 <div class="card-wrapper">
-  <a href="/books/details/{{ book?.friendlyUrl }}">
-    <img src="{{ book?.photoPath }}" class="book-cover-image" />
+  <a [routerLink]="['/books/details', book?.friendlyUrl]">
     <div class="book-title">{{ book?.title }}</div>
+    <div class="text-md-center">
+      <img src="{{ book?.photoPath }}" class="book-cover-image" />
+    </div>
   </a>
+
+  <div class="book-actions-wrapper">
+    <div class="add-book-to-list">
+      <i class="glyphicon glyphicon-plus"></i>
+    </div>
+    <div class="book-actions">
+      <app-book-saver></app-book-saver>
+    </div>
+  </div>
 </div>

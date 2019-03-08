@@ -6,7 +6,7 @@ export const GET_BOOK_DETAILS = "GET_BOOK_DETAILS";
 export class GetBookDetailAction implements Action {
   readonly type = GET_BOOK_DETAILS;
   constructor(public payload: bookDetailsDto) {
-    console.log("payload", payload);
+   // console.log("payload", payload);
   }
 }
 

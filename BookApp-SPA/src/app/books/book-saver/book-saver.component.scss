@@ -2,20 +2,19 @@
 
 .user-list {
   padding: 0;
-  border: 1px solid $light-background;
+  margin: 0;
 }
 
 .user-list li {
   text-decoration: none;
   list-style-type: none;
   margin: 0;
-  padding: 5px 15px;
+  padding: 5px;
   font-size: 14px;
 
   &:hover {
     cursor: pointer;
-    background-color: $lighter-background;
-    color: $white;
+    background-color: #eeeff0;
   }
 }
 

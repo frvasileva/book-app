@@ -26,7 +26,7 @@ export class BooksListComponent implements OnInit {
 
   addToWantToReadList(bookId) {
     console.log(bookId);
-    //this.bookService.addToWantToReadList(+bookId);
+    // this.bookService.addToWantToReadList(+bookId);
   }
 
   addToAlreadyRead(bookId) {

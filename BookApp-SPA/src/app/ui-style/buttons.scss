@@ -5,6 +5,7 @@
   text-transform: uppercase;
   border-radius: 5px;
   text-decoration: none;
+  text-align: center;
 
   &:disabled,
   &[disabled] {
@@ -13,7 +14,6 @@
 
   &:disabled,
   &[disabled]:hover {
-    background-color: red;
     text-decoration: none;
   }
 
@@ -38,7 +38,19 @@
 
   &.action-btn {
     max-width: 280px;
-    background-color: $lighter-background;
-    color: black;
+    background-color: #eac435;
+    color: white;
+    font-family: $secondary-font;
+
+    &:hover {
+      background-color: #e8aa43;
+      transition: 0.3s;
+      text-decoration: none;
+    }
+
+    &:active {
+      background-color: #e8aa43;
+      border-bottom-color: #d1993c;
+    }
   }
 }

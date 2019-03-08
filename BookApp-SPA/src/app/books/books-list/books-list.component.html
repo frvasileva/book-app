@@ -1,25 +1,21 @@
 <div class="container">
   <div class="row">
     <div class="col-md-8"><h2>Books:</h2></div>
-    <div class="col-md-4">
-      <a routerLink="add" routerLinkActive="active" class="button action-btn"
-        >Add Book</a
+    <div class="col-md-4 text-right">
+      <a routerLink="add" routerLinkActive="active" class="button action-btn">
+        <i class="glyphicon glyphicon-plus"></i>Add Book</a
       >
     </div>
   </div>
 
   <div class="row">
     <div
-      class="col-sm-6 col-md-4"
+      class="col-sm-4 col-md-3"
       *ngFor="let book of (bookListState | async).books; let i = index"
     >
-      <app-book-card-item [book]="book"></app-book-card-item>
-
-      <!--
-        <div class="book-actions">
-          <app-book-saver></app-book-saver>
-        </div>
+      <div class="book-card-wrapper">
+        <app-book-card-item [book]="book"></app-book-card-item>
       </div>
-    --></div>
+    </div>
   </div>
 </div>
