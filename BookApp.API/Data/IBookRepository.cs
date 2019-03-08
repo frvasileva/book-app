@@ -11,5 +11,6 @@ namespace BookApp.API.Data
     Task<List<BookPreviewDto>> GetAll();
     Task<BookDetailsDto> GetBook(string friendlyUrl);
     Task<Book> AddBook(BookCreateDto book);
+    Task<BookListActions> AddBookAction(BookActionDto book);
   }
 }

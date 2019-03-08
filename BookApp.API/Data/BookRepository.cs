@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -26,7 +27,19 @@ namespace BookApp.API.Data
       var result = _mapper.Map<Book>(bookDto);
 
       result.UserId = 2;
+      result.AddedOn = DateTime.Now;
       await _context.Books.AddAsync(result);
+      await _context.SaveChangesAsync();
+
+      return result;
+    }
+
+    public async Task<BookListActions> AddBookAction(BookActionDto bookActionDto)
+    {
+      var result = _mapper.Map<BookListActions>(bookActionDto);
+      result.AddedOn = DateTime.Now;
+
+      await _context.BookListActions.AddAsync(result);
       await _context.SaveChangesAsync();
 
       return result;
@@ -34,7 +47,7 @@ namespace BookApp.API.Data
 
     public async Task<List<BookPreviewDto>> GetAll()
     {
-      var bookList = await _context.Books.ToListAsync();
+      var bookList = await _context.Books.Include(itm => itm.BookListActions).OrderByDescending(item => item.AddedOn).ToListAsync();
       var mappedBookList = _mapper.Map<List<BookPreviewDto>>(bookList);
 
       return mappedBookList;

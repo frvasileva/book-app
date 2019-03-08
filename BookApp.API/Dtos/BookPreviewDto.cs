@@ -1,3 +1,6 @@
+using System.Collections.Generic;
+using BookApp.API.Models;
+
 namespace BookApp.API.Dtos
 {
   public class BookPreviewDto
@@ -9,8 +12,10 @@ namespace BookApp.API.Dtos
     public string Description { get; set; }
 
     public string PhotoPath { get; set; }
-    
+
     public string FriendlyUrl { get; set; }
+
+    public List<BookActionPreviewDto> BookListActions { get; set; }
 
   }
 }

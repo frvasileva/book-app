@@ -46,7 +46,6 @@ namespace BookApp.API.Controllers
       return Ok(bookToReturn);
     }
 
-
     [HttpPost("add")]
     public async Task<IActionResult> Add(BookCreateDto bookDto)
     {
@@ -58,6 +57,15 @@ namespace BookApp.API.Controllers
       await _context.SaveChangesAsync();
 
       return Ok(bookDto);
+    }
+
+    [HttpPost("add-book-action")]
+    public async Task<IActionResult> AddBookAction(BookActionDto bookActionDto)
+    {
+      await _repo.AddBookAction(bookActionDto);
+      await _context.SaveChangesAsync();
+
+      return Ok(bookActionDto);
     }
   }
 }

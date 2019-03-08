@@ -1,3 +1,5 @@
+using System;
+
 namespace BookApp.API.Models
 {
   public class Quote
@@ -6,6 +8,9 @@ namespace BookApp.API.Models
 
     public string Content { get; set; }
 
+    public DateTime AddedOn { get; set; }
+
     public Author Author { get; set; }
+
   }
 }

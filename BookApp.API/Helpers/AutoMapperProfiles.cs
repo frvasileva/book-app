@@ -14,14 +14,18 @@ namespace BookApp.API.Helpers
       {
         opt.MapFrom(src => Url.GenerateFriendlyUrl(src.Title));
       });
+
       CreateMap<Book, BookDetailsDto>().ForMember(dest => dest.PhotoPath, opt =>
       {
         opt.MapFrom(src => this.PhotoUrlMap(src.PhotoPath));
       });
+
       CreateMap<Book, BookPreviewDto>().ForMember(dest => dest.PhotoPath, opt =>
       {
         opt.MapFrom(src => this.PhotoUrlMap(src.PhotoPath));
       });
+
+      CreateMap<BookActionDto, BookListActions>();
     }
 
     private string PhotoUrlMap(string photoPath)
