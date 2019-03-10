@@ -65,7 +65,19 @@ namespace BookApp.API.Controllers
       await _repo.AddBookAction(bookActionDto);
       await _context.SaveChangesAsync();
 
+      //TODO: fix to return really updated result!
       return Ok(bookActionDto);
+    }
+
+
+    //TODO: refactor to accept only ID and delete by ID
+    [HttpPost("delete-book-action/{bookId}")]
+    public async Task<IActionResult> DeleteBookAction(int bookId)
+    {
+      await _repo.DeleteBookAction(bookId);
+      await _context.SaveChangesAsync();
+
+      return Ok();
     }
   }
 }

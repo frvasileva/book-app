@@ -44,6 +44,16 @@ namespace BookApp.API.Data
 
       return result;
     }
+    public async Task<BookListActions> DeleteBookAction(int bookId=3)
+    {
+      var result = _context.BookListActions.Find(bookId);
+
+      _context.BookListActions.Attach(result);
+      _context.BookListActions.Remove(result);
+      await _context.SaveChangesAsync();
+
+      return result;
+    }
 
     public async Task<List<BookPreviewDto>> GetAll()
     {
