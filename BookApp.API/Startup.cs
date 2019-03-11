@@ -42,6 +42,8 @@ namespace DatingApp.API
       services.AddScoped<IAuthRepository, AuthRepository>();
       services.AddScoped<IProfileRepository, ProfileRepository>();
       services.AddScoped<IBookRepository, BookRepository>();
+      services.AddScoped<IAuthorRepository, AuthorRepository>();
+      services.AddTransient<DbContext>();
 
       services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
       .AddJwtBearer(Options =>

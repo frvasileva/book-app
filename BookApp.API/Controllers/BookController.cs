@@ -1,9 +1,12 @@
+using System;
 using System.Threading.Tasks;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using AutoMapper;
+using BookApp.API.Models;
+using BookApp.API.Helpers;
 
 namespace BookApp.API.Controllers
 {
@@ -49,10 +52,6 @@ namespace BookApp.API.Controllers
     [HttpPost("add")]
     public async Task<IActionResult> Add(BookCreateDto bookDto)
     {
-      //TODO: Check if author exists 
-      //TODO: If not -> create it
-      //TODO: Else: asign it to the correct author
-
       await _repo.AddBook(bookDto);
       await _context.SaveChangesAsync();
 
@@ -69,8 +68,6 @@ namespace BookApp.API.Controllers
       return Ok(bookActionDto);
     }
 
-
-    //TODO: refactor to accept only ID and delete by ID
     [HttpPost("delete-book-action/{bookId}")]
     public async Task<IActionResult> DeleteBookAction(int bookId)
     {

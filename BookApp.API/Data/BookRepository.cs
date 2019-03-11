@@ -15,11 +15,13 @@ namespace BookApp.API.Data
   {
     private readonly DataContext _context;
     private readonly IMapper _mapper;
+    private readonly IAuthorRepository _repoAuthor;
 
-    public BookRepository(DataContext context, IMapper mapper)
+    public BookRepository(DataContext context, IMapper mapper, IAuthorRepository repoAuthor)
     {
       _context = context;
       _mapper = mapper;
+      _repoAuthor = repoAuthor;
     }
 
     public async Task<Book> AddBook(BookCreateDto bookDto)
@@ -28,6 +30,18 @@ namespace BookApp.API.Data
 
       result.UserId = 2;
       result.AddedOn = DateTime.Now;
+
+      if (await _repoAuthor.CheckAuthorExists(bookDto.AuthorName))
+      {
+        var authorResult = await _repoAuthor.Get(bookDto.AuthorName);
+        result.AuthorId = authorResult.Id;
+      }
+      else
+      {
+        var authorResult = await _repoAuthor.Create(bookDto.AuthorName);
+        result.AuthorId = authorResult.Id;
+      }
+
       await _context.Books.AddAsync(result);
       await _context.SaveChangesAsync();
 
@@ -44,7 +58,7 @@ namespace BookApp.API.Data
 
       return result;
     }
-    public async Task<BookListActions> DeleteBookAction(int bookId=3)
+    public async Task<BookListActions> DeleteBookAction(int bookId = 3)
     {
       var result = _context.BookListActions.Find(bookId);
 
@@ -70,7 +84,5 @@ namespace BookApp.API.Data
 
       return mappedBook;
     }
-
-
   }
 }
