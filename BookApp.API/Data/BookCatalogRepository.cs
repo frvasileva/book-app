@@ -9,35 +9,35 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.API.Data
 {
-  public class BookListRepository : IBookListRepository
+  public class BookCatalogRepository : IBookCatalogRepository
   {
 
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public BookListRepository(DataContext context, IMapper mapper)
+    public BookCatalogRepository(DataContext context, IMapper mapper)
     {
       _context = context;
       _mapper = mapper;
     }
 
-    public async Task<BookList> Create(BookListCreateDto bookListDto)
+    public async Task<BookCatalog> Create(BookListCreateDto bookListDto)
     {
-      var result = _mapper.Map<BookList>(bookListDto);
+      var result = _mapper.Map<BookCatalog>(bookListDto);
       result.Created = DateTime.Now;
       
-      await _context.BookList.AddAsync(result);
+      await _context.BookCatalog.AddAsync(result);
       await _context.SaveChangesAsync();
 
       return result;
     }
 
-    public async Task<BookList> Delete(int id)
+    public async Task<BookCatalog> Delete(int id)
     {
-      var result = _context.BookList.Find(id);
+      var result = _context.BookCatalog.Find(id);
 
-      _context.BookList.Attach(result);
-      _context.BookList.Remove(result);
+      _context.BookCatalog.Attach(result);
+      _context.BookCatalog.Remove(result);
       await _context.SaveChangesAsync();
 
       return result;
@@ -45,7 +45,7 @@ namespace BookApp.API.Data
 
     public async Task<BookListItemDto> Get(int id)
     {
-      var bookList = await _context.BookList.Where(item => item.Id == id).FirstOrDefaultAsync();
+      var bookList = await _context.BookCatalog.Where(item => item.Id == id).FirstOrDefaultAsync();
       var mappedBook = _mapper.Map<BookListItemDto>(bookList);
 
       return mappedBook;
@@ -53,13 +53,13 @@ namespace BookApp.API.Data
 
     public async Task<List<BookListItemDto>> GetAll()
     {
-      var bookList = await _context.BookList.OrderByDescending(item => item.Created).ToListAsync();
+      var bookList = await _context.BookCatalog.OrderByDescending(item => item.Created).ToListAsync();
       var mappedBookList = _mapper.Map<List<BookListItemDto>>(bookList);
 
       return mappedBookList;
     }
 
-    public Task<BookList> Update()
+    public Task<BookCatalog> Update()
     {
       throw new System.NotImplementedException();
     }

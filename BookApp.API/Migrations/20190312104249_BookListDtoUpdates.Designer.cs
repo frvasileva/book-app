@@ -4,14 +4,16 @@ using BookApp.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20190312104249_BookListDtoUpdates")]
+    partial class BookListDtoUpdates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,7 +50,7 @@ namespace DatingApp.API.Migrations
 
                     b.Property<int?>("AuthorId");
 
-                    b.Property<int?>("BookCatalogId");
+                    b.Property<int?>("BookListId");
 
                     b.Property<string>("Description");
 
@@ -66,7 +68,7 @@ namespace DatingApp.API.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("BookCatalogId");
+                    b.HasIndex("BookListId");
 
                     b.HasIndex("PublisherId");
 
@@ -75,7 +77,7 @@ namespace DatingApp.API.Migrations
                     b.ToTable("Books");
                 });
 
-            modelBuilder.Entity("BookApp.API.Models.BookCatalog", b =>
+            modelBuilder.Entity("BookApp.API.Models.BookList", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -93,7 +95,7 @@ namespace DatingApp.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("BookCatalog");
+                    b.ToTable("BookList");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.BookListActions", b =>
@@ -207,9 +209,9 @@ namespace DatingApp.API.Migrations
                         .WithMany("Books")
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("BookApp.API.Models.BookCatalog")
+                    b.HasOne("BookApp.API.Models.BookList")
                         .WithMany("Books")
-                        .HasForeignKey("BookCatalogId");
+                        .HasForeignKey("BookListId");
 
                     b.HasOne("BookApp.API.Models.Publisher", "Publisher")
                         .WithMany("Books")
@@ -221,7 +223,7 @@ namespace DatingApp.API.Migrations
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("BookApp.API.Models.BookCatalog", b =>
+            modelBuilder.Entity("BookApp.API.Models.BookList", b =>
                 {
                     b.HasOne("BookApp.API.Models.User", "User")
                         .WithMany()

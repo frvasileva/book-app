@@ -9,13 +9,13 @@ namespace BookApp.API.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class BookListController : ControllerBase
+  public class BookCatalogController : ControllerBase
   {
-    private readonly IBookListRepository _repo;
+    private readonly IBookCatalogRepository _repo;
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public BookListController(IBookListRepository repo, DataContext context, IMapper mapper)
+    public BookCatalogController(IBookCatalogRepository repo, DataContext context, IMapper mapper)
     {
       _repo = repo;
       _context = context;

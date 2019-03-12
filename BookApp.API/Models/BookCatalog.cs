@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace BookApp.API.Models
 {
-  public class BookList
+  public class BookCatalog
   {
     public int Id { get; set; }
 
