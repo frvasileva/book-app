@@ -15,7 +15,9 @@ namespace BookApp.API.Data
     public DbSet<Quote> Quotes { get; set; }
     public DbSet<Publisher> Publishers { get; set; }
     public DbSet<BookListActions> BookListActions { get; set; }
-    
+
+    public DbSet<BookList> BookList { get; set; }
+
     // public DbSet<Message> Messages { get; set; }
 
   }

@@ -29,6 +29,12 @@ namespace BookApp.API.Helpers
       
       CreateMap<AuthorCreateDto, Author>();
       CreateMap<Author, AuthorCreateDto>();
+
+      CreateMap<BookList, BookListCreateDto>();
+      CreateMap<BookListCreateDto, BookList>();
+
+      CreateMap<BookList, BookListItemDto>();
+      CreateMap<BookListItemDto, BookList>();
     }
 
     private string PhotoUrlMap(string photoPath)
