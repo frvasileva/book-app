@@ -10,6 +10,7 @@ import { Book } from "../_models/books";
 import * as BookListActions from "../books/books-list/store/bookList.actions";
 import * as BookDetailsActions from "../_store/book-detail.actions";
 import { bookDetailsDto } from "../_models/bookDetailsDto";
+import { AlertifyService } from "./alertify.service";
 
 @Injectable({
   providedIn: "root"
@@ -21,7 +22,8 @@ export class BookService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private store: Store<{ bookList: { books: Book[] } }>
+    private store: Store<{ bookList: { books: Book[] } }>,
+    private alertify: AlertifyService
   ) {}
 
   addBook(model: BookCreateDto) {
@@ -29,23 +31,20 @@ export class BookService {
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
         const book = response;
-
-        console.log(book);
       })
     );
   }
 
   getBook(friendlyUrl: string = "dummy url") {
-    //  return this.http.get(this.baseUrl + "get/" + friendlyUrl);
-
     return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
       data => {
-        this.store.dispatch(new BookDetailsActions.GetBookDetailAction(<bookDetailsDto>data));
+        this.store.dispatch(
+          new BookDetailsActions.GetBookDetailAction(<bookDetailsDto>data)
+        );
         console.log("get book data", data);
       },
-
       error => {
-        // this.alertify.error(error);
+        this.alertify.error(error);
       }
     );
   }
@@ -56,9 +55,8 @@ export class BookService {
       data => {
         this.store.dispatch(new BookListActions.GetBooksAction(data));
       },
-
       error => {
-        // this.alertify.error(error);
+        this.alertify.error(error);
       }
     );
   }

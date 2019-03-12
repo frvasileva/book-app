@@ -3,6 +3,8 @@
 .user-list {
   padding: 0;
   margin: 0;
+  border: 1px solid gray;
+  box-shadow: 1px 1px 1px gray;
 }
 
 .user-list li {
@@ -31,4 +33,39 @@
 }
 .user-item-list-add-button {
   flex: 0;
+  height: 100%;
+  width: 50px;
+  background-color: #fff2dd;
+  color: #17a2b8;
+  border-color: #fff2dd;
+  border-width: 0;
+}
+
+.saver-container {
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.catalog-item-wrapper {
+  width: 100%;
+}
+
+.filter-catalog-input {
+  width: 100%;
+  padding: 8px;
+}
+
+.button-wrapper {
+  // width: 30%;
+  // margin-left: auto;
+}
+
+.button-wrapper button {
+  height: 100%;
+  width: 50px;
+  background-color: #fff2dd;
+  color: #17a2b8;
+  border-color: #fff2dd;
+  border-width: 0;
 }

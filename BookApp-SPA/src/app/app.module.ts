@@ -21,18 +21,19 @@ import { AuthorService } from "./authors/author.service";
 import { UserService } from "./user/user.service";
 import { ContactComponent } from "./ui-core/contact/contact.component";
 import { QuotesComponent } from "./quotes/quotes/quotes.component";
-import { MessageService } from "./messages/message.service";
-import { BookSaverService } from "./books/bookSaver.service";
 
 import { bookListReducer } from "./books/books-list/store/bookList.reducer";
 import { messageReducer } from "./messages/store/message.reducer";
 import { bookDetailsReducer } from "./_store/book-detail.reducer";
+import { catalogReducer } from "./_store/catalog.reducer";
 
 import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
 import { ProfileService } from "./_services/profile.service";
 import { ProfileResolver } from "./_resolvers/profile.resolver";
 import { BookService } from "./_services/book.service";
+import { MessageService } from "./messages/message.service";
+import { BookSaverService } from "./books/bookSaver.service";
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import { BookService } from "./_services/book.service";
     StoreModule.forRoot({
       bookList: bookListReducer,
       bookDetails: bookDetailsReducer,
-      messageList: messageReducer
+      messageList: messageReducer,
+      catalog: catalogReducer
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
