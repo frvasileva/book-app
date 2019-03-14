@@ -13,13 +13,13 @@ namespace BookApp.API.Data {
         .HasOne (bc => bc.Book)
         .WithMany (b => b.BookCatalogs)
         .HasForeignKey (bc => bc.BookId)
-        .OnDelete (DeleteBehavior.SetNull);
+        .OnDelete (DeleteBehavior.Restrict);
 
       modelBuilder.Entity<BookCatalog> ()
         .HasOne (bc => bc.Book)
         .WithMany (c => c.BookCatalogs)
         .HasForeignKey (bc => bc.CatalogId)
-        .OnDelete (DeleteBehavior.SetNull);
+        .OnDelete (DeleteBehavior.Restrict);
 
       // modelBuilder.Entity<BookAuthor> ()
       //   .HasOne (pt => pt.Book)

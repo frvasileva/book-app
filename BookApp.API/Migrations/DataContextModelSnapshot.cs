@@ -77,9 +77,15 @@ namespace DatingApp.API.Migrations
 
                     b.Property<int>("CatalogId");
 
+                    b.Property<int>("CatalogId1");
+
+                    b.Property<int>("Id");
+
                     b.HasKey("BookId", "CatalogId");
 
                     b.HasIndex("CatalogId");
+
+                    b.HasIndex("CatalogId1");
 
                     b.ToTable("BookCatalog");
                 });
@@ -228,12 +234,12 @@ namespace DatingApp.API.Migrations
                 {
                     b.HasOne("BookApp.API.Models.Book", "Book")
                         .WithMany("BookCatalogs")
-                        .HasForeignKey("BookId")
-                        .OnDelete(DeleteBehavior.Cascade);
+                        .HasForeignKey("CatalogId")
+                        .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("BookApp.API.Models.Catalog", "Catalog")
                         .WithMany("BookCatalogs")
-                        .HasForeignKey("CatalogId")
+                        .HasForeignKey("CatalogId1")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
