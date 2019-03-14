@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190314184442_BookCatalogsUpdatesss")]
-    partial class BookCatalogsUpdatesss
+    [Migration("20190314191533_BookCatalogsUpdatsIdKeyAdded")]
+    partial class BookCatalogsUpdatsIdKeyAdded
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -79,15 +79,15 @@ namespace DatingApp.API.Migrations
 
                     b.Property<int>("CatalogId");
 
-                    b.Property<int>("CatalogId1");
+                    b.Property<DateTime>("Created");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("BookId", "CatalogId");
 
                     b.HasIndex("CatalogId");
-
-                    b.HasIndex("CatalogId1");
 
                     b.ToTable("BookCatalog");
                 });
@@ -236,12 +236,12 @@ namespace DatingApp.API.Migrations
                 {
                     b.HasOne("BookApp.API.Models.Book", "Book")
                         .WithMany("BookCatalogs")
-                        .HasForeignKey("CatalogId")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("BookApp.API.Models.Catalog", "Catalog")
                         .WithMany("BookCatalogs")
-                        .HasForeignKey("CatalogId1")
+                        .HasForeignKey("CatalogId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

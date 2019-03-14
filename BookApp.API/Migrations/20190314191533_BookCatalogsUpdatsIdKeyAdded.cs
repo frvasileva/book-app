@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DatingApp.API.Migrations
 {
-    public partial class BookCatalogsUpdatesss : Migration
+    public partial class BookCatalogsUpdatsIdKeyAdded : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -179,21 +179,22 @@ namespace DatingApp.API.Migrations
                 {
                     BookId = table.Column<int>(nullable: false),
                     CatalogId = table.Column<int>(nullable: false),
-                    Id = table.Column<int>(nullable: false),
-                    CatalogId1 = table.Column<int>(nullable: false)
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Created = table.Column<DateTime>(nullable: false)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_BookCatalog", x => new { x.BookId, x.CatalogId });
                     table.ForeignKey(
-                        name: "FK_BookCatalog_Books_CatalogId",
-                        column: x => x.CatalogId,
+                        name: "FK_BookCatalog_Books_BookId",
+                        column: x => x.BookId,
                         principalTable: "Books",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BookCatalog_Catalogs_CatalogId1",
-                        column: x => x.CatalogId1,
+                        name: "FK_BookCatalog_Catalogs_CatalogId",
+                        column: x => x.CatalogId,
                         principalTable: "Catalogs",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -203,11 +204,6 @@ namespace DatingApp.API.Migrations
                 name: "IX_BookCatalog_CatalogId",
                 table: "BookCatalog",
                 column: "CatalogId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_BookCatalog_CatalogId1",
-                table: "BookCatalog",
-                column: "CatalogId1");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Books_AuthorId",

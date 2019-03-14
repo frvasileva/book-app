@@ -77,15 +77,15 @@ namespace DatingApp.API.Migrations
 
                     b.Property<int>("CatalogId");
 
-                    b.Property<int>("CatalogId1");
+                    b.Property<DateTime>("Created");
 
-                    b.Property<int>("Id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.HasKey("BookId", "CatalogId");
 
                     b.HasIndex("CatalogId");
-
-                    b.HasIndex("CatalogId1");
 
                     b.ToTable("BookCatalog");
                 });
@@ -234,12 +234,12 @@ namespace DatingApp.API.Migrations
                 {
                     b.HasOne("BookApp.API.Models.Book", "Book")
                         .WithMany("BookCatalogs")
-                        .HasForeignKey("CatalogId")
+                        .HasForeignKey("BookId")
                         .OnDelete(DeleteBehavior.Restrict);
 
                     b.HasOne("BookApp.API.Models.Catalog", "Catalog")
                         .WithMany("BookCatalogs")
-                        .HasForeignKey("CatalogId1")
+                        .HasForeignKey("CatalogId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
