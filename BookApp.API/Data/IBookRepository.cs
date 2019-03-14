@@ -14,5 +14,7 @@ namespace BookApp.API.Data
     Task<BookListActions> AddBookAction(BookActionDto book);
 
     Task<BookListActions> DeleteBookAction(int bookId);
+    Task<BookCatalog> AddBookToCatalog(BookCatalogCreateDto bookCatalogDto);
+
   }
 }
