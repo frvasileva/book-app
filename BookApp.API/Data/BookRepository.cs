@@ -71,7 +71,8 @@ namespace BookApp.API.Data
 
     public async Task<List<BookPreviewDto>> GetAll()
     {
-      var bookList = await _context.Books.Include(itm => itm.BookListActions).OrderByDescending(item => item.AddedOn).ToListAsync();
+      //var bookList = await _context.Books.Include(itm => itm.BookListActions).OrderByDescending(item => item.AddedOn).ToListAsync();
+      var bookList = await _context.Books.OrderByDescending(item => item.AddedOn).ToListAsync();
       var mappedBookList = _mapper.Map<List<BookPreviewDto>>(bookList);
 
       return mappedBookList;

@@ -5,9 +5,9 @@ using BookApp.API.Models;
 using Microsoft.AspNetCore.Mvc;
 namespace BookApp.API.Data
 {
-  public interface IBookCatalogRepository
+  public interface ICatalogRepository
   {
-    Task<BookCatalog> Create(BookListCreateDto bookList);
+    Task<Catalog> Create(CatalogCreateDto bookList);
     Task<BookCatalog> Update();
     Task<List<BookListItemDto>> GetAll();
     Task<BookListItemDto> Get(int id);

@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20190308105052_AddedOnPropertyAdded")]
-    partial class AddedOnPropertyAdded
+    [Migration("20190314165212_InitialMigrationnn")]
+    partial class InitialMigrationnn
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -71,6 +71,59 @@ namespace DatingApp.API.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Books");
+                });
+
+            modelBuilder.Entity("BookApp.API.Models.BookCatalog", b =>
+                {
+                    b.Property<int>("BookId");
+
+                    b.Property<int>("CatalogId");
+
+                    b.HasKey("BookId", "CatalogId");
+
+                    b.HasIndex("CatalogId");
+
+                    b.ToTable("BookCatalog");
+                });
+
+            modelBuilder.Entity("BookApp.API.Models.BookListActions", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AddedOn");
+
+                    b.Property<int>("BookId");
+
+                    b.Property<int>("BookListType");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookListActions");
+                });
+
+            modelBuilder.Entity("BookApp.API.Models.Catalog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<bool>("IsPublic");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Catalogs");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.Publisher", b =>
@@ -169,6 +222,27 @@ namespace DatingApp.API.Migrations
 
                     b.HasOne("BookApp.API.Models.User", "User")
                         .WithMany("Books")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BookApp.API.Models.BookCatalog", b =>
+                {
+                    b.HasOne("BookApp.API.Models.Book", "Book")
+                        .WithMany("BookCatalogs")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BookApp.API.Models.Catalog", "Catalog")
+                        .WithMany("BookCatalogs")
+                        .HasForeignKey("CatalogId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("BookApp.API.Models.Catalog", b =>
+                {
+                    b.HasOne("BookApp.API.Models.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

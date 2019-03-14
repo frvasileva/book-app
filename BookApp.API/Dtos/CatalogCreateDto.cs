@@ -2,7 +2,7 @@ using System;
 
 namespace BookApp.API.Dtos
 {
-  public class BookListCreateDto
+  public class CatalogCreateDto
   {
     public int Id { get; set; }
 

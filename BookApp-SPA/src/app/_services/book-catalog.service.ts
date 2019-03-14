@@ -52,7 +52,7 @@ export class BookCatalogService {
     );
   }
 
-  getBooks() {
+  getCatalogList() {
     console.log(this.http.get(this.baseUrl + "get-all"));
     return this.http.get(this.baseUrl + "get-all").subscribe(
       data => {

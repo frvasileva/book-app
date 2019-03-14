@@ -9,24 +9,24 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.API.Data
 {
-  public class BookCatalogRepository : IBookCatalogRepository
+  public class CatalogRepository : ICatalogRepository
   {
 
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public BookCatalogRepository(DataContext context, IMapper mapper)
+    public CatalogRepository(DataContext context, IMapper mapper)
     {
       _context = context;
       _mapper = mapper;
     }
 
-    public async Task<BookCatalog> Create(BookListCreateDto bookListDto)
+    public async Task<Catalog> Create(CatalogCreateDto catalogDto)
     {
-      var result = _mapper.Map<BookCatalog>(bookListDto);
+      var result = _mapper.Map<Catalog>(catalogDto);
       result.Created = DateTime.Now;
       
-      await _context.BookCatalog.AddAsync(result);
+      await _context.Catalogs.AddAsync(result);
       await _context.SaveChangesAsync();
 
       return result;
@@ -45,15 +45,15 @@ namespace BookApp.API.Data
 
     public async Task<BookListItemDto> Get(int id)
     {
-      var bookList = await _context.BookCatalog.Where(item => item.Id == id).FirstOrDefaultAsync();
-      var mappedBook = _mapper.Map<BookListItemDto>(bookList);
+      var catalogList = await _context.Catalogs.Where(item => item.Id == id).FirstOrDefaultAsync();
+      var mappedBook = _mapper.Map<BookListItemDto>(catalogList);
 
       return mappedBook;
     }
 
     public async Task<List<BookListItemDto>> GetAll()
     {
-      var bookList = await _context.BookCatalog.OrderByDescending(item => item.Created).ToListAsync();
+      var bookList = await _context.Catalogs.OrderByDescending(item => item.Created).ToListAsync();
       var mappedBookList = _mapper.Map<List<BookListItemDto>>(bookList);
 
       return mappedBookList;

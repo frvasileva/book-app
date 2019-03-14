@@ -1,10 +1,8 @@
-using System.Collections.Generic;
 using System;
+using System.Collections.Generic;
 
-namespace BookApp.API.Models
-{
-  public class Book
-  {
+namespace BookApp.API.Models {
+  public class Book {
     public int Id { get; set; }
     public string Title { get; set; }
     public string Description { get; set; }
@@ -24,6 +22,7 @@ namespace BookApp.API.Models
     public Author Author { get; set; }
     public int? AuthorId { get; set; }
 
-    public List<BookListActions> BookListActions { get; set; }
+    public ICollection<BookCatalog> BookCatalogs { get; set; }
+
   }
 }

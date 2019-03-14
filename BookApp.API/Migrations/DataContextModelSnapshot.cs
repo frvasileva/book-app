@@ -48,8 +48,6 @@ namespace DatingApp.API.Migrations
 
                     b.Property<int?>("AuthorId");
 
-                    b.Property<int?>("BookCatalogId");
-
                     b.Property<string>("Description");
 
                     b.Property<string>("FriendlyUrl");
@@ -66,8 +64,6 @@ namespace DatingApp.API.Migrations
 
                     b.HasIndex("AuthorId");
 
-                    b.HasIndex("BookCatalogId");
-
                     b.HasIndex("PublisherId");
 
                     b.HasIndex("UserId");
@@ -77,21 +73,13 @@ namespace DatingApp.API.Migrations
 
             modelBuilder.Entity("BookApp.API.Models.BookCatalog", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+                    b.Property<int>("BookId");
 
-                    b.Property<DateTime>("Created");
+                    b.Property<int>("CatalogId");
 
-                    b.Property<bool>("IsPublic");
+                    b.HasKey("BookId", "CatalogId");
 
-                    b.Property<string>("Name");
-
-                    b.Property<int>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
+                    b.HasIndex("CatalogId");
 
                     b.ToTable("BookCatalog");
                 });
@@ -112,9 +100,28 @@ namespace DatingApp.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("BookId");
-
                     b.ToTable("BookListActions");
+                });
+
+            modelBuilder.Entity("BookApp.API.Models.Catalog", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("Created");
+
+                    b.Property<bool>("IsPublic");
+
+                    b.Property<string>("Name");
+
+                    b.Property<int>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Catalogs");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.Publisher", b =>
@@ -207,10 +214,6 @@ namespace DatingApp.API.Migrations
                         .WithMany("Books")
                         .HasForeignKey("AuthorId");
 
-                    b.HasOne("BookApp.API.Models.BookCatalog")
-                        .WithMany("Books")
-                        .HasForeignKey("BookCatalogId");
-
                     b.HasOne("BookApp.API.Models.Publisher", "Publisher")
                         .WithMany("Books")
                         .HasForeignKey("PublisherId");
@@ -223,17 +226,22 @@ namespace DatingApp.API.Migrations
 
             modelBuilder.Entity("BookApp.API.Models.BookCatalog", b =>
                 {
-                    b.HasOne("BookApp.API.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
+                    b.HasOne("BookApp.API.Models.Book", "Book")
+                        .WithMany("BookCatalogs")
+                        .HasForeignKey("BookId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("BookApp.API.Models.Catalog", "Catalog")
+                        .WithMany("BookCatalogs")
+                        .HasForeignKey("CatalogId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
-            modelBuilder.Entity("BookApp.API.Models.BookListActions", b =>
+            modelBuilder.Entity("BookApp.API.Models.Catalog", b =>
                 {
-                    b.HasOne("BookApp.API.Models.Book")
-                        .WithMany("BookListActions")
-                        .HasForeignKey("BookId")
+                    b.HasOne("BookApp.API.Models.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 

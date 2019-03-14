@@ -9,13 +9,13 @@ namespace BookApp.API.Controllers
 {
   [Route("api/[controller]")]
   [ApiController]
-  public class BookCatalogController : ControllerBase
+  public class CatalogController : ControllerBase
   {
-    private readonly IBookCatalogRepository _repo;
+    private readonly ICatalogRepository _repo;
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public BookCatalogController(IBookCatalogRepository repo, DataContext context, IMapper mapper)
+    public CatalogController(ICatalogRepository repo, DataContext context, IMapper mapper)
     {
       _repo = repo;
       _context = context;
@@ -23,9 +23,9 @@ namespace BookApp.API.Controllers
     }
 
     [HttpPost("add")]
-    public async Task<IActionResult> Add(BookListCreateDto bookListDto)
+    public async Task<IActionResult> Add(CatalogCreateDto catalogCteateDto)
     {
-      var result = await _repo.Create(bookListDto);
+      var result = await _repo.Create(catalogCteateDto);
       await _context.SaveChangesAsync();
 
       return Ok(result);
