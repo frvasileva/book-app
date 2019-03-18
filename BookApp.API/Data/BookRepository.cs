@@ -84,7 +84,8 @@ namespace BookApp.API.Data {
     }
 
     public async Task<BookDetailsDto> GetBook (string friendlyUrl) {
-      var book = await _context.Books.Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
+     
+      var book = await _context.Books.Include(itm=>itm.BookCatalogs).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
       var mappedBook = _mapper.Map<BookDetailsDto> (book);
 
       return mappedBook;

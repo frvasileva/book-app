@@ -22,6 +22,8 @@ namespace BookApp.API.Controllers {
       _mapper = mapper;
     }
 
+    #region Book CRUD Actions
+
     [HttpGet ("get-books")]
     public async Task<IActionResult> GetAllBooks () {
       var books = await _repo.GetAll ();
@@ -68,13 +70,18 @@ namespace BookApp.API.Controllers {
 
       return Ok ();
     }
+    #endregion
 
+    #region BookToCatalog Actions
     [HttpPost ("add-to-catalog")]
     public async Task<IActionResult> AddBookToCatalog (BookCatalogCreateDto bookCatalogDto) {
+      
       await _repo.AddBookToCatalog (bookCatalogDto);
       await _context.SaveChangesAsync ();
 
       return Ok ();
     }
+
+    #endregion
   }
 }
