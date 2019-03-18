@@ -1,11 +1,21 @@
 using BookApp.API.Models;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.API.Data {
-  public class DataContext : DbContext {
+  public class DataContext : IdentityDbContext<User, Role, int, IdentityUserClaim<int>, UserRole, IdentityUserLogin<int>, IdentityRoleClaim<int>, IdentityUserToken<int>> {
     public DataContext (DbContextOptions<DataContext> options) : base (options) { }
 
     protected override void OnModelCreating (ModelBuilder modelBuilder) {
+
+      base.OnModelCreating (modelBuilder);
+      modelBuilder.Entity<UserRole> (userRole => {
+        userRole.HasKey (ur => new { ur.UserId, ur.RoleId });
+
+        userRole.HasOne (ur => ur.Role).WithMany (r => r.UserRoles)
+          .HasForeignKey (ur => ur.RoleId).IsRequired();
+      });
 
       modelBuilder.Entity<BookCatalog> ().HasKey (sc => new { sc.BookId, sc.CatalogId });
 
@@ -21,7 +31,6 @@ namespace BookApp.API.Data {
     }
 
     public DbSet<Value> Values { get; set; }
-    public DbSet<User> Users { get; set; }
     public DbSet<Book> Books { get; set; }
     public DbSet<Author> Authors { get; set; }
     public DbSet<Quote> Quotes { get; set; }
