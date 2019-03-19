@@ -38,6 +38,7 @@ namespace DatingApp.API {
         opt.Password.RequiredLength = 6;
         opt.Password.RequireNonAlphanumeric = false;
         opt.Password.RequireUppercase = true;
+        opt.User.RequireUniqueEmail = true;
       });
 
       builder = new IdentityBuilder (builder.UserType, typeof (Role), builder.Services);
@@ -55,22 +56,21 @@ namespace DatingApp.API {
           };
         });
 
-      // Every user have to authorized by default. Use [AllowAnonymous] attribute 
+// Every user have to authorized by default. Use [AllowAnonymous] attribute 
       services.AddMvc (options => {
           var policy = new AuthorizationPolicyBuilder ()
             .RequireAuthenticatedUser ()
             .Build ();
 
-          options.Filters.Add (new AuthorizeFilter (policy));
+            options.Filters.Add(new AuthorizeFilter(policy));
         })
-
+        
         .SetCompatibilityVersion (CompatibilityVersion.Version_2_2)
         .AddJsonOptions (opt => {
           opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         });
       services.AddCors ();
       services.AddAutoMapper ();
-      services.AddScoped<IAuthRepository, AuthRepository> ();
       services.AddScoped<IProfileRepository, ProfileRepository> ();
       services.AddScoped<IBookRepository, BookRepository> ();
       services.AddScoped<IAuthorRepository, AuthorRepository> ();

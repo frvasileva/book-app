@@ -13,7 +13,16 @@ export class ProfileService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getUserProfile(userId: string) {
-    console.log(this.http.get(this.baseUrl + "get/1"));
-    return this.http.get(this.baseUrl + "get");
+    console.log(
+      this.http.get(
+        this.baseUrl +
+          "get/" +
+          this.jwtHelper.decodeToken(localStorage.getItem("token"))
+      )
+    );
+
+    const token = this.jwtHelper.decodeToken(localStorage.getItem("token"));
+    return this.http.get(this.baseUrl + "get/" + token.nameid);
+    
   }
 }
