@@ -38,6 +38,22 @@
             >
           </div>
           <div class="form-group">
+            <label for="">Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="knownAs"
+              formControlName="knownAs"
+            />
+            <span
+              class="error-message"
+              *ngIf="
+                !signUpForm.get('knownAs').valid &&
+                signUpForm.get('knownAs').touched
+              ">This field is required</span
+            >
+          </div>
+          <div class="form-group">
             <label for="password">Password:</label>
             <input
               type="password"

@@ -1,14 +1,12 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Store } from "@ngrx/store";
-import { Book } from "../book.model";
-import * as BookListActions from "../books-list/store/bookList.actions";
-import { Author } from "src/app/authors/author.model";
-import { BookAction } from "../bookAction.model";
 import { Router } from "@angular/router";
 import { BookCreateDto } from "src/app/_models/bookCreateDto";
 import { BookService } from "src/app/_services/book.service";
 import { AlertifyService } from "src/app/_services/alertify.service";
+
+import { JwtHelperService } from "@auth0/angular-jwt";
+
 
 @Component({
   selector: "app-add-book",
@@ -19,6 +17,7 @@ export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
   bookTypes = ["paper", "ebook"];
   addBookModel = {} as BookCreateDto;
+  jwtHelper = new JwtHelperService();
 
   constructor(
     //private store: Store<{ bookList: { books: Book[] } }>,
@@ -44,8 +43,7 @@ export class AddBookComponent implements OnInit {
     this.addBookModel.title = this.addBookForm.value.bookData.title;
     this.addBookModel.description = this.addBookForm.value.bookData.description;
     this.addBookModel.authorName = this.addBookForm.value.author;
-    this.addBookModel.photoPath =
-      "https://www.bookbaby.com/images/book-cover-design-basic.png";
+    this.addBookModel.photoPath = "https://www.bookbaby.com/images/book-cover-design-basic.png";
 
     this.bookService.addBook(this.addBookModel).subscribe(
       next => {

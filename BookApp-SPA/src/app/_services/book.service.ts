@@ -18,6 +18,7 @@ import { AlertifyService } from "./alertify.service";
 export class BookService {
   baseUrl = "http://localhost:5000/api/book/";
   jwtHelper = new JwtHelperService();
+  token = this.jwtHelper.decodeToken(localStorage.getItem("token"));
 
   constructor(
     private http: HttpClient,
@@ -27,6 +28,8 @@ export class BookService {
   ) {}
 
   addBook(model: BookCreateDto) {
+    model.userId = this.token.nameid;
+
     console.log("posted model: ", model);
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {

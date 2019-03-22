@@ -23,6 +23,5 @@ export class ProfileService {
 
     const token = this.jwtHelper.decodeToken(localStorage.getItem("token"));
     return this.http.get(this.baseUrl + "get/" + token.nameid);
-    
   }
 }

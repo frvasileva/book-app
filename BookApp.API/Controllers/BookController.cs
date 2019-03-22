@@ -5,12 +5,20 @@ using BookApp.API.Data;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using BookApp.API.Models;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BookApp.API.Controllers {
+  
   [Route ("api/[controller]")]
   [ApiController]
+  [AllowAnonymous]
   public class BookController : ControllerBase {
     private readonly IBookRepository _repo;
     private readonly DataContext _context;
@@ -75,7 +83,7 @@ namespace BookApp.API.Controllers {
     #region BookToCatalog Actions
     [HttpPost ("add-to-catalog")]
     public async Task<IActionResult> AddBookToCatalog (BookCatalogCreateDto bookCatalogDto) {
-      
+
       await _repo.AddBookToCatalog (bookCatalogDto);
       await _context.SaveChangesAsync ();
 

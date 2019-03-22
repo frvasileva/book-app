@@ -22,9 +22,8 @@ namespace BookApp.API.Data {
     }
 
     public async Task<Book> AddBook (BookCreateDto bookDto) {
-      var result = _mapper.Map<Book> (bookDto);
 
-      result.UserId = 2;
+      var result = _mapper.Map<Book> (bookDto);
       result.AddedOn = DateTime.Now;
 
       if (await _repoAuthor.CheckAuthorExists (bookDto.AuthorName)) {

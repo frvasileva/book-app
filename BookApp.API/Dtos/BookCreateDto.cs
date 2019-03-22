@@ -1,9 +1,7 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BookApp.API.Dtos
-{
-  public class BookCreateDto
-  {
+namespace BookApp.API.Dtos {
+  public class BookCreateDto {
     public int Id { get; set; }
 
     [Required]
@@ -14,5 +12,7 @@ namespace BookApp.API.Dtos
     public string PhotoPath { get; set; }
 
     public string AuthorName { get; set; }
+
+    public int UserId { get; set; }
   }
 }

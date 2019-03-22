@@ -3,4 +3,5 @@ export interface BookCreateDto {
   description: string;
   photoPath: string;
   authorName: string;
+  userId: number;
 }
