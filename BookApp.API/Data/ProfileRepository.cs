@@ -3,8 +3,14 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 
 namespace BookApp.API.Data {
   public class ProfileRepository : IProfileRepository {
@@ -23,8 +29,8 @@ namespace BookApp.API.Data {
 
     public async Task<UserProfileDto> Get (int id) {
 
-      var user = await _userManager.FindByIdAsync (id.ToString ());
-      var mappedProfile = _mapper.Map<UserProfileDto> (user);
+      var currentUser = await _context.Users.Include (itm => itm.Books).Where (item => item.Id == id).FirstOrDefaultAsync();
+      var mappedProfile = _mapper.Map<UserProfileDto> (currentUser);
 
       return mappedProfile;
     }

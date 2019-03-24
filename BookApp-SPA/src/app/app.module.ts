@@ -17,8 +17,6 @@ import { AboutComponent } from "./ui-core/about/about.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { NotFoundComponent } from "./ui-core/not-found/not-found.component";
 import { ArticlesComponent } from "./articles/articles/articles.component";
-import { AuthorService } from "./authors/author.service";
-import { UserService } from "./user/user.service";
 import { ContactComponent } from "./ui-core/contact/contact.component";
 import { QuotesComponent } from "./quotes/quotes/quotes.component";
 
@@ -26,11 +24,14 @@ import { bookListReducer } from "./books/books-list/store/bookList.reducer";
 import { messageReducer } from "./messages/store/message.reducer";
 import { bookDetailsReducer } from "./_store/book-detail.reducer";
 import { catalogReducer } from "./_store/catalog.reducer";
+import { userReducer } from "./_store/user.reducer";
 
+import { AuthorService } from "./authors/author.service";
+import { UserService } from "./user/user.service";
 import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
 import { ProfileService } from "./_services/profile.service";
-import { ProfileResolver } from "./_resolvers/profile.resolver";
+// import { ProfileResolver } from "./_resolvers/profile.resolver";
 import { BookService } from "./_services/book.service";
 import { MessageService } from "./messages/message.service";
 import { BookSaverService } from "./books/bookSaver.service";
@@ -60,7 +61,8 @@ import { BookSaverService } from "./books/bookSaver.service";
       bookList: bookListReducer,
       bookDetails: bookDetailsReducer,
       messageList: messageReducer,
-      catalog: catalogReducer
+      catalog: catalogReducer,
+      userProfile: userReducer
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
@@ -76,7 +78,7 @@ import { BookSaverService } from "./books/bookSaver.service";
     MessageService,
     BookSaverService,
     AlertifyService,
-    ProfileResolver
+    // ProfileResolver
   ],
   bootstrap: [AppComponent]
 })

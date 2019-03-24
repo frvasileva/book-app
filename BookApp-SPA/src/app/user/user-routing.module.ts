@@ -16,8 +16,8 @@ const userRoutes: Routes = [
       { path: "sign-up", component: SignupComponent },
       {
         path: "profile",
-        component: ProfileComponent,
-        resolve: { profile: ProfileResolver }
+        component: ProfileComponent
+        // resolve: { profile: ProfileResolver }
       },
       { path: "user-list", component: UsersListComponent }
     ]

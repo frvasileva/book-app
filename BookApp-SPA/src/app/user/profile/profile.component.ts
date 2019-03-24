@@ -3,6 +3,9 @@ import { ProfileService } from "src/app/_services/profile.service";
 import { ActivatedRoute } from "@angular/router";
 import { Profile } from "src/app/_models/profile";
 import { AlertifyService } from "src/app/_services/alertify.service";
+import { Observable } from "rxjs";
+import { Store } from "@ngrx/store";
+import { AppState } from "src/app/app.state";
 
 @Component({
   selector: "app-profile",
@@ -15,21 +18,20 @@ export class ProfileComponent implements OnInit {
   constructor(
     private profileService: ProfileService,
     private route: ActivatedRoute,
-    private alertify: AlertifyService
+    private alertify: AlertifyService,
+    private store: Store<{
+      userProfile: Profile;
+    }>
   ) {}
 
   ngOnInit() {
-    this.getUserProfile("1");
-  }
+    //TODO get userId from route ( get friendly URL)
+    //    this.profileService.getUserProfile("16");
 
-  getUserProfile(userId: string) {
-    this.route.data.subscribe(
-      data => {
-        this.profile = data.profile;
-      },
-      error => {
-        this.alertify.error(error);
-      }
-    );
+    this.store
+      .select(state => state.userProfile)
+      .subscribe(res => {
+        this.profile = res as Profile;
+      });
   }
 }

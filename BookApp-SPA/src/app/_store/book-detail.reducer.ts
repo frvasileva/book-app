@@ -10,6 +10,12 @@ export function bookDetailsReducer(
     case BookDetailsActions.GET_BOOK_DETAILS: {
       return action.payload;
     }
+    case BookDetailsActions.ADD_BOOK: {
+      return {
+        ...state,
+        ...action.payload
+      };
+    }
     default:
       return state;
   }

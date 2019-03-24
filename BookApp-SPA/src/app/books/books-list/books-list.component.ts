@@ -14,7 +14,7 @@ import { CatalogItemDto } from "src/app/_models/catalogItem";
 export class BooksListComponent implements OnInit {
   bookListState: Observable<{ books: Book[] }>;
   catalogsState: Observable<{ catalogs: CatalogItemDto[] }>;
-  items: any;
+  // items: any;
   constructor(
     private bookService: BookService,
     private store: Store<{
@@ -25,17 +25,17 @@ export class BooksListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.bookService.getBooks();
+    // this.bookService.getBooks();
     this.catalogService.getCatalog(1);
 
     this.bookListState = this.store.select("bookList");
     this.catalogsState = this.store.select("catalog");
 
-    this.store.select(state => state.catalog).subscribe(res => {
-        this.items = res.catalogs as CatalogItemDto[];
-      });
+    // this.store.select(state => state.catalog).subscribe(res => {
+    //     this.items = res.catalogs as CatalogItemDto[];
+    //   });
 
-    console.log("catalog store on init", this.items);
+    // console.log("catalog store on init", this.items);
     console.log("catalog STATE", this.catalogsState);
   }
 
