@@ -23,26 +23,15 @@ export class ProfileService {
   ) {}
 
   getUserProfile(userId: string) {
-    return this.http
-      .get(
-        this.baseUrl +
-          "get/" +
-          //this.jwtHelper.decodeToken(localStorage.getItem("token")).nameid
-          userId
-      )
-      .subscribe(
-        data => {
-          this.store.dispatch(
-            new UserProfileActions.GetUserAction(<Profile>data)
-          );
-          console.log("get user profile", data);
-        },
-        error => {
-          this.alertify.error(error);
-        }
-      );
-
-    // const token = this.jwtHelper.decodeToken(localStorage.getItem("token"));
-    // return this.http.get(this.baseUrl + "get/" + token.nameid);
+    return this.http.get(this.baseUrl + "get/" + userId).subscribe(
+      data => {
+        this.store.dispatch(
+          new UserProfileActions.GetUserAction(<Profile>data)
+        );
+      },
+      error => {
+        this.alertify.error(error);
+      }
+    );
   }
 }

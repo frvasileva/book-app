@@ -31,9 +31,6 @@ export class BookService {
 
   addBook(model: BookCreateDto) {
     model.userId = this.token.nameid;
-    console.log("user token id: ", model.userId);
-
-    console.log("posted model: ", model);
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
         console.log("added book response: ", <bookDetailsDto>response);
@@ -50,7 +47,6 @@ export class BookService {
         this.store.dispatch(
           new BookDetailsActions.GetBookDetailAction(<bookDetailsDto>data)
         );
-        console.log("get book data", data);
       },
       error => {
         this.alertify.error(error);
@@ -59,8 +55,6 @@ export class BookService {
   }
 
   getBooks() {
-    console.log(this.http.get(this.baseUrl + "get-books"));
-
     return this.http.get(this.baseUrl + "get-books").subscribe(
       data => {
         this.store.dispatch(new BookListActions.GetBooksAction(data));

@@ -6,6 +6,7 @@ import { AboutComponent } from "./ui-core/about/about.component";
 import { NotFoundComponent } from "./ui-core/not-found/not-found.component";
 import { ArticlesComponent } from "./articles/articles/articles.component";
 import { ContactComponent } from "./ui-core/contact/contact.component";
+import { AuthenticationGuard } from "./_guards/authentication.guard";
 
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },

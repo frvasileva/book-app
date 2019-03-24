@@ -35,6 +35,7 @@ import { ProfileService } from "./_services/profile.service";
 import { BookService } from "./_services/book.service";
 import { MessageService } from "./messages/message.service";
 import { BookSaverService } from "./books/bookSaver.service";
+import { AuthenticationGuard } from './_guards/authentication.guard';
 
 @NgModule({
   declarations: [
@@ -78,6 +79,7 @@ import { BookSaverService } from "./books/bookSaver.service";
     MessageService,
     BookSaverService,
     AlertifyService,
+    AuthenticationGuard
     // ProfileResolver
   ],
   bootstrap: [AppComponent]

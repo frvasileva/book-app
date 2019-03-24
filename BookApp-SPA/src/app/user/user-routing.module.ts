@@ -5,7 +5,7 @@ import { SignupComponent } from "./signup/signup.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { UserComponent } from "./user.component";
 import { UsersListComponent } from "./users-list/users-list.component";
-import { ProfileResolver } from "../_resolvers/profile.resolver";
+import { AuthenticationGuard } from '../_guards/authentication.guard';
 
 const userRoutes: Routes = [
   {
@@ -16,7 +16,8 @@ const userRoutes: Routes = [
       { path: "sign-up", component: SignupComponent },
       {
         path: "profile",
-        component: ProfileComponent
+        component: ProfileComponent,
+        canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },
       { path: "user-list", component: UsersListComponent }

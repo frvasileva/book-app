@@ -44,7 +44,7 @@ namespace BookApp.API.Helpers {
     }
 
     private string PhotoUrlMap (string photoPath) {
-      if (photoPath == "" || photoPath != null) {
+      if (photoPath == "" || photoPath == null) {
         return "http://www.prakashgold.com/Images/noimg.jpg";
       }
 
