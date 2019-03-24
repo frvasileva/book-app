@@ -3,6 +3,7 @@ import { BookAction } from "./bookAction.model";
 
 export class Book {
   public id: string;
+  public userId: string;
   public title: string;
   public bookType: string;
   public description?: string;
@@ -16,6 +17,7 @@ export class Book {
 
   constructor(
     id: string,
+    userId: string,
     title: string,
     bookType: string,
     description: string,
@@ -26,6 +28,7 @@ export class Book {
     bookActions: BookAction[]
   ) {
     this.id = id;
+    this.userId = userId;
     this.title = title;
     this.bookType = bookType;
     this.description = description;
@@ -34,10 +37,5 @@ export class Book {
     this.author = author;
     this.tags = tags;
     this.bookActions = bookActions;
-  }
-
-  bla(obj: { X: BookType }) {
-    const aaaa = obj.X;
-    console.log(aaaa);
   }
 }

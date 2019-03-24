@@ -6,6 +6,7 @@ import { AlertifyService } from "src/app/_services/alertify.service";
 import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
 import { AppState } from "src/app/app.state";
+import { Book } from "src/app/books/book.model";
 
 @Component({
   selector: "app-profile",
@@ -14,6 +15,7 @@ import { AppState } from "src/app/app.state";
 })
 export class ProfileComponent implements OnInit {
   profile: Profile;
+  books: Book[];
 
   constructor(
     private profileService: ProfileService,
@@ -21,17 +23,23 @@ export class ProfileComponent implements OnInit {
     private alertify: AlertifyService,
     private store: Store<{
       userProfile: Profile;
+      bookList: { books: Book[] };
     }>
   ) {}
 
   ngOnInit() {
-    //TODO get userId from route ( get friendly URL)
-    //    this.profileService.getUserProfile("16");
+    // TODO get userId from route ( get friendly URL)
+    // this.profileService.getUserProfile("16");
 
     this.store
-      .select(state => state.userProfile)
+      .select(state => state)
       .subscribe(res => {
-        this.profile = res as Profile;
+        this.profile = res.userProfile as Profile;
+
+        const result = res.bookList.books as Book[];
+        this.books = result.filter(
+          item => item.userId == this.profile.id.toString()
+        );
       });
   }
 }

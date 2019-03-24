@@ -7,10 +7,12 @@ import { map } from "rxjs/operators";
 import { BookCreateDto } from "../_models/bookCreateDto";
 import { Store } from "@ngrx/store";
 import { Book } from "../_models/books";
-import * as BookListActions from "../books/books-list/store/bookList.actions";
-import * as BookDetailsActions from "../_store/book-detail.actions";
+
 import { bookDetailsDto } from "../_models/bookDetailsDto";
 import { AlertifyService } from "./alertify.service";
+
+import * as BookListActions from "../books/books-list/store/bookList.actions";
+import * as BookDetailsActions from "../_store/book-detail.actions";
 
 @Injectable({
   providedIn: "root"
@@ -29,13 +31,12 @@ export class BookService {
 
   addBook(model: BookCreateDto) {
     model.userId = this.token.nameid;
-    console.log("user token id: ", model.userId );
+    console.log("user token id: ", model.userId);
 
     console.log("posted model: ", model);
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
-        const book = response;
-
+        console.log("added book response: ", <bookDetailsDto>response);
         this.store.dispatch(
           new BookDetailsActions.AddBookAction(<bookDetailsDto>response)
         );
@@ -59,7 +60,6 @@ export class BookService {
 
   getBooks() {
     console.log(this.http.get(this.baseUrl + "get-books"));
-
 
     return this.http.get(this.baseUrl + "get-books").subscribe(
       data => {

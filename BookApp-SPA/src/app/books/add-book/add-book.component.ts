@@ -48,7 +48,6 @@ export class AddBookComponent implements OnInit {
     this.bookService.addBook(this.addBookModel).subscribe(
       next => {
         this.alertify.success("Book added!");
-        //this.store.dispatch(new BookListActions.AddBookAction(this.fakeBook));
         this.router.navigateByUrl("/books");
       },
       error => {

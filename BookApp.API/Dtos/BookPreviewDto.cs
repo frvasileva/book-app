@@ -1,11 +1,11 @@
 using System.Collections.Generic;
 using BookApp.API.Models;
 
-namespace BookApp.API.Dtos
-{
-  public class BookPreviewDto
-  {
+namespace BookApp.API.Dtos {
+  public class BookPreviewDto {
     public int Id { get; set; }
+    
+    public int UserId { get; set; }
 
     public string Title { get; set; }
 

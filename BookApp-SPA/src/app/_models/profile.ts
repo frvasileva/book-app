@@ -9,5 +9,6 @@ export interface Profile {
   introduction: string;
   city: string;
   country: string;
+  friendlyUrl: string;
   books: Book[];
 }

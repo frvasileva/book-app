@@ -15,7 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 
 namespace BookApp.API.Controllers {
-  
+
   [Route ("api/[controller]")]
   [ApiController]
   [AllowAnonymous]
@@ -56,10 +56,10 @@ namespace BookApp.API.Controllers {
 
     [HttpPost ("add")]
     public async Task<IActionResult> Add (BookCreateDto bookDto) {
-      await _repo.AddBook (bookDto);
+      var result = await _repo.AddBook (bookDto);
       await _context.SaveChangesAsync ();
 
-      return Ok (bookDto);
+      return Ok (result);
     }
 
     [HttpPost ("add-book-action")]

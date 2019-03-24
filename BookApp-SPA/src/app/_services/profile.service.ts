@@ -23,12 +23,12 @@ export class ProfileService {
   ) {}
 
   getUserProfile(userId: string) {
-console.log(this.jwtHelper.decodeToken(localStorage.getItem("token")).nameid);
     return this.http
       .get(
         this.baseUrl +
           "get/" +
-          this.jwtHelper.decodeToken(localStorage.getItem("token")).nameid
+          //this.jwtHelper.decodeToken(localStorage.getItem("token")).nameid
+          userId
       )
       .subscribe(
         data => {
