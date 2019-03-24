@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using BookApp.API.Models;
 
 namespace BookApp.API.Dtos {
@@ -14,6 +15,6 @@ namespace BookApp.API.Dtos {
     public string Country { get; set; }
     public string FriendlyUrl { get; set; }
 
-    public System.Collections.Generic.ICollection<Book> Books { get; set; }
+    public List<BookDetailsDto> Books { get; set; }
   }
 }

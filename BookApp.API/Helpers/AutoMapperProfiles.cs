@@ -18,6 +18,7 @@ namespace BookApp.API.Helpers {
       CreateMap<Book, BookPreviewDto> ().ForMember (dest => dest.PhotoPath, opt => {
         opt.MapFrom (src => this.PhotoUrlMap (src.PhotoPath));
       });
+      CreateMap<BookPreviewDto, Book> ();
 
       CreateMap<BookActionDto, BookListActions> ();
 

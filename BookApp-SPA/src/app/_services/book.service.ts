@@ -33,7 +33,6 @@ export class BookService {
     model.userId = this.token.nameid;
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
-        console.log("added book response: ", <bookDetailsDto>response);
         this.store.dispatch(
           new BookDetailsActions.AddBookAction(<bookDetailsDto>response)
         );

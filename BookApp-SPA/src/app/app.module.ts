@@ -36,6 +36,7 @@ import { BookService } from "./_services/book.service";
 import { MessageService } from "./messages/message.service";
 import { BookSaverService } from "./books/bookSaver.service";
 import { AuthenticationGuard } from './_guards/authentication.guard';
+import { usersReducer } from './_store/users.reducer';
 
 @NgModule({
   declarations: [
@@ -63,7 +64,8 @@ import { AuthenticationGuard } from './_guards/authentication.guard';
       bookDetails: bookDetailsReducer,
       messageList: messageReducer,
       catalog: catalogReducer,
-      userProfile: userReducer
+      userProfile: userReducer,
+      userProfiles: usersReducer
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

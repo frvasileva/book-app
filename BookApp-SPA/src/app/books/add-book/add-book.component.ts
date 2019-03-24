@@ -38,8 +38,6 @@ export class AddBookComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log("form values: ", this.addBookForm.value.bookData);
-
     this.addBookModel.title = this.addBookForm.value.bookData.title;
     this.addBookModel.description = this.addBookForm.value.bookData.description;
     this.addBookModel.authorName = this.addBookForm.value.author;

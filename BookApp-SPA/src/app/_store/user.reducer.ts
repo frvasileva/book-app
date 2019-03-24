@@ -4,7 +4,7 @@ const initialState = {};
 
 export function userReducer(
   state = initialState,
-  action: UserActions.CatalogActions
+  action: UserActions.UserActions
 ) {
   switch (action.type) {
     case UserActions.GET_USER: {

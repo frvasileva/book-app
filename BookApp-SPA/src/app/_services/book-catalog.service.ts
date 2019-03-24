@@ -26,11 +26,8 @@ export class BookCatalogService {
   ) {}
 
   addCatalog(model: CatalogCreateDto) {
-    console.log("posted model: ", model);
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
-        const catalog = response;
-
         this.store.dispatch(
           new CatalogActions.AddCatalogAction(<CatalogItemDto>response)
         );

@@ -2,7 +2,7 @@ User list is here
 
 <div class="row" *ngFor="let item of userList">
   <div class="col-md">
-    <p>HELLO: {{ item.username }}</p>
+    <p>{{ item.knownAs }}</p>
     <button routerLink="/messages/send-new" routerLinkActive="active" class="button action-btn">Send message</button>
   </div>
 </div>

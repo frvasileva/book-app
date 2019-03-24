@@ -28,15 +28,9 @@ export class AuthenticationGuard implements CanActivate {
     this.store
       .select(state => state.userProfile)
       .subscribe(res => {
-        console.log("респонсе",res);
         this.profile = res as Profile;
       });
 
-    console.log("Auth guard is here", this.profile);
-    console.log("type: ", Object.keys(this.profile).length);
-    console.log("type: ", Object.keys(this.profile).length !== 0);
-
-    // return this.profile.id !== undefined;
     return Object.keys(this.profile).length !== 0;
   }
 }

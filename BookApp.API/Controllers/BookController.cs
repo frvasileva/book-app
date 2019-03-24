@@ -1,20 +1,12 @@
-using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
-using BookApp.API.Helpers;
-using BookApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 
-namespace BookApp.API.Controllers {
+namespace BookApp.API.Controllers
+{
 
   [Route ("api/[controller]")]
   [ApiController]

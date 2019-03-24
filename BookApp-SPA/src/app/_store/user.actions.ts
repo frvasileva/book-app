@@ -33,7 +33,7 @@ export class DeleteUserAction implements Action {
   payload: Profile;
 }
 
-export type CatalogActions =
+export type UserActions =
   | GetUserAction
   | GetCurrentUserAction
   | CreateUserAction

@@ -7,6 +7,7 @@ import { Profile } from "../_models/profile";
 import { AlertifyService } from "./alertify.service";
 
 import * as UserProfileActions from "../_store/user.actions";
+import * as UsersActions from "../_store/users.actions";
 
 @Injectable({
   providedIn: "root"
@@ -28,6 +29,16 @@ export class ProfileService {
         this.store.dispatch(
           new UserProfileActions.GetUserAction(<Profile>data)
         );
+      },
+      error => {
+        this.alertify.error(error);
+      }
+    );
+  }
+  getAll() {
+    return this.http.get(this.baseUrl + "get-all").subscribe(
+      data => {
+        this.store.dispatch(new UsersActions.GetUsersAction(data as Profile[]));
       },
       error => {
         this.alertify.error(error);

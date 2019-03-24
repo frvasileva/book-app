@@ -28,6 +28,13 @@ namespace BookApp.API.Controllers {
       return Ok (profile);
     }
 
+    [HttpGet ("get-all")]
+    public async Task<IActionResult> GetAllProfiles () {
+      var profileList = await _repo.GetAll ();
+
+      return Ok (profileList);
+    }
+
     [HttpGet ("update/{userId}")]
     public async Task<IActionResult> Update (UserProfileDto profileForUpdate) {
 
