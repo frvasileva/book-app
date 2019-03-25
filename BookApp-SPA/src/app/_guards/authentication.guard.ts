@@ -3,7 +3,8 @@ import {
   CanActivate,
   ActivatedRouteSnapshot,
   RouterStateSnapshot,
-  UrlTree
+  UrlTree,
+  Router
 } from "@angular/router";
 import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
@@ -15,7 +16,10 @@ import { Profile } from "../_models/profile";
 export class AuthenticationGuard implements CanActivate {
   profile: Profile;
 
-  constructor(private store: Store<{ userProfile: Profile }>) {}
+  constructor(
+    private store: Store<{ userProfile: Profile }>,
+    private router: Router
+  ) {}
 
   canActivate(
     next: ActivatedRouteSnapshot,
@@ -31,6 +35,10 @@ export class AuthenticationGuard implements CanActivate {
         this.profile = res as Profile;
       });
 
-    return Object.keys(this.profile).length !== 0;
+    if (Object.keys(this.profile).length === 0) {
+      this.router.navigate(["/user/login"]);
+      return false;
+    }
+    return true;
   }
 }
