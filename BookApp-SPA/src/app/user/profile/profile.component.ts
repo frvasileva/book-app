@@ -3,9 +3,7 @@ import { ProfileService } from "src/app/_services/profile.service";
 import { ActivatedRoute } from "@angular/router";
 import { Profile } from "src/app/_models/profile";
 import { AlertifyService } from "src/app/_services/alertify.service";
-import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { AppState } from "src/app/app.state";
 import { Book } from "src/app/books/book.model";
 
 @Component({

@@ -15,7 +15,7 @@ const userRoutes: Routes = [
       { path: "login", component: LoginComponent },
       { path: "sign-up", component: SignupComponent },
       {
-        path: "profile",
+        path: "profile/:friendlyUrl",
         component: ProfileComponent,
         canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }

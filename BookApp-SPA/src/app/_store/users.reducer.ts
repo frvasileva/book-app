@@ -1,6 +1,6 @@
 import * as UsersActions from "./users.actions";
 
-const initialState = {};
+const initialState = [];
 
 export function usersReducer(
   state = initialState,

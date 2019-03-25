@@ -10,6 +10,7 @@ import { ProfileComponent } from "./profile/profile.component";
 import { UserRoutingModule } from "./user-routing.module";
 import { UsersListComponent } from './users-list/users-list.component';
 import { BooksModule } from "../books/books.module";
+import { ProfileCardComponent } from './profile-card/profile-card.component';
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { BooksModule } from "../books/books.module";
     SignupComponent,
     ProfileComponent,
     UserComponent,
-    UsersListComponent
+    UsersListComponent,
+    ProfileCardComponent
   ],
   imports: [CommonModule, RouterModule, ReactiveFormsModule, UserRoutingModule, BooksModule]
 })
