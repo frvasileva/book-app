@@ -1,32 +1,42 @@
-<div class="card">
+<div class="card profile-card">
+  <div class="image-wrapper">
     <img
       class="card-img-top"
       src="{{ profile?.avatarPath }}"
       alt="{{ profile?.knownAs }}"
     />
-    <div class="card-body">
-      <h4 class="card-title">{{ profile?.knownAs }}</h4>
-      <p>
-        <i class="glyphicon glyphicon-map-marker"></i>
-        {{ profile?.city }},{{ profile?.country }}
-      </p>
+  </div>
+  <div class="card-body">
+    <h4 class="card-title">{{ profile?.knownAs }}</h4>
+    <p
+      class="location-info"
+      *ngIf="profile.country != null && profile.city != null"
+    >
+      <i class="glyphicon glyphicon-map-marker"></i>
+      {{ profile?.city }}
+      <span *ngIf="profile.country != null">,{{ profile?.country }} </span>
+    </p>
 
-      <p class="card-text">{{ profile?.introduction }}</p>
-      <button type="button" class="btn btn-info btn-block">
-        <span class="glyphicon glyphicon-plus"></span>
-        Follow
+    <div class="card-text" *ngIf="profile?.introduction">
+      <p class="introduction">
+        {{ profile?.introduction }}
+      </p>
+    </div>
+    <button type="button" class="btn btn-info btn-block">
+      <span class="glyphicon glyphicon-plus"></span>
+      Follow
+    </button>
+    <hr />
+    <div class="social-profiles">
+      <button type="button" class="btn">
+        <i class="fa fa-facebook-official"></i>
       </button>
-      <hr />
-      <div class="social-profiles">
-        <button type="button" class="btn">
-          <i class="fa fa-facebook-official"></i>
-        </button>
-        <button type="button" class="btn">
-          <i class="fa fa-linkedin-square"></i>
-        </button>
-        <button type="button" class="btn">
-          <i class="fa fa-twitter-square"></i>
-        </button>
-      </div>
+      <button type="button" class="btn">
+        <i class="fa fa-linkedin-square"></i>
+      </button>
+      <button type="button" class="btn">
+        <i class="fa fa-twitter-square"></i>
+      </button>
     </div>
   </div>
+</div>

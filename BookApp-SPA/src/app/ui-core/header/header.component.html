@@ -54,10 +54,7 @@
           </a>
 
           <div class="dropdown-menu mt-3" *dropdownMenu>
-            <a
-              class="dropdown-item"
-              [routerLink]="['/user/profile', profile?.friendlyUrl]"
-            >
+            <a class="dropdown-item" [routerLink]="['/user/profile', profile.friendlyUrl]">
               <i class="fa fa-user"></i>
               See Profile
             </a>

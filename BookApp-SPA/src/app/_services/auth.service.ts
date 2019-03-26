@@ -28,12 +28,12 @@ export class AuthService {
         const user = response;
 
         this.store.dispatch(
-          new UserProfileActions.GetUserAction(<Profile>response.user)
+          new UserProfileActions.GetCurrentUserAction(<Profile>response.user)
         );
 
         if (user) {
           localStorage.setItem("token", user.token);
-          this.router.navigate(["/user/profile"]);
+          this.router.navigate(["/user/profile/", user.user.friendlyUrl]);
         }
       })
     );

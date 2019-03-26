@@ -8,7 +8,6 @@ export function userReducer(
 ) {
   switch (action.type) {
     case UserActions.GET_USER: {
-      console.log("payload ", action.payload);
       return {
         ...state,
         ...action.payload

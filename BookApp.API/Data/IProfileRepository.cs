@@ -6,7 +6,7 @@ namespace BookApp.API.Data
 {
   public interface IProfileRepository
   {
-    Task<UserProfileDto> Get(int id);
+    Task<UserProfileDto> Get(string friendlyUrl);
     Task<List<UserProfileDto>> GetAll();
     Task<UserProfileDto> Update(UserProfileDto profile);
   }

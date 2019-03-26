@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "src/app/_services/auth.service";
 import { Store } from "@ngrx/store";
-import { Profile } from 'src/app/_models/profile';
+import { Profile } from "src/app/_models/profile";
 
 @Component({
   selector: "app-header",
@@ -9,7 +9,7 @@ import { Profile } from 'src/app/_models/profile';
   styleUrls: ["./header.component.scss"]
 })
 export class HeaderComponent implements OnInit {
-  profile: Profile;
+  profile: any;
 
   constructor(
     public authService: AuthService,
@@ -20,7 +20,7 @@ export class HeaderComponent implements OnInit {
     this.store
       .select(state => state)
       .subscribe(res => {
-        this.profile = res.userProfile.profile;
+        this.profile = res.userProfile;
       });
   }
 }

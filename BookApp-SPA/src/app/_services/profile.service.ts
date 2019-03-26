@@ -23,8 +23,8 @@ export class ProfileService {
     private alertify: AlertifyService
   ) {}
 
-  getUserProfile(userId: string) {
-    return this.http.get(this.baseUrl + "get/" + userId).subscribe(
+  getUserProfile(friendlyUrl: string) {
+    return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
       data => {
         this.store.dispatch(
           new UserProfileActions.GetUserAction(<Profile>data)

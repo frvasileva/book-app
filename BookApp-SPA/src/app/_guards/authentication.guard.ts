@@ -14,7 +14,7 @@ import { Profile } from "../_models/profile";
   providedIn: "root"
 })
 export class AuthenticationGuard implements CanActivate {
-  profile: Profile;
+  currentUserProfile: Profile;
 
   constructor(
     private store: Store<{ userProfile: Profile }>,
@@ -32,10 +32,12 @@ export class AuthenticationGuard implements CanActivate {
     this.store
       .select(state => state.userProfile)
       .subscribe(res => {
-        this.profile = res as Profile;
+        this.currentUserProfile = res as Profile;
       });
 
-    if (Object.keys(this.profile).length === 0) {
+    console.log("GUARD CALLED");
+
+    if (localStorage.getItem("token") === null) {
       this.router.navigate(["/user/login"]);
       return false;
     }

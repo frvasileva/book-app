@@ -26,9 +26,9 @@ namespace BookApp.API.Data {
       _mapper = mapper;
     }
 
-    public async Task<UserProfileDto> Get (int id) {
+    public async Task<UserProfileDto> Get (string friendlyUrl) {
 
-      var currentUser = await _context.Users.Include (itm => itm.Books).Where (item => item.Id == id).FirstOrDefaultAsync ();
+      var currentUser = await _context.Users.Include (itm => itm.Books).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
       var mappedProfile = _mapper.Map<UserProfileDto> (currentUser);
 
       return mappedProfile;

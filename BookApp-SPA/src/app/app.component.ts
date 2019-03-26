@@ -13,16 +13,19 @@ export class AppComponent implements OnInit {
   title = "Book Application";
   jwtHelper = new JwtHelperService();
   currentUserId: string;
-
+  token: any;
   constructor(
     private profileService: ProfileService,
     private bookService: BookService
   ) {}
 
   ngOnInit(): void {
-    this.currentUserId = this.jwtHelper.decodeToken(localStorage.getItem("token")).nameid;
+    this.token = localStorage.getItem("token");
+    if (this.token !== null) {
+      this.currentUserId = this.jwtHelper.decodeToken(this.token).unique_name;
+      this.profileService.getUserProfile(this.currentUserId);
+    }
 
-    this.profileService.getUserProfile(this.currentUserId);
     this.bookService.getBooks();
   }
 }

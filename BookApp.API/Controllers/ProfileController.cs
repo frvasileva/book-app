@@ -18,12 +18,12 @@ namespace BookApp.API.Controllers {
       _config = config;
     }
 
-    [HttpGet ("get/{userId?}")]
-    public async Task<IActionResult> GetUserProfile (int userId) {
-      var profile = await _repo.Get (userId);
+    [HttpGet ("get/{friendlyUrl}")]
+    public async Task<IActionResult> GetUserProfile (string friendlyUrl) {
+      var profile = await _repo.Get (friendlyUrl);
 
       if (profile == null)
-        return BadRequest (string.Format ("No user with such id {0}", userId));
+        return BadRequest (string.Format ("No user with such friendlyUrl {0}", friendlyUrl));
 
       return Ok (profile);
     }

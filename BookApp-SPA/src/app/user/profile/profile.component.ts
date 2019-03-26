@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
-import { ProfileService } from "src/app/_services/profile.service";
 import { ActivatedRoute } from "@angular/router";
-import { Profile } from "src/app/_models/profile";
-import { AlertifyService } from "src/app/_services/alertify.service";
 import { Store } from "@ngrx/store";
+
+import { ProfileService } from "src/app/_services/profile.service";
+import { Profile } from "src/app/_models/profile";
 import { Book } from "src/app/books/book.model";
 
 @Component({
@@ -14,30 +14,22 @@ import { Book } from "src/app/books/book.model";
 export class ProfileComponent implements OnInit {
   profile: Profile;
   books: Book[];
+  friendlyUrl: string;
 
   constructor(
     private profileService: ProfileService,
     private route: ActivatedRoute,
-    private alertify: AlertifyService,
-    private store: Store<{
-      userProfile: Profile;
-      bookList: { books: Book[] };
-    }>
+    private store: Store<{ userProfile: Profile }>
   ) {}
 
   ngOnInit() {
-    // TODO get userId from route ( get friendly URL)
-    // this.profileService.getUserProfile("16");
+    this.friendlyUrl = this.route.snapshot.params["friendlyUrl"];
+    this.profileService.getUserProfile(this.friendlyUrl);
 
     this.store
       .select(state => state)
       .subscribe(res => {
         this.profile = res.userProfile as Profile;
-
-        const result = res.bookList.books as Book[];
-        this.books = result.filter(
-          item => item.userId == this.profile.id.toString()
-        );
       });
   }
 }

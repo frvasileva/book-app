@@ -5,6 +5,7 @@ import { HeaderComponent } from "./header/header.component";
 import { FooterComponent } from "./footer/footer.component";
 import { ContactComponent } from "./contact/contact.component";
 import { ReactiveFormsModule } from "@angular/forms";
+import { RouterModule } from '@angular/router';
 
 @NgModule({
   declarations: [
@@ -13,7 +14,7 @@ import { ReactiveFormsModule } from "@angular/forms";
     FooterComponent,
     ContactComponent
   ],
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule],
   exports: [
     UiCoreModule
   ]

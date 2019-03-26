@@ -10,6 +10,7 @@ export class UserService {
   constructor(private http: HttpClient, private router: Router) {}
 
   getUserProfile(userId: string) {
+    console.log("get user profile");
     return this.http.get(this.baseUrl + "get/" + userId);
   }
 }

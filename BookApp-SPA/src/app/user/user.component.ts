@@ -7,9 +7,7 @@ import { ProfileService } from "../_services/profile.service";
   styleUrls: ["./user.component.scss"]
 })
 export class UserComponent implements OnInit {
-  constructor(private profileService: ProfileService) {}
+  constructor() {}
 
-  ngOnInit() {
-    this.profileService.getAll();
-  }
+  ngOnInit() {}
 }
