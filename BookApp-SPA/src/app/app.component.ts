@@ -1,6 +1,5 @@
 import { Component, OnInit } from "@angular/core";
 import { ProfileService } from "./_services/profile.service";
-import { BookService } from "./_services/book.service";
 
 import { JwtHelperService } from "@auth0/angular-jwt";
 
@@ -14,10 +13,7 @@ export class AppComponent implements OnInit {
   jwtHelper = new JwtHelperService();
   currentUserId: string;
   token: any;
-  constructor(
-    private profileService: ProfileService,
-    private bookService: BookService
-  ) {}
+  constructor(private profileService: ProfileService) {}
 
   ngOnInit(): void {
     this.token = localStorage.getItem("token");
@@ -25,7 +21,5 @@ export class AppComponent implements OnInit {
       this.currentUserId = this.jwtHelper.decodeToken(this.token).unique_name;
       this.profileService.getUserProfile(this.currentUserId);
     }
-
-    this.bookService.getBooks();
   }
 }

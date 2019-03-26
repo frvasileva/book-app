@@ -13,8 +13,7 @@
       *ngIf="profile.country != null && profile.city != null"
     >
       <i class="glyphicon glyphicon-map-marker"></i>
-      {{ profile?.city }}
-      <span *ngIf="profile.country != null">,{{ profile?.country }} </span>
+      {{ profile?.city }}<span *ngIf="profile.country != null">, {{ profile?.country }} </span>
     </p>
 
     <div class="card-text" *ngIf="profile?.introduction">

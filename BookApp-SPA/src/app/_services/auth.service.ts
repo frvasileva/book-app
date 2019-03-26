@@ -33,6 +33,7 @@ export class AuthService {
 
         if (user) {
           localStorage.setItem("token", user.token);
+          localStorage.setItem("currentUser", JSON.stringify(user.user));
           this.router.navigate(["/user/profile/", user.user.friendlyUrl]);
         }
       })
@@ -41,26 +42,23 @@ export class AuthService {
 
   isUserLoggedIn() {
     const token = localStorage.getItem("token");
-
-    // const decodedToken = this.jwtHelper.decodeToken(token);
-    // console.log({ decodedToken });
-
     return !this.jwtHelper.isTokenExpired(token);
   }
 
   logout() {
     localStorage.removeItem("token");
+    localStorage.removeItem("currentUser");
     this.router.navigate(["/"]);
   }
 
   reigster(model: any) {
-    console.log({ model });
     return this.http.post(this.baseUrl + "register", model).pipe(
       map((response: any) => {
         const user = response;
 
         if (user) {
           localStorage.setItem("token", user.token);
+          localStorage.setItem("currentUser", JSON.stringify(user.user));
           this.router.navigate(["/user/profile"]);
         }
       })

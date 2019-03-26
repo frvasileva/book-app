@@ -8,11 +8,11 @@
         <div class="col-4 col-xs-6 col-sm-6" *ngFor="let book of profile.books">
           <app-book-card-item [book]="book"></app-book-card-item>
         </div>
-      </div>
-      <div class="row" *ngIf="profile.books.length == 0">
-        <div class="col-12">
-          <span>No books!</span>
+
+        <div class="col-12" *ngIf="profile?.books?.length == 0">
+          <div class="alert alert-warning">No books added!</div>
         </div>
+
       </div>
     </div>
   </div>

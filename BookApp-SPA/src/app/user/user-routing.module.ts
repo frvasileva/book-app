@@ -17,13 +17,13 @@ const userRoutes: Routes = [
       {
         path: "profile",
         component: ProfileComponent,
-        canActivate: [AuthenticationGuard]
+        // canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },
       {
         path: "profile/:friendlyUrl",
         component: ProfileComponent,
-        canActivate: [AuthenticationGuard]
+        // canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },
       { path: "user-list", component: UsersListComponent }

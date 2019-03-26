@@ -24,12 +24,21 @@ export class ProfileComponent implements OnInit {
 
   ngOnInit() {
     this.friendlyUrl = this.route.snapshot.params["friendlyUrl"];
-    this.profileService.getUserProfile(this.friendlyUrl);
 
     this.store
       .select(state => state)
       .subscribe(res => {
-        this.profile = res.userProfile as Profile;
+        this.profile = res.userProfile;
+        console.log("current user", this.profile);
+
+        if (this.profile === null || this.friendlyUrl !== this.profile.friendlyUrl) {
+          this.profileService.getUserProfile(this.friendlyUrl);
+        }
+
+        console.log(
+          " this.profile === null",
+          this.profile === null
+        );
       });
   }
 }
