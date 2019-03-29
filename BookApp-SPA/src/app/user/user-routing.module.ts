@@ -6,6 +6,7 @@ import { ProfileComponent } from "./profile/profile.component";
 import { UserComponent } from "./user.component";
 import { UsersListComponent } from "./users-list/users-list.component";
 import { AuthenticationGuard } from '../_guards/authentication.guard';
+import { ProfileEditComponent } from './profile-edit/profile-edit.component';
 
 const userRoutes: Routes = [
   {
@@ -23,6 +24,12 @@ const userRoutes: Routes = [
       {
         path: "profile/:friendlyUrl",
         component: ProfileComponent,
+        // canActivate: [AuthenticationGuard]
+        // resolve: { profile: ProfileResolver }
+      },
+      {
+        path: "profile/edit/:friendlyUrl",
+        component: ProfileEditComponent,
         // canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },

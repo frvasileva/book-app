@@ -1,0 +1,88 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8">
+      <div class="">
+        <h1 class="form-title">Edit profile</h1>
+        <form [formGroup]="profileEditForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="">Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="knownAs"
+              formControlName="knownAs"
+            />
+            <span
+              class="error-message"
+              *ngIf="
+                !profileEditForm.get('knownAs').valid &&
+                profileEditForm.get('knownAs').touched
+              "
+            >
+              This field is required</span
+            >
+          </div>
+          <div class="form-group">
+            <label for="password">City:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="city"
+              formControlName="city"
+            />
+            <span
+              class="error-message"
+              *ngIf="
+                !profileEditForm.get('city').valid &&
+                profileEditForm.get('city').touched
+              "
+              >This field is required</span
+            >
+          </div>
+          <div class="form-group">
+            <label for="password">Country:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="country"
+              formControlName="country"
+            />
+            <span
+              class="error-message"
+              *ngIf="
+                !profileEditForm.get('country').valid &&
+                profileEditForm.get('country').touched
+              "
+              >This field is required</span
+            >
+          </div>
+          <div class="form-group">
+            <label for="password">Introduction:</label>
+            <textarea
+              type="text"
+              class="form-control"
+              id="introduction"
+              formControlName="introduction"
+            ></textarea>
+            <span
+              class="error-message"
+              *ngIf="
+                !profileEditForm.get('introduction').valid &&
+                profileEditForm.get('introduction').touched
+              "
+              >This field is required</span
+            >
+          </div>
+
+          <button
+            class="button primary"
+            type="submit"
+            [disabled]="!profileEditForm.valid"
+          >
+            Update Profile
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

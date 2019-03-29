@@ -8,6 +8,7 @@ import { Profile } from 'src/app/_models/profile';
 })
 export class ProfileCardComponent implements OnInit {
   @Input() profile: Profile;
+  @Input() isCurrentUser: boolean;
   constructor() {}
 
   ngOnInit() {}

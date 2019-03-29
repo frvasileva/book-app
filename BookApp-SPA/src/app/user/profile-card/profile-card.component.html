@@ -13,7 +13,8 @@
       *ngIf="profile.country != null && profile.city != null"
     >
       <i class="glyphicon glyphicon-map-marker"></i>
-      {{ profile?.city }}<span *ngIf="profile.country != null">, {{ profile?.country }} </span>
+      {{ profile?.city
+      }}<span *ngIf="profile.country != null">, {{ profile?.country }} </span>
     </p>
 
     <div class="card-text" *ngIf="profile?.introduction">
@@ -21,10 +22,19 @@
         {{ profile?.introduction }}
       </p>
     </div>
-    <button type="button" class="btn btn-info btn-block">
+    <button type="button" class="btn btn-info btn-block" *ngIf="!isCurrentUser">
       <span class="glyphicon glyphicon-plus"></span>
       Follow
     </button>
+
+    <a
+      [routerLink]="['/user/profile/edit/', profile.friendlyUrl]"
+      class="btn btn-outline-info btn-block"
+      *ngIf="isCurrentUser"
+    >
+      <i class="glyphicon glyphicon-pencil"></i>
+      Edit Profile
+    </a>
     <hr />
     <div class="social-profiles">
       <button type="button" class="btn">

@@ -15,6 +15,7 @@ export class ProfileComponent implements OnInit {
   profile: Profile;
   books: Book[];
   friendlyUrl: string;
+  isCurrentUser: boolean;
 
   constructor(
     private profileService: ProfileService,
@@ -31,14 +32,11 @@ export class ProfileComponent implements OnInit {
         this.profile = res.userProfile;
         console.log("current user", this.profile);
 
-        if (this.profile === null || this.friendlyUrl !== this.profile.friendlyUrl) {
-          this.profileService.getUserProfile(this.friendlyUrl);
-        }
+        // if (this.profile === null || this.friendlyUrl !== this.profile.friendlyUrl) {
+        //   this.profileService.getUserProfile(this.friendlyUrl);
+        // }
 
-        console.log(
-          " this.profile === null",
-          this.profile === null
-        );
+        this.isCurrentUser = this.profile.friendlyUrl === this.friendlyUrl;
       });
   }
 }

@@ -1,7 +1,10 @@
 <div class="container">
   <div class="row">
     <div class="col-md-4 col-sm-6">
-      <app-profile-card [profile]="profile"></app-profile-card>
+      <app-profile-card
+        [profile]="profile"
+        [isCurrentUser]="isCurrentUser"
+      ></app-profile-card>
     </div>
     <div class="col-md-8">
       <div class="row">
@@ -12,7 +15,6 @@
         <div class="col-12" *ngIf="profile?.books?.length == 0">
           <div class="alert alert-warning">No books added!</div>
         </div>
-
       </div>
     </div>
   </div>

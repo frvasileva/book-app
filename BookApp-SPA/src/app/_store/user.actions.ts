@@ -25,7 +25,7 @@ export class CreateUserAction implements Action {
 }
 export class UpdateUserAction implements Action {
   readonly type = UPDATE_USER;
-  payload: Profile;
+  constructor(public payload: Profile) {}
 }
 export class DeleteUserAction implements Action {
   readonly type = DELETE_USER;

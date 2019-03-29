@@ -1,6 +1,17 @@
 import * as UserActions from "./user.actions";
+import { Profile } from "../_models/profile";
 
-const initialState = {};
+export interface UserState {
+  loaded: boolean;
+  loading: boolean;
+  data: Profile;
+}
+
+export const initialState: UserState = {
+  loaded: false,
+  loading: false,
+  data: null
+};
 
 export function userReducer(
   state = initialState,
@@ -9,25 +20,25 @@ export function userReducer(
   switch (action.type) {
     case UserActions.GET_USER: {
       return {
-        ...state,
+        ...state.data,
         ...action.payload
       };
     }
     case UserActions.GET_CURRENT_USER: {
       return {
-        ...state,
+        ...state.data,
         ...action.payload
       };
     }
     case UserActions.CREATE_USER: {
       return {
-        ...state,
+        ...state.data,
         ...action.payload
       };
     }
     case UserActions.UPDATE_USER: {
       return {
-        ...state,
+        ...state.data,
         ...action.payload
       };
     }

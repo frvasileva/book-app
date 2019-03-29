@@ -8,6 +8,7 @@ import { AlertifyService } from "./alertify.service";
 
 import * as UserProfileActions from "../_store/user.actions";
 import * as UsersActions from "../_store/users.actions";
+import { map } from "rxjs/operators";
 
 @Injectable({
   providedIn: "root"
@@ -43,6 +44,18 @@ export class ProfileService {
       error => {
         this.alertify.error(error);
       }
+    );
+  }
+
+  updateProfile(profile: Profile) {
+    console.log("profile update", profile);
+    return this.http.post(this.baseUrl + "edit-user", profile).pipe(
+      map((data: any) => {
+        console.log("data", data);
+        this.store.dispatch(
+          new UserProfileActions.UpdateUserAction(data as Profile)
+        );
+      })
     );
   }
 }
