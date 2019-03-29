@@ -35,8 +35,8 @@ namespace BookApp.API.Data {
     }
 
     public async Task<User> GetUser (string friendlyUrl) {
-      var user = await _context.Users.FirstOrDefaultAsync (u => u.FriendlyUrl == friendlyUrl);
 
+      var user = await _context.Users.FirstOrDefaultAsync (u => u.FriendlyUrl == friendlyUrl);
       return user;
     }
 

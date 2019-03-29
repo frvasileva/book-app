@@ -1,4 +1,7 @@
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using AutoMapper;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
 using Microsoft.AspNetCore.Authorization;
@@ -13,9 +16,12 @@ namespace BookApp.API.Controllers {
   public class ProfileController : ControllerBase {
     private readonly IConfiguration _config;
     private readonly IProfileRepository _repo;
-    public ProfileController (IConfiguration config, IProfileRepository repo) {
+
+    private readonly IMapper _mapper;
+    public ProfileController (IConfiguration config, IProfileRepository repo, IMapper mapper) {
       _repo = repo;
       _config = config;
+      _mapper = mapper;
     }
 
     [HttpGet ("get/{friendlyUrl}")]
@@ -35,12 +41,20 @@ namespace BookApp.API.Controllers {
       return Ok (profileList);
     }
 
-    [HttpGet ("update/{userId}")]
-    public async Task<IActionResult> Update (UserProfileDto profileForUpdate) {
+    [HttpPost ("edit-user")]
+    public async Task<IActionResult> Update (UserProfileEditDto profileForUpdate) {
 
-      await _repo.Update (profileForUpdate);
-      //TODO - create real profile update
-      return Ok (profileForUpdate);
+      // if (id != int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value))
+      //   return Unauthorized ();
+
+      var userFromRepo = await _repo.GetUser (profileForUpdate.FriendlyUrl);
+
+      _mapper.Map (profileForUpdate, userFromRepo);
+
+      if (await _repo.SaveAll ())
+        return NoContent ();
+
+      throw new Exception ($"Updating user {profileForUpdate.FriendlyUrl} failed on save");
     }
   }
 }
