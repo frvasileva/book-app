@@ -34,24 +34,22 @@ namespace BookApp.API.Data {
       return mappedProfile;
     }
 
+    public async Task<User> GetUser (string friendlyUrl) {
+      var user = await _context.Users.FirstOrDefaultAsync (u => u.FriendlyUrl == friendlyUrl);
+
+      return user;
+    }
+
     public async Task<List<UserProfileDto>> GetAll () {
 
-      var allUsers = await _context.Users.Include(item=>item.Books).OrderByDescending (u => u.Created).ToListAsync ();
-    //  var mappedUsers = _mapper.Map<List<UserProfileDto>> (allUsers);
+      var allUsers = await _context.Users.Include (item => item.Books).OrderByDescending (u => u.Created).ToListAsync ();
 
       List<UserProfileDto> userList = _mapper.Map<List<User>, List<UserProfileDto>> (allUsers);
       return userList;
     }
 
-    public async Task<UserProfileDto> Update (UserProfileDto profile) {
-
-      var user = await _context.Users.FirstOrDefaultAsync (x => x.Id == profile.Id);
-      var mappedProfile = _mapper.Map<UserProfileDto> (user);
-
-      await _context.Users.AddAsync (user);
-      await _context.SaveChangesAsync ();
-
-      return profile;
+    public async Task<bool> SaveAll () {
+      return await _context.SaveChangesAsync () > 0;
     }
   }
 }

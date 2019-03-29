@@ -42,6 +42,9 @@ namespace BookApp.API.Helpers {
 
       CreateMap<User, UserForLoginDto> ();
       CreateMap<UserForLoginDto, User> ();
+
+      CreateMap<User, UserProfileEditDto> ();
+      CreateMap<UserProfileEditDto, User> ();
     }
 
     private string PhotoUrlMap (string photoPath) {
