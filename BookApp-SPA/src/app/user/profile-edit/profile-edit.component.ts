@@ -48,6 +48,6 @@ export class ProfileEditComponent implements OnInit {
     this.profileToSubmit = this.profileEditForm.value;
     this.profileToSubmit.friendlyUrl = this.profile.friendlyUrl;
     console.log("submitted", this.profileEditForm.value);
-    this.profileService.updateProfile(this.profileToSubmit);
+    this.profileService.updateProfile(this.profileToSubmit).subscribe();
   }
 }

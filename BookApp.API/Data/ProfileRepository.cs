@@ -19,6 +19,7 @@ namespace BookApp.API.Data {
     private UserManager<User> _userManager;
 
     private readonly IMapper _mapper;
+    private readonly IUserRepository _userRepository;
 
     public ProfileRepository (DataContext context, UserManager<User> userManager, IMapper mapper) {
       _context = context;

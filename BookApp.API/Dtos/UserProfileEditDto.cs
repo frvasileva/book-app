@@ -2,10 +2,6 @@ using System.ComponentModel.DataAnnotations;
 
 namespace BookApp.API.Dtos {
   public class UserProfileEditDto {
-    [Required]
-    [EmailAddress]
-    public string Email { get; set; }
-    public string UserName { get; set; }
     public string AvatarPath { get; set; }
     public string KnownAs { get; set; }
     public string Introduction { get; set; }

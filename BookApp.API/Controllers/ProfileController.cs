@@ -16,12 +16,13 @@ namespace BookApp.API.Controllers {
   public class ProfileController : ControllerBase {
     private readonly IConfiguration _config;
     private readonly IProfileRepository _repo;
-
+    private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-    public ProfileController (IConfiguration config, IProfileRepository repo, IMapper mapper) {
+    public ProfileController (IConfiguration config, IProfileRepository repo, IMapper mapper, IUserRepository userRepository) {
       _repo = repo;
       _config = config;
       _mapper = mapper;
+      _userRepository = userRepository;
     }
 
     [HttpGet ("get/{friendlyUrl}")]
@@ -47,11 +48,11 @@ namespace BookApp.API.Controllers {
       // if (id != int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value))
       //   return Unauthorized ();
 
-      var userFromRepo = await _repo.GetUser (profileForUpdate.FriendlyUrl);
+      var userFromRepo = await _userRepository.GetUser (profileForUpdate.FriendlyUrl);
 
       _mapper.Map (profileForUpdate, userFromRepo);
 
-      if (await _repo.SaveAll ())
+      if (await _userRepository.SaveAll ())
         return NoContent ();
 
       throw new Exception ($"Updating user {profileForUpdate.FriendlyUrl} failed on save");

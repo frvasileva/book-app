@@ -47,11 +47,12 @@ export class ProfileService {
     );
   }
 
-  updateProfile(profile: Profile) {
-    console.log("profile update", profile);
-    return this.http.post(this.baseUrl + "edit-user", profile).pipe(
+  updateProfile(model: Profile) {
+    console.log("KUR profile update", model);
+    console.log("url ", this.baseUrl + "edit-user");
+    return this.http.post(this.baseUrl + "edit-user", model).pipe(
       map((data: any) => {
-        console.log("data", data);
+        console.log("dataaa", data);
         this.store.dispatch(
           new UserProfileActions.UpdateUserAction(data as Profile)
         );
