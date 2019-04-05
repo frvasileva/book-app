@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Data;
+using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
@@ -70,6 +71,8 @@ namespace DatingApp.API {
           opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         });
       services.AddCors ();
+      services.Configure<CloudinarySettings> (Configuration.GetSection ("CloudinarySettings"));
+
       services.AddAutoMapper ();
       services.AddScoped<IUserRepository, UserRepository> ();
       services.AddScoped<IProfileRepository, ProfileRepository> ();

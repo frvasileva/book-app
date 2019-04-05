@@ -14,7 +14,7 @@ namespace BookApp.API.Data {
         userRole.HasKey (ur => new { ur.UserId, ur.RoleId });
 
         userRole.HasOne (ur => ur.Role).WithMany (r => r.UserRoles)
-          .HasForeignKey (ur => ur.RoleId).IsRequired();
+          .HasForeignKey (ur => ur.RoleId).IsRequired ();
       });
 
       modelBuilder.Entity<BookCatalog> ().HasKey (sc => new { sc.BookId, sc.CatalogId });
@@ -32,6 +32,7 @@ namespace BookApp.API.Data {
 
     public DbSet<Value> Values { get; set; }
     public DbSet<Book> Books { get; set; }
+    public DbSet<Photo> Photos { get; set; }
     public DbSet<Author> Authors { get; set; }
     public DbSet<Quote> Quotes { get; set; }
     public DbSet<Publisher> Publishers { get; set; }
