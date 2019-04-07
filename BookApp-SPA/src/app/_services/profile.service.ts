@@ -48,8 +48,6 @@ export class ProfileService {
   }
 
   updateProfile(model: Profile) {
-    console.log("KUR profile update", model);
-    console.log("url ", this.baseUrl + "edit-user");
     return this.http.post(this.baseUrl + "edit-user", model).pipe(
       map((data: any) => {
         console.log("dataaa", data);

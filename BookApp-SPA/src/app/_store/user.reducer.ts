@@ -37,6 +37,9 @@ export function userReducer(
       };
     }
     case UserActions.UPDATE_USER: {
+      console.log("update user: ");
+      console.log(state.data);
+      console.log(action.payload);
       return {
         ...state.data,
         ...action.payload
