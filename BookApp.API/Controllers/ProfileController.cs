@@ -20,17 +20,15 @@ namespace BookApp.API.Controllers {
   [ApiController]
   public class ProfileController : ControllerBase {
     private readonly IConfiguration _config;
-    private readonly IProfileRepository _repo;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
 
     private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
     private Cloudinary _cloudinary;
 
-    public ProfileController (IConfiguration config, IProfileRepository repo, IMapper mapper,
+    public ProfileController (IConfiguration config, IMapper mapper,
       IUserRepository userRepository,
       IOptions<CloudinarySettings> cloudinaryConfig) {
-      _repo = repo;
       _config = config;
       _mapper = mapper;
       _userRepository = userRepository;
@@ -47,7 +45,7 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("get/{friendlyUrl}")]
     public async Task<IActionResult> GetUserProfile (string friendlyUrl) {
-      var profile = await _repo.Get (friendlyUrl);
+      var profile = await _userRepository.GetUserProfile (friendlyUrl);
 
       if (profile == null)
         return BadRequest (string.Format ("No user with such friendlyUrl {0}", friendlyUrl));
@@ -57,7 +55,7 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("get-all")]
     public async Task<IActionResult> GetAllProfiles () {
-      var profileList = await _repo.GetAll ();
+      var profileList = await _userRepository.GetAllProfiles ();
 
       return Ok (profileList);
     }
@@ -84,7 +82,7 @@ namespace BookApp.API.Controllers {
       //  if (userId != int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value))
       //      return Unauthorized ();
 
-      var userFromRepo = await _repo.GetUser (friendlyUrl);
+      var userFromRepo = await _userRepository.GetUser (friendlyUrl);
 
       var file = photoForCreationDto.File;
 
@@ -104,15 +102,13 @@ namespace BookApp.API.Controllers {
 
       photoForCreationDto.Url = uploadResult.Uri.ToString ();
       photoForCreationDto.PublicId = uploadResult.PublicId;
-
+      userFromRepo.AvatarPath = uploadResult.Uri.ToString ();
+  
       var photo = _mapper.Map<Photo> (photoForCreationDto);
-
       userFromRepo.Photos.Add (photo);
 
-      if (await _repo.SaveAll ()) {
-        var photoToReturn = _mapper.Map<PhotoForReturnDto> (photo);
-
-        return Ok (uploadResult.Uri.ToString ());
+      if (await _userRepository.SaveAll ()) {
+        return Ok (userFromRepo);
       }
 
       return BadRequest ("Could not add the photo");

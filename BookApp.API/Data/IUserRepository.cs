@@ -1,4 +1,7 @@
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using BookApp.API.Dtos;
+using BookApp.API.Helpers;
 using BookApp.API.Models;
 
 namespace BookApp.API.Data {
@@ -17,6 +20,5 @@ namespace BookApp.API.Data {
 
         Task<List<UserProfileDto>> GetAllProfiles ();
 
-        Task<bool> SaveAll ();
     }
 }

@@ -75,12 +75,10 @@ namespace DatingApp.API {
 
       services.AddAutoMapper ();
       services.AddScoped<IUserRepository, UserRepository> ();
-      services.AddScoped<IProfileRepository, ProfileRepository> ();
       services.AddScoped<IBookRepository, BookRepository> ();
       services.AddScoped<IAuthorRepository, AuthorRepository> ();
       services.AddScoped<ICatalogRepository, CatalogRepository> ();
       services.AddTransient<DbContext> ();
-
     }
 
     // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

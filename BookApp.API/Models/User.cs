@@ -25,5 +25,9 @@ namespace BookApp.API.Models {
 
     // public ICollection<Message> MessagesSent { get; set; }
     // public ICollection<Message> MessagesReceived { get; set; }
+
+    User () {
+      this.Photos = new List<Photo> ();
+    }
   }
 }
