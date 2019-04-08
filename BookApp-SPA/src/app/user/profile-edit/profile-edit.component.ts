@@ -1,9 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { AlertifyService } from "src/app/_services/alertify.service";
+import { PhotoEditorComponent } from "src/app/shared/photo-editor/photo-editor.component";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import { Profile } from "src/app/_models/profile";
 import { ProfileService } from "src/app/_services/profile.service";
+
 import { Router } from '@angular/router';
 
 @Component({
@@ -53,7 +55,7 @@ export class ProfileEditComponent implements OnInit {
     this.profileService.updateProfile(this.profileToSubmit).subscribe(
       next => {
         this.alertify.success("Your profile has been updated!");
-        this.router.navigate(["/user/profile/teodor-url"]);
+        this.router.navigate(["/user/profile/", this.profile.friendlyUrl]);
       },
       error => {
         this.alertify.error("Failed to update profile");

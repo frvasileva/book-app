@@ -15,6 +15,9 @@ export class AuthService {
   baseUrl = "http://localhost:5000/api/auth/";
   jwtHelper = new JwtHelperService();
 
+  decodedToken: any;
+  currentUser: Profile;
+
   constructor(
     private http: HttpClient,
     private router: Router,
@@ -32,6 +35,9 @@ export class AuthService {
         );
 
         if (user) {
+          this.decodedToken = this.jwtHelper.decodeToken(user.token);
+          this.currentUser = user.user; // add ot to state!
+
           localStorage.setItem("token", user.token);
           localStorage.setItem("currentUser", JSON.stringify(user.user));
           this.router.navigate(["/user/profile/", user.user.friendlyUrl]);

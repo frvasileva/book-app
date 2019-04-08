@@ -5,8 +5,9 @@ import { SignupComponent } from "./signup/signup.component";
 import { ProfileComponent } from "./profile/profile.component";
 import { UserComponent } from "./user.component";
 import { UsersListComponent } from "./users-list/users-list.component";
-import { AuthenticationGuard } from '../_guards/authentication.guard';
-import { ProfileEditComponent } from './profile-edit/profile-edit.component';
+import { AuthenticationGuard } from "../_guards/authentication.guard";
+import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
+import { ProfilePhotoEditComponent } from "./profile-photo-edit/profile-photo-edit.component";
 
 const userRoutes: Routes = [
   {
@@ -17,19 +18,25 @@ const userRoutes: Routes = [
       { path: "sign-up", component: SignupComponent },
       {
         path: "profile",
-        component: ProfileComponent,
+        component: ProfileComponent
         // canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },
       {
         path: "profile/:friendlyUrl",
-        component: ProfileComponent,
+        component: ProfileComponent
         // canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },
       {
         path: "profile/edit/:friendlyUrl",
-        component: ProfileEditComponent,
+        component: ProfileEditComponent
+        // canActivate: [AuthenticationGuard]
+        // resolve: { profile: ProfileResolver }
+      },
+      {
+        path: "profile/edit-photo/:friendlyUrl",
+        component: ProfilePhotoEditComponent
         // canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },

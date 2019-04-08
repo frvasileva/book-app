@@ -35,8 +35,9 @@ import { ProfileService } from "./_services/profile.service";
 import { BookService } from "./_services/book.service";
 import { MessageService } from "./messages/message.service";
 import { BookSaverService } from "./books/bookSaver.service";
-import { AuthenticationGuard } from './_guards/authentication.guard';
-import { usersReducer } from './_store/users.reducer';
+import { AuthenticationGuard } from "./_guards/authentication.guard";
+import { usersReducer } from "./_store/users.reducer";
+import { FileUploadModule } from "ng2-file-upload";
 
 @NgModule({
   declarations: [
@@ -58,7 +59,7 @@ import { usersReducer } from './_store/users.reducer';
     AppRoutingModule,
     ReactiveFormsModule,
     BsDropdownModule.forRoot(),
-
+    FileUploadModule,
     StoreModule.forRoot({
       bookList: bookListReducer,
       bookDetails: bookDetailsReducer,

@@ -5,7 +5,17 @@
       src="{{ profile?.avatarPath }}"
       alt="{{ profile?.knownAs }}"
     />
+
+    <a
+      [routerLink]="['/user/profile/edit-photo/', profile.friendlyUrl]"
+      class="btn btn-info btn-block"
+      *ngIf="isCurrentUser"
+    >
+      <i class="glyphicon glyphicon-pencil"></i>
+      Edit Photo
+    </a>
   </div>
+
   <div class="card-body">
     <h4 class="card-title">{{ profile?.knownAs }}</h4>
     <p
@@ -35,17 +45,5 @@
       <i class="glyphicon glyphicon-pencil"></i>
       Edit Profile
     </a>
-    <hr />
-    <div class="social-profiles">
-      <button type="button" class="btn">
-        <i class="fa fa-facebook-official"></i>
-      </button>
-      <button type="button" class="btn">
-        <i class="fa fa-linkedin-square"></i>
-      </button>
-      <button type="button" class="btn">
-        <i class="fa fa-twitter-square"></i>
-      </button>
-    </div>
   </div>
 </div>
