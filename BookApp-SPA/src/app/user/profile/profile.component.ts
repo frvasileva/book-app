@@ -32,5 +32,9 @@ export class ProfileComponent implements OnInit {
         this.profile = res.userProfile;
         this.isCurrentUser = this.profile.friendlyUrl === this.friendlyUrl;
       });
+
+    if (!this.isCurrentUser) {
+      this.profileService.getUserProfile(this.friendlyUrl);
+    }
   }
 }

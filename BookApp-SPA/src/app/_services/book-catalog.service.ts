@@ -10,12 +10,13 @@ import { HttpClient } from "@angular/common/http";
 
 import * as CatalogActions from "../_store/catalog.actions";
 import { CatalogItemDto } from "../_models/catalogItem";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root"
 })
 export class BookCatalogService {
-  baseUrl = "http://localhost:5000/api/bookcatalog/";
+  baseUrl =  environment.apiUrl + "bookcatalog/";
   jwtHelper = new JwtHelperService();
   alertify: any;
 

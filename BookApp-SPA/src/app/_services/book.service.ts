@@ -13,12 +13,13 @@ import { AlertifyService } from "./alertify.service";
 
 import * as BookListActions from "../books/books-list/store/bookList.actions";
 import * as BookDetailsActions from "../_store/book-detail.actions";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root"
 })
 export class BookService {
-  baseUrl = "http://localhost:5000/api/book/";
+  baseUrl = environment.apiUrl + "book/";
   jwtHelper = new JwtHelperService();
   token = this.jwtHelper.decodeToken(localStorage.getItem("token"));
 
@@ -30,8 +31,6 @@ export class BookService {
   ) {}
 
   addBook(model: BookCreateDto) {
-
-    console.log("token ", this.token);
     model.userId = this.token.nameid;
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {

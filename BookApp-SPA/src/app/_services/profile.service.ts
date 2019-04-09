@@ -8,7 +8,7 @@ import { AlertifyService } from "./alertify.service";
 import { Profile } from "../_models/profile";
 import * as UserProfileActions from "../_store/user.actions";
 import * as UsersActions from "../_store/users.actions";
-import { environment } from 'src/environments/environment';
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root"
