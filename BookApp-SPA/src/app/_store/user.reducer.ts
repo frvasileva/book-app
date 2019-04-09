@@ -1,16 +1,13 @@
 import * as UserActions from "./user.actions";
-import { Profile } from "../_models/profile";
 
 export interface UserState {
-  loaded: boolean;
-  loading: boolean;
-  data: Profile;
+  currentUser: string;
+  users: Object;
 }
 
 export const initialState: UserState = {
-  loaded: false,
-  loading: false,
-  data: null
+  currentUser: null,
+  users: {}
 };
 
 export function userReducer(
@@ -18,6 +15,21 @@ export function userReducer(
   action: UserActions.UserActions
 ) {
   switch (action.type) {
+    case UserActions.SET_CURRENT_USER: {
+      return {
+        ...state,
+        currentUser: action.payload
+      };
+    }
+    case UserActions.SET_USER: {
+      return {
+        ...state,
+        users: {
+          ...state.users,
+          [action.payload.friendlyUrl]: action.payload
+        }
+      };
+    }
     case UserActions.GET_USER: {
       return {
         ...state,
@@ -48,8 +60,11 @@ export function userReducer(
         avatarPath: action.payload
       };
     }
-    case UserActions.DELETE_USER: {
-      return {};
+    case UserActions.LOGOUT: {
+      return {
+        ...state,
+        currentUser: null
+      };
     }
     default:
       return state;

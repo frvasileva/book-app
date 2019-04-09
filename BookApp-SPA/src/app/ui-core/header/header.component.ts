@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { AuthService } from "src/app/_services/auth.service";
 import { Store } from "@ngrx/store";
-import { Profile } from "src/app/_models/profile";
+import { UserState } from "src/app/_store/user.reducer";
 
 @Component({
   selector: "app-header",
@@ -9,18 +9,19 @@ import { Profile } from "src/app/_models/profile";
   styleUrls: ["./header.component.scss"]
 })
 export class HeaderComponent implements OnInit {
-  profile: any;
-
+  friendlyUrl: String;
+  isLoggedIn: Boolean;
   constructor(
     public authService: AuthService,
-    private store: Store<{ userProfile: { profile: Profile } }>
+    private store: Store<{ userProfile: UserState }>
   ) {}
 
   ngOnInit() {
     this.store
-      .select(state => state)
-      .subscribe(res => {
-        this.profile = res.userProfile;
+      .select(state => state.userProfile)
+      .subscribe(userProfile => {
+        this.friendlyUrl = userProfile.currentUser;
+        this.isLoggedIn = userProfile.currentUser != null;
       });
   }
 }
