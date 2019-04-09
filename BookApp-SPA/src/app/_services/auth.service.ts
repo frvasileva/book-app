@@ -7,12 +7,13 @@ import { Profile } from "../_models/profile";
 
 import * as UserProfileActions from "../_store/user.actions";
 import { Store } from "@ngrx/store";
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root"
 })
 export class AuthService {
-  baseUrl = "http://localhost:5000/api/auth/";
+  baseUrl = environment.apiUrl + "auth/";
   jwtHelper = new JwtHelperService();
 
   decodedToken: any;

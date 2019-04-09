@@ -30,12 +30,6 @@ export class ProfileComponent implements OnInit {
       .select(state => state)
       .subscribe(res => {
         this.profile = res.userProfile;
-        console.log("current user", this.profile);
-
-        // if (this.profile === null || this.friendlyUrl !== this.profile.friendlyUrl) {
-        //   this.profileService.getUserProfile(this.friendlyUrl);
-        // }
-
         this.isCurrentUser = this.profile.friendlyUrl === this.friendlyUrl;
       });
   }

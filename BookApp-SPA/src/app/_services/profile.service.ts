@@ -1,25 +1,24 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Profile } from "../_models/profile";
+import { map } from "rxjs/operators";
 import { AlertifyService } from "./alertify.service";
 
+import { Profile } from "../_models/profile";
 import * as UserProfileActions from "../_store/user.actions";
 import * as UsersActions from "../_store/users.actions";
-import { map } from "rxjs/operators";
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: "root"
 })
 export class ProfileService {
-  baseUrl = "http://localhost:5000/api/profile/";
+  baseUrl = environment.apiUrl + "profile/";
   jwtHelper = new JwtHelperService();
 
   constructor(
     private http: HttpClient,
-    private router: Router,
     private store: Store<{ userProfile: { profile: Profile } }>,
     private alertify: AlertifyService
   ) {}

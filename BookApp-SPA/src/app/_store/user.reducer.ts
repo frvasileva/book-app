@@ -20,29 +20,32 @@ export function userReducer(
   switch (action.type) {
     case UserActions.GET_USER: {
       return {
-        ...state.data,
+        ...state,
         ...action.payload
       };
     }
     case UserActions.GET_CURRENT_USER: {
       return {
-        ...state.data,
+        ...state,
         ...action.payload
       };
     }
     case UserActions.CREATE_USER: {
       return {
-        ...state.data,
+        ...state,
         ...action.payload
       };
     }
     case UserActions.UPDATE_USER: {
-      console.log("update user: ");
-      console.log(state.data);
-      console.log(action.payload);
       return {
-        ...state.data,
+        ...state,
         ...action.payload
+      };
+    }
+    case UserActions.UPDATE_USER_AVATAR: {
+      return {
+        ...state,
+        avatarPath: action.payload
       };
     }
     case UserActions.DELETE_USER: {

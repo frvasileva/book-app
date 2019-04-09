@@ -108,7 +108,7 @@ namespace BookApp.API.Controllers {
       userFromRepo.Photos.Add (photo);
 
       if (await _userRepository.SaveAll ()) {
-        return Ok (userFromRepo);
+        return Ok (userFromRepo.AvatarPath);
       }
 
       return BadRequest ("Could not add the photo");

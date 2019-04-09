@@ -30,6 +30,8 @@ export class BookService {
   ) {}
 
   addBook(model: BookCreateDto) {
+
+    console.log("token ", this.token);
     model.userId = this.token.nameid;
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {

@@ -1,11 +1,13 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { Photo } from "src/app/_models/photo";
 import { environment } from "src/environments/environment";
 import { FileUploader } from "ng2-file-upload";
 import { AuthService } from "src/app/_services/auth.service";
-import { UserService } from "src/app/user/user.service";
 import { AlertifyService } from "src/app/_services/alertify.service";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
+import { Store } from "@ngrx/store";
+import { Profile } from "src/app/_models/profile";
+import * as UserProfileActions from "../../_store/user.actions";
 
 @Component({
   selector: "app-photo-editor",
@@ -14,20 +16,26 @@ import { Router } from '@angular/router';
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() photos: Photo[];
-  @Output() getMemberPhotoChange = new EventEmitter<string>();
   uploader: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
   currentMain: Photo;
+  profile$: Profile;
 
   constructor(
     private authService: AuthService,
-    private userService: UserService,
     private alertify: AlertifyService,
-    private router: Router
+    private router: Router,
+    private store: Store<{ userProfile: Profile }>
   ) {}
 
   ngOnInit() {
+    this.store
+      .select(state => state)
+      .subscribe(res => {
+        this.profile$ = res.userProfile;
+      });
+
     this.initializeUploader();
   }
 
@@ -37,10 +45,7 @@ export class PhotoEditorComponent implements OnInit {
 
   initializeUploader() {
     this.uploader = new FileUploader({
-      url:
-        this.baseUrl +
-        "profile/add-photo/" +
-        this.authService.decodedToken.unique_name,
+      url: this.baseUrl + "profile/add-photo/" + this.profile$.friendlyUrl,
       authToken: "Bearer " + localStorage.getItem("token"),
       isHTML5: true,
       allowedFileType: ["image"],
@@ -55,10 +60,11 @@ export class PhotoEditorComponent implements OnInit {
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
-        const res: Photo = JSON.parse(response);
+        this.store.dispatch(
+          new UserProfileActions.UpdateUserAvatarAction(response)
+        );
         this.router.navigate(["/user/profile/teodor-url"]);
-
-        //TODO: UPDATE STATE
+        this.alertify.success("Photo updated");
       }
     };
   }
