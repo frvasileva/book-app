@@ -1,7 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { User } from 'src/app/_models/user';
-import { UserService } from 'src/app/_services/user.service';
+import { User } from "src/app/_models/user";
+import { UserService } from "src/app/_services/user.service";
+import { UserState } from "src/app/_store/user.reducer";
 
 @Component({
   selector: "app-users-list",
@@ -12,9 +13,7 @@ export class UsersListComponent implements OnInit {
   userList: User[];
 
   constructor(
-    private store: Store<{
-      userProfiles: User[];
-    }>,
+    private store: Store<{ userState: UserState }>,
     private userService: UserService
   ) {}
 
@@ -24,7 +23,7 @@ export class UsersListComponent implements OnInit {
     this.store
       .select(state => state)
       .subscribe(res => {
-        this.userList = res.userProfiles as User[];
+        this.userList = Object.values(res.userState.users) as User[];
       });
   }
 }

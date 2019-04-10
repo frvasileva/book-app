@@ -30,28 +30,17 @@ export function userReducer(
         }
       };
     }
-    case UserActions.GET_USER: {
+    case UserActions.SET_USERS: {
+      const usersMap = action.payload.reduce((result, user) => {
+        result[user.friendlyUrl] = user;
+        return result;
+      }, {});
       return {
         ...state,
-        ...action.payload
-      };
-    }
-    case UserActions.GET_CURRENT_USER: {
-      return {
-        ...state,
-        ...action.payload
-      };
-    }
-    case UserActions.CREATE_USER: {
-      return {
-        ...state,
-        ...action.payload
-      };
-    }
-    case UserActions.UPDATE_USER: {
-      return {
-        ...state,
-        ...action.payload
+        users: {
+          ...state.users,
+          ...usersMap
+        }
       };
     }
     case UserActions.UPDATE_USER_AVATAR: {

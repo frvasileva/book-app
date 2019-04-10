@@ -24,6 +24,27 @@
               </span>
             </div>
 
+
+            <div class="form-group">
+              <label for="">Photo:</label>
+              <input
+                type="file"
+                class="form-control"
+                id="photoPath"
+                formControlName="photoPath"
+              />
+              <span
+                class="error-message"
+                *ngIf="
+                  !addBookForm.get('bookData.photoPath').valid &&
+                  addBookForm.get('bookData.photoPath').touched
+                "
+              >
+                This field is required
+              </span>
+            </div>
+
+
             <div class="form-group">
               <label for="description">Book description:</label>
               <textarea

@@ -20,7 +20,7 @@ export class AddBookComponent implements OnInit {
   jwtHelper = new JwtHelperService();
 
   constructor(
-    //private store: Store<{ bookList: { books: Book[] } }>,
+    // private store: Store<{ bookList: { books: Book[] } }>,
     private router: Router,
     private bookService: BookService,
     private alertify: AlertifyService
@@ -31,13 +31,16 @@ export class AddBookComponent implements OnInit {
       bookData: new FormGroup({
         title: new FormControl(null, Validators.required),
         description: new FormControl(null, [Validators.required]),
-        bookType: new FormControl("ebook", Validators.required)
+        bookType: new FormControl("ebook", Validators.required),
+        photoPath: new FormControl(null, Validators.required),
       }),
       author: new FormControl(null, Validators.required)
     });
   }
 
   onSubmit() {
+
+    console.log(this.addBookForm.value);
     this.addBookModel.title = this.addBookForm.value.bookData.title;
     this.addBookModel.description = this.addBookForm.value.bookData.description;
     this.addBookModel.authorName = this.addBookForm.value.author;

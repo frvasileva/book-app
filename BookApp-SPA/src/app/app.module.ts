@@ -64,7 +64,7 @@ import { FileUploadModule } from "ng2-file-upload";
       bookDetails: bookDetailsReducer,
       messageList: messageReducer,
       catalog: catalogReducer,
-      userProfile: userReducer,
+      userState: userReducer,
       userProfiles: usersReducer
     }),
     StoreDevtoolsModule.instrument({

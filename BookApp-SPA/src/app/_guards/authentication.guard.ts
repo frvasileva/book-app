@@ -9,6 +9,7 @@ import {
 import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
 import { Profile } from "../_models/profile";
+import { User } from "../_models/user";
 
 @Injectable({
   providedIn: "root"
@@ -17,7 +18,7 @@ export class AuthenticationGuard implements CanActivate {
   currentUserProfile: Profile;
 
   constructor(
-    private store: Store<{ userProfile: Profile }>,
+    private store: Store<{ userState: User }>,
     private router: Router
   ) {}
 
@@ -30,7 +31,7 @@ export class AuthenticationGuard implements CanActivate {
     | boolean
     | UrlTree {
     this.store
-      .select(state => state.userProfile)
+      .select(state => state.userState)
       .subscribe(res => {
         this.currentUserProfile = res as Profile;
       });

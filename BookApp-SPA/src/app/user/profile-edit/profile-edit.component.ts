@@ -2,10 +2,11 @@ import { Component, OnInit } from "@angular/core";
 import { AlertifyService } from "src/app/_services/alertify.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
-import { Router } from '@angular/router';
+import { Router } from "@angular/router";
 
-import { UserService } from 'src/app/_services/user.service';
-import { User } from 'src/app/_models/user';
+import { UserService } from "src/app/_services/user.service";
+import { User } from "src/app/_models/user";
+import { UserState } from "src/app/_store/user.reducer";
 
 @Component({
   selector: "app-profile-edit",
@@ -21,14 +22,14 @@ export class ProfileEditComponent implements OnInit {
     private alertify: AlertifyService,
     private router: Router,
     private userService: UserService,
-    private store: Store<{ userProfile: User }>
+    private store: Store<{ userState: UserState }>
   ) {}
 
   ngOnInit() {
     this.store
       .select(state => state)
       .subscribe(res => {
-        this.profile = res.userProfile;
+        this.profile = res.userState.users[res.userState.currentUser];
       });
 
     this.createForm();

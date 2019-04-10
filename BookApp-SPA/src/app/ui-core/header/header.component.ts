@@ -13,15 +13,15 @@ export class HeaderComponent implements OnInit {
   isLoggedIn: Boolean;
   constructor(
     public authService: AuthService,
-    private store: Store<{ userProfile: UserState }>
+    private store: Store<{ userState: UserState }>
   ) {}
 
   ngOnInit() {
     this.store
-      .select(state => state.userProfile)
-      .subscribe(userProfile => {
-        this.friendlyUrl = userProfile.currentUser;
-        this.isLoggedIn = userProfile.currentUser != null;
+      .select(state => state.userState)
+      .subscribe(userState => {
+        this.friendlyUrl = userState.currentUser;
+        this.isLoggedIn = userState.currentUser != null;
       });
   }
 }

@@ -26,14 +26,14 @@ export class PhotoEditorComponent implements OnInit {
     private authService: AuthService,
     private alertify: AlertifyService,
     private router: Router,
-    private store: Store<{ userProfile: Profile }>
+    private store: Store<{ userState: Profile }>
   ) {}
 
   ngOnInit() {
     this.store
       .select(state => state)
       .subscribe(res => {
-        this.profile$ = res.userProfile;
+        this.profile$ = res.userState;
       });
 
     this.initializeUploader();

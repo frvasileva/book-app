@@ -8,6 +8,7 @@ import * as UserProfileActions from "../_store/user.actions";
 import { Store } from "@ngrx/store";
 import { environment } from "src/environments/environment";
 import { User } from "../_models/user";
+import { UserService } from "./user.service";
 
 @Injectable({
   providedIn: "root"
@@ -20,7 +21,8 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private store: Store<{ userProfile: { user: User } }>
+    private store: Store<{ userState: { user: User } }>,
+    private userService: UserService
   ) {}
 
   login(model: any) {
@@ -28,13 +30,13 @@ export class AuthService {
     return this.http.post(this.baseUrl + "login", model).pipe(
       map((response: any) => {
         this.store.dispatch(
-          new UserProfileActions.SetCurrentUser(<String>(
+          new UserProfileActions.SetCurrentUserAction(<String>(
             response.user.friendlyUrl
           ))
         );
 
         this.store.dispatch(
-          new UserProfileActions.SetUser(<User>response.user)
+          new UserProfileActions.SetUserAction(<User>response.user)
         );
 
         localStorage.setItem("token", response.token);
@@ -47,6 +49,18 @@ export class AuthService {
     localStorage.removeItem("token");
     this.store.dispatch(new UserProfileActions.Logout());
     this.router.navigate(["/"]);
+  }
+
+  getCurrentUser() {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      return;
+    }
+    const currentUserId = this.jwtHelper.decodeToken(token).unique_name;
+    this.store.dispatch(
+      new UserProfileActions.SetCurrentUserAction(<String>currentUserId)
+    );
+    this.userService.getUser(currentUserId);
   }
 
   reigster(model: any) {
