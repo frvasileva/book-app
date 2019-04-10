@@ -1,12 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { AlertifyService } from "src/app/_services/alertify.service";
-import { PhotoEditorComponent } from "src/app/shared/photo-editor/photo-editor.component";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
-import { Profile } from "src/app/_models/profile";
-import { ProfileService } from "src/app/_services/profile.service";
-
 import { Router } from '@angular/router';
+
+import { UserService } from 'src/app/_services/user.service';
+import { User } from 'src/app/_models/user';
 
 @Component({
   selector: "app-profile-edit",
@@ -15,14 +14,14 @@ import { Router } from '@angular/router';
 })
 export class ProfileEditComponent implements OnInit {
   profileEditForm: FormGroup;
-  profile: Profile;
-  profileToSubmit: Profile;
+  profile: User;
+  profileToSubmit: User;
 
   constructor(
     private alertify: AlertifyService,
     private router: Router,
-    private profileService: ProfileService,
-    private store: Store<{ userProfile: Profile }>
+    private userService: UserService,
+    private store: Store<{ userProfile: User }>
   ) {}
 
   ngOnInit() {
@@ -30,10 +29,6 @@ export class ProfileEditComponent implements OnInit {
       .select(state => state)
       .subscribe(res => {
         this.profile = res.userProfile;
-
-        // if (this.profile === null || this.friendlyUrl !== this.profile.friendlyUrl) {
-        //   this.profileService.getUserProfile(this.friendlyUrl);
-        // }
       });
 
     this.createForm();
@@ -52,7 +47,7 @@ export class ProfileEditComponent implements OnInit {
     this.profileToSubmit = this.profileEditForm.value;
     this.profileToSubmit.friendlyUrl = this.profile.friendlyUrl;
     console.log("submitted", this.profileEditForm.value);
-    this.profileService.updateProfile(this.profileToSubmit).subscribe(
+    this.userService.updateUser(this.profileToSubmit).subscribe(
       next => {
         this.alertify.success("Your profile has been updated!");
         this.router.navigate(["/user/profile/", this.profile.friendlyUrl]);

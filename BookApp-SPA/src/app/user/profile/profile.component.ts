@@ -2,9 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngrx/store";
 
-import { ProfileService } from "src/app/_services/profile.service";
 import { Profile } from "src/app/_models/profile";
 import { Book } from "src/app/books/book.model";
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
   selector: "app-profile",
@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   isCurrentUser: boolean;
 
   constructor(
-    private profileService: ProfileService,
+    private userService: UserService,
     private route: ActivatedRoute,
     private store: Store<{ userProfile: Profile }>
   ) {}
@@ -34,7 +34,7 @@ export class ProfileComponent implements OnInit {
       });
 
     if (!this.isCurrentUser) {
-      this.profileService.getUserProfile(this.friendlyUrl);
+      this.userService.getUser(this.friendlyUrl);
     }
   }
 }

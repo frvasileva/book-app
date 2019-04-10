@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { Profile } from "src/app/_models/profile";
 import { Store } from "@ngrx/store";
-import { ProfileService } from "src/app/_services/profile.service";
+import { User } from 'src/app/_models/user';
+import { UserService } from 'src/app/_services/user.service';
 
 @Component({
   selector: "app-users-list",
@@ -9,22 +9,22 @@ import { ProfileService } from "src/app/_services/profile.service";
   styleUrls: ["./users-list.component.scss"]
 })
 export class UsersListComponent implements OnInit {
-  userList: Profile[];
+  userList: User[];
 
   constructor(
     private store: Store<{
-      userProfiles: Profile[];
+      userProfiles: User[];
     }>,
-    private profileService: ProfileService
+    private userService: UserService
   ) {}
 
   ngOnInit() {
-    this.profileService.getAll();
+    this.userService.getUsers();
 
     this.store
       .select(state => state)
       .subscribe(res => {
-        this.userList = res.userProfiles as Profile[];
+        this.userList = res.userProfiles as User[];
       });
   }
 }

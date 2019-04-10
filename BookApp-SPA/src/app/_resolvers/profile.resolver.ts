@@ -3,11 +3,12 @@ import { Resolve, Router, ActivatedRouteSnapshot } from "@angular/router";
 import { AlertifyService } from "../_services/alertify.service";
 import { Observable, of } from "rxjs";
 import { catchError } from "rxjs/operators";
-import { ProfileService } from "../_services/profile.service";
 import { Profile } from "../_models/profile";
+import { UserService } from "../_services/user.service";
+import { User } from "../_models/user";
 
 @Injectable()
-export class ProfileResolver implements Resolve<Profile> {
+export class ProfileResolver implements Resolve<User> {
   resolve(
     route: ActivatedRouteSnapshot,
     state: import("@angular/router").RouterStateSnapshot
@@ -15,7 +16,7 @@ export class ProfileResolver implements Resolve<Profile> {
     throw new Error("Method not implemented.");
   }
   constructor(
-    private profileService: ProfileService,
+    private userService: UserService,
     private router: Router,
     private alertify: AlertifyService
   ) {}

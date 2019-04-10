@@ -30,7 +30,6 @@ import { AuthorService } from "./authors/author.service";
 import { UserService } from "./user/user.service";
 import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
-import { ProfileService } from "./_services/profile.service";
 // import { ProfileResolver } from "./_resolvers/profile.resolver";
 import { BookService } from "./_services/book.service";
 import { MessageService } from "./messages/message.service";
@@ -78,7 +77,6 @@ import { FileUploadModule } from "ng2-file-upload";
     AuthorService,
     BookService,
     UserService,
-    ProfileService,
     MessageService,
     BookSaverService,
     AlertifyService,
