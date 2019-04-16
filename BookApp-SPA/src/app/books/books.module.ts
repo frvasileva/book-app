@@ -10,6 +10,8 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { RequestBookComponent } from "./request-book/request-book.component";
 import { BookSaverComponent } from "./book-saver/book-saver.component";
 import { BookCardItemComponent } from "./book-card-item/book-card-item.component";
+import { FileUploadComponent } from './file-upload/file-upload.component';
+import { ProgressComponent } from './progress/progress.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +21,9 @@ import { BookCardItemComponent } from "./book-card-item/book-card-item.component
     AddBookComponent,
     RequestBookComponent,
     BookSaverComponent,
-    BookCardItemComponent
+    BookCardItemComponent,
+    FileUploadComponent,
+    ProgressComponent
   ],
   imports: [
     CommonModule,
