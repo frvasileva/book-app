@@ -12,9 +12,9 @@ import { UsersListComponent } from "./users-list/users-list.component";
 import { BooksModule } from "../books/books.module";
 import { ProfileCardComponent } from "./profile-card/profile-card.component";
 import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
-import { PhotoEditorComponent } from "../shared/photo-editor/photo-editor.component";
 import { FileUploadModule } from "ng2-file-upload";
 import { ProfilePhotoEditComponent } from './profile-photo-edit/profile-photo-edit.component';
+import { SharedModule } from '../_shared/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,6 @@ import { ProfilePhotoEditComponent } from './profile-photo-edit/profile-photo-ed
     UsersListComponent,
     ProfileCardComponent,
     ProfileEditComponent,
-    PhotoEditorComponent,
     ProfilePhotoEditComponent
   ],
   imports: [
@@ -34,7 +33,8 @@ import { ProfilePhotoEditComponent } from './profile-photo-edit/profile-photo-ed
     ReactiveFormsModule,
     UserRoutingModule,
     BooksModule,
-    FileUploadModule
+    FileUploadModule,
+    SharedModule
   ]
 })
 export class UserModule {}

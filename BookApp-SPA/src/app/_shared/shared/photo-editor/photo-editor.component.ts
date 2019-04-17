@@ -7,7 +7,7 @@ import { AlertifyService } from "src/app/_services/alertify.service";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Profile } from "src/app/_models/profile";
-import * as UserProfileActions from "../../_store/user.actions";
+import * as UserProfileActions from "../../../_store/user.actions";
 
 @Component({
   selector: "app-photo-editor",
