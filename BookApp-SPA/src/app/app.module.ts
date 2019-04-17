@@ -16,7 +16,6 @@ import { HomeComponent } from "./ui-core/home/home.component";
 import { AboutComponent } from "./ui-core/about/about.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { NotFoundComponent } from "./ui-core/not-found/not-found.component";
-import { ArticlesComponent } from "./articles/articles/articles.component";
 import { ContactComponent } from "./ui-core/contact/contact.component";
 import { QuotesComponent } from "./quotes/quotes/quotes.component";
 
@@ -47,7 +46,6 @@ import { FileUploadModule } from "ng2-file-upload";
     AboutComponent,
     LayoutComponent,
     NotFoundComponent,
-    ArticlesComponent,
     ContactComponent,
     QuotesComponent
   ],

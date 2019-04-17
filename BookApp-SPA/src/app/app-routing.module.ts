@@ -4,7 +4,6 @@ import { Routes, RouterModule } from "@angular/router";
 import { HomeComponent } from "./ui-core/home/home.component";
 import { AboutComponent } from "./ui-core/about/about.component";
 import { NotFoundComponent } from "./ui-core/not-found/not-found.component";
-import { ArticlesComponent } from "./articles/articles/articles.component";
 import { ContactComponent } from "./ui-core/contact/contact.component";
 import { AuthenticationGuard } from "./_guards/authentication.guard";
 
@@ -28,7 +27,6 @@ const appRoutes: Routes = [
   },
   { path: "about-us", component: AboutComponent },
   { path: "contact-us", component: ContactComponent },
-  { path: "articles", component: ArticlesComponent },
   { path: "404", component: NotFoundComponent },
   { path: "**", component: NotFoundComponent }
 ];

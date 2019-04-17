@@ -15,12 +15,6 @@
         <a class="nav-link" routerLink="/books">Books</a>
       </li>
       <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" routerLink="/articles">Articles</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
-        <a class="nav-link" routerLink="/authors">Authors</a>
-      </li>
-      <li class="nav-item" routerLinkActive="active">
         <a class="nav-link" routerLink="/user/user-list">Users</a>
       </li>
     </ul>
@@ -40,11 +34,7 @@
       </li>
 
       <li class="nav-item" *ngIf="this.isLoggedIn">
-        <div
-          *ngIf="this.isLoggedIn"
-          class="dropdown"
-          dropdown
-        >
+        <div *ngIf="this.isLoggedIn" class="dropdown" dropdown>
           <span class="mr-1">
             <!-- <img src="{{ photoUrl || '../../assets/user.png' }}" alt="" /> -->
           </span>
@@ -54,7 +44,10 @@
           </a>
 
           <div class="dropdown-menu mt-3" *dropdownMenu>
-            <a class="dropdown-item" [routerLink]="['/user/profile', this.friendlyUrl]">
+            <a
+              class="dropdown-item"
+              [routerLink]="['/user/profile', this.friendlyUrl]"
+            >
               <i class="fa fa-user"></i>
               See Profile
             </a>
