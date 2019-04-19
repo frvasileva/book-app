@@ -4,6 +4,7 @@ import { Store, select } from "@ngrx/store";
 
 import { BookService } from "src/app/_services/book.service";
 import { bookDetailsDto } from "src/app/_models/bookDetailsDto";
+import { Meta, Title } from "@angular/platform-browser";
 
 @Component({
   selector: "app-books-detail",
@@ -17,7 +18,9 @@ export class BooksDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
-    private store: Store<{ bookDetails: { details: bookDetailsDto } }>
+    private store: Store<{ bookDetails: { details: bookDetailsDto } }>,
+    private titleService: Title,
+    private metaTagService: Meta
   ) {}
 
   ngOnInit() {
@@ -29,8 +32,13 @@ export class BooksDetailComponent implements OnInit {
         .pipe(
           select((state: { bookDetails: { details: {} } }) => state.bookDetails)
         )
-        .subscribe((result) => {
+        .subscribe(result => {
           this.book = result;
+          this.titleService.setTitle(this.book.title);
+          this.metaTagService.updateTag({
+            name: "description",
+            content: this.book.description
+          });
         });
     });
   }

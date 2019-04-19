@@ -6,6 +6,8 @@ import { Profile } from "src/app/_models/profile";
 import { Book } from "src/app/books/book.model";
 import { UserService } from "src/app/_services/user.service";
 import { UserState } from "src/app/_store/user.reducer";
+import { Title, Meta } from '@angular/platform-browser';
+import { settings } from 'src/app/_shared/settings';
 
 @Component({
   selector: "app-profile",
@@ -21,7 +23,9 @@ export class ProfileComponent implements OnInit {
   constructor(
     private userService: UserService,
     private route: ActivatedRoute,
-    private store: Store<{ userState: UserState }>
+    private store: Store<{ userState: UserState }>,
+    private titleService: Title,
+    private metaTagService: Meta
   ) {}
 
   ngOnInit() {
@@ -36,6 +40,12 @@ export class ProfileComponent implements OnInit {
         if (!this.isCurrentUser && this.profile == null) {
           this.userService.getUser(this.friendlyUrl);
         }
+
+        this.titleService.setTitle(this.profile.knownAs + settings.seo_appName_title);
+        this.metaTagService.updateTag({
+          name: "description",
+          content: this.profile.knownAs
+        });
       });
   }
 }
