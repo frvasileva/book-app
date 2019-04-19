@@ -21,6 +21,10 @@ namespace BookApp.API.Data {
       _repoAuthor = repoAuthor;
     }
 
+    public void Add<T> (T entity) where T : class {
+      throw new NotImplementedException ();
+    }
+
     public async Task<Book> AddBook (BookCreateDto bookDto) {
 
       var result = _mapper.Map<Book> (bookDto);
@@ -64,6 +68,10 @@ namespace BookApp.API.Data {
       return bookCatalogEntity;
     }
 
+    public void Delete<T> (T entity) where T : class {
+      throw new NotImplementedException ();
+    }
+
     public async Task<BookListActions> DeleteBookAction (int bookId = 3) {
       var result = _context.BookListActions.Find (bookId);
 
@@ -72,6 +80,11 @@ namespace BookApp.API.Data {
       await _context.SaveChangesAsync ();
 
       return result;
+    }
+
+    public async Task<Book> Get (string friendlyUrl) {
+      var book = await _context.Books.Include (itm => itm.BookCatalogs).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
+      return book;
     }
 
     public async Task<List<BookPreviewDto>> GetAll () {
@@ -83,12 +96,16 @@ namespace BookApp.API.Data {
     }
 
     public async Task<BookDetailsDto> GetBook (string friendlyUrl) {
-     
-      var book = await _context.Books.Include(itm=>itm.BookCatalogs).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
+
+      var book = await _context.Books.Include (itm => itm.BookCatalogs).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
       var mappedBook = _mapper.Map<BookDetailsDto> (book);
 
       return mappedBook;
     }
 
+    public async Task<bool> SaveAll () {
+      var res = await _context.SaveChangesAsync ();
+      return res > 0;
+    }
   }
 }

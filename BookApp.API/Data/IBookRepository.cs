@@ -4,17 +4,19 @@ using BookApp.API.Dtos;
 using BookApp.API.Models;
 using Microsoft.AspNetCore.Mvc;
 
-namespace BookApp.API.Data
-{
-  public interface IBookRepository
-  {
-    Task<List<BookPreviewDto>> GetAll();
-    Task<BookDetailsDto> GetBook(string friendlyUrl);
-    Task<Book> AddBook(BookCreateDto book);
-    Task<BookListActions> AddBookAction(BookActionDto book);
+namespace BookApp.API.Data {
+  public interface IBookRepository {
+    Task<List<BookPreviewDto>> GetAll ();
+    Task<BookDetailsDto> GetBook (string friendlyUrl);
+    Task<Book> AddBook (BookCreateDto book);
+    Task<BookListActions> AddBookAction (BookActionDto book);
 
-    Task<BookListActions> DeleteBookAction(int bookId);
-    Task<BookCatalog> AddBookToCatalog(BookCatalogCreateDto bookCatalogDto);
+    Task<BookListActions> DeleteBookAction (int bookId);
+    Task<BookCatalog> AddBookToCatalog (BookCatalogCreateDto bookCatalogDto);
 
+    void Add<T> (T entity) where T : class;
+    void Delete<T> (T entity) where T : class;
+    Task<bool> SaveAll ();
+    Task<Book> Get (string friendlyUrl);
   }
 }
