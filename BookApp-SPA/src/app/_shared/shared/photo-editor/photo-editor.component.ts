@@ -16,6 +16,7 @@ import * as UserProfileActions from "../../../_store/user.actions";
 })
 export class PhotoEditorComponent implements OnInit {
   @Input() photos: Photo[];
+  @Input() apiDestinationUrl: string;
   uploader: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
@@ -23,13 +24,13 @@ export class PhotoEditorComponent implements OnInit {
   profile$: Profile;
 
   constructor(
-    private authService: AuthService,
     private alertify: AlertifyService,
     private router: Router,
     private store: Store<{ userState: Profile }>
   ) {}
 
   ngOnInit() {
+
     this.store
       .select(state => state)
       .subscribe(res => {
@@ -44,8 +45,10 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   initializeUploader() {
+
+    console.log(this.baseUrl);
     this.uploader = new FileUploader({
-      url: this.baseUrl + "profile/add-photo/" + this.profile$.friendlyUrl,
+      url: this.apiDestinationUrl,
       authToken: "Bearer " + localStorage.getItem("token"),
       isHTML5: true,
       allowedFileType: ["image"],

@@ -13,7 +13,7 @@ import { AlertifyService } from "./alertify.service";
 
 import * as BookListActions from "../books/books-list/store/bookList.actions";
 import * as BookDetailsActions from "../_store/book-detail.actions";
-import { environment } from 'src/environments/environment';
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root"
@@ -37,6 +37,8 @@ export class BookService {
         this.store.dispatch(
           new BookDetailsActions.AddBookAction(<bookDetailsDto>response)
         );
+
+        return response;
       })
     );
   }

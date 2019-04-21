@@ -15,7 +15,7 @@ const booksRoutes: Routes = [
       { path: "", component: BooksListComponent },
       { path: "details/:url", component: BooksDetailComponent },
       { path: "add", component: AddBookComponent },
-      { path: "add-cover", component: AddBookCoverComponent },
+      { path: "add-cover/:friendly-url", component: AddBookCoverComponent },
       { path: "request-book/:id", component: RequestBookComponent }
     ]
   }

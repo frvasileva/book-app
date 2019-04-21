@@ -37,16 +37,14 @@ export class AddBookComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.addBookForm.value);
     this.addBookModel.title = this.addBookForm.value.bookData.title;
     this.addBookModel.description = this.addBookForm.value.bookData.description;
     this.addBookModel.authorName = this.addBookForm.value.author;
 
     this.bookService.addBook(this.addBookModel).subscribe(
       next => {
-        //TODO: Get book friendly url and send it on route navigate
         this.alertify.success("Book added!");
-        this.router.navigateByUrl("/books/add-cover");
+        this.router.navigateByUrl("/books/add-cover/" + next.friendlyUrl);
       },
       error => {
         this.alertify.error("Failed to add book");
