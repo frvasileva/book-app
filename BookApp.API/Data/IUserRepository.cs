@@ -6,13 +6,19 @@ using BookApp.API.Models;
 
 namespace BookApp.API.Data {
     public interface IUserRepository {
-        void Add<T> (T entity) where T : class;
 
+        void Add<T> (T entity) where T : class;
         void Delete<T> (T entity) where T : class;
 
         Task<bool> SaveAll ();
 
         Task<User> GetUser (string friendlyUrl);
+
+        Task<UserFollowers> GetFollower (int followerId);
+
+        void FollowUser (int userIdToFollow, int userIdFollower);
+
+        void UnfollowUser (int userIdToFollow, int userIdFollower);
 
         Task<PagedList<User>> GetUsers (UserParams userParams);
 

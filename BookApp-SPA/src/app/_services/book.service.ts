@@ -8,11 +8,9 @@ import { BookCreateDto } from "../_models/bookCreateDto";
 import { Store } from "@ngrx/store";
 import { Book } from "../_models/books";
 
-import { bookDetailsDto } from "../_models/bookDetailsDto";
 import { AlertifyService } from "./alertify.service";
 
-import * as BookListActions from "../books/books-list/store/bookList.actions";
-import * as BookDetailsActions from "../_store/book-detail.actions";
+import * as BookActions from "../_store/book.actions";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -26,7 +24,7 @@ export class BookService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private store: Store<{ bookList: { books: Book[] } }>,
+    private store: Store<{ bookState: { books: Book[] } }>,
     private alertify: AlertifyService
   ) {}
 
@@ -35,7 +33,7 @@ export class BookService {
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
         this.store.dispatch(
-          new BookDetailsActions.AddBookAction(<bookDetailsDto>response)
+          new BookActions.SetBookAction(<Book>response)
         );
 
         return response;
@@ -47,7 +45,7 @@ export class BookService {
     return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
       data => {
         this.store.dispatch(
-          new BookDetailsActions.GetBookDetailAction(<bookDetailsDto>data)
+          new BookActions.SetBookAction(<Book>data)
         );
       },
       error => {
@@ -59,7 +57,7 @@ export class BookService {
   getBooks() {
     return this.http.get(this.baseUrl + "get-books").subscribe(
       data => {
-        this.store.dispatch(new BookListActions.GetBooksAction(data));
+        this.store.dispatch(new BookActions.SetBooksAction(data));
       },
       error => {
         this.alertify.error(error);

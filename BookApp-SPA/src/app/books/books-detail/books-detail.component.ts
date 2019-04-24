@@ -18,7 +18,7 @@ export class BooksDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
-    private store: Store<{ bookDetails: { details: bookDetailsDto } }>,
+    private store: Store<{ bookState: { books: bookDetailsDto[] } }>,
     private titleService: Title,
     private metaTagService: Meta
   ) {}
@@ -26,19 +26,21 @@ export class BooksDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params["url"];
-      this.bookService.getBook(this.friendlyUrl);
-
       this.store
         .pipe(
-          select((state: { bookDetails: { details: {} } }) => state.bookDetails)
+          select((state: { bookState: { books: bookDetailsDto[] } }) => state.bookState.books)
         )
-        .subscribe(result => {
-          this.book = result;
-          this.titleService.setTitle(this.book.title);
-          this.metaTagService.updateTag({
-            name: "description",
-            content: this.book.description
-          });
+        .subscribe(books => {
+          this.book = books.find(book => book.friendlyUrl === this.friendlyUrl);
+          if (this.book) {
+            this.titleService.setTitle(this.book.title);
+            this.metaTagService.updateTag({
+              name: "description",
+              content: this.book.description
+            });
+          } else {
+            this.bookService.getBook(this.friendlyUrl);
+          }
         });
     });
   }

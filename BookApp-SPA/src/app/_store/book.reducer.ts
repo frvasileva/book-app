@@ -1,28 +1,27 @@
-import * as BookListActions from "./bookList.actions";
+import * as BookActions from "./book.actions";
 
 const initialState = {
   books: []
 };
 
-export function bookListReducer(
+export function bookReducer (
   state = initialState,
-  action: BookListActions.BookListActions
+  action: BookActions.BookActions
 ) {
   switch (action.type) {
-    case BookListActions.GET_BOOKS: {
+    case BookActions.SET_BOOKS: {
       return {
         ...state,
         books: action.payload
       };
     }
-    case BookListActions.ADD_BOOK: {
+    case BookActions.SET_BOOK: {
+      // @TODO: avoid duplicate books in the list
       return {
         ...state,
         books: [...state.books, action.payload]
       };
     }
-    // case BookListActions.UPDATE_BOOK:
-    //   return { ...state, books: [state.books], action };
     default:
       return state;
   }

@@ -19,7 +19,6 @@ export class AddBookComponent implements OnInit {
   jwtHelper = new JwtHelperService();
 
   constructor(
-    // private store: Store<{ bookList: { books: Book[] } }>,
     private router: Router,
     private bookService: BookService,
     private alertify: AlertifyService

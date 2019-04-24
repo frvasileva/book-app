@@ -19,9 +19,8 @@ import { NotFoundComponent } from "./ui-core/not-found/not-found.component";
 import { ContactComponent } from "./ui-core/contact/contact.component";
 import { QuotesComponent } from "./quotes/quotes/quotes.component";
 
-import { bookListReducer } from "./books/books-list/store/bookList.reducer";
+import { bookReducer } from "./_store/book.reducer";
 import { messageReducer } from "./messages/store/message.reducer";
-import { bookDetailsReducer } from "./_store/book-detail.reducer";
 import { catalogReducer } from "./_store/catalog.reducer";
 import { userReducer } from "./_store/user.reducer";
 
@@ -34,7 +33,6 @@ import { BookService } from "./_services/book.service";
 import { MessageService } from "./messages/message.service";
 import { BookSaverService } from "./books/bookSaver.service";
 import { AuthenticationGuard } from "./_guards/authentication.guard";
-import { usersReducer } from "./_store/users.reducer";
 import { FileUploadModule } from "ng2-file-upload";
 
 @NgModule({
@@ -58,12 +56,10 @@ import { FileUploadModule } from "ng2-file-upload";
     BsDropdownModule.forRoot(),
     FileUploadModule,
     StoreModule.forRoot({
-      bookList: bookListReducer,
-      bookDetails: bookDetailsReducer,
+      bookState: bookReducer,
       messageList: messageReducer,
       catalog: catalogReducer,
-      userState: userReducer,
-      userProfiles: usersReducer
+      userState: userReducer
     }),
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states

@@ -18,7 +18,7 @@ export class BooksListComponent implements OnInit {
 
   constructor(
     private store: Store<{
-      bookList: { books: Book[] };
+      bookState: { books: Book[] };
       catalog: { catalogs: CatalogItemDto[] };
     }>,
     private catalogService: BookCatalogService,
@@ -34,7 +34,7 @@ export class BooksListComponent implements OnInit {
     });
 
     this.catalogService.getCatalog(1);
-    this.bookListState = this.store.select("bookList");
+    this.bookListState = this.store.select("bookState");
     this.catalogsState = this.store.select("catalog");
   }
 }

@@ -103,7 +103,7 @@ namespace BookApp.API.Controllers {
       photoForCreationDto.Url = uploadResult.Uri.ToString ();
       photoForCreationDto.PublicId = uploadResult.PublicId;
       userFromRepo.AvatarPath = uploadResult.Uri.ToString ();
-  
+
       var photo = _mapper.Map<Photo> (photoForCreationDto);
       userFromRepo.Photos.Add (photo);
 
@@ -112,6 +112,37 @@ namespace BookApp.API.Controllers {
       }
 
       return BadRequest ("Could not add the photo");
+    }
+
+    [HttpPost ("follow-user/{userIdToFollow}/{userIdFollower}")]
+    public async Task<IActionResult> FollowUser (int userIdToFollow, int userIdFollower) {
+
+      UserFollowers followUser = new UserFollowers ();
+      followUser.FollowerUserId = userIdToFollow;
+      followUser.UserId = userIdFollower;
+      followUser.Created = DateTime.Now;
+
+      _userRepository.Add (followUser);
+
+      if (await _userRepository.SaveAll ()) {
+        return Ok (followUser);
+      }
+
+      return BadRequest ("Could not follow the user");
+    }
+
+    [HttpPost ("unfollow-user/{followRelId}")]
+    public async Task<IActionResult> UnfollowUser (int followRelId) {
+
+      var relation = _userRepository.GetFollower (followRelId);
+
+      _userRepository.Delete (relation);
+
+      if (await _userRepository.SaveAll ()) {
+        return Ok ();
+      }
+
+      return BadRequest ("Could not delete the following relation");
     }
   }
 }

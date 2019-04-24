@@ -14,6 +14,7 @@ namespace BookApp.API.Dtos {
     public string City { get; set; }
     public string Country { get; set; }
     public string FriendlyUrl { get; set; }
+    public bool IsFollowedByCurrentUser { get; set; }
 
     public List<BookDetailsDto> Books { get; set; }
   }
