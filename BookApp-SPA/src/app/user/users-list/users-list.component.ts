@@ -3,6 +3,8 @@ import { Store } from "@ngrx/store";
 import { User } from "src/app/_models/user";
 import { UserService } from "src/app/_services/user.service";
 import { UserState } from "src/app/_store/user.reducer";
+import { Title, Meta } from "@angular/platform-browser";
+import { settings } from "src/app/_shared/settings";
 
 @Component({
   selector: "app-users-list",
@@ -14,10 +16,18 @@ export class UsersListComponent implements OnInit {
 
   constructor(
     private store: Store<{ userState: UserState }>,
-    private userService: UserService
+    private userService: UserService,
+    private titleService: Title,
+    private metaTagService: Meta
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle("Users " + settings.seo_appName_title);
+    this.metaTagService.updateTag({
+      name: "description",
+      content: "Book App Users"
+    });
+
     this.userService.getUsers();
 
     this.store

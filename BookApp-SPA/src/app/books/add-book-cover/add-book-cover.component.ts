@@ -11,6 +11,7 @@ export class AddBookCoverComponent implements OnInit {
   apiDestinationUrl: string;
   baseUrl = environment.apiUrl;
   bookFriendlyUrl: string;
+  uploaderType = "book-cover-photo";
 
   constructor(private route: ActivatedRoute) {}
 

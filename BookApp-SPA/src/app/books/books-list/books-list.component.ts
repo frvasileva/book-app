@@ -1,10 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { Book } from "../book.model";
-import { Subscription, Observable } from "rxjs";
+import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { BookService } from "src/app/_services/book.service";
 import { BookCatalogService } from "src/app/_services/book-catalog.service";
 import { CatalogItemDto } from "src/app/_models/catalogItem";
+import { Title, Meta } from "@angular/platform-browser";
+import { settings } from "src/app/_shared/settings";
 
 @Component({
   selector: "app-books-list",
@@ -12,7 +13,6 @@ import { CatalogItemDto } from "src/app/_models/catalogItem";
   styleUrls: ["./books-list.component.scss"]
 })
 export class BooksListComponent implements OnInit {
-
   bookListState: Observable<{ books: Book[] }>;
   catalogsState: Observable<{ catalogs: CatalogItemDto[] }>;
 
@@ -21,16 +21,20 @@ export class BooksListComponent implements OnInit {
       bookList: { books: Book[] };
       catalog: { catalogs: CatalogItemDto[] };
     }>,
-    private catalogService: BookCatalogService
+    private catalogService: BookCatalogService,
+    private titleService: Title,
+    private metaTagService: Meta
   ) {}
 
   ngOnInit() {
+    this.titleService.setTitle("Books" + settings.seo_appName_title);
+    this.metaTagService.updateTag({
+      name: "description",
+      content: "Books" + settings.seo_appName_title
+    });
 
     this.catalogService.getCatalog(1);
     this.bookListState = this.store.select("bookList");
     this.catalogsState = this.store.select("catalog");
-
   }
-
-
 }

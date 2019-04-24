@@ -13,6 +13,7 @@ export class ProfilePhotoEditComponent implements OnInit {
   baseUrl = environment.apiUrl;
   apiDestinationUrl: string;
   currentUserUrl: string;
+  uploaderType = "profile-photo";
 
   constructor(private store: Store<{ userState: UserState }>) {}
 

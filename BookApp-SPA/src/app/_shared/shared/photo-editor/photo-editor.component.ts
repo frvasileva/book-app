@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from "@angular/core";
 import { Photo } from "src/app/_models/photo";
 import { environment } from "src/environments/environment";
 import { FileUploader } from "ng2-file-upload";
-import { AuthService } from "src/app/_services/auth.service";
 import { AlertifyService } from "src/app/_services/alertify.service";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
@@ -17,6 +16,7 @@ import * as UserProfileActions from "../../../_store/user.actions";
 export class PhotoEditorComponent implements OnInit {
   @Input() photos: Photo[];
   @Input() apiDestinationUrl: string;
+  @Input() uploaderType: string;
   uploader: FileUploader;
   hasBaseDropZoneOver = false;
   baseUrl = environment.apiUrl;
@@ -30,7 +30,6 @@ export class PhotoEditorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
     this.store
       .select(state => state)
       .subscribe(res => {
@@ -45,7 +44,6 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   initializeUploader() {
-
     console.log(this.baseUrl);
     this.uploader = new FileUploader({
       url: this.apiDestinationUrl,
@@ -63,11 +61,15 @@ export class PhotoEditorComponent implements OnInit {
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
       if (response) {
-        this.store.dispatch(
-          new UserProfileActions.UpdateUserAvatarAction(response)
-        );
-        this.router.navigate(["/user/profile/teodor-url"]);
-        this.alertify.success("Photo updated");
+        if (this.uploaderType === "profile-photo") {
+          this.store.dispatch(
+            new UserProfileActions.UpdateUserAvatarAction(response)
+          );
+          this.router.navigate(["/user/profile/teodor-url"]);
+          this.alertify.success("Photo updated");
+        } else if (this.uploaderType === "book-cover-photo") {
+          console.log("book cover updated");
+        }
       }
     };
   }
