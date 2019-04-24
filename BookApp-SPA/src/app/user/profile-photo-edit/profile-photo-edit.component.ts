@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { environment } from "src/environments/environment";
 import { Store } from "@ngrx/store";
-import { Profile } from "src/app/_models/profile";
 import { UserState } from "src/app/_store/user.reducer";
 
 @Component({

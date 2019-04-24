@@ -39,5 +39,6 @@ namespace BookApp.API.Data {
     public DbSet<BookListActions> BookListActions { get; set; }
     public DbSet<Catalog> Catalogs { get; set; }
     public DbSet<BookCatalog> BookCatalog { get; set; }
+    public DbSet<UserFollowers> UserFollowers { get; set; }
   }
 }
