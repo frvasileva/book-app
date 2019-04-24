@@ -30,7 +30,6 @@ namespace BookApp.API.Data {
         .OnDelete (DeleteBehavior.Restrict);
     }
 
-    public DbSet<Value> Values { get; set; }
     public DbSet<Book> Books { get; set; }
     public DbSet<Photo> Photos { get; set; }
     public DbSet<Author> Authors { get; set; }
