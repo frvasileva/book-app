@@ -13,4 +13,6 @@ export class UserService {
     console.log("get user profile");
     return this.http.get(this.baseUrl + "get/" + userId);
   }
+
+  followUser(userIdToFollow: number, currentUserId: number) {}
 }

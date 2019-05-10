@@ -114,7 +114,7 @@ namespace BookApp.API.Controllers {
       return BadRequest ("Could not add the photo");
     }
 
-    [HttpPost ("follow-user/{userIdToFollow}/{userIdFollower}")]
+    [HttpGet ("follow-user/{userIdToFollow}/{userIdFollower}")]
     public async Task<IActionResult> FollowUser (int userIdToFollow, int userIdFollower) {
 
       UserFollowers followUser = new UserFollowers ();

@@ -32,9 +32,14 @@
         {{ profile?.introduction }}
       </p>
     </div>
-    <button type="button" class="btn btn-info btn-block" *ngIf="!isCurrentUser">
+    <button type="button" class="btn btn-info btn-block" *ngIf="!isCurrentUser && !isFollowing" (click)="followUser(profile?.id)">
       <span class="glyphicon glyphicon-plus"></span>
       Follow
+    </button>
+
+    <button type="button" class="btn btn-info btn-block" *ngIf="!isCurrentUser && isFollowing" (click)="followUser(profile?.id)">
+      <span class="glyphicon glyphicon-plus"></span>
+      Unfollow
     </button>
 
     <a

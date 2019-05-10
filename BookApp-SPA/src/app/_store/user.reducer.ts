@@ -49,6 +49,21 @@ export function userReducer(
         avatarPath: action.payload
       };
     }
+    case UserActions.UPDATE_USER_FOLLOWER: {
+      const { isFollowedByCurrentUser, userFriendlyUrl } = action.payload;
+      return {
+        ...state,
+        users: {
+          ...state.users,
+          [userFriendlyUrl]: {
+            ...state.users[userFriendlyUrl],
+            isFollowedByCurrentUser
+          }
+        }
+        // state.users[0].isFollowedByCurrentUser: action.payload,
+        //isFollowedByCurrentUser: action.payload.isFollowedByCurrentUser
+      };
+    }
     case UserActions.LOGOUT: {
       return {
         ...state,

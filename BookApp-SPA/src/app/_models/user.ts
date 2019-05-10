@@ -10,5 +10,6 @@ export interface User {
   city: string;
   country: string;
   friendlyUrl: string;
+  isFollowedByCurrentUser: boolean;
   books: Book[];
 }
