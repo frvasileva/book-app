@@ -9,6 +9,7 @@ using BookApp.API.Models;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -22,13 +23,15 @@ namespace BookApp.API.Controllers {
     private readonly IConfiguration _config;
     private readonly IUserRepository _userRepository;
     private readonly IMapper _mapper;
-
     private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
     private Cloudinary _cloudinary;
 
+    private IHttpContextAccessor _httpContextAccessor;
+
     public ProfileController (IConfiguration config, IMapper mapper,
       IUserRepository userRepository,
-      IOptions<CloudinarySettings> cloudinaryConfig) {
+      IOptions<CloudinarySettings> cloudinaryConfig,
+      IHttpContextAccessor httpContextAccessor) {
       _config = config;
       _mapper = mapper;
       _userRepository = userRepository;
@@ -41,10 +44,20 @@ namespace BookApp.API.Controllers {
       );
 
       _cloudinary = new Cloudinary (acc);
+
+      _httpContextAccessor = httpContextAccessor;
+
+      var authenticatedUser = _httpContextAccessor.HttpContext.User.Identity.Name;
+
     }
 
     [HttpGet ("get/{friendlyUrl}")]
     public async Task<IActionResult> GetUserProfile (string friendlyUrl) {
+
+      //var userrr = User.FindFirst (ClaimTypes.NameIdentifier).Value;
+      var isAuth = User.Identity.IsAuthenticated;
+      var usrIdentity = User.Identity;
+
       var profile = await _userRepository.GetUserProfile (friendlyUrl);
 
       if (profile == null)
@@ -63,7 +76,7 @@ namespace BookApp.API.Controllers {
     [HttpPost ("edit-user")]
     public async Task<IActionResult> Update (UserProfileEditDto profileForUpdate) {
 
-      // if (id != int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value))
+      var userrr = User.FindFirst (ClaimTypes.NameIdentifier).Value;
       //   return Unauthorized ();
 
       var userFromRepo = await _userRepository.GetUser (profileForUpdate.FriendlyUrl);
@@ -117,26 +130,15 @@ namespace BookApp.API.Controllers {
     [HttpGet ("follow-user/{userIdToFollow}/{userIdFollower}")]
     public async Task<IActionResult> FollowUser (int userIdToFollow, int userIdFollower) {
 
-      UserFollowers followUser = new UserFollowers ();
-      followUser.FollowerUserId = userIdToFollow;
-      followUser.UserId = userIdFollower;
-      followUser.Created = DateTime.Now;
+      var result = _userRepository.FollowUser (userIdFollower, userIdToFollow);
 
-      _userRepository.Add (followUser);
-
-      if (await _userRepository.SaveAll ()) {
-        return Ok (followUser);
-      }
-
-      return BadRequest ("Could not follow the user");
+      return Ok (result);
     }
 
-    [HttpPost ("unfollow-user/{followRelId}")]
-    public async Task<IActionResult> UnfollowUser (int followRelId) {
+    [HttpGet ("unfollow-user/{userIdToFollow}/{userIdFollower}")]
+    public async Task<IActionResult> UnfollowUser (int userIdToFollow, int userIdFollower) {
 
-      var relation = _userRepository.GetFollower (followRelId);
-
-      _userRepository.Delete (relation);
+      _userRepository.UnfollowUser (userIdToFollow, userIdFollower);
 
       if (await _userRepository.SaveAll ()) {
         return Ok ();

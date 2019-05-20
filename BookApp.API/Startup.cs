@@ -47,6 +47,7 @@ namespace DatingApp.API {
       builder.AddRoleValidator<RoleValidator<Role>> ();
       builder.AddRoleManager<RoleManager<Role>> ();
       builder.AddSignInManager<SignInManager<User>> ();
+      services.AddHttpContextAccessor ();
 
       services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme)
         .AddJwtBearer (Options => {

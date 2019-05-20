@@ -27,17 +27,38 @@ namespace BookApp.API.Data {
             _context.Remove (entity);
         }
 
-        public void FollowUser (int userIdToFollow, int userIdFollower) {
+        public UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower) {
+
             UserFollowers followUser = new UserFollowers ();
             followUser.FollowerUserId = userIdToFollow;
             followUser.UserId = userIdFollower;
             followUser.Created = DateTime.Now;
 
             _context.Add (followUser);
+
+            var user = _context.Users.Where (item => item.Id == userIdToFollow).ToList ();
+
+            var followerDto = new UserFollowersDto () {
+                Id = followUser.Id,
+                FollowerUserId = userIdFollower,
+                UserId = userIdToFollow,
+                FollowerFriendlyUrl = user.FirstOrDefault ().FriendlyUrl
+            };
+
+            _context.SaveChangesAsync ();
+
+            return followerDto;
         }
 
         public void UnfollowUser (int userIdToFollow, int userIdFollower) {
-            throw new System.NotImplementedException ();
+
+            var followerRelation = _context.UserFollowers.Where (item => item.Id == userIdToFollow).ToList ();
+            var itm = followerRelation.FirstOrDefault ();
+
+            if (itm != null) {
+                _context.Remove (itm);
+                _context.SaveChanges ();
+            }
         }
 
         public async Task<List<UserProfileDto>> GetAllProfiles () {
@@ -52,6 +73,19 @@ namespace BookApp.API.Data {
 
             return user;
         }
+
+        public async Task<User> GetUser (int userId) {
+            var user = await _context.Users.Include (p => p.Books).FirstOrDefaultAsync (u => u.Id == userId);
+
+            return user;
+        }
+
+        // public async Task<User> GetUser(int userId) {
+        //     var user = await _context.Users.FirstOrDefaultAsync (u => u.Id == userId);
+
+        //     return user;
+        // }
+
         public async Task<UserProfileDto> GetUserProfile (string friendlyUrl) {
             var currentUser = await _context.Users.Include (itm => itm.Books).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
             var mappedProfile = _mapper.Map<UserProfileDto> (currentUser);
@@ -64,7 +98,7 @@ namespace BookApp.API.Data {
         }
 
         public async Task<UserFollowers> GetFollower (int followerId) {
-            var result = await _context.UserFollowers.Where (item=>item.Id == followerId).FirstOrDefaultAsync();
+            var result = await _context.UserFollowers.Where (item => item.Id == followerId).FirstOrDefaultAsync ();
             return result;
         }
 

@@ -14,9 +14,11 @@ namespace BookApp.API.Data {
 
         Task<User> GetUser (string friendlyUrl);
 
+        Task<User> GetUser (int userId);
+
         Task<UserFollowers> GetFollower (int followerId);
 
-        void FollowUser (int userIdToFollow, int userIdFollower);
+        UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower);
 
         void UnfollowUser (int userIdToFollow, int userIdFollower);
 

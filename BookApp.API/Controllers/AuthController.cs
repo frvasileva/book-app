@@ -66,6 +66,9 @@ namespace DatingApp.API.Controllers {
 
         var userToReturn = _mapper.Map<UserProfileDto> (appUser);
 
+        var isAuth = User.Identity.IsAuthenticated;
+        var usrIdentity = User.Identity;
+
         return Ok (new {
           token = GenerateJwtToken (appUser),
             user = userToReturn
