@@ -1,7 +1,7 @@
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgModule } from "@angular/core";
-import { HttpClientModule } from "@angular/common/http";
+import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { StoreModule } from "@ngrx/store";
 import { BsDropdownModule } from "ngx-bootstrap";
 
@@ -34,6 +34,7 @@ import { MessageService } from "./messages/message.service";
 import { BookSaverService } from "./books/bookSaver.service";
 import { AuthenticationGuard } from "./_guards/authentication.guard";
 import { FileUploadModule } from "ng2-file-upload";
+import { JwtInterceptorHelper } from "./_helpers/jwtInterceptor";
 
 @NgModule({
   declarations: [
@@ -74,7 +75,9 @@ import { FileUploadModule } from "ng2-file-upload";
     MessageService,
     BookSaverService,
     AlertifyService,
-    AuthenticationGuard
+    AuthenticationGuard,
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorHelper, multi: true }
+
     // ProfileResolver
   ],
   bootstrap: [AppComponent]
