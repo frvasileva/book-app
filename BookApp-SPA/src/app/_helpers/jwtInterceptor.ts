@@ -12,18 +12,11 @@ import { UserService } from "../_services/user.service";
 
 @Injectable()
 export class JwtInterceptorHelper implements HttpInterceptor {
-  //constructor(private authenticationService: AuthenticationService) { }
   constructor(private userService: UserService) {}
 
-  intercept(
-    request: HttpRequest<any>,
-    next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  intercept( request: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> {
     // add authorization header with jwt token if available
-    let token = localStorage.getItem("token");
-
-    console.log("JwtInterceptorHelper");
-
+    const token = localStorage.getItem("token");
     if (token) {
       console.log("token: ", token);
       request = request.clone({

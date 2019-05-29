@@ -10,7 +10,7 @@ namespace BookApp.API.Models {
 
     public string FriendlyUrl { get; set; }
 
-    public byte[] PasswordSalt { get; set; }
+   // public byte[] PasswordSalt { get; set; }
     public DateTime Created { get; set; }
     public DateTime LastActive { get; set; }
     public string Introduction { get; set; }

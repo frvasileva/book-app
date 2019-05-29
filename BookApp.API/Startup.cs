@@ -38,7 +38,7 @@ namespace DatingApp.API {
         opt.Password.RequireDigit = false;
         opt.Password.RequiredLength = 6;
         opt.Password.RequireNonAlphanumeric = false;
-        opt.Password.RequireUppercase = true;
+        opt.Password.RequireUppercase = false;
         opt.User.RequireUniqueEmail = true;
       });
 
@@ -49,12 +49,21 @@ namespace DatingApp.API {
       builder.AddSignInManager<SignInManager<User>> ();
       services.AddHttpContextAccessor ();
 
-      services.AddAuthentication (JwtBearerDefaults.AuthenticationScheme)
-        .AddJwtBearer (Options => {
-          Options.TokenValidationParameters = new TokenValidationParameters {
-          ValidateIssuerSigningKey = true,
-          IssuerSigningKey = new SymmetricSecurityKey (Encoding.ASCII.GetBytes (Configuration.GetSection ("AppSettings:Token").Value)),
-          ValidateAudience = false
+      // configure jwt authentication
+      var key = Encoding.ASCII.GetBytes (Configuration.GetSection ("AppSettings:Token").Value);
+
+      services.AddAuthentication (x => {
+          x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+          x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        })
+        .AddJwtBearer (x => {
+          x.RequireHttpsMetadata = false;
+          x.SaveToken = true;
+          x.TokenValidationParameters = new TokenValidationParameters {
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = new SymmetricSecurityKey (key),
+            ValidateIssuer = false,
+            ValidateAudience = false
           };
         });
 
@@ -71,6 +80,7 @@ namespace DatingApp.API {
         .AddJsonOptions (opt => {
           opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         });
+
       services.AddCors ();
       services.Configure<CloudinarySettings> (Configuration.GetSection ("CloudinarySettings"));
 
@@ -79,6 +89,8 @@ namespace DatingApp.API {
       services.AddScoped<IBookRepository, BookRepository> ();
       services.AddScoped<IAuthorRepository, AuthorRepository> ();
       services.AddScoped<ICatalogRepository, CatalogRepository> ();
+      services.AddScoped<IAuthRepository, AuthRepository> ();
+
       services.AddTransient<DbContext> ();
     }
 

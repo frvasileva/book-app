@@ -61,17 +61,12 @@ namespace DatingApp.API.Controllers {
       var result = await _signInManager.CheckPasswordSignInAsync (user, userForLoginDto.Password, false);
 
       if (result.Succeeded) {
-        var appUser = await _userManager.Users.Include (p => p.Books)
-          .FirstOrDefaultAsync (u => u.NormalizedEmail == userForLoginDto.Email.ToUpper ());
-
+        var appUser = await _userManager.Users.Include (p => p.Books).FirstOrDefaultAsync (u => u.NormalizedEmail == userForLoginDto.Email.ToUpper ());
         var userToReturn = _mapper.Map<UserProfileDto> (appUser);
-
-        var isAuth = User.Identity.IsAuthenticated;
-        var usrIdentity = User.Identity;
 
         return Ok (new {
           token = GenerateJwtToken (appUser),
-            user = userToReturn
+          user = userToReturn
         });
       }
 
@@ -81,8 +76,8 @@ namespace DatingApp.API.Controllers {
     private string GenerateJwtToken (User user) {
 
       var claims = new [] {
-        new Claim (ClaimTypes.NameIdentifier, user.Id.ToString ()),
-        new Claim (ClaimTypes.Name, user.FriendlyUrl)
+        new Claim (ClaimTypes.NameIdentifier, user.Id.ToString ())
+        // new Claim (ClaimTypes.Name, user.FriendlyUrl)
       };
 
       var key = new SymmetricSecurityKey (Encoding.UTF8.GetBytes (_config.GetSection ("AppSettings:Token").Value));
