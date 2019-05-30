@@ -35,6 +35,7 @@ import { BookSaverService } from "./books/bookSaver.service";
 import { AuthenticationGuard } from "./_guards/authentication.guard";
 import { FileUploadModule } from "ng2-file-upload";
 import { JwtInterceptorHelper } from "./_helpers/jwtInterceptor";
+import { ErrorInterceptor } from "./_helpers/error.interceptor";
 
 @NgModule({
   declarations: [
@@ -76,7 +77,8 @@ import { JwtInterceptorHelper } from "./_helpers/jwtInterceptor";
     BookSaverService,
     AlertifyService,
     AuthenticationGuard,
-    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorHelper, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorHelper, multi: true },
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
 
     // ProfileResolver
   ],
