@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -17,7 +19,7 @@ using Microsoft.Extensions.Options;
 using Newtonsoft.Json.Linq;
 
 namespace BookApp.API.Controllers {
-  
+
   [Authorize]
   [Route ("api/[controller]")]
   [ApiController]
@@ -50,42 +52,11 @@ namespace BookApp.API.Controllers {
       _httpContextAccessor = httpContextAccessor;
 
       var authenticatedUser = _httpContextAccessor.HttpContext.User.Identity.Name;
-
     }
 
     [AllowAnonymous]
     [HttpGet ("get/{friendlyUrl}")]
     public async Task<IActionResult> GetUserProfile (string friendlyUrl) {
-
-      var jwtHandler = new JwtSecurityTokenHandler ();
-      var jwtInput = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxNiIsInVuaXF1ZV9uYW1lIjoidGVvZG9yLXVybCIsIm5iZiI6MTU1ODYwMzk5NSwiZXhwIjoxNTU4NjkwMzk1LCJpYXQiOjE1NTg2MDM5OTV9.SyJdoiW7RFJoBcTdi9zriaRUBq4XMrk-KNlh7YUBuDAoyeAdY4xv62xggIUi1SzL2cseuBdiZhjEJgmtY7YWag";
-      var outputText = "";
-      var readableToken = jwtHandler.CanReadToken (jwtInput);
-
-      if (readableToken != true) {
-        outputText = "The token doesn't seem to be in a proper JWT format.";
-      }
-      if (readableToken == true) {
-        var token = jwtHandler.ReadJwtToken (jwtInput);
-
-        //Extract the headers of the JWT
-        var headers = token.Header;
-        var jwtHeader = "{";
-        foreach (var h in headers) {
-          jwtHeader += '"' + h.Key + "\":\"" + h.Value + "\",";
-        }
-        jwtHeader += "}";
-        outputText = "Header:\r\n" + JToken.Parse (jwtHeader).ToString ();
-
-        //Extract the payload of the JWT
-        var claims = token.Claims;
-        var jwtPayload = "{";
-        foreach (Claim c in claims) {
-          jwtPayload += '"' + c.Type + "\":\"" + c.Value + "\",";
-        }
-        jwtPayload += "}";
-        outputText += "\r\nPayload:\r\n" + JToken.Parse (jwtPayload).ToString ();
-      }
 
       var profile = await _userRepository.GetUserProfile (friendlyUrl);
 
@@ -104,9 +75,6 @@ namespace BookApp.API.Controllers {
 
     [HttpPost ("edit-user")]
     public async Task<IActionResult> Update (UserProfileEditDto profileForUpdate) {
-
-      var userrr = User.FindFirst (ClaimTypes.NameIdentifier).Value;
-      //   return Unauthorized ();
 
       var userFromRepo = await _userRepository.GetUser (profileForUpdate.FriendlyUrl);
 
@@ -156,10 +124,23 @@ namespace BookApp.API.Controllers {
       return BadRequest ("Could not add the photo");
     }
 
-    [HttpGet ("follow-user/{userIdToFollow}/{userIdFollower}")]
-    public async Task<IActionResult> FollowUser (int userIdToFollow, int userIdFollower) {
+    [HttpGet ("follow-user/{userIdToFollow}")]
+    public IActionResult FollowUser (int userIdToFollow) {
 
-      var result = _userRepository.FollowUser (userIdFollower, userIdToFollow);
+      var identity = HttpContext.User.Identity as ClaimsIdentity;
+      int userId = 0;
+      if (identity != null)
+        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
+
+      //User.FindFirst (ClaimTypes.NameIdentifier).Value
+      int currentUserId = -1;
+      if (identity != null) {
+        IEnumerable<Claim> claims = identity.Claims;
+        var usernameClaim = claims.Where (x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault ().Value;
+        currentUserId = Int32.Parse (usernameClaim);
+      }
+
+      var result = _userRepository.FollowUser (currentUserId, userIdToFollow);
 
       return Ok (result);
     }
