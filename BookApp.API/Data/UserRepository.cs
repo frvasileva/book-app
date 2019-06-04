@@ -52,7 +52,7 @@ namespace BookApp.API.Data {
 
         public void UnfollowUser (int userIdToFollow, int userIdFollower) {
 
-            var followerRelation = _context.UserFollowers.Where (item => item.FollowerUserId == userIdFollower && item.UserId == userIdToFollow).ToList ();
+            var followerRelation = _context.UserFollowers.Where (item => item.FollowerUserId ==userIdToFollow  && item.UserId == userIdFollower).ToList ();
             var itm = followerRelation.FirstOrDefault ();
 
             if (itm != null) {
