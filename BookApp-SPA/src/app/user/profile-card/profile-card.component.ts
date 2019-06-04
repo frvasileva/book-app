@@ -24,7 +24,7 @@ export class ProfileCardComponent implements OnInit {
   }
 
   unFollowUser() {
-    this.userService.unFollowUser(this.profile.id);
+    this.userService.unFollowUser(this.profile.id, this.profile.friendlyUrl);
     this.isFollowing = this.currentUser.isFollowedByCurrentUser;
   }
 }

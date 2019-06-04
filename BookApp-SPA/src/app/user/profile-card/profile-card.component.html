@@ -37,7 +37,7 @@
       Follow
     </button>
 
-    <button type="button" class="btn btn-info btn-block" *ngIf="!isCurrentUser && isFollowing" (click)="followUser(profile?.id)">
+    <button type="button" class="btn btn-info btn-block" *ngIf="!isCurrentUser && isFollowing" (click)="unFollowUser(profile?.id)">
       <span class="glyphicon glyphicon-plus"></span>
       Unfollow
     </button>

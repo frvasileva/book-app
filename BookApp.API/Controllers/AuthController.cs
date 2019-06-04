@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
+using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
@@ -36,14 +37,15 @@ namespace DatingApp.API.Controllers {
     public async Task<IActionResult> Register (UserForRegisterDto userForRegisterDto) {
 
       var userToCreate = _mapper.Map<User> (userForRegisterDto);
-      //userToCreate.UserName = userForRegisterDto.Email;
+      userToCreate.UserName = userForRegisterDto.Email;
+      userToCreate.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (userForRegisterDto.Email);
+      userToCreate.KnownAs = userForRegisterDto.KnownAs;
 
       var result = await _userManager.CreateAsync (userToCreate, userForRegisterDto.Password);
       var userToReturn = _mapper.Map<UserProfileDto> (userToCreate);
       var user = _mapper.Map<User> (userToReturn);
 
       if (result.Succeeded) {
-        //return CreatedAtRoute ("GetUser", new { controller = "Users", id = userToCreate.Id }, userToReturn);
         return Ok (new {
           token = GenerateJwtToken (user)
         });
@@ -66,7 +68,7 @@ namespace DatingApp.API.Controllers {
 
         return Ok (new {
           token = GenerateJwtToken (appUser),
-          user = userToReturn
+            user = userToReturn
         });
       }
 

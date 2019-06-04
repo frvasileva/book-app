@@ -48,10 +48,7 @@ namespace BookApp.API.Controllers {
       );
 
       _cloudinary = new Cloudinary (acc);
-
       _httpContextAccessor = httpContextAccessor;
-
-      var authenticatedUser = _httpContextAccessor.HttpContext.User.Identity.Name;
     }
 
     [AllowAnonymous]
@@ -132,29 +129,23 @@ namespace BookApp.API.Controllers {
       if (identity != null)
         userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
 
-      //User.FindFirst (ClaimTypes.NameIdentifier).Value
-      int currentUserId = -1;
-      if (identity != null) {
-        IEnumerable<Claim> claims = identity.Claims;
-        var usernameClaim = claims.Where (x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault ().Value;
-        currentUserId = Int32.Parse (usernameClaim);
-      }
-
-      var result = _userRepository.FollowUser (currentUserId, userIdToFollow);
+      var result = _userRepository.FollowUser (userIdToFollow, userId);
 
       return Ok (result);
     }
 
-    [HttpGet ("unfollow-user/{userIdToFollow}/{userIdFollower}")]
-    public async Task<IActionResult> UnfollowUser (int userIdToFollow, int userIdFollower) {
+    [HttpGet ("unfollow-user/{userIdToFollow}")]
+    public async Task<IActionResult> UnfollowUser (int userIdToFollow) {
 
-      _userRepository.UnfollowUser (userIdToFollow, userIdFollower);
+      var identity = HttpContext.User.Identity as ClaimsIdentity;
 
-      if (await _userRepository.SaveAll ()) {
-        return Ok ();
-      }
+      int userId = 0;
+      if (identity != null)
+        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
 
-      return BadRequest ("Could not delete the following relation");
+      _userRepository.UnfollowUser (userIdToFollow, userId);
+      return Ok ();
+
     }
   }
 }

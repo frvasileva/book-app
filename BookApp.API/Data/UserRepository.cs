@@ -52,7 +52,7 @@ namespace BookApp.API.Data {
 
         public void UnfollowUser (int userIdToFollow, int userIdFollower) {
 
-            var followerRelation = _context.UserFollowers.Where (item => item.Id == userIdToFollow).ToList ();
+            var followerRelation = _context.UserFollowers.Where (item => item.FollowerUserId == userIdFollower && item.UserId == userIdToFollow).ToList ();
             var itm = followerRelation.FirstOrDefault ();
 
             if (itm != null) {
@@ -80,12 +80,6 @@ namespace BookApp.API.Data {
             return user;
         }
 
-        // public async Task<User> GetUser(int userId) {
-        //     var user = await _context.Users.FirstOrDefaultAsync (u => u.Id == userId);
-
-        //     return user;
-        // }
-
         public async Task<UserProfileDto> GetUserProfile (string friendlyUrl) {
             var currentUser = await _context.Users.Include (itm => itm.Books).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
             var mappedProfile = _mapper.Map<UserProfileDto> (currentUser);
@@ -106,6 +100,5 @@ namespace BookApp.API.Data {
             var res = await _context.SaveChangesAsync ();
             return res > 0;
         }
-
     }
 }

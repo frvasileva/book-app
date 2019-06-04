@@ -59,13 +59,16 @@ export class UserService {
   }
 
   followUser(userIdToFollow: number) {
+    let user: any;
+
     return this.http
       .get(this.baseUrl + "follow-user/" + userIdToFollow)
       .subscribe(
         data => {
+          user = data;
           this.store.dispatch(
             new UserActions.UpdateUserFollowerAction({
-              userFriendlyUrl: "fsdfsd",
+              userFriendlyUrl: user.followerFriendlyUrl,
               isFollowedByCurrentUser: true
             })
           );
@@ -76,7 +79,25 @@ export class UserService {
       );
   }
 
-  unFollowUser(userIdToUnfollow: number) {}
+  unFollowUser(userIdToUnfollow: number, friendlyUrl: string) {
+    console.log("user unfollowed", friendlyUrl);
+
+    return this.http
+      .get(this.baseUrl + "unfollow-user/" + userIdToUnfollow)
+      .subscribe(
+        data => {
+          this.store.dispatch(
+            new UserActions.UpdateUserFollowerAction({
+              userFriendlyUrl: friendlyUrl,
+              isFollowedByCurrentUser: false
+            })
+          );
+        },
+        error => {
+          this.alertify.error(error);
+        }
+      );
+  }
 
   // deletePhoto(userId: number, id: number) {
   //   return this.http.delete(this.baseUrl + "users/" + userId + "/photos/" + id);
