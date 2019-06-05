@@ -1,0 +1,46 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-wrapper">
+        <h1 class="form-title">Create Catalog</h1>
+        <form [formGroup]="addCatalogForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="">Catalog Name:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="name"
+            />
+            <span
+              class="error-message"
+              *ngIf="
+                !addCatalogForm.get('name').valid && addCatalogForm.get('name').touched
+              "
+            >
+              This field is required
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="visibility">Is public:</label>
+            <input
+              type="checkbox"
+              class="form-control"
+              name="visibility"
+              formControlName="visibility"
+            />
+
+          </div>
+
+          <button
+            class="button primary"
+            type="submit"
+            [disabled]="!addCatalogForm.valid"
+          >
+            Create
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

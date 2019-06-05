@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
-import { JwtHelperService } from "@auth0/angular-jwt";
 
 import { BookCreateDto } from "src/app/_models/bookCreateDto";
 import { BookService } from "src/app/_services/book.service";
@@ -16,7 +15,6 @@ export class AddBookComponent implements OnInit {
   addBookForm: FormGroup;
   bookTypes = ["paper", "ebook"];
   addBookModel = {} as BookCreateDto;
-  jwtHelper = new JwtHelperService();
 
   constructor(
     private router: Router,

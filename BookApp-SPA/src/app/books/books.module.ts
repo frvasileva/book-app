@@ -16,6 +16,9 @@ import { BookSaverComponent } from "./book-saver/book-saver.component";
 import { BookCardItemComponent } from "./book-card-item/book-card-item.component";
 import { ProgressComponent } from "./progress/progress.component";
 import { AddBookCoverComponent } from "./add-book-cover/add-book-cover.component";
+import { CatalogListComponent } from './catalog-list/catalog-list.component';
+import { CatalogItemComponent } from './catalog-item/catalog-item.component';
+import { CatalogCreateComponent } from './catalog-create/catalog-create.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +30,10 @@ import { AddBookCoverComponent } from "./add-book-cover/add-book-cover.component
     BookSaverComponent,
     BookCardItemComponent,
     ProgressComponent,
-    AddBookCoverComponent
+    AddBookCoverComponent,
+    CatalogListComponent,
+    CatalogItemComponent,
+    CatalogCreateComponent
   ],
   imports: [
     CommonModule,

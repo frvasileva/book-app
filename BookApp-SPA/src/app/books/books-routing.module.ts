@@ -6,6 +6,7 @@ import { BooksDetailComponent } from "./books-detail/books-detail.component";
 import { AddBookComponent } from "./add-book/add-book.component";
 import { RequestBookComponent } from "./request-book/request-book.component";
 import { AddBookCoverComponent } from './add-book-cover/add-book-cover.component';
+import { CatalogCreateComponent } from './catalog-create/catalog-create.component';
 
 const booksRoutes: Routes = [
   {
@@ -16,6 +17,7 @@ const booksRoutes: Routes = [
       { path: "details/:url", component: BooksDetailComponent },
       { path: "add", component: AddBookComponent },
       { path: "add-cover/:friendly-url", component: AddBookCoverComponent },
+      { path: "add-catalog", component: CatalogCreateComponent },
       { path: "request-book/:id", component: RequestBookComponent }
     ]
   }
