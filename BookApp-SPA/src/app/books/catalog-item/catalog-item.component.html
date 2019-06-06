@@ -1,3 +1,5 @@
-<p>
-  catalog-item works!
-</p>
+<div class="card-wrapper">
+  <a [routerLink]="['/books/catalogs/details', catalog?.friendlyUrl]">
+    <div class="book-title">{{ catalog?.name }}</div>
+  </a>
+</div>
