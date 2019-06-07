@@ -15,7 +15,9 @@ export class ProfileCardComponent implements OnInit {
 
   constructor(private userService: UserService) {}
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.isFollowing = this.profile.isFollowedByCurrentUser;
+  }
 
   followUser() {
     this.userService.followUser(this.profile.id);

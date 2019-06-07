@@ -52,7 +52,7 @@ namespace BookApp.API.Data {
 
         public void UnfollowUser (int userIdToFollow, int userIdFollower) {
 
-            var followerRelation = _context.UserFollowers.Where (item => item.FollowerUserId ==userIdToFollow  && item.UserId == userIdFollower).ToList ();
+            var followerRelation = _context.UserFollowers.Where (item => item.FollowerUserId == userIdToFollow && item.UserId == userIdFollower).ToList ();
             var itm = followerRelation.FirstOrDefault ();
 
             if (itm != null) {
@@ -62,10 +62,20 @@ namespace BookApp.API.Data {
         }
 
         public async Task<List<UserProfileDto>> GetAllProfiles () {
-            var allUsers = await _context.Users.Include (item => item.Books).OrderByDescending (u => u.Created).ToListAsync ();
 
-            List<UserProfileDto> userList = _mapper.Map<List<User>, List<UserProfileDto>> (allUsers);
-            return userList;
+            var allUsers = await _context.Users.Include (user => user.Books).OrderByDescending (u => u.Created).ToListAsync ();
+            var mappedUsers = _mapper.Map<List<User>, List<UserProfileDto>> (allUsers);
+            var userFollowers = await _context.UserFollowers.ToListAsync ();
+
+            foreach (var user in mappedUsers) {
+                foreach (var follower in userFollowers) {
+                    if (user.Id == follower.FollowerUserId) {
+                        user.IsFollowedByCurrentUser = true;
+                    }
+                }
+            }
+
+            return mappedUsers;
         }
 
         public async Task<User> GetUser (string friendlyUrl) {
@@ -83,6 +93,12 @@ namespace BookApp.API.Data {
         public async Task<UserProfileDto> GetUserProfile (string friendlyUrl) {
             var currentUser = await _context.Users.Include (itm => itm.Books).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
             var mappedProfile = _mapper.Map<UserProfileDto> (currentUser);
+
+            //TODO: Get current user id from token and prefill is it follower 
+            // var userFollower = _context.UserFollowers.Where (u => u.FollowerUserId == currentUser.Id).ToList ();
+            // if (userFollower != null) {
+            //     mappedProfile.IsFollowedByCurrentUser = true;
+            // }
 
             return mappedProfile;
         }
