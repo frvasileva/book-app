@@ -30,7 +30,7 @@ export class BookCatalogService {
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
         this.store.dispatch(
-          new CatalogActions.AddCatalogAction(<CatalogItemDto>response)
+          new CatalogActions.AddCatalogAction(<CatalogCreateDto>response)
         );
       })
     );
