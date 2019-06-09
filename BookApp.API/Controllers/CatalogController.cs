@@ -1,13 +1,18 @@
+using System;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
+
 
 namespace BookApp.API.Controllers {
   [Route ("api/[controller]")]
   [ApiController]
+  [Authorize]
   public class CatalogController : ControllerBase {
     private readonly ICatalogRepository _repo;
     private readonly DataContext _context;
@@ -21,6 +26,14 @@ namespace BookApp.API.Controllers {
 
     [HttpPost ("add")]
     public async Task<IActionResult> Add (CatalogCreateDto catalogCteateDto) {
+
+      var identity = HttpContext.User.Identity as ClaimsIdentity;
+      int userId = 0;
+      if (identity != null)
+        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
+
+      catalogCteateDto.UserId = userId;
+
       var result = await _repo.Create (catalogCteateDto);
       await _context.SaveChangesAsync ();
 
@@ -52,7 +65,6 @@ namespace BookApp.API.Controllers {
     [HttpPost ("update")]
     public async Task<IActionResult> Update (CatalogCreateDto catalogCteateDto) {
       var result = await _repo.Update (catalogCteateDto);
-      
 
       return Ok (result);
     }

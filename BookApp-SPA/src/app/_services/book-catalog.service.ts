@@ -9,14 +9,13 @@ import { CatalogCreateDto } from "../_models/catalogCreateDto";
 import { HttpClient } from "@angular/common/http";
 
 import * as CatalogActions from "../_store/catalog.actions";
-import { CatalogItemDto } from "../_models/catalogItem";
-import { environment } from 'src/environments/environment';
+import { environment } from "src/environments/environment";
 
 @Injectable({
   providedIn: "root"
 })
 export class BookCatalogService {
-  baseUrl =  environment.apiUrl + "bookcatalog/";
+  baseUrl = environment.apiUrl + "catalog/";
   jwtHelper = new JwtHelperService();
   alertify: any;
 
@@ -27,6 +26,7 @@ export class BookCatalogService {
   ) {}
 
   addCatalog(model: CatalogCreateDto) {
+    console.log("service: ", model);
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
         this.store.dispatch(

@@ -1,5 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { BookCatalogService } from "src/app/_services/book-catalog.service";
+import { CatalogCreateDto } from "src/app/_models/catalogCreateDto";
+import { AlertifyService } from "src/app/_services/alertify.service";
 
 @Component({
   selector: "app-catalog-create",
@@ -9,7 +12,10 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 export class CatalogCreateComponent implements OnInit {
   addCatalogForm: FormGroup;
 
-  constructor() {}
+  constructor(
+    private catalogService: BookCatalogService,
+    private alertify: AlertifyService
+  ) {}
 
   ngOnInit() {
     this.addCatalogForm = new FormGroup({
@@ -19,19 +25,23 @@ export class CatalogCreateComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log("submit", this.addCatalogForm.value);
+    const name: string = this.addCatalogForm.value.name.toString();
+    const isPublic: boolean = <boolean>this.addCatalogForm.value.visibility;
+    const catalogItem: CatalogCreateDto = { name, isPublic };
+
+    this.catalogService.addCatalog(catalogItem);
+
     // this.addBookModel.title = this.addBookForm.value.bookData.title;
     // this.addBookModel.description = this.addBookForm.value.bookData.description;
     // this.addBookModel.authorName = this.addBookForm.value.author;
 
-    // this.bookService.addBook(this.addBookModel).subscribe(
-    //   next => {
-    //     this.alertify.success("Book added!");
-    //     this.router.navigateByUrl("/books/add-cover/" + next.friendlyUrl);
-    //   },
-    //   error => {
-    //     this.alertify.error("Failed to add book");
-    //   }
-    // );
+    this.catalogService.addCatalog(catalogItem).subscribe(
+      next => {
+        this.alertify.success("Catalog created!");
+      },
+      error => {
+        this.alertify.error("Failed to create catalog");
+      }
+    );
   }
 }
