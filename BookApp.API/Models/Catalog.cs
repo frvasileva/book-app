@@ -8,8 +8,10 @@ namespace BookApp.API.Models {
         public string Name { get; set; }
 
         public bool IsPublic { get; set; }
-        
+
         public DateTime Created { get; set; }
+
+        public string FriendlyUrl { get; set; }
 
         public int UserId { get; set; }
 

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Dtos;
+using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Microsoft.EntityFrameworkCore;
-
 namespace BookApp.API.Data {
   public class CatalogRepository : ICatalogRepository {
 
@@ -21,7 +21,7 @@ namespace BookApp.API.Data {
     public async Task<Catalog> Create (CatalogCreateDto catalogDto) {
       var result = _mapper.Map<Catalog> (catalogDto);
       result.Created = DateTime.Now;
-
+      result.FriendlyUrl = Url.GenerateFriendlyUrl (catalogDto.Name + "-" + StringHelper.GenerateRandomNo ());
       await _context.Catalogs.AddAsync (result);
       await _context.SaveChangesAsync ();
 
