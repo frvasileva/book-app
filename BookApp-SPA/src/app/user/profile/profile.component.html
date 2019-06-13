@@ -18,8 +18,6 @@
             <i class="glyphicon glyphicon-pencil"></i>
             Add Catalog
           </a>
-
-          <app-catalog-item></app-catalog-item>
         </div>
         <div class="col-md-4">
           <a
@@ -32,13 +30,20 @@
           </a>
         </div>
       </div>
-      <div class="row">
+
+      <!-- <div class="row">
         <div class="col-4 col-xs-6 col-sm-6" *ngFor="let book of profile.books">
           <app-book-card-item [book]="book"></app-book-card-item>
         </div>
 
         <div class="col-12" *ngIf="profile?.books?.length == 0">
           <div class="alert alert-warning">No books added!</div>
+        </div>
+      </div> -->
+
+      <div class="row">
+        <div class="col-12">
+          <app-catalog-list></app-catalog-list>
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@ import { RequestBookComponent } from "./request-book/request-book.component";
 import { AddBookCoverComponent } from "./add-book-cover/add-book-cover.component";
 import { CatalogCreateComponent } from "./catalog-create/catalog-create.component";
 import { CatalogListComponent } from './catalog-list/catalog-list.component';
+import { CatalogItemComponent } from './catalog-item/catalog-item.component';
 
 const booksRoutes: Routes = [
   {
@@ -21,7 +22,7 @@ const booksRoutes: Routes = [
       { path: "request-book/:id", component: RequestBookComponent },
       { path: "catalog/add", component: CatalogCreateComponent },
       { path: "catalog/edit/:friendly-url", component: CatalogCreateComponent },
-      { path: "catalog/details/:friendly-url", component: CatalogCreateComponent },
+      { path: "catalog/details/:friendly-url", component: CatalogItemComponent },
       { path: "catalogs", component: CatalogListComponent },
     ]
   }

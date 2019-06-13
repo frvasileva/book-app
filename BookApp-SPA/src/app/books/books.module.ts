@@ -44,6 +44,6 @@ import { CatalogCreateComponent } from './catalog-create/catalog-create.componen
     FileUploadModule,
     SharedModule
   ],
-  exports: [BookCardItemComponent, CatalogItemComponent]
+  exports: [BookCardItemComponent, CatalogListComponent]
 })
 export class BooksModule {}

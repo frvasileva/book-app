@@ -26,11 +26,9 @@ export class UsersListComponent implements OnInit {
       content: "Book App Users"
     });
 
-
     this.store
       .select(state => state)
       .subscribe(res => {
-        console.log("gossip");
         this.userList = Object.values(res.userState.users) as User[];
       });
   }

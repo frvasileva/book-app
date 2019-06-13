@@ -59,7 +59,7 @@ import { ErrorInterceptor } from "./_helpers/error.interceptor";
     StoreModule.forRoot({
       bookState: bookReducer,
       messageList: messageReducer,
-      catalog: catalogReducer,
+      catalogState: catalogReducer,
       userState: userReducer
     }),
     StoreDevtoolsModule.instrument({

@@ -10,6 +10,7 @@ import { HttpClient } from "@angular/common/http";
 
 import * as CatalogActions from "../_store/catalog.actions";
 import { environment } from "src/environments/environment";
+import { CatalogItemDto } from "../_models/catalogItem";
 
 @Injectable({
   providedIn: "root"
@@ -21,17 +22,17 @@ export class BookCatalogService {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
     private store: Store<{ catalog: { catalog: CatalogCreateDto[] } }>
   ) {}
 
   addCatalog(model: CatalogCreateDto) {
-    console.log("service: ", model);
     return this.http.post(this.baseUrl + "add", model).pipe(
-      map((response: any) => {
+      map((response: CatalogItemDto) => {
         this.store.dispatch(
           new CatalogActions.AddCatalogAction(<CatalogCreateDto>response)
         );
+
+        return response;
       })
     );
   }
@@ -54,6 +55,7 @@ export class BookCatalogService {
     console.log(this.http.get(this.baseUrl + "get-all"));
     return this.http.get(this.baseUrl + "get-all").subscribe(
       data => {
+        console.log("get all data", data);
         this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
       },
       error => {

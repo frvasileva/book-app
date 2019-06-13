@@ -1,4 +1,5 @@
 import { Component, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { BookCatalogService } from "src/app/_services/book-catalog.service";
 import { CatalogCreateDto } from "src/app/_models/catalogCreateDto";
@@ -14,7 +15,8 @@ export class CatalogCreateComponent implements OnInit {
 
   constructor(
     private catalogService: BookCatalogService,
-    private alertify: AlertifyService
+    private alertify: AlertifyService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -29,14 +31,10 @@ export class CatalogCreateComponent implements OnInit {
     const isPublic: boolean = <boolean>this.addCatalogForm.value.visibility;
     const catalogItem: CatalogCreateDto = { name, isPublic };
 
-    this.catalogService.addCatalog(catalogItem);
-
-    // this.addBookModel.title = this.addBookForm.value.bookData.title;
-    // this.addBookModel.description = this.addBookForm.value.bookData.description;
-    // this.addBookModel.authorName = this.addBookForm.value.author;
-
     this.catalogService.addCatalog(catalogItem).subscribe(
       next => {
+        console.log("next", next);
+        this.router.navigateByUrl("books/catalog/details/" + next.friendlyUrl);
         this.alertify.success("Catalog created!");
       },
       error => {

@@ -10,7 +10,6 @@ export class UserComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    console.log("module on init");
     this.userService.getUsers();
   }
 }
