@@ -8,6 +8,7 @@ namespace BookApp.API.Data {
     Task<Catalog> Create (CatalogCreateDto bookList);
     Task<Catalog> Update (CatalogCreateDto catalog);
     Task<List<BookListItemDto>> GetAll ();
+    Task<List<Catalog>> GetAllPure();
     Task<BookListItemDto> Get (int id);
     Task<BookCatalog> Delete (int id);
 

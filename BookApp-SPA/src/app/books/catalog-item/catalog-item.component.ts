@@ -7,10 +7,11 @@ import { CatalogItemDto } from "src/app/_models/catalogItem";
   styleUrls: ["./catalog-item.component.scss"]
 })
 export class CatalogItemComponent implements OnInit {
-  @Input() catalog: CatalogItemDto;
+  @Input() catalog: any;
 
   constructor() {}
 
   ngOnInit() {
+    console.log("input: ", this.catalog);
   }
 }

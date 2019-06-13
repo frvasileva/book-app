@@ -2,54 +2,36 @@
   <a href="#" class="card-link">
     {{ catalog?.name }}
   </a>
-  <div class="row">
-    <div class="col-md-4">
-      <div class="book-thumbnail">
-        <img
-          src="http://stilearning.com/vision/assets/globals/img/dummy/img-11.jpg"
-          width="100%"
-        />
-      </div>
-    </div>
 
-    <div class="col-md-4">
+  <div class="row" >
+    <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs">
       <div class="book-thumbnail">
-        <img
-          src="http://stilearning.com/vision/assets/globals/img/dummy/img-11.jpg"
-          width="100%"
-        />
-      </div>
-    </div>
-
-    <div class="col-md-4">
-      <div class="book-thumbnail">
-        <img
-          src="http://stilearning.com/vision/assets/globals/img/dummy/img-11.jpg"
-          width="100%"
-        />
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="book-thumbnail">
-        <img
-          src="http://stilearning.com/vision/assets/globals/img/dummy/img-11.jpg"
-          width="100%"
-        />
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="book-thumbnail">
-        <img
-          src="http://stilearning.com/vision/assets/globals/img/dummy/img-11.jpg"
-          width="100%"
-        />
-      </div>
-    </div>
-    <div class="col-md-4">
-      <div class="book-thumbnail-more">
-        <div class="more-info-icon-wrapper">
-        <i class="glyphicon glyphicon-zoom-in"></i></div>
+        <a [routerLink]="['/books/details', item.book?.friendlyUrl]">
+          <!-- <img src="{{ item.book.photoPath }}" width="100%" /> -->
+          <img src="{{ item.book.photoPath }}" width="100%" />
+        </a>
       </div>
     </div>
   </div>
+
+  <div class="row">
+    <div class="col-md-4">
+      <div class="col-md-4">
+        <div class="book-thumbnail">
+          <img
+            src="http://stilearning.com/vision/assets/globals/img/dummy/img-11.jpg"
+            width="100%"
+          />
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="book-thumbnail-more">
+          <div class="more-info-icon-wrapper">
+            <i class="glyphicon glyphicon-zoom-in"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

@@ -50,14 +50,13 @@ namespace BookApp.API.Controllers {
     [HttpGet ("user-catalogs/{userId}")]
     public async Task<IActionResult> GetForUser (int userId) {
       var bookListItems = await _repo.GetForUser (userId);
-
       return Ok (bookListItems);
     }
 
     [HttpGet ("get-all")]
     public async Task<IActionResult> GetAll () {
 
-      var bookListItems = await _repo.GetAll ();
+      var bookListItems = await _repo.GetAllPure ();
 
       return Ok (bookListItems);
     }
