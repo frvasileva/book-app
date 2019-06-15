@@ -1,13 +1,14 @@
 using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using AutoMapper.Configuration;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
-using System.Security.Claims;
+using Microsoft.AspNetCore.Mvc;
 
+using BookApp.API.Helpers;
 
 namespace BookApp.API.Controllers {
   [Route ("api/[controller]")]
@@ -43,7 +44,6 @@ namespace BookApp.API.Controllers {
     [HttpGet ("get/{id}")]
     public async Task<IActionResult> Get (int id) {
       var bookListItem = await _repo.Get (id);
-
       return Ok (bookListItem);
     }
 
@@ -57,6 +57,12 @@ namespace BookApp.API.Controllers {
     public async Task<IActionResult> GetAll () {
 
       var bookListItems = await _repo.GetAllPure ();
+
+      foreach (var item in bookListItems) {
+        foreach (var catalog in item.BookCatalogs) {
+          catalog.Book.PhotoPath = CloudinaryHelper.TransformUrl (catalog.Book.PhotoPath, TransformationType.Book_Details_Preset);
+        }
+      }
 
       return Ok (bookListItems);
     }

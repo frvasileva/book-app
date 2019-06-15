@@ -47,6 +47,11 @@ namespace BookApp.API.Controllers {
       if (books == null)
         return BadRequest ("No books");
 
+        foreach (var item in books)
+        {
+            item.PhotoPath  = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
+        }
+
       return Ok (books);
     }
 
@@ -58,6 +63,7 @@ namespace BookApp.API.Controllers {
         return BadRequest ("No books");
 
       var bookToReturn = _mapper.Map<BookDetailsDto> (book);
+      bookToReturn.PhotoPath  = CloudinaryHelper.TransformUrl (bookToReturn.PhotoPath, TransformationType.Book_Details_Preset);
 
       return Ok (bookToReturn);
     }

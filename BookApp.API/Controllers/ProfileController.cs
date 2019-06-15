@@ -57,11 +57,11 @@ namespace BookApp.API.Controllers {
 
       var profile = await _userRepository.GetUserProfile (friendlyUrl);
 
-      var profileUrl = CloudinaryHelper.TransformUrl (profile.AvatarPath, TransformationType.User_Thumb_Preset);
-      var bookUrl = CloudinaryHelper.TransformUrl (profile.AvatarPath, TransformationType.Book_Thumb_Preset);
-
       if (profile == null)
         return BadRequest (string.Format ("No user with such friendlyUrl {0}", friendlyUrl));
+
+     if(!String.IsNullOrEmpty(profile.AvatarPath))
+      profile.AvatarPath = CloudinaryHelper.TransformUrl (profile.AvatarPath, TransformationType.User_Thumb_Preset);;
 
       return Ok (profile);
     }

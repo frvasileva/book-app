@@ -45,7 +45,7 @@ namespace BookApp.API.Helpers
             {
                 case TransformationType.Book_Thumb_Preset:
                     {
-                        url = "/c_thumb,w_200,h_300,g_face";
+                        url = "/c_thumb,w_200,h_300";
                         break;
                     }
                 case TransformationType.Book_Cover_Preset:

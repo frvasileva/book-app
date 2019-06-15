@@ -21,14 +21,11 @@ export class ProfileCardComponent implements OnInit {
 
   followUser() {
     this.userService.followUser(this.profile.id);
-    this.currentUser.isFollowedByCurrentUser = true;
     this.isFollowing = this.currentUser.isFollowedByCurrentUser;
   }
 
   unFollowUser() {
     this.userService.unFollowUser(this.profile.id, this.profile.friendlyUrl);
-    this.isFollowing = this.currentUser.isFollowedByCurrentUser;
-    //this.currentUser.isFollowedByCurrentUser = false;
-
+    this.isFollowing = !this.currentUser.isFollowedByCurrentUser;
   }
 }
