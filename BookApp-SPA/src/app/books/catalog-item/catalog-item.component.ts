@@ -16,7 +16,5 @@ export class CatalogItemComponent implements OnInit {
 
   ngOnInit() {
     this.bookCount = this.catalog.bookCatalogs.length;
-    console.log("length", this.bookCount);
-    console.log("input: ", this.catalog);
   }
 }

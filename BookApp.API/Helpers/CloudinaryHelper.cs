@@ -1,8 +1,6 @@
 using System;
-namespace BookApp.API.Helpers
-{
-    public enum TransformationType
-    {
+namespace BookApp.API.Helpers {
+    public enum TransformationType {
         Book_Thumb_Preset,
         Book_Cover_Preset,
         Book_Details_Preset,
@@ -10,39 +8,33 @@ namespace BookApp.API.Helpers
         User_Details_Preset
     }
 
-    public static class CloudinaryHelper
-    {
-        public static string TransformUrl(string url, TransformationType transformationType)
-        {
-            string transformedUrl = "";
-            var splittedUrl = url.Split("/");
+    public static class CloudinaryHelper {
+        public static string TransformUrl (string url, TransformationType transformationType) {
+            if (url == "")
+                return "";
 
-            for (int i = 0; i < splittedUrl.Length; i++)
-            {
-                if (i == 0)
-                {
+            string transformedUrl = "";
+            var splittedUrl = url.Split ("/");
+
+            for (int i = 0; i < splittedUrl.Length; i++) {
+                if (i == 0) {
                     transformedUrl = splittedUrl[i];
-                }
-                else
-                {
+                } else {
                     transformedUrl = transformedUrl + "/" + splittedUrl[i];
                 }
-                if (i == 5)
-                {
-                    transformedUrl = transformedUrl + GetUrlTransformer(transformationType);
+                if (i == 5) {
+                    transformedUrl = transformedUrl + GetUrlTransformer (transformationType);
                 }
             }
 
             return transformedUrl;
         }
 
-        private static string GetUrlTransformer(TransformationType transformationType)
-        {
+        private static string GetUrlTransformer (TransformationType transformationType) {
 
             string url;
 
-            switch (transformationType)
-            {
+            switch (transformationType) {
                 case TransformationType.Book_Thumb_Preset:
                     {
                         url = "/c_thumb,w_200,h_300";

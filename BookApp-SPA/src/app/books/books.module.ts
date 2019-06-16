@@ -19,6 +19,7 @@ import { AddBookCoverComponent } from "./add-book-cover/add-book-cover.component
 import { CatalogListComponent } from './catalog-list/catalog-list.component';
 import { CatalogItemComponent } from './catalog-item/catalog-item.component';
 import { CatalogCreateComponent } from './catalog-create/catalog-create.component';
+import { CatalogDetailsComponent } from './catalog-details/catalog-details.component';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import { CatalogCreateComponent } from './catalog-create/catalog-create.componen
     AddBookCoverComponent,
     CatalogListComponent,
     CatalogItemComponent,
-    CatalogCreateComponent
+    CatalogCreateComponent,
+    CatalogDetailsComponent
   ],
   imports: [
     CommonModule,
