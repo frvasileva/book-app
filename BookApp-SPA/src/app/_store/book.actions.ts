@@ -3,6 +3,7 @@ import { Book } from "../_models/books";
 
 export const SET_BOOKS = "SET_BOOKS";
 export const SET_BOOK = "SET_BOOK";
+export const SET_BOOK_PHOTO = "SET_BOOK_PHOTO";
 export const UPDATE_BOOK = "UPDATE_BOOK";
 export const DELETE_BOOK = "DELETE_BOOK";
 
@@ -12,6 +13,10 @@ export class SetBooksAction implements Action {
 }
 export class SetBookAction implements Action {
   readonly type = SET_BOOK;
+  constructor(public payload: any) {}
+}
+export class SetBookPhotoAction implements Action {
+  readonly type = SET_BOOK_PHOTO;
   constructor(public payload: any) {}
 }
 export class UpdateBookAction implements Action {
@@ -25,6 +30,7 @@ export class DeleteBookAction implements Action {
 
 export type BookActions =
   | SetBooksAction
+  | SetBookPhotoAction
   | SetBookAction
   | UpdateBookAction
   | DeleteBookAction;

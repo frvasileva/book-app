@@ -33,7 +33,6 @@ export class UserService {
   }
 
   getUser(friendlyUrl: string) {
-    console.log("get user metod", friendlyUrl);
     return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
       data => {
         this.store.dispatch(new UserActions.SetUserAction(<User>data));

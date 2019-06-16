@@ -1,10 +1,18 @@
 <div class="card-wrapper">
-  <a href="#" class="card-link">
+  <a
+    [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
+    class="card-link"
+  >
     {{ catalog?.name }}
   </a>
 
-  <div class="row" >
-    <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs">
+  <div class="row">
+    <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs"> -->
+    <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs | slice:0:5; let i=index" > -->
+    <div
+      class="col-md-4"
+      *ngFor="let item of catalog.bookCatalogs | slice: 0:5; let i = index"
+    >
       <div class="book-thumbnail">
         <a [routerLink]="['/books/details', item.book?.friendlyUrl]">
           <!-- <img src="{{ item.book.photoPath }}" width="100%" /> -->
@@ -12,26 +20,19 @@
         </a>
       </div>
     </div>
-  </div>
 
-  <div class="row">
-    <div class="col-md-4">
-      <div class="col-md-4">
-        <div class="book-thumbnail">
-          <img
-            src="http://stilearning.com/vision/assets/globals/img/dummy/img-11.jpg"
-            width="100%"
-          />
-        </div>
-      </div>
-      <div class="col-md-4">
-        <div class="book-thumbnail-more">
+    <!-- <div class="book-thumbnail" *ngIf="i == maxBooksToBeShown || this.bookCount == i + 1"> -->
+    <div class="book-thumbnail">
+      <div class="book-thumbnail-more">
+        <a
+          [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
+          class="card-link"
+        >
           <div class="more-info-icon-wrapper">
             <i class="glyphicon glyphicon-zoom-in"></i>
           </div>
-        </div>
+        </a>
       </div>
     </div>
   </div>
-
 </div>

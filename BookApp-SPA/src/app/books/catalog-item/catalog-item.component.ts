@@ -9,9 +9,14 @@ import { CatalogItemDto } from "src/app/_models/catalogItem";
 export class CatalogItemComponent implements OnInit {
   @Input() catalog: any;
 
+  bookCount: number;
+  maxBooksToBeShown = 5;
+
   constructor() {}
 
   ngOnInit() {
+    this.bookCount = this.catalog.bookCatalogs.length;
+    console.log("length", this.bookCount);
     console.log("input: ", this.catalog);
   }
 }
