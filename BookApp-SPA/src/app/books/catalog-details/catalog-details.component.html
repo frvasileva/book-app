@@ -1,16 +1,26 @@
-<h2>{{ catalog?.name }}</h2>
+<div class="row">
+  <div class="div col-md-2">
+    <a [routerLink]="['/user/profile/', catalog?.user.friendlyUrl]">
+      <img [src]="catalog?.user.avatarPath" class="user-avatar" />
+    </a>
+  </div>
+  <div class="div col-md-10">
+    <h2>{{ catalog?.name }}</h2>
+  </div>
+</div>
+
 <div class="row">
   <div
     class="col-sm-4 col-md-3"
-    *ngFor="let item of catalog.bookCatalogs; let i = index"
+    *ngFor="let item of catalog?.bookCatalogs; let i = index"
   >
     <div class="catalog-item-wrapper">
-      {{ item.book.title }}
+      {{ item?.book.title }}
     </div>
 
     <div class="book-thumbnail">
       <a [routerLink]="['/books/details', item.book?.friendlyUrl]">
-        <img src="{{ item.book.photoPath }}" width="100%" />
+        <img src="{{ item?.book.photoPath }}" width="100%" />
       </a>
     </div>
   </div>

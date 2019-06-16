@@ -46,15 +46,15 @@ namespace BookApp.API.Data {
     }
 
     public async Task<List<BookListItemDto>> GetAll () {
-      var catalogList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).OrderByDescending (item => item.Created).ToListAsync ();
+      var catalogList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).OrderByDescending (item => item.Created).ToListAsync ();
       var mappedBookList = _mapper.Map<List<BookListItemDto>> (catalogList);
 
       return mappedBookList;
     }
 
     public async Task<List<Catalog>> GetAllPure () {
-      var catalogList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book)
-                                    .OrderByDescending (item => item.Created).ToListAsync ();
+      var catalogList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User)
+        .OrderByDescending (item => item.Created).ToListAsync ();
 
       return catalogList;
     }
