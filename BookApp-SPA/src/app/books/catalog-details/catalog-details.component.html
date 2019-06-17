@@ -11,17 +11,15 @@
 
 <div class="row">
   <div
-    class="col-sm-4 col-md-3"
+    class="col-sm-6 col-md-3 col-xs-6"
     *ngFor="let item of catalog?.bookCatalogs; let i = index"
   >
-    <div class="catalog-item-wrapper">
-      {{ item?.book.title }}
-    </div>
-
-    <div class="book-thumbnail">
+    <!-- <div class="book-thumbnail">
       <a [routerLink]="['/books/details', item.book?.friendlyUrl]">
         <img src="{{ item?.book.photoPath }}" width="100%" />
       </a>
-    </div>
+    </div> -->
+
+    <app-book-card-item [book]="item?.book"></app-book-card-item>
   </div>
 </div>

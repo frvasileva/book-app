@@ -10,11 +10,13 @@
     color: black;
   }
 
-  // &:hover .book-cover-image {
-  //   transform: scale(1.05);
-  //   transition: transform 1.5s;
-  //   transform-style: preserve-3d;
-  // }
+  &:hover .book-cover-image {
+    transform: scale(1.01);
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    opacity: 0.6;
+    transition: 0.1s;
+  }
 
   .book-title {
     margin-top: 20px;
@@ -29,7 +31,7 @@
   .book-actions-wrapper {
     display: block;
     position: absolute;
-    bottom: 0;
+    top: 50px;
     right: 0;
     left: 0;
   }
@@ -57,7 +59,7 @@
     border-radius: 50%;
     display: block;
     position: absolute;
-    bottom: 0px;
+    top: 0;
     right: 0px;
     z-index: 10;
     text-align: center;
