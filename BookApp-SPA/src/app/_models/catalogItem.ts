@@ -4,7 +4,7 @@ export interface CatalogItemDto {
   id?: number;
   name: string;
   isPublic: boolean;
-  userId: string;
+  userId: number;
   books: Book[];
   friendlyUrl: string;
 }

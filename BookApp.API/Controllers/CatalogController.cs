@@ -47,9 +47,16 @@ namespace BookApp.API.Controllers {
       return Ok (bookListItem);
     }
 
-    [HttpGet ("user-catalogs/{userId}")]
-    public async Task<IActionResult> GetForUser (int userId) {
-      var bookListItems = await _repo.GetForUser (userId);
+    [HttpGet ("user-catalogs/{friendlyUrl}")]
+    public async Task<IActionResult> GetForUser (string friendlyUrl) {
+      var bookListItems = await _repo.GetForUser (friendlyUrl);
+
+       foreach (var item in bookListItems) {
+        foreach (var catalog in item.BookCatalogs) {
+          catalog.Book.PhotoPath = CloudinaryHelper.TransformUrl (catalog.Book.PhotoPath, TransformationType.Book_Details_Preset);
+        }
+      }
+      
       return Ok (bookListItems);
     }
 

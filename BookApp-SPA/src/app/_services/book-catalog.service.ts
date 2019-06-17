@@ -52,7 +52,6 @@ export class BookCatalogService {
   }
 
   getCatalogList() {
-    console.log(this.http.get(this.baseUrl + "get-all"));
     return this.http.get(this.baseUrl + "get-all").subscribe(
       data => {
         console.log("get all data", data);
@@ -62,5 +61,20 @@ export class BookCatalogService {
         this.alertify.error(error);
       }
     );
+  }
+
+  getUserCatalogs(userFriendlyUrl: string) {
+    console.log("userFriendlyUrl", userFriendlyUrl);
+    return this.http
+      .get(this.baseUrl + "user-catalogs/" + userFriendlyUrl)
+      .subscribe(
+        data => {
+          console.log("get user catalog", data);
+          this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
+        },
+        error => {
+          this.alertify.error(error);
+        }
+      );
   }
 }
