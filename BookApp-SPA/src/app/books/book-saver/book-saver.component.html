@@ -20,10 +20,9 @@
     <li
       class="user-list-item"
       *ngFor="let item of this.userList"
-      (click)="this.itemSelected(item.label)"
+      (click)="this.itemSelected(item.name)"
     >
-
-      <span class="user-item-list-label"> {{ item.label }}</span>
+      <span class="user-item-list-label"> {{ item.name }}</span>
       <button class="user-item-list-add-button">
         <span class="glyphicon glyphicon-plus"></span>
       </button>

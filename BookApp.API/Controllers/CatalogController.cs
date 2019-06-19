@@ -5,10 +5,9 @@ using AutoMapper;
 using AutoMapper.Configuration;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
+using BookApp.API.Helpers;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-
-using BookApp.API.Helpers;
 
 namespace BookApp.API.Controllers {
   [Route ("api/[controller]")]
@@ -51,13 +50,20 @@ namespace BookApp.API.Controllers {
     public async Task<IActionResult> GetForUser (string friendlyUrl) {
       var bookListItems = await _repo.GetForUser (friendlyUrl);
 
-       foreach (var item in bookListItems) {
+      foreach (var item in bookListItems) {
         foreach (var catalog in item.BookCatalogs) {
           catalog.Book.PhotoPath = CloudinaryHelper.TransformUrl (catalog.Book.PhotoPath, TransformationType.Book_Details_Preset);
         }
       }
-      
+
       return Ok (bookListItems);
+    }
+
+    [HttpGet ("user-catalogs-pure-list/{friendlyUrl}")]
+    public async Task<IActionResult> GetPureCatalogsForUser (string friendlyUrl) {
+
+      var catalogs = await _repo.GetPureForUser (friendlyUrl);
+      return Ok (catalogs);
     }
 
     [HttpGet ("get-all")]

@@ -25,7 +25,7 @@ export class CatalogListComponent implements OnInit {
       this.friendlyUrl = params["friendlyUrl"];
       console.log("friendly url", this.friendlyUrl);
       console.log("params", params);
-
+      this.catalogService.getUserCatalogs(this.friendlyUrl);
       this.store
         .select(state => state.catalogState)
         .subscribe(catState => {
@@ -33,10 +33,10 @@ export class CatalogListComponent implements OnInit {
             return c.userId === 35;
           });
 
-          if (this.catalogState.length === 0) {
-            this.catalogService.getUserCatalogs(this.friendlyUrl);
-          }
-          console.log("state ", this.catalogState);
+          // if (this.catalogState.length === 0) {
+          //   this.catalogService.getUserCatalogs(this.friendlyUrl);
+          // }
+          console.log("catalog state ", this.catalogState);
         });
     });
   }

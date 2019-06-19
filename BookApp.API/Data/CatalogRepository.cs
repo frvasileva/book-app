@@ -65,10 +65,21 @@ namespace BookApp.API.Data {
 
       var bookList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
       Where (item => item.UserId == user.FirstOrDefault ().Id).OrderByDescending (item => item.Created).ToListAsync ();
-     
-     // var mappedBookList = _mapper.Map<List<BookListItemDto>> (bookList);
+
+      // var mappedBookList = _mapper.Map<List<BookListItemDto>> (bookList);
 
       return bookList;
+    }
+
+    public async Task<List<CatalogPureDto>> GetPureForUser (string friendlyUrl) {
+      var user = await _context.Users.Where (item => item.FriendlyUrl == friendlyUrl).ToListAsync ();
+
+      var bookList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
+      Where (item => item.UserId == user.FirstOrDefault ().Id).OrderByDescending (item => item.Created).ToListAsync ();
+
+       var mappedBookList = _mapper.Map<List<CatalogPureDto>> (bookList);
+
+      return mappedBookList;
     }
 
     public async Task<Catalog> Update (CatalogCreateDto catalogDto) {

@@ -30,7 +30,7 @@ import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
 import { BookService } from "./_services/book.service";
 import { MessageService } from "./messages/message.service";
-import { BookSaverService } from "./books/bookSaver.service";
+import { BookSaverService } from "./_services/bookSaver.service";
 import { AuthenticationGuard } from "./_guards/authentication.guard";
 import { FileUploadModule } from "ng2-file-upload";
 import { JwtInterceptorHelper } from "./_helpers/jwtInterceptor";

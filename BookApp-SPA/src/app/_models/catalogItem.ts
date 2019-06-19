@@ -5,6 +5,7 @@ export interface CatalogItemDto {
   name: string;
   isPublic: boolean;
   userId: number;
+  userFriendlyUrl: string;
   books: Book[];
   friendlyUrl: string;
 }

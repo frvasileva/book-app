@@ -13,6 +13,7 @@ namespace BookApp.API.Data {
     Task<BookCatalog> Delete (int id);
 
     Task<List<Catalog>> GetForUser (string friendlyUrl);
+    Task<List<CatalogPureDto>> GetPureForUser (string friendlyUrl);
 
   }
 }
