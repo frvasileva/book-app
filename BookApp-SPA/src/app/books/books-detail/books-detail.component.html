@@ -1,15 +1,21 @@
-<div class="books-detail-top">
-  <div class="book-header">
-    <h3 class="book-title">{{ book?.title }}</h3>
-  </div>
-  <div class="clearfix"></div>
-  <div class="book-cover">
-    <img
-      src="{{ book?.photoPath }}"
-      alt="alt book text"
-      width="300"
-      class="cover"
-    />
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="books-detail-top">
+        <div class="book-header">
+          <h3 class="book-title">{{ book?.title }}</h3>
+        </div>
+        <div class="clearfix"></div>
+        <div class="book-cover">
+          <img
+            src="{{ book?.photoPath }}"
+            alt="alt book text"
+            width="300"
+            class="cover"
+          />
+        </div>
+      </div>
+      <div class="book-description">{{ book?.description }}</div>
+    </div>
   </div>
 </div>
-<div class="book-description">{{ book?.description }}</div>
