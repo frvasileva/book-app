@@ -1,0 +1,74 @@
+@import "src/app/ui-style/variables.scss";
+@import "../../../app/ui-style//variables.scss";
+
+.container-wrapper {
+  padding: 70px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-wrapper h2 {
+  font-size: 60px;
+}
+.container-wrapper p {
+  font-size: 18px;
+  font-family: "Roboto", sans-serif;
+}
+
+.carosel-wrapper {
+  background-image: url(https://images.pexels.com/photos/2067569/pexels-photo-2067569.jpeg?auto=format%2Ccompress&cs=tinysrgb&dpr=2&h=750&w=1260);
+  height: 600px;
+  background-position: center;
+  opacity: 0.7;
+}
+
+.carosel-wrapper h2 {
+  color: white;
+  background-color: black;
+  padding: 20px;
+  display: inline-block;
+  line-height: 60px;
+}
+
+.main-cta {
+  border: 0px;
+  background-color: white;
+  text-transform: uppercase;
+  padding: 15px;
+  font-size: 26px;
+  min-width: 240px;
+  font-family: Segoe UI;
+  font-weight: bold;
+  border: 3px solid white;
+
+  &:hover,
+  &:active {
+    transition: 0.2s;
+    border: 3px solid black;
+    box-shadow: none;
+  }
+}
+
+.cta-wrapper {
+  background-color: black;
+  color: white;
+}
+
+.book-preview-wrapper {
+  background-color: #f7f7ee;
+
+  h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+  }
+
+  img:hover {
+    transform: scale(1.03);
+    transition: transform 1s;
+    transform-style: preserve-3d;
+    opacity: 0.6;
+    transition: 0.3s;
+    cursor: pointer;
+  }
+}
