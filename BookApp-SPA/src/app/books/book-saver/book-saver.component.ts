@@ -24,7 +24,6 @@ export class BookSaverComponent implements OnInit {
   ngOnInit() {
     this.store.subscribe(next => {
       this.currentUserUrl = next.userState.currentUser;
-      console.log("current user", this.currentUserUrl);
       // this.bookSaverService.getUserCatalogList(this.currentUserUrl).subscribe(
       //   data => {
       //     console.log("user catalogs ", data);
@@ -35,8 +34,6 @@ export class BookSaverComponent implements OnInit {
       //   }
       // );
     });
-
-    console.log("user catalogs in", this.userList);
 
     this.addToListForm = new FormGroup({
       bookSaverListItem: new FormControl(null, Validators.required)

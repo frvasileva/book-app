@@ -23,20 +23,18 @@ export class CatalogListComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params["friendlyUrl"];
-      console.log("friendly url", this.friendlyUrl);
-      console.log("params", params);
+
       this.catalogService.getUserCatalogs(this.friendlyUrl);
       this.store
         .select(state => state.catalogState)
         .subscribe(catState => {
           this.catalogState = catState.catalog.filter(c => {
-            return c.userId === 35;
+            return c.user.friendlyUrl === this.friendlyUrl;
           });
 
           // if (this.catalogState.length === 0) {
           //   this.catalogService.getUserCatalogs(this.friendlyUrl);
           // }
-          console.log("catalog state ", this.catalogState);
         });
     });
   }

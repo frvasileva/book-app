@@ -9,6 +9,7 @@ import * as UserProfileActions from "../_store/user.actions";
 import { environment } from "src/environments/environment";
 import { User } from "../_models/user";
 import { UserService } from "./user.service";
+import { BookSaverService } from './bookSaver.service';
 
 @Injectable({
   providedIn: "root"
@@ -22,7 +23,8 @@ export class AuthService {
     private http: HttpClient,
     private router: Router,
     private store: Store<{ userState: { user: User } }>,
-    private userService: UserService
+    private userService: UserService,
+    private bookSaverService: BookSaverService
   ) {}
 
   login(model: any) {
@@ -34,6 +36,8 @@ export class AuthService {
             response.user.friendlyUrl
           ))
         );
+
+        this.bookSaverService.getUserCatalogList(response.user.friendlyUrl);
 
         this.store.dispatch(
           new UserProfileActions.SetUserAction(<User>response.user)

@@ -36,6 +36,9 @@ export class ProfileComponent implements OnInit {
       .select(state => state.userState)
       .subscribe(userState => {
         this.profile = userState.users[this.friendlyUrl];
+
+        console.log("profile", this.profile);
+
         this.currentUser = userState.users[userState.currentUser];
         this.isCurrentUser = userState.currentUser === this.friendlyUrl;
 

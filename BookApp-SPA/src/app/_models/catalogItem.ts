@@ -8,4 +8,5 @@ export interface CatalogItemDto {
   userFriendlyUrl: string;
   books: Book[];
   friendlyUrl: string;
+  user: any;
 }

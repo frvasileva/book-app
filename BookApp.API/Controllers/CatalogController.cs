@@ -76,7 +76,6 @@ namespace BookApp.API.Controllers {
           catalog.Book.PhotoPath = CloudinaryHelper.TransformUrl (catalog.Book.PhotoPath, TransformationType.Book_Details_Preset);
         }
       }
-
       return Ok (bookListItems);
     }
 

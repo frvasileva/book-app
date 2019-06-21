@@ -47,7 +47,6 @@ export class BookSaverService {
       .get(this.baseUrl + "user-catalogs-pure-list/" + friendlyUrl)
       .subscribe(
         data => {
-          console.log("data", data);
           this.store.dispatch(new UserActions.SetCurrentUserCatalogsAction(<CatalogPureDto[]>data));
         },
         error => {

@@ -21,7 +21,7 @@ export class BooksComponent implements OnInit {
 
   ngOnInit() {
     this.bookService.getBooks();
-    this.bookSaverService.getUserCatalogList(this.currentUserUrl);
+    // this.bookSaverService.getUserCatalogList(this.currentUserUrl);
 
     this.store.subscribe(next => {
       this.currentUserUrl = next.userState.currentUser;
