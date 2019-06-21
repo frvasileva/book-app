@@ -36,8 +36,6 @@ export class AuthenticationGuard implements CanActivate {
         this.currentUserProfile = res as Profile;
       });
 
-    console.log("GUARD CALLED");
-
     if (localStorage.getItem("token") === null) {
       this.router.navigate(["/user/login"]);
       return false;

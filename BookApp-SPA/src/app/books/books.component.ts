@@ -1,8 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { BookService } from "../_services/book.service";
 import { BookSaverService } from "../_services/bookSaver.service";
-import { Store } from '@ngrx/store';
-import { UserState } from '../_store/user.reducer';
+import { Store } from "@ngrx/store";
+import { UserState } from "../_store/user.reducer";
+import { CatalogPureDto } from "../_models/catalogPureDto";
 
 @Component({
   selector: "app-books",
@@ -24,8 +25,10 @@ export class BooksComponent implements OnInit {
 
     this.store.subscribe(next => {
       this.currentUserUrl = next.userState.currentUser;
-      this.bookSaverService.getUserCatalogList(this.currentUserUrl);
 
+      // if (this.currentUserUrl !== "") {
+      //   this.bookSaverService.getUserCatalogList(this.currentUserUrl);
+      // }
     });
   }
 }

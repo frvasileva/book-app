@@ -25,15 +25,15 @@ export class BookSaverComponent implements OnInit {
     this.store.subscribe(next => {
       this.currentUserUrl = next.userState.currentUser;
       console.log("current user", this.currentUserUrl);
-      this.bookSaverService.getUserCatalogList(this.currentUserUrl).subscribe(
-        data => {
-          console.log("user catalogs ", data);
-          this.userList = data;
-        },
-        error => {
-          // this.alertify.error(error);
-        }
-      );
+      // this.bookSaverService.getUserCatalogList(this.currentUserUrl).subscribe(
+      //   data => {
+      //     console.log("user catalogs ", data);
+      //     this.userList = data;
+      //   },
+      //   error => {
+      //     // this.alertify.error(error);
+      //   }
+      // );
     });
 
     console.log("user catalogs in", this.userList);

@@ -19,12 +19,9 @@ export class MessageItemComponent implements OnInit {
     private route: ActivatedRoute
   ) {}
 
-  ngOnInit() {
-    //    console.log(this.listPost);
-  }
+  ngOnInit() {}
 
   onDeleteMessage(messageId) {
     this.messageService.deleteMessage(messageId);
-    console.log("messagee deleted ", messageId);
   }
 }

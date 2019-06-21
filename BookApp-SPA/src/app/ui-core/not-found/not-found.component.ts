@@ -12,7 +12,6 @@ export class NotFoundComponent implements OnInit {
 
 
   ngOnInit() {
-    console.log(this.router);
   }
 
 }

@@ -58,7 +58,7 @@ export class ProfileEditComponent implements OnInit {
   onSubmit() {
     this.profileToSubmit = this.profileEditForm.value;
     this.profileToSubmit.friendlyUrl = this.profile.friendlyUrl;
-    console.log("submitted", this.profileEditForm.value);
+
     this.userService.updateUser(this.profileToSubmit).subscribe(
       next => {
         this.alertify.success("Your profile has been updated!");

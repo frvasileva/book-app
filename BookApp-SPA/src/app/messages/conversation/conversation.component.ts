@@ -23,6 +23,5 @@ export class ConversationComponent implements OnInit {
 
   ngOnInit() {
     this.messageListState = this.store.select("messageList");
-    console.log(this.messageListState);
   }
 }

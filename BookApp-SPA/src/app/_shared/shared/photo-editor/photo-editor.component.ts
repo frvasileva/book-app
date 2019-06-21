@@ -69,10 +69,9 @@ export class PhotoEditorComponent implements OnInit {
           this.alertify.success("Photo updated");
         } else if (this.uploaderType === "book-cover-photo") {
           this.router.navigate(["/books"]);
-
-          console.log("response pic", response);
-          this.store.dispatch(new BookActions.SetBookPhotoAction(JSON.parse(response)));
-          console.log("book cover updated");
+          this.store.dispatch(
+            new BookActions.SetBookPhotoAction(JSON.parse(response))
+          );
         }
       }
     };

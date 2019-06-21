@@ -7,16 +7,16 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
   styleUrls: ["./request-book.component.scss"]
 })
 export class RequestBookComponent implements OnInit {
-
   requestBookForm: FormGroup;
 
   ngOnInit() {
     this.requestBookForm = new FormGroup({
-      "message": new FormControl("This is my book request for...", Validators.required)
+      message: new FormControl(
+        "This is my book request for...",
+        Validators.required
+      )
     });
   }
 
-  onSubmit()  {
-    console.log(this.requestBookForm.value);
-  }
+  onSubmit() {}
 }

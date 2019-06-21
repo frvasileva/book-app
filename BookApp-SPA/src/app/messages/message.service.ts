@@ -77,8 +77,6 @@ export class MessageService {
   }
 
   getMessagesById(id: string): Message {
-    console.log({ id });
-    console.log(this.messages);
     return this.messages.find(message => message.id == id);
   }
 

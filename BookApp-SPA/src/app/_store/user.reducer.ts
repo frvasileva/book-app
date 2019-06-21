@@ -1,12 +1,15 @@
 import * as UserActions from "./user.actions";
+import { CatalogPureDto } from "../_models/catalogPureDto";
 
 export interface UserState {
   currentUser: string;
+  currentUserCatalogs: CatalogPureDto[];
   users: Object;
 }
 
 export const initialState: UserState = {
   currentUser: null,
+  currentUserCatalogs: [],
   users: {}
 };
 
@@ -47,6 +50,12 @@ export function userReducer(
       return {
         ...state,
         avatarPath: action.payload
+      };
+    }
+    case UserActions.SET_CURRENT_USER_CATALOG: {
+      return {
+        ...state,
+        currentUserCatalogs: action.payload
       };
     }
     case UserActions.UPDATE_USER_FOLLOWER: {

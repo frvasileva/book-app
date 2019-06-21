@@ -15,7 +15,6 @@ export class ConversationItemComponent implements OnInit {
 
   ngOnInit() {
   //  this.bookList = this.store.select(messageList);
-    console.log(this.bookList);
   }
 
 }

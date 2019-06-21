@@ -5,6 +5,8 @@ import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Book } from "../_models/books";
 import { AlertifyService } from "./alertify.service";
+import * as UserActions from "../_store/user.actions";
+import { CatalogPureDto } from '../_models/catalogPureDto';
 
 @Injectable()
 export class BookSaverService {
@@ -41,6 +43,16 @@ export class BookSaverService {
   //   }
   // }
   getUserCatalogList(friendlyUrl: string) {
-    return this.http.get(this.baseUrl + "user-catalogs-pure-list/" + friendlyUrl);
+    return this.http
+      .get(this.baseUrl + "user-catalogs-pure-list/" + friendlyUrl)
+      .subscribe(
+        data => {
+          console.log("data", data);
+          this.store.dispatch(new UserActions.SetCurrentUserCatalogsAction(<CatalogPureDto[]>data));
+        },
+        error => {
+          this.alertify.error(error);
+        }
+      );
   }
 }

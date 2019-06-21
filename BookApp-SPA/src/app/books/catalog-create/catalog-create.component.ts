@@ -33,7 +33,6 @@ export class CatalogCreateComponent implements OnInit {
 
     this.catalogService.addCatalog(catalogItem).subscribe(
       next => {
-        console.log("next", next);
         this.router.navigateByUrl("books/catalog/details/" + next.friendlyUrl);
         this.alertify.success("Catalog created!");
       },

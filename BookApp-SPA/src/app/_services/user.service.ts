@@ -80,8 +80,6 @@ export class UserService {
   }
 
   unFollowUser(userIdToUnfollow: number, friendlyUrl: string) {
-    console.log("user unfollowed", friendlyUrl);
-
     return this.http
       .get(this.baseUrl + "unfollow-user/" + userIdToUnfollow)
       .subscribe(

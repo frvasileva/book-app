@@ -36,8 +36,6 @@ export class SignupComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.signUpForm.value);
-
     this.authService.reigster(this.signUpForm.value).subscribe(
       next => {
         this.alertify.success("sucessfull registration!");
