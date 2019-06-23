@@ -22,18 +22,11 @@ export class BookSaverComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.store.subscribe(next => {
-      this.currentUserUrl = next.userState.currentUser;
-      // this.bookSaverService.getUserCatalogList(this.currentUserUrl).subscribe(
-      //   data => {
-      //     console.log("user catalogs ", data);
-      //     this.userList = data;
-      //   },
-      //   error => {
-      //     // this.alertify.error(error);
-      //   }
-      // );
-    });
+    this.store
+      .select(next => next.userState)
+      .subscribe(userState => {
+        this.userList = userState.currentUserCatalogs;
+      });
 
     this.addToListForm = new FormGroup({
       bookSaverListItem: new FormControl(null, Validators.required)

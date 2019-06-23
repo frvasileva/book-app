@@ -3,7 +3,6 @@ import { BookService } from "../_services/book.service";
 import { BookSaverService } from "../_services/bookSaver.service";
 import { Store } from "@ngrx/store";
 import { UserState } from "../_store/user.reducer";
-import { CatalogPureDto } from "../_models/catalogPureDto";
 
 @Component({
   selector: "app-books",
@@ -11,8 +10,6 @@ import { CatalogPureDto } from "../_models/catalogPureDto";
   styleUrls: ["./books.component.scss"]
 })
 export class BooksComponent implements OnInit {
-  currentUserUrl: string;
-
   constructor(
     private bookService: BookService,
     private bookSaverService: BookSaverService,
@@ -21,14 +18,16 @@ export class BooksComponent implements OnInit {
 
   ngOnInit() {
     this.bookService.getBooks();
-    // this.bookSaverService.getUserCatalogList(this.currentUserUrl);
 
-    this.store.subscribe(next => {
-      this.currentUserUrl = next.userState.currentUser;
-
-      // if (this.currentUserUrl !== "") {
-      //   this.bookSaverService.getUserCatalogList(this.currentUserUrl);
-      // }
-    });
+    this.store
+      .select(state => state.userState)
+      .subscribe(userState => {
+        if (
+          userState.currentUser &&
+          userState.currentUserCatalogs.length === 0
+        ) {
+          this.bookSaverService.getUserCatalogList(userState.currentUser);
+        }
+      });
   }
 }
