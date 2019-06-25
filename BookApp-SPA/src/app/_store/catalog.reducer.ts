@@ -1,5 +1,5 @@
 import * as CatalogActions from "./catalog.actions";
-import { CatalogItemDto } from '../_models/catalogItem';
+import { CatalogItemDto } from "../_models/catalogItem";
 
 // const initialState = {
 //   catalog: []
@@ -27,9 +27,6 @@ export function catalogReducer(
       };
     }
     case CatalogActions.ADD_CATALOG: {
-      console.log("current state", state.catalog);
-      console.log("current payload", action.payload);
-
       return {
         ...state,
         catalog: [...state.catalog, action.payload]

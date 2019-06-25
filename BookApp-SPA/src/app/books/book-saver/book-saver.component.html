@@ -1,6 +1,6 @@
 <form [formGroup]="addToListForm" (ngSubmit)="onSubmit()">
   <ul class="user-list">
-    <li>
+    <!-- <li>
       <div class="saver-container">
         <div class="catalog-item-wrapper">
           <input
@@ -16,11 +16,11 @@
           <button><span class="glyphicon glyphicon-plus"></span></button>
         </div>
       </div>
-    </li>
+    </li> -->
     <li
       class="user-list-item"
-      *ngFor="let item of this.userList"
-      (click)="this.itemSelected(item.name)"
+      *ngFor="let item of this.catalogs"
+      (click)="this.itemSelected(item.name, item.id)"
     >
       <span class="user-item-list-label"> {{ item.name }}</span>
       <button class="user-item-list-add-button">

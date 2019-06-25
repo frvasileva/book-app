@@ -9,4 +9,5 @@ export interface CatalogItemDto {
   books: Book[];
   friendlyUrl: string;
   user: any;
+  created: Date;
 }

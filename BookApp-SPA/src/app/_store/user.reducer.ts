@@ -58,6 +58,12 @@ export function userReducer(
         currentUserCatalogs: action.payload
       };
     }
+    case UserActions.ADD_CURRENT_USER_CATALOG: {
+      return {
+        ...state,
+        currentUserCatalogs: [action.payload, ...state.currentUserCatalogs]
+      };
+    }
     case UserActions.UPDATE_USER_FOLLOWER: {
       const { isFollowedByCurrentUser, userFriendlyUrl } = action.payload;
       return {

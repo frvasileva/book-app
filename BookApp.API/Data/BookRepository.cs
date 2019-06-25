@@ -58,10 +58,26 @@ namespace BookApp.API.Data {
 
       var bookCatalogEntity = new BookCatalog () {
         BookId = bookCatalogDto.BookId,
-        CatalogId = bookCatalogDto.CatalogId.Value, //TODO: Check and create if not exists
-        Created = DateTime.Now
+        Created = DateTime.Now,
+        UserId = bookCatalogDto.UserId
       };
 
+      if (bookCatalogDto.CatalogId.HasValue) {
+        bookCatalogEntity.CatalogId = bookCatalogDto.CatalogId.Value;
+      } else {
+        var catalog = new Catalog ();
+        catalog.UserId = bookCatalogDto.UserId;
+        catalog.IsPublic = true;
+        catalog.Name = bookCatalogDto.CatalogName;
+        catalog.FriendlyUrl = Url.GenerateFriendlyUrl (catalog.Name + "-" + StringHelper.GenerateRandomNo ());
+        catalog.Created = DateTime.Now;
+        
+        _context.Catalogs.Add (catalog);
+        await _context.SaveChangesAsync ();
+
+        bookCatalogEntity.CatalogId = catalog.Id;
+
+      }
       await _context.BookCatalog.AddAsync (bookCatalogEntity);
       await _context.SaveChangesAsync ();
 

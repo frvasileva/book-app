@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 
 import { map } from "rxjs/operators";
@@ -9,8 +8,11 @@ import { CatalogCreateDto } from "../_models/catalogCreateDto";
 import { HttpClient } from "@angular/common/http";
 
 import * as CatalogActions from "../_store/catalog.actions";
+import * as UserActions from "../_store/user.actions";
+
 import { environment } from "src/environments/environment";
 import { CatalogItemDto } from "../_models/catalogItem";
+import { CatalogPureDto } from "../_models/catalogPureDto";
 
 @Injectable({
   providedIn: "root"
@@ -30,6 +32,16 @@ export class BookCatalogService {
       map((response: CatalogItemDto) => {
         this.store.dispatch(
           new CatalogActions.AddCatalogAction(<CatalogCreateDto>response)
+        );
+        const catalogPure: CatalogPureDto = {
+          id: response.id,
+          created: response.created,
+          isPublic: response.isPublic,
+          name: response.name,
+          userId: response.userId
+        };
+        this.store.dispatch(
+          new UserActions.AddCurrentUserCatalogsAction(catalogPure)
         );
 
         return response;

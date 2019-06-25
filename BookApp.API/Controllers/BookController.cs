@@ -1,3 +1,5 @@
+using System;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Data;
@@ -97,10 +99,17 @@ namespace BookApp.API.Controllers {
     [HttpPost ("add-to-catalog")]
     public async Task<IActionResult> AddBookToCatalog (BookCatalogCreateDto bookCatalogDto) {
 
-      await _repo.AddBookToCatalog (bookCatalogDto);
+      var identity = HttpContext.User.Identity as ClaimsIdentity;
+      int userId = 0;
+      if (identity != null)
+        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
+
+      bookCatalogDto.UserId = userId;
+
+      var result = await _repo.AddBookToCatalog (bookCatalogDto);
       await _context.SaveChangesAsync ();
 
-      return Ok ();
+      return Ok (result);
     }
 
     #endregion

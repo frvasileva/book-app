@@ -4,6 +4,7 @@ import { CatalogPureDto } from "../_models/catalogPureDto";
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
 export const SET_CURRENT_USER_CATALOG = "SET_CURRENT_USER_CATALOG";
+export const ADD_CURRENT_USER_CATALOG = "ADD_CURRENT_USER_CATALOG";
 export const SET_USER = "SET_USER";
 export const SET_USERS = "SET_USERS";
 export const GET_CURRENT_USER = "GET_CURRENT_USER";
@@ -22,6 +23,10 @@ export class SetCurrentUserAction implements Action {
 export class SetCurrentUserCatalogsAction implements Action {
   readonly type = SET_CURRENT_USER_CATALOG;
   constructor(public payload: CatalogPureDto[]) {}
+}
+export class AddCurrentUserCatalogsAction implements Action {
+  readonly type = ADD_CURRENT_USER_CATALOG;
+  constructor(public payload: CatalogPureDto) {}
 }
 export class SetUserAction implements Action {
   readonly type = SET_USER;
@@ -47,6 +52,7 @@ export class Logout implements Action {
 export type UserActions =
   | SetCurrentUserAction
   | SetCurrentUserCatalogsAction
+  | AddCurrentUserCatalogsAction
   | SetUserAction
   | SetUsersAction
   | UpdateUserAvatarAction

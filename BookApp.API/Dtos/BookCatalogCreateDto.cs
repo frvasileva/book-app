@@ -4,5 +4,7 @@ namespace BookApp.API.Dtos {
         public int? CatalogId { get; set; }
         public string CatalogName { get; set; }
 
+        public int UserId { get; set; }
+
     }
 }

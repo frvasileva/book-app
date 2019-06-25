@@ -1,8 +1,7 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, Input } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { BookSaverService } from "src/app/_services/bookSaver.service";
 import { CatalogPureDto } from "src/app/_models/catalogPureDto";
-import { Profile } from "selenium-webdriver/firefox";
 import { Store } from "@ngrx/store";
 import { UserState } from "src/app/_store/user.reducer";
 
@@ -12,7 +11,8 @@ import { UserState } from "src/app/_store/user.reducer";
   styleUrls: ["./book-saver.component.scss"]
 })
 export class BookSaverComponent implements OnInit {
-  userList: any;
+  @Input() bookId: number;
+  catalogs: CatalogPureDto[];
   addToListForm: FormGroup;
   currentUserUrl: string;
 
@@ -22,10 +22,12 @@ export class BookSaverComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log("book id", this.bookId);
     this.store
       .select(next => next.userState)
       .subscribe(userState => {
-        this.userList = userState.currentUserCatalogs;
+        console.log("change saver component", this.catalogs);
+        this.catalogs = userState.currentUserCatalogs;
       });
 
     this.addToListForm = new FormGroup({
@@ -34,21 +36,34 @@ export class BookSaverComponent implements OnInit {
   }
 
   onSaverFocus() {
-    // this.userList = this.bookSaverService.getUserLists(
+    // this.catalogs = this.bookSaverService.getUserLists(
     //   this.addToListForm.value.bookSaverListItem
     // );
   }
 
   onSaverFocusOut() {
-    // this.userList = [];
+    // this.catalogs = [];
     // console.log("focus out");
   }
 
-  itemSelected(label) {
-    this.addToListForm.controls["bookSaverListItem"].setValue(label);
+  itemSelected(catalogName, catalogId) {
+    this.bookSaverService
+      .addBookToCatalog(catalogId, catalogName, this.bookId)
+      .subscribe(next => {
+        console.log("next", next);
+      });
+
+    this.addToListForm.controls["bookSaverListItem"].setValue(catalogName);
   }
 
   onSubmit() {
-    console.log(this.addToListForm.value);
+    // const item = this.addToListForm.value;
+    // this.bookSaverService
+    //   .addBookToCatalog(null, item.bookSaverListItem, this.bookId)
+    //   .subscribe(next => {
+    //     console.log("next", next);
+    //   });
+
+    // this.addToListForm.reset();
   }
 }
