@@ -5,33 +5,37 @@
   >
     {{ catalog?.name }}
   </a>
-
-  <div class="row">
-    <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs"> -->
-    <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs | slice:0:5; let i=index" > -->
-    <div
-      class="col-md-4"
-      *ngFor="let item of catalog.bookCatalogs | slice: 0:5; let i = index"
-    >
-      <div class="book-thumbnail">
-        <a [routerLink]="['/books/details', item.book?.friendlyUrl]">
-          <!-- <img src="{{ item.book.photoPath }}" width="100%" /> -->
-          <img src="{{ item.book.photoPath }}" width="100%" />
-        </a>
+  <div class="container">
+    <div class="row">
+      <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs"> -->
+      <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs | slice:0:5; let i=index" > -->
+      <div
+        class="col-md-4"
+        *ngFor="let item of catalog.bookCatalogs | slice: 0:5; let i = index"
+      >
+        <div class="book-thumbnail">
+          <a [routerLink]="['/books/details', item.book?.friendlyUrl]">
+            <!-- <img src="{{ item.book.photoPath }}" width="100%" /> -->
+            <img src="{{ item.book.photoPath }}" width="100%" />
+          </a>
+        </div>
       </div>
-    </div>
 
-    <!-- <div class="book-thumbnail" *ngIf="i == maxBooksToBeShown || this.bookCount == i + 1"> -->
-    <div class="book-thumbnail">
-      <div class="book-thumbnail-more">
-        <a
-          [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
-          class="card-link"
-        >
-          <div class="more-info-icon-wrapper">
-            <i class="glyphicon glyphicon-zoom-in"></i>
-          </div>
-        </a>
+      <div class="book-thumbnail" *ngIf="bookCount > 0">
+        <div class="book-thumbnail-more">
+          <a
+            [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
+            class="card-link"
+          >
+            <div class="more-info-icon-wrapper">
+              <i class="glyphicon glyphicon-zoom-in"></i>
+            </div>
+          </a>
+        </div>
+      </div>
+
+      <div class="book-thumbnail" *ngIf="bookCount == 0">
+        <p class="no-books-message">No books added</p>
       </div>
     </div>
   </div>
