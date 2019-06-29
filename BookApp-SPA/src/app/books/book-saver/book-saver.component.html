@@ -1,31 +1,34 @@
 <form [formGroup]="addToListForm" (ngSubmit)="onSubmit()">
-  <ul class="user-list">
-    <!-- <li>
-      <div class="saver-container">
-        <div class="catalog-item-wrapper">
-          <input
-            type="text"
-            on-focus="onSaverFocus()"
-            on-focusout="onSaverFocusOut()"
-            (keyup)="onSaverFocus()"
-            formControlName="bookSaverListItem"
-            class="filter-catalog-input"
-          />
+  <div class="book-saver">
+    <strong>Add to catalog</strong>
+    <ul class="user-list">
+      <!-- <li>
+        <div class="saver-container">
+          <div class="catalog-item-wrapper">
+            <input
+              type="text"
+              on-focus="onSaverFocus()"
+              on-focusout="onSaverFocusOut()"
+              (keyup)="onSaverFocus()"
+              formControlName="bookSaverListItem"
+              class="filter-catalog-input"
+            />
+          </div>
+          <div class="button-wrapper">
+            <button><span class="glyphicon glyphicon-plus"></span></button>
+          </div>
         </div>
-        <div class="button-wrapper">
-          <button><span class="glyphicon glyphicon-plus"></span></button>
-        </div>
-      </div>
-    </li> -->
-    <li
-      class="user-list-item"
-      *ngFor="let item of this.catalogs"
-      (click)="this.itemSelected(item.name, item.id)"
-    >
-      <span class="user-item-list-label"> {{ item.name }}</span>
-      <button class="user-item-list-add-button">
-        <span class="glyphicon glyphicon-plus"></span>
-      </button>
-    </li>
-  </ul>
+      </li> -->
+      <li
+        class="user-list-item"
+        *ngFor="let item of this.catalogs"
+        (click)="this.itemSelected(item.name, item.id)"
+      >
+        <span class="user-item-list-label"> {{ item.name }}</span>
+        <button class="user-item-list-add-button">
+          <span class="glyphicon glyphicon-plus"></span>
+        </button>
+      </li>
+    </ul>
+  </div>
 </form>

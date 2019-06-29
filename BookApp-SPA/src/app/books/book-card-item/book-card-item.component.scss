@@ -31,6 +31,7 @@
   .book-actions-wrapper {
     display: block;
     position: absolute;
+    z-index: 10;
     top: 50px;
     right: 0;
     left: 0;
@@ -39,12 +40,12 @@
   .book-actions-wrapper .book-actions {
     display: none;
   }
+
   .book-actions-wrapper:hover .book-actions {
     display: block;
-    background-color: white;
   }
 
-  .book-actions-wrapper .add-book-to-list {
+  &:hover .book-actions-wrapper .add-book-to-list {
     display: block;
   }
 
@@ -57,11 +58,11 @@
     height: 50px;
     background-color: black;
     border-radius: 50%;
-    display: block;
+    display: none;
     position: absolute;
+    z-index: 10;
     top: 0;
     right: 0px;
-    z-index: 10;
     text-align: center;
     padding-top: 12px;
     box-shadow: 1px 1px 1px grey;

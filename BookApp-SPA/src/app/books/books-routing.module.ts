@@ -7,23 +7,56 @@ import { AddBookComponent } from "./add-book/add-book.component";
 import { RequestBookComponent } from "./request-book/request-book.component";
 import { AddBookCoverComponent } from "./add-book-cover/add-book-cover.component";
 import { CatalogCreateComponent } from "./catalog-create/catalog-create.component";
-import { CatalogListComponent } from './catalog-list/catalog-list.component';
-import { CatalogDetailsComponent } from './catalog-details/catalog-details.component';
+import { CatalogListComponent } from "./catalog-list/catalog-list.component";
+import { CatalogDetailsComponent } from "./catalog-details/catalog-details.component";
+import { AuthenticationGuard } from "../_guards/authentication.guard";
 
 const booksRoutes: Routes = [
   {
     path: "",
     component: BooksComponent,
     children: [
-      { path: "", component: BooksListComponent },
-      { path: "details/:url", component: BooksDetailComponent },
-      { path: "add", component: AddBookComponent },
-      { path: "add-cover/:friendly-url", component: AddBookCoverComponent },
+      {
+        path: "",
+        component: BooksListComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "details/:url",
+        component: BooksDetailComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "add",
+        component: AddBookComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "add-cover/:friendly-url",
+        component: AddBookCoverComponent,
+        canActivate: [AuthenticationGuard]
+      },
       { path: "request-book/:id", component: RequestBookComponent },
-      { path: "catalog/add", component: CatalogCreateComponent },
-      { path: "catalog/edit/:friendly-url", component: CatalogCreateComponent },
-      { path: "catalog/details/:friendly-url", component: CatalogDetailsComponent },
-      { path: "catalogs", component: CatalogListComponent },
+      {
+        path: "catalog/add",
+        component: CatalogCreateComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "catalog/edit/:friendly-url",
+        component: CatalogCreateComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "catalog/details/:friendly-url",
+        component: CatalogDetailsComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "catalogs",
+        component: CatalogListComponent,
+        canActivate: [AuthenticationGuard]
+      }
     ]
   }
 ];

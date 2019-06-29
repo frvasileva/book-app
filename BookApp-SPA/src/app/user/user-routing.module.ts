@@ -18,29 +18,33 @@ const userRoutes: Routes = [
       { path: "sign-up", component: SignupComponent },
       {
         path: "profile",
-        component: ProfileComponent
-        // canActivate: [AuthenticationGuard]
+        component: ProfileComponent,
+        canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },
       {
         path: "profile/:friendlyUrl",
-        component: ProfileComponent
-        // canActivate: [AuthenticationGuard]
+        component: ProfileComponent,
+        canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },
       {
         path: "profile/edit/:friendlyUrl",
-        component: ProfileEditComponent
-        // canActivate: [AuthenticationGuard]
+        component: ProfileEditComponent,
+        canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },
       {
         path: "profile/edit-photo/:friendlyUrl",
-        component: ProfilePhotoEditComponent
-        // canActivate: [AuthenticationGuard]
+        component: ProfilePhotoEditComponent,
+        canActivate: [AuthenticationGuard]
         // resolve: { profile: ProfileResolver }
       },
-      { path: "user-list", component: UsersListComponent }
+      {
+        path: "user-list",
+        component: UsersListComponent,
+        canActivate: [AuthenticationGuard]
+      }
     ]
   }
 ];

@@ -8,7 +8,6 @@ import {
 import { Observable, throwError } from "rxjs";
 import { catchError } from "rxjs/operators";
 
-import { AuthService } from "../_services/auth.service";
 import { Router } from "@angular/router";
 
 @Injectable()
@@ -21,6 +20,7 @@ export class ErrorInterceptor implements HttpInterceptor {
   ): Observable<HttpEvent<any>> {
     return next.handle(request).pipe(
       catchError(err => {
+        console.log(err);
         if (err.status === 401) {
           //TODO add ReturnUrl here
           this.router.navigate(["/user/login/"]);

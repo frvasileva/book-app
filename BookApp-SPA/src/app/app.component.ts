@@ -24,7 +24,6 @@ export class AppComponent implements OnInit {
   constructor(private authService: AuthService, private router: Router) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
-        this.moduleClass = "helllooooooo";
         // Show loading indicator
       }
 
@@ -39,6 +38,8 @@ export class AppComponent implements OnInit {
             this.currentComponentPath === "sign-up")
         ) {
           this.moduleClass = this.currentModule + "-module-wrapper";
+        } else {
+          this.moduleClass = "";
         }
       }
 

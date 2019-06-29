@@ -10,6 +10,8 @@ export class UserComponent implements OnInit {
   constructor(private userService: UserService) {}
 
   ngOnInit() {
-    this.userService.getUsers();
+    if (localStorage.getItem("token")) {
+      this.userService.getUsers();
+    }
   }
 }
