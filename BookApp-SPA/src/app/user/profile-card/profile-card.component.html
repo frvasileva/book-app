@@ -32,12 +32,22 @@
         {{ profile?.introduction }}
       </p>
     </div>
-    <button type="button" class="button action" *ngIf="!isCurrentUser && !isFollowing" (click)="followUser(profile?.id)">
+    <button
+      type="button"
+      class="button action"
+      *ngIf="!isCurrentUser && !isFollowing"
+      (click)="followUser(profile?.id)"
+    >
       <span class="glyphicon glyphicon-plus"></span>
       Follow
     </button>
 
-    <button type="button" class="button action" *ngIf="!isCurrentUser && isFollowing" (click)="unFollowUser(profile?.id)">
+    <button
+      type="button"
+      class="button action"
+      *ngIf="!isCurrentUser && isFollowing"
+      (click)="unFollowUser(profile?.id)"
+    >
       <span class="glyphicon glyphicon-minus"></span>
       Unfollow
     </button>
@@ -50,5 +60,9 @@
       <i class="glyphicon glyphicon-pencil"></i>
       Edit Profile
     </a>
+
+    <button (click)="this.sharePage('https://www.youtube.com/watch?v=9iAQeWXGlo0')">
+      Share to friend
+    </button>
   </div>
 </div>

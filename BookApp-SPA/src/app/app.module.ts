@@ -4,6 +4,7 @@ import { NgModule } from "@angular/core";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { StoreModule } from "@ngrx/store";
 import { BsDropdownModule } from "ngx-bootstrap";
+import { FacebookModule } from 'ngx-facebook';
 
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment"; // Angular CLI environemnt
@@ -65,7 +66,8 @@ import { ErrorInterceptor } from "./_helpers/error.interceptor";
     StoreDevtoolsModule.instrument({
       maxAge: 25, // Retains last 25 states
       logOnly: environment.production // Restrict extension to log-only mode
-    })
+    }),
+    FacebookModule.forRoot()
   ],
   providers: [
     AuthService,
