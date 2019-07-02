@@ -1,0 +1,52 @@
+.container-wrapper {
+  padding: 70px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.container-wrapper h2 {
+  font-size: 60px;
+  color: black;
+  background-color: white;
+  line-height: 90px;
+  padding-left: 15px;
+}
+
+.container-wrapper p {
+  font-size: 18px;
+  color: black;
+}
+
+.main-cta {
+  border: 0px;
+  background-color: #228be6;
+  border: 3px solid #228be6;
+  color: white;
+  text-transform: uppercase;
+  padding: 15px;
+  font-size: 26px;
+  min-width: 240px;
+  font-family: Segoe UI;
+  font-weight: bold;
+
+  &:hover,
+  &:active {
+    transition: 0.2s;
+    border: 3px solid white;
+    box-shadow: none;
+  }
+}
+
+.info-wrapper {
+  background-color: white;
+
+  p {
+    color: black;
+  }
+
+  h2 {
+    background-color: transparent;
+    color: black;
+  }
+}

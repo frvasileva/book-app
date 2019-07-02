@@ -38,6 +38,11 @@ export class AppComponent implements OnInit {
             this.currentComponentPath === "sign-up")
         ) {
           this.moduleClass = this.currentModule + "-module-wrapper";
+        } else if (
+          this.currentModule === "user" &&
+          this.currentComponentPath === "invite-friend"
+        ) {
+          this.moduleClass = this.currentModule + "-invite-module-wrapper";
         } else {
           this.moduleClass = "";
         }

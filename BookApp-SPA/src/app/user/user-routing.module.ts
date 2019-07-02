@@ -8,6 +8,7 @@ import { UsersListComponent } from "./users-list/users-list.component";
 import { AuthenticationGuard } from "../_guards/authentication.guard";
 import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
 import { ProfilePhotoEditComponent } from "./profile-photo-edit/profile-photo-edit.component";
+import { InviteFriendComponent } from "./invite-friend/invite-friend.component";
 
 const userRoutes: Routes = [
   {
@@ -38,11 +39,15 @@ const userRoutes: Routes = [
         path: "profile/edit-photo/:friendlyUrl",
         component: ProfilePhotoEditComponent,
         canActivate: [AuthenticationGuard]
-        // resolve: { profile: ProfileResolver }
       },
       {
         path: "user-list",
         component: UsersListComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "invite-friend",
+        component: InviteFriendComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

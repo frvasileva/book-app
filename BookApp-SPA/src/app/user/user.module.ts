@@ -15,6 +15,7 @@ import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
 import { FileUploadModule } from "ng2-file-upload";
 import { ProfilePhotoEditComponent } from './profile-photo-edit/profile-photo-edit.component';
 import { SharedModule } from '../_shared/shared/shared.module';
+import { InviteFriendComponent } from './invite-friend/invite-friend.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +26,8 @@ import { SharedModule } from '../_shared/shared/shared.module';
     UsersListComponent,
     ProfileCardComponent,
     ProfileEditComponent,
-    ProfilePhotoEditComponent
+    ProfilePhotoEditComponent,
+    InviteFriendComponent
   ],
   imports: [
     CommonModule,
