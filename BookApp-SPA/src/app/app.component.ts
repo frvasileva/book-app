@@ -28,7 +28,6 @@ export class AppComponent implements OnInit {
       }
 
       if (event instanceof NavigationEnd) {
-        console.warn("loading navigator end", this.router);
         this.currentUrl = this.router.url;
         this.currentModule = this.currentUrl.split("/")[1];
         this.currentComponentPath = this.currentUrl.split("/")[2];
