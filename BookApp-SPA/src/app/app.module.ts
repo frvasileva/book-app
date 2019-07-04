@@ -4,7 +4,7 @@ import { NgModule } from "@angular/core";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { StoreModule } from "@ngrx/store";
 import { BsDropdownModule } from "ngx-bootstrap";
-import { FacebookModule } from 'ngx-facebook';
+import { FacebookModule } from "ngx-facebook";
 
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { environment } from "../environments/environment"; // Angular CLI environemnt
@@ -36,6 +36,8 @@ import { AuthenticationGuard } from "./_guards/authentication.guard";
 import { FileUploadModule } from "ng2-file-upload";
 import { JwtInterceptorHelper } from "./_helpers/jwtInterceptor";
 import { ErrorInterceptor } from "./_helpers/error.interceptor";
+import { LoadingScreenComponent } from "./_shared/loading-screen/loading-screen.component";
+import { LoadingScreenInterceptor } from "./_helpers/loading.interceptor";
 
 @NgModule({
   declarations: [
@@ -47,7 +49,8 @@ import { ErrorInterceptor } from "./_helpers/error.interceptor";
     LayoutComponent,
     NotFoundComponent,
     ContactComponent,
-    QuotesComponent
+    QuotesComponent,
+    LoadingScreenComponent
   ],
   imports: [
     BrowserModule,
@@ -79,7 +82,12 @@ import { ErrorInterceptor } from "./_helpers/error.interceptor";
     AlertifyService,
     AuthenticationGuard,
     { provide: HTTP_INTERCEPTORS, useClass: JwtInterceptorHelper, multi: true },
-    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true }
+    { provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: LoadingScreenInterceptor,
+      multi: true
+    }
 
     // ProfileResolver
   ],

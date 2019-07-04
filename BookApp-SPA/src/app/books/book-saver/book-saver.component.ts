@@ -22,11 +22,9 @@ export class BookSaverComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    console.log("book id", this.bookId);
     this.store
       .select(next => next.userState)
       .subscribe(userState => {
-        console.log("change saver component", this.catalogs);
         this.catalogs = userState.currentUserCatalogs;
       });
 
