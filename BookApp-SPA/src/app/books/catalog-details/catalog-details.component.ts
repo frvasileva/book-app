@@ -25,8 +25,6 @@ export class CatalogDetailsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.catalogService.getCatalogList();
-
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params["friendly-url"];
       this.store

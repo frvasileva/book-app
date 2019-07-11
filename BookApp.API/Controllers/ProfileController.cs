@@ -51,7 +51,6 @@ namespace BookApp.API.Controllers {
       _httpContextAccessor = httpContextAccessor;
     }
 
-    [AllowAnonymous]
     [HttpGet ("get/{friendlyUrl}")]
     public async Task<IActionResult> GetUserProfile (string friendlyUrl) {
 

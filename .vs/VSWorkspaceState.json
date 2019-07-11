@@ -1,12 +1,16 @@
 {
   "ExpandedNodes": [
     "",
-    "\\BookApp.API",
-    "\\BookApp.API\\Controllers",
-    "\\BookApp.API\\Data",
-    "\\BookApp.API\\Helpers",
-    "\\BookApp.API\\Migrations"
+    "\\BookApp-SPA",
+    "\\BookApp-SPA\\src",
+    "\\BookApp-SPA\\src\\app",
+    "\\BookApp-SPA\\src\\app\\books",
+    "\\BookApp-SPA\\src\\app\\books\\books-list",
+    "\\BookApp-SPA\\src\\app\\books\\catalog-details",
+    "\\BookApp-SPA\\src\\app\\books\\catalog-list",
+    "\\BookApp-SPA\\src\\app\\_models",
+    "\\BookApp-SPA\\src\\app\\_services",
+    "\\BookApp-SPA\\src\\app\\_store"
   ],
-  "SelectedNode": "\\BookApp.API\\Controllers\\BookController.cs",
   "PreviewInSolutionExplorer": false
 }

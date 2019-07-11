@@ -63,17 +63,6 @@ export class BookCatalogService {
     // );
   }
 
-  getCatalogList() {
-    return this.http.get(this.baseUrl + "get-all").subscribe(
-      data => {
-        this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
-      },
-      error => {
-        this.alertify.error(error);
-      }
-    );
-  }
-
   getUserCatalogs(userFriendlyUrl: string) {
     return this.http
       .get(this.baseUrl + "user-catalogs/" + userFriendlyUrl)

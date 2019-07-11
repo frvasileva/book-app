@@ -21,7 +21,7 @@
         </div>
       </div>
 
-      <div class="book-thumbnail" *ngIf="bookCount > 0">
+      <div class="book-thumbnail" *ngIf="bookCount==5">
         <div class="book-thumbnail-more">
           <a
             [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"

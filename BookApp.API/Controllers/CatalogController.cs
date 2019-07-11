@@ -48,7 +48,15 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("user-catalogs/{friendlyUrl}")]
     public async Task<IActionResult> GetForUser (string friendlyUrl) {
-      var bookListItems = await _repo.GetForUser (friendlyUrl);
+
+      var identity = HttpContext.User.Identity as ClaimsIdentity;
+      string userFriendlyUrl = "";
+      if (identity != null)
+        userFriendlyUrl = identity.FindFirst (ClaimTypes.Name).Value;
+
+      var isCurrentUser = friendlyUrl == userFriendlyUrl;
+
+      var bookListItems = await _repo.GetForUser (friendlyUrl, isCurrentUser);
 
       foreach (var item in bookListItems) {
         foreach (var catalog in item.BookCatalogs) {
@@ -62,7 +70,14 @@ namespace BookApp.API.Controllers {
     [HttpGet ("user-catalogs-pure-list/{friendlyUrl}")]
     public async Task<IActionResult> GetPureCatalogsForUser (string friendlyUrl) {
 
-      var catalogs = await _repo.GetPureForUser (friendlyUrl);
+      var identity = HttpContext.User.Identity as ClaimsIdentity;
+      string userFriendlyUrl = "";
+      if (identity != null)
+        userFriendlyUrl = identity.FindFirst (ClaimTypes.Name).Value;
+
+      var isCurrentUser = friendlyUrl == userFriendlyUrl;
+
+      var catalogs = await _repo.GetPureForUser (friendlyUrl, isCurrentUser);
       return Ok (catalogs);
     }
 

@@ -59,26 +59,33 @@ namespace BookApp.API.Data {
       return catalogList;
     }
 
-    public async Task<List<Catalog>> GetForUser (string friendlyUrl) {
+    public async Task<List<Catalog>> GetForUser (string friendlyUrl, bool isCurrentUser) {
 
       var user = await _context.Users.Where (item => item.FriendlyUrl == friendlyUrl).ToListAsync ();
+      var bookList = new List<Catalog>();
 
-      var bookList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
-      Where (item => item.UserId == user.FirstOrDefault ().Id).OrderByDescending (item => item.Created).ToListAsync ();
-
+      if (isCurrentUser) {
+        bookList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
+        Where (item => item.UserId == user.FirstOrDefault ().Id).OrderByDescending (item => item.Created).ToListAsync ();
+      } else {
+        bookList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
+        Where (item => item.UserId == user.FirstOrDefault ().Id && item.IsPublic == true).OrderByDescending (item => item.Created).ToListAsync ();
+      }
       // var mappedBookList = _mapper.Map<List<BookListItemDto>> (bookList);
 
       return bookList;
     }
 
-    public async Task<List<CatalogPureDto>> GetPureForUser (string friendlyUrl) {
+    public async Task<List<CatalogPureDto>> GetPureForUser (string friendlyUrl, bool isCurrentUser) {
       var user = await _context.Users.Where (item => item.FriendlyUrl == friendlyUrl).ToListAsync ();
 
       var bookList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
       Where (item => item.UserId == user.FirstOrDefault ().Id).OrderByDescending (item => item.Created).ToListAsync ();
 
-       var mappedBookList = _mapper.Map<List<CatalogPureDto>> (bookList);
-
+      var mappedBookList = _mapper.Map<List<CatalogPureDto>> (bookList);
+      if (!isCurrentUser) {
+        mappedBookList = mappedBookList.Where (item => item.IsPublic == true).ToList ();
+      }
       return mappedBookList;
     }
 
