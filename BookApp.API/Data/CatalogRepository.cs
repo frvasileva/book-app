@@ -59,10 +59,11 @@ namespace BookApp.API.Data {
       return catalogList;
     }
 
-    public async Task<List<Catalog>> GetForUser (string friendlyUrl, bool isCurrentUser) {
+    public async Task<List<CatalogItemDto>> GetForUser (string friendlyUrl, bool isCurrentUser) {
 
       var user = await _context.Users.Where (item => item.FriendlyUrl == friendlyUrl).ToListAsync ();
-      var bookList = new List<Catalog>();
+      var bookList = new List<Catalog> ();
+      var catalogs = new List<CatalogItemDto> ();
 
       if (isCurrentUser) {
         bookList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
@@ -71,9 +72,27 @@ namespace BookApp.API.Data {
         bookList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
         Where (item => item.UserId == user.FirstOrDefault ().Id && item.IsPublic == true).OrderByDescending (item => item.Created).ToListAsync ();
       }
-      // var mappedBookList = _mapper.Map<List<BookListItemDto>> (bookList);
 
-      return bookList;
+      foreach (var item in bookList) {
+        var catalog = new CatalogItemDto ();
+        catalog.Name = item.Name;
+        catalog.IsPublic = item.IsPublic;
+        catalog.UserId = item.UserId;
+        catalog.FriendlyUrl = item.FriendlyUrl;
+        catalog.Created = item.Created;
+        catalog.UserFriendlyUrl = item.User.FriendlyUrl;
+
+        foreach (var itm in item.BookCatalogs) {
+          var book = _mapper.Map<BookItemDto> (itm.Book);
+          catalog.Books.Add (book);
+        }
+
+        catalogs.Add (catalog);
+      }
+
+      var mappedBookList = _mapper.Map<List<BookListItemDto>> (bookList);
+      var test = catalogs;
+      return catalogs;
     }
 
     public async Task<List<CatalogPureDto>> GetPureForUser (string friendlyUrl, bool isCurrentUser) {

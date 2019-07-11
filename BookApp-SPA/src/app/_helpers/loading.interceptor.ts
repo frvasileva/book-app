@@ -32,7 +32,7 @@ export class LoadingScreenInterceptor implements HttpInterceptor {
         break;
       }
     }
-    console.log("loading interceptor");
+
     if (displayLoadingScreen) {
       if (this.activeRequests === 0) {
         this.loadingScreenService.startLoading();

@@ -11,17 +11,17 @@
       <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs | slice:0:5; let i=index" > -->
       <div
         class="col-md-4"
-        *ngFor="let item of catalog.bookCatalogs | slice: 0:5; let i = index"
+        *ngFor="let item of catalog.books | slice: 0:5; let i = index"
       >
         <div class="book-thumbnail">
-          <a [routerLink]="['/books/details', item.book?.friendlyUrl]">
+          <a [routerLink]="['/books/details', item?.friendlyUrl]">
             <!-- <img src="{{ item.book.photoPath }}" width="100%" /> -->
-            <img src="{{ item.book.photoPath }}" width="100%" />
+            <img src="{{ item.photoPath }}" width="100%" />
           </a>
         </div>
       </div>
 
-      <div class="book-thumbnail" *ngIf="bookCount==5">
+      <div class="book-thumbnail" *ngIf="bookCount == 5">
         <div class="book-thumbnail-more">
           <a
             [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"

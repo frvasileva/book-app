@@ -59,8 +59,8 @@ namespace BookApp.API.Controllers {
       var bookListItems = await _repo.GetForUser (friendlyUrl, isCurrentUser);
 
       foreach (var item in bookListItems) {
-        foreach (var catalog in item.BookCatalogs) {
-          catalog.Book.PhotoPath = CloudinaryHelper.TransformUrl (catalog.Book.PhotoPath, TransformationType.Book_Details_Preset);
+        foreach (var book in item.Books) {
+         book.PhotoPath = CloudinaryHelper.TransformUrl (book.PhotoPath, TransformationType.Book_Details_Preset);
         }
       }
 

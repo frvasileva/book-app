@@ -29,7 +29,7 @@ export class CatalogListComponent implements OnInit {
         .select(state => state.catalogState)
         .subscribe(catState => {
           this.catalogState = catState.catalog.filter(c => {
-            return c.user.friendlyUrl === this.friendlyUrl;
+            return c.userFriendlyUrl === this.friendlyUrl;
           });
 
           // if (this.catalogState.length === 0) {

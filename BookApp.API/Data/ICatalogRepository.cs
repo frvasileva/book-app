@@ -12,7 +12,7 @@ namespace BookApp.API.Data {
     Task<BookListItemDto> Get (int id);
     Task<BookCatalog> Delete (int id);
 
-    Task<List<Catalog>> GetForUser (string friendlyUrl, bool isCurrentUser);
+    Task<List<CatalogItemDto>> GetForUser (string friendlyUrl, bool isCurrentUser);
     Task<List<CatalogPureDto>> GetPureForUser (string friendlyUrl, bool isCurrentUser);
 
   }
