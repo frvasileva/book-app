@@ -1,10 +1,10 @@
 <div class="row">
-  <div class="div col-md-2">
-    <a [routerLink]="['/user/profile/', catalog?.user.friendlyUrl]">
+  <!-- <div class="div col-md-2">
+    <a [routerLink]="['/user/profile/', catalog?.userFriendlyUrl]">
       <img [src]="catalog?.user.avatarPath" class="user-avatar" />
     </a>
-  </div>
-  <div class="div col-md-10">
+  </div> -->
+  <div class="div col-md">
     <h2>{{ catalog?.name }}</h2>
   </div>
 </div>
@@ -12,7 +12,7 @@
 <div class="row">
   <div
     class="col-sm-6 col-md-3 col-xs-6"
-    *ngFor="let item of catalog?.bookCatalogs; let i = index"
+    *ngFor="let item of catalog?.books; let i = index"
   >
     <!-- <div class="book-thumbnail">
       <a [routerLink]="['/books/details', item.book?.friendlyUrl]">
@@ -20,6 +20,6 @@
       </a>
     </div> -->
 
-    <app-book-card-item [book]="item?.book"></app-book-card-item>
+    <app-book-card-item [book]="item"></app-book-card-item>
   </div>
 </div>

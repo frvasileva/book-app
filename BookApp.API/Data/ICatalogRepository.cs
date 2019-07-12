@@ -9,7 +9,7 @@ namespace BookApp.API.Data {
     Task<Catalog> Update (CatalogCreateDto catalog);
     Task<List<BookListItemDto>> GetAll ();
     Task<List<Catalog>> GetAllPure();
-    Task<BookListItemDto> Get (int id);
+    Task<CatalogItemDto> Get (string friendlyUrl);
     Task<BookCatalog> Delete (int id);
 
     Task<List<CatalogItemDto>> GetForUser (string friendlyUrl, bool isCurrentUser);

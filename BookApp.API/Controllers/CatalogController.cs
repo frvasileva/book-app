@@ -40,9 +40,9 @@ namespace BookApp.API.Controllers {
       return Ok (result);
     }
 
-    [HttpGet ("get/{id}")]
-    public async Task<IActionResult> Get (int id) {
-      var bookListItem = await _repo.Get (id);
+    [HttpGet ("get/{friendlyUrl}")]
+    public async Task<IActionResult> Get (string friendlyUrl) {
+      var bookListItem = await _repo.Get (friendlyUrl);
       return Ok (bookListItem);
     }
 

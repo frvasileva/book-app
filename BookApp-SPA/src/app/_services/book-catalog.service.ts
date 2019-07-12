@@ -49,18 +49,17 @@ export class BookCatalogService {
     );
   }
 
-  getCatalog(id: number) {
-    // return this.http.get(this.baseUrl + "get/" + id).subscribe(
-    //   data => {
-    //     this.store.dispatch(
-    //       new CatalogActions.GetCatalogsAction(<CatalogCreateDto>data)
-    //     );
-    //     console.log("get catalog data", data);
-    //   },
-    //   error => {
-    //     this.alertify.error(error);
-    //   }
-    // );
+  getCatalog(friendlyUrl: string) {
+    return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
+      data => {
+        this.store.dispatch(
+          new CatalogActions.AddCatalogAction(<CatalogCreateDto>data)
+        );
+      },
+      error => {
+        this.alertify.error(error);
+      }
+    );
   }
 
   getUserCatalogs(userFriendlyUrl: string) {

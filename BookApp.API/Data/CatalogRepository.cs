@@ -38,11 +38,24 @@ namespace BookApp.API.Data {
       return result;
     }
 
-    public async Task<BookListItemDto> Get (int id) {
-      var catalogList = await _context.Catalogs.Where (item => item.Id == id).FirstOrDefaultAsync ();
-      var mappedBook = _mapper.Map<BookListItemDto> (catalogList);
+    public async Task<CatalogItemDto> Get (string friendlyUrl) {
+      var bla = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
+      Where (item => item.FriendlyUrl == friendlyUrl).OrderByDescending (item => item.Created).ToListAsync ();
+      var catalogItem = bla.FirstOrDefault ();
+      var catalog = new CatalogItemDto ();
+      catalog.Name = catalogItem.Name;
+      catalog.IsPublic = catalogItem.IsPublic;
+      catalog.UserId = catalogItem.UserId;
+      catalog.FriendlyUrl = catalogItem.FriendlyUrl;
+      catalog.Created = catalogItem.Created;
+      catalog.UserFriendlyUrl = catalogItem.User.FriendlyUrl;
 
-      return mappedBook;
+      foreach (var itm in catalogItem.BookCatalogs) {
+        var book = _mapper.Map<BookItemDto> (itm.Book);
+        catalog.Books.Add (book);
+      }
+
+      return catalog;
     }
 
     public async Task<List<BookListItemDto>> GetAll () {

@@ -28,7 +28,6 @@ export class AuthService {
   ) {}
 
   login(model: any) {
-    console.log({ model });
     return this.http.post(this.baseUrl + "login", model).pipe(
       map((response: any) => {
         this.store.dispatch(
@@ -37,13 +36,14 @@ export class AuthService {
           ))
         );
 
-        this.bookSaverService.getUserCatalogList(response.user.friendlyUrl);
-
         this.store.dispatch(
           new UserProfileActions.SetUserAction(<User>response.user)
         );
 
         localStorage.setItem("token", response.token);
+
+        this.bookSaverService.getUserCatalogList(response.user.friendlyUrl);
+        
         this.router.navigate(["/user/profile/", response.user.friendlyUrl]);
       })
     );

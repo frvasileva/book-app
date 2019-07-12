@@ -59,6 +59,23 @@
     background-color: $main-color-darker;
   }
 
+
+  &.action {
+    background-color: #fcca3d;
+    border: 3px solid #fcca3d;
+    color: $white;
+    width: 100%;
+    max-width: 320px;
+  }
+
+  &.action:hover {
+    border: 3px solid #fcca3d;;
+    background-color: white;
+    transition: 0.2s;
+    background-color: $main-color-darker;
+  }
+
+
   &.action-btn {
     max-width: 280px;
     background-color: #fcca3d;
