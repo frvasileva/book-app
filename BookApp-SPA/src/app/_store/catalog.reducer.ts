@@ -13,7 +13,7 @@ export const initialState: CatalogState = {
   catalog: []
 };
 
-//TODO: Initial version! Change what the state returns
+// TODO: Initial version! Change what the state returns
 
 export function catalogReducer(
   state = initialState,

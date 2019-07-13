@@ -4,13 +4,13 @@ import { CatalogPureDto } from "../_models/catalogPureDto";
 export interface UserState {
   currentUser: string;
   currentUserCatalogs: CatalogPureDto[];
-  users: Object;
+  users: any[];
 }
 
 export const initialState: UserState = {
   currentUser: null,
   currentUserCatalogs: [],
-  users: {}
+  users: []
 };
 
 export function userReducer(
@@ -25,25 +25,20 @@ export function userReducer(
       };
     }
     case UserActions.SET_USER: {
+      const newUsers = state.users.filter(user => user.friendlyUrl !== action.payload.friendlyUrl);
+      newUsers.push(action.payload);
       return {
         ...state,
-        users: {
-          ...state.users,
-          [action.payload.friendlyUrl]: action.payload
-        }
+        users: newUsers
       };
     }
     case UserActions.SET_USERS: {
-      const usersMap = action.payload.reduce((result, user) => {
-        result[user.friendlyUrl] = user;
-        return result;
-      }, {});
+      const userFriendlyUrls = action.payload.map(user => user.friendlyUrl);
+      const newUsers = state.users.filter(user => !userFriendlyUrls.includes(user.friendlyUrl));
+      newUsers.push(...action.payload);
       return {
         ...state,
-        users: {
-          ...state.users,
-          ...usersMap
-        }
+        users: newUsers
       };
     }
     case UserActions.UPDATE_USER_AVATAR: {
@@ -66,17 +61,14 @@ export function userReducer(
     }
     case UserActions.UPDATE_USER_FOLLOWER: {
       const { isFollowedByCurrentUser, userFriendlyUrl } = action.payload;
+      const newUsers = state.users.filter(user => user.friendlyUrl !== userFriendlyUrl);
+      newUsers.push({
+        ...state.users.find(user => user.friendlyUrl === userFriendlyUrl),
+        isFollowedByCurrentUser
+      });
       return {
         ...state,
-        users: {
-          ...state.users,
-          [userFriendlyUrl]: {
-            ...state.users[userFriendlyUrl],
-            isFollowedByCurrentUser
-          }
-        }
-        // state.users[0].isFollowedByCurrentUser: action.payload,
-        //isFollowedByCurrentUser: action.payload.isFollowedByCurrentUser
+        users: newUsers
       };
     }
     case UserActions.LOGOUT: {

@@ -3,8 +3,12 @@ using BookApp.API.Models;
 
 namespace BookApp.API.Dtos {
   public class BookPreviewDto {
+
+    public BookPreviewDto () {
+      this.BookCatalogList = new List<BookCatalogListDto> ();
+    }
     public int Id { get; set; }
-    
+
     public int UserId { get; set; }
 
     public string Title { get; set; }
@@ -15,7 +19,7 @@ namespace BookApp.API.Dtos {
 
     public string FriendlyUrl { get; set; }
 
-    public List<BookActionPreviewDto> BookListActions { get; set; }
+    public List<BookCatalogListDto> BookCatalogList { get; set; }
 
   }
 }

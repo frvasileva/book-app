@@ -71,7 +71,7 @@ namespace BookApp.API.Data {
         catalog.Name = bookCatalogDto.CatalogName;
         catalog.FriendlyUrl = Url.GenerateFriendlyUrl (catalog.Name + "-" + StringHelper.GenerateRandomNo ());
         catalog.Created = DateTime.Now;
-        
+
         _context.Catalogs.Add (catalog);
         await _context.SaveChangesAsync ();
 
@@ -104,9 +104,30 @@ namespace BookApp.API.Data {
     }
 
     public async Task<List<BookPreviewDto>> GetAll () {
-      //var bookList = await _context.Books.Include(itm => itm.BookListActions).OrderByDescending(item => item.AddedOn).ToListAsync();
-      var bookList = await _context.Books.OrderByDescending (item => item.AddedOn).ToListAsync ();
-      var mappedBookList = _mapper.Map<List<BookPreviewDto>> (bookList);
+      var bookList = await _context.Books.Include (itm => itm.BookCatalogs).OrderByDescending (item => item.AddedOn).ToListAsync ();
+      //  var mappedBookList = _mapper.Map<List<BookPreviewDto>> (bookList);
+      var mappedBookList = new List<BookPreviewDto> ();
+
+      foreach (var item in bookList) {
+        var bookPreview = new BookPreviewDto () {
+          Id = item.Id,
+          UserId = item.UserId,
+          Title = item.Title,
+          Description = item.Description,
+          PhotoPath = item.PhotoPath,
+          FriendlyUrl = item.FriendlyUrl
+        };
+
+        foreach (var itm in item.BookCatalogs) {
+          var bookCatalogListDto = new BookCatalogListDto () {
+            CatalogId = itm.CatalogId
+          };
+
+          bookPreview.BookCatalogList.Add (bookCatalogListDto);
+        }
+
+        mappedBookList.Add (bookPreview);
+      }
 
       return mappedBookList;
     }
