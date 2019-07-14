@@ -39,10 +39,12 @@ namespace BookApp.API.Data {
     }
 
     public async Task<CatalogItemDto> Get (string friendlyUrl) {
-      var bla = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
+      var catalogs = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
       Where (item => item.FriendlyUrl == friendlyUrl).OrderByDescending (item => item.Created).ToListAsync ();
-      var catalogItem = bla.FirstOrDefault ();
+   
+      var catalogItem = catalogs.FirstOrDefault ();
       var catalog = new CatalogItemDto ();
+      catalog.Id = catalogItem.Id;
       catalog.Name = catalogItem.Name;
       catalog.IsPublic = catalogItem.IsPublic;
       catalog.UserId = catalogItem.UserId;
@@ -88,6 +90,7 @@ namespace BookApp.API.Data {
 
       foreach (var item in bookList) {
         var catalog = new CatalogItemDto ();
+        catalog.Id = item.Id;
         catalog.Name = item.Name;
         catalog.IsPublic = item.IsPublic;
         catalog.UserId = item.UserId;

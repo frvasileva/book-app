@@ -1,4 +1,5 @@
 import * as CatalogActions from "./catalog.actions";
+import * as BookActions from "./book.actions";
 import { CatalogItemDto } from "../_models/catalogItem";
 
 // const initialState = {
@@ -17,7 +18,7 @@ export const initialState: CatalogState = {
 
 export function catalogReducer(
   state = initialState,
-  action: CatalogActions.CatalogActions
+  action: CatalogActions.CatalogActions | BookActions.BookActions
 ) {
   switch (action.type) {
     case CatalogActions.GET_CATALOGS: {
@@ -31,6 +32,12 @@ export function catalogReducer(
         ...state,
         catalog: [...state.catalog, action.payload]
       };
+    }
+    case BookActions.REMOVE_BOOK_FROM_CATALOG: {
+      const { bookId, catalogId } = action.payload;
+      const catalog = state.catalog.find(catalogItem => catalogItem.id === catalogId);
+      catalog.books = catalog.books.filter(bookItem => bookItem.id !== bookId);
+      return state;
     }
     default:
       return state;
