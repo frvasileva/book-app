@@ -4,4 +4,5 @@ export interface CatalogPureDto {
   isPublic: boolean;
   userId: number;
   created: Date;
+  isSelected: boolean;
 }

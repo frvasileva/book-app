@@ -11,7 +11,7 @@ namespace BookApp.API.Data {
     Task<Book> AddBook (BookCreateDto book);
     Task<BookListActions> AddBookAction (BookActionDto book);
 
-    Task<BookListActions> DeleteBookAction (int bookId);
+    Task<bool> RemoveBookFromCatalog (int catalogId, int bookId);
     Task<BookCatalog> AddBookToCatalog (BookCatalogCreateDto bookCatalogDto);
 
     void Add<T> (T entity) where T : class;

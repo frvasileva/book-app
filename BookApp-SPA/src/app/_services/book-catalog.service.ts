@@ -38,7 +38,8 @@ export class BookCatalogService {
           created: response.created,
           isPublic: response.isPublic,
           name: response.name,
-          userId: response.userId
+          userId: response.userId,
+          isSelected: false
         };
         this.store.dispatch(
           new UserActions.AddCurrentUserCatalogsAction(catalogPure)

@@ -86,9 +86,9 @@ namespace BookApp.API.Controllers {
       return Ok (bookActionDto);
     }
 
-    [HttpPost ("delete-book-action/{bookId}")]
-    public async Task<IActionResult> DeleteBookAction (int bookId) {
-      await _repo.DeleteBookAction (bookId);
+    [HttpGet ("delete-book-from-catalog/{catalogId}/{bookId}")]
+    public async Task<IActionResult> RemoveBookFromCatalog (int catalogId, int bookId) {
+      await _repo.RemoveBookFromCatalog (catalogId, bookId);
       await _context.SaveChangesAsync ();
 
       return Ok ();

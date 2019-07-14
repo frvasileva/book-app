@@ -5,7 +5,7 @@ namespace BookApp.API.Dtos {
   public class BookPreviewDto {
 
     public BookPreviewDto () {
-      this.BookCatalogList = new List<BookCatalogListDto> ();
+      this.BookCatalogs = new List<BookCatalogListDto> ();
     }
     public int Id { get; set; }
 
@@ -19,7 +19,7 @@ namespace BookApp.API.Dtos {
 
     public string FriendlyUrl { get; set; }
 
-    public List<BookCatalogListDto> BookCatalogList { get; set; }
+    public List<BookCatalogListDto> BookCatalogs { get; set; }
 
   }
 }

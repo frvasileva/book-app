@@ -1,8 +1,7 @@
 import { Author } from "../authors/author.model";
-import { BookAction } from "./bookAction.model";
 
 export class Book {
-  public id: string;
+  public id: number;
   public userId: string;
   public title: string;
   public bookType: string;
@@ -13,10 +12,10 @@ export class Book {
   public author?: Author;
   public tags: string[];
 
-  public bookActions: BookAction[];
+  public bookCatalogs: any;
 
   constructor(
-    id: string,
+    id: number,
     userId: string,
     title: string,
     bookType: string,
@@ -25,7 +24,7 @@ export class Book {
     publisher: string,
     author: Author,
     tags: string[],
-    bookActions: BookAction[]
+    bookCatalogs: any
   ) {
     this.id = id;
     this.userId = userId;
@@ -36,6 +35,6 @@ export class Book {
     this.publisher = publisher;
     this.author = author;
     this.tags = tags;
-    this.bookActions = bookActions;
+    this.bookCatalogs = bookCatalogs;
   }
 }

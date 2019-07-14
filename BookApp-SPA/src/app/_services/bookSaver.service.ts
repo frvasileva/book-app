@@ -3,13 +3,13 @@ import { environment } from "src/environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Book } from "../_models/books";
+import { map } from "rxjs/operators";
+
 import { AlertifyService } from "./alertify.service";
+import { Book } from "../_models/books";
 import * as UserActions from "../_store/user.actions";
 import { CatalogPureDto } from "../_models/catalogPureDto";
-import { map } from "rxjs/operators";
-import * as CatalogActions from "../_store/catalog.actions";
-import { CatalogCreateDto } from "../_models/catalogCreateDto";
+import * as BookActions from "../_store/book.actions";
 import { CatalogItemDto } from "../_models/catalogItem";
 
 @Injectable()
@@ -27,15 +27,6 @@ export class BookSaverService {
     private alertify: AlertifyService
   ) {}
 
-  // getUserLists(keyword: string) {
-  //   if (keyword === null) {
-  //     return this.bookSaverItemList;
-  //   } else {
-  //     return this.bookSaverItemList.filter(item =>
-  //       item.label.includes(keyword)
-  //     );
-  //   }
-  // }
   getUserCatalogList(friendlyUrl: string) {
     return this.http
       .get(this.baseUrl + "user-catalogs-pure-list/" + friendlyUrl)
@@ -51,27 +42,41 @@ export class BookSaverService {
       );
   }
 
-  addBookToCatalog(catalogId: number, catalogName: string, bookId: number) {
-    const model = { catalogId, bookId, catalogName };
+  addBookToCatalog(catalogId: number, bookId: number) {
+    const model = { catalogId, bookId, catalogName: "" };
 
     return this.http
       .post(this.baseUrlBookService + "add-to-catalog", model)
       .pipe(
         map((response: any) => {
           this.store.dispatch(
-            new CatalogActions.AddCatalogAction(<CatalogCreateDto>response)
+            new BookActions.AddBookToCatalogAction({ bookId, catalogId })
           );
 
-          if (catalogId == null) {
-            console.log("catalog id =  null");
-            // this.store.dispatch(
-            //   new UserActions.SetCurrentUserCatalogsAction(<CatalogPureDto[]>(
-            //     response
-            //   ))
-            // );
-          }
           return response;
         })
+      )
+      .subscribe();
+  }
+
+  removeBookFromCatalog(catalogId: number, bookId: number) {
+    return this.http
+      .get(
+        this.baseUrlBookService +
+          "delete-book-from-catalog/" +
+          catalogId +
+          "/" +
+          bookId
+      )
+      .subscribe(
+        data => {
+          this.store.dispatch(
+            new BookActions.RemoveBookFromCatalogAction({ bookId, catalogId })
+          );
+        },
+        error => {
+          this.alertify.error(error);
+        }
       );
   }
 }

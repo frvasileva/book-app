@@ -1,9 +1,11 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { Store } from "@ngrx/store";
+
 import { BookSaverService } from "src/app/_services/bookSaver.service";
 import { CatalogPureDto } from "src/app/_models/catalogPureDto";
-import { Store } from "@ngrx/store";
 import { UserState } from "src/app/_store/user.reducer";
+import { Book } from "../book.model";
 
 @Component({
   selector: "app-book-saver",
@@ -18,19 +20,45 @@ export class BookSaverComponent implements OnInit {
 
   constructor(
     private bookSaverService: BookSaverService,
-    private store: Store<{ userState: UserState }>
+    private store: Store<{
+      userState: UserState;
+      bookState: { books: Book[] };
+    }>
   ) {}
 
   ngOnInit() {
-    this.store
-      .select(next => next.userState)
-      .subscribe(userState => {
-        this.catalogs = userState.currentUserCatalogs;
-      });
+    this.store.subscribe(state => {
+      const book = state.bookState.books.find(b => b.id === this.bookId);
+      this.catalogs = state.userState.currentUserCatalogs.map(catalog => ({
+        ...catalog,
+        isSelected: book.bookCatalogs.some(
+          item => item.catalogId === catalog.id
+        )
+      }));
+    });
 
     this.addToListForm = new FormGroup({
       bookSaverListItem: new FormControl(null, Validators.required)
     });
+  }
+
+  addToCatalog(catalogId) {
+    console.log("add to catalog");
+    this.bookSaverService.addBookToCatalog(catalogId, this.bookId);
+  }
+
+  removeFromCatalog(catalogId) {
+    this.bookSaverService.removeBookFromCatalog(catalogId, this.bookId);
+  }
+
+  onSubmit() {
+    // const item = this.addToListForm.value;
+    // this.bookSaverService
+    //   .addBookToCatalog(null, item.bookSaverListItem, this.bookId)
+    //   .subscribe(next => {
+    //     console.log("next", next);
+    //   });
+    // this.addToListForm.reset();
   }
 
   onSaverFocus() {
@@ -42,26 +70,5 @@ export class BookSaverComponent implements OnInit {
   onSaverFocusOut() {
     // this.catalogs = [];
     // console.log("focus out");
-  }
-
-  itemSelected(catalogName, catalogId) {
-    this.bookSaverService
-      .addBookToCatalog(catalogId, catalogName, this.bookId)
-      .subscribe(next => {
-        console.log("next", next);
-      });
-
-    this.addToListForm.controls["bookSaverListItem"].setValue(catalogName);
-  }
-
-  onSubmit() {
-    // const item = this.addToListForm.value;
-    // this.bookSaverService
-    //   .addBookToCatalog(null, item.bookSaverListItem, this.bookId)
-    //   .subscribe(next => {
-    //     console.log("next", next);
-    //   });
-
-    // this.addToListForm.reset();
   }
 }

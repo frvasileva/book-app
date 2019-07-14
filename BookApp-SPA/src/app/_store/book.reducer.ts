@@ -29,6 +29,16 @@ export function bookReducer(
       book.photoPath = action.payload.photoPath;
       return state;
     }
+    case BookActions.ADD_BOOK_TO_CATALOG: {
+      const book = state.books.find(b => b.id === action.payload.bookId);
+      book.bookCatalogs.push({ catalogId: action.payload.catalogId });
+      return state;
+    }
+    case BookActions.REMOVE_BOOK_FROM_CATALOG: {
+      const book = state.books.find(b => b.id === action.payload.bookId);
+      book.bookCatalogs = book.bookCatalogs.filter(i => i.catalogId !== action.payload.catalogId);
+      return state;
+    }
     default:
       return state;
   }

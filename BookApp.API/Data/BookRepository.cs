@@ -88,14 +88,13 @@ namespace BookApp.API.Data {
       throw new NotImplementedException ();
     }
 
-    public async Task<BookListActions> DeleteBookAction (int bookId = 3) {
-      var result = _context.BookListActions.Find (bookId);
+    public async Task<bool> RemoveBookFromCatalog (int catalogId, int bookId) {
+      var result = _context.BookCatalog.Where (item => item.CatalogId == catalogId && item.BookId == bookId).ToList().FirstOrDefault();
 
-      _context.BookListActions.Attach (result);
-      _context.BookListActions.Remove (result);
-      await _context.SaveChangesAsync ();
+      _context.BookCatalog.Attach (result);
+      _context.BookCatalog.Remove (result);
 
-      return result;
+      return await _context.SaveChangesAsync () > 0;
     }
 
     public async Task<Book> Get (string friendlyUrl) {
@@ -123,7 +122,7 @@ namespace BookApp.API.Data {
             CatalogId = itm.CatalogId
           };
 
-          bookPreview.BookCatalogList.Add (bookCatalogListDto);
+          bookPreview.BookCatalogs.Add (bookCatalogListDto);
         }
 
         mappedBookList.Add (bookPreview);

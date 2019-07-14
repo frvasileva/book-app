@@ -33,20 +33,17 @@ export class CatalogDetailsComponent implements OnInit {
           )
         )
         .subscribe(catalogs => {
-          console.log("catalog ", this.catalog);
           this.catalog = catalogs.find(
             cat => cat.friendlyUrl === this.friendlyUrl
           );
 
           if (this.catalog) {
             this.titleService.setTitle(this.catalog.name);
-            console.log("this.catalog.name", this.catalog.name);
             this.metaTagService.updateTag({
               name: "description",
               content: this.catalog.description
             });
           } else {
-            console.log("state init");
             this.catalogService.getCatalog( this.friendlyUrl); //TODO - put friendly url here
           }
         });

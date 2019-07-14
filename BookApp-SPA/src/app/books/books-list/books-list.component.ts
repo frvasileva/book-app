@@ -33,7 +33,7 @@ export class BooksListComponent implements OnInit {
       content: "Books" + settings.seo_appName_title
     });
 
-    this.catalogService.getCatalog(1);
+   // this.catalogService.getCatalog('1');
     this.bookListState = this.store.select("bookState");
     this.catalogsState = this.store.select("catalog");
   }
