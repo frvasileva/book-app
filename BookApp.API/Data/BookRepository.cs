@@ -135,7 +135,23 @@ namespace BookApp.API.Data {
     public async Task<BookDetailsDto> GetBook (string friendlyUrl) {
 
       var book = await _context.Books.Include (itm => itm.BookCatalogs).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
-      var mappedBook = _mapper.Map<BookDetailsDto> (book);
+
+      var mappedBook = new BookDetailsDto () {
+        Id = book.Id,
+        UserId = book.UserId,
+        Title = book.Title,
+        Description = book.Description,
+        PhotoPath = book.PhotoPath,
+        FriendlyUrl = book.FriendlyUrl
+      };
+
+      foreach (var itm in book.BookCatalogs) {
+        var bookCatalogListDto = new BookCatalogListDto () {
+          CatalogId = itm.CatalogId
+        };
+
+        mappedBook.BookCatalogs.Add (bookCatalogListDto);
+      }
 
       return mappedBook;
     }

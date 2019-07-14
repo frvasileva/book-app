@@ -3,6 +3,11 @@ using BookApp.API.Models;
 
 namespace BookApp.API.Dtos {
   public class BookDetailsDto {
+
+    public BookDetailsDto () {
+      this.BookCatalogs = new List<BookCatalogListDto> ();
+    }
+    
     public int Id { get; set; }
 
     public int UserId { get; set; }
@@ -15,7 +20,7 @@ namespace BookApp.API.Dtos {
 
     public string FriendlyUrl { get; set; }
 
-    public ICollection<BookCatalog> BookCatalogs { get; set; }
+    public List<BookCatalogListDto> BookCatalogs { get; set; }
 
   }
 }
