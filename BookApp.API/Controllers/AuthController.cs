@@ -25,12 +25,14 @@ namespace DatingApp.API.Controllers {
 
     private UserManager<User> _userManager;
     private SignInManager<User> _signInManager;
+    private ICatalogRepository _catalogRepo;
 
-    public AuthController (IConfiguration config, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager) {
+    public AuthController (IConfiguration config, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, ICatalogRepository catalogRepo) {
       _config = config;
       _mapper = mapper;
       _userManager = userManager;
       _signInManager = signInManager;
+      _catalogRepo = catalogRepo;
     }
 
     [HttpPost ("register")]
@@ -42,12 +44,20 @@ namespace DatingApp.API.Controllers {
       userToCreate.UserName = userForRegisterDto.Email;
       userToCreate.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (userForRegisterDto.Email);
       userToCreate.KnownAs = userForRegisterDto.KnownAs;
+      userToCreate.AvatarPath = "https://res.cloudinary.com/deumq4qrd/image/upload/v1563181144/book-avatar-anonymous.png";
 
       var result = await _userManager.CreateAsync (userToCreate, userForRegisterDto.Password);
       var userToReturn = _mapper.Map<UserProfileDto> (userToCreate);
       var user = _mapper.Map<User> (userToReturn);
 
       if (result.Succeeded) {
+
+        var defaultCatalog = new CatalogCreateDto ();
+        defaultCatalog.Name = "Want to read";
+        defaultCatalog.IsPublic = true;
+        defaultCatalog.UserId = user.Id;
+        _catalogRepo.Create (defaultCatalog);
+
         return Ok (new {
           token = GenerateJwtToken (user)
         });

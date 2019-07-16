@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using AutoMapper;
+using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -40,11 +41,16 @@ namespace BookApp.API.Data {
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash (password, out passwordHash, out passwordSalt);
 
-            // user.PasswordHash = passwordHash;
-            // user.PasswordSalt = passwordSalt;
+            //Init default catalog on registering a new user
+            var catalog = new Catalog ();
+            catalog.Name = "Want to read";
+            catalog.IsPublic = true;
+            catalog.Created = DateTime.Now;
+            catalog.FriendlyUrl = Url.GenerateFriendlyUrl (catalog.Name + "-" + StringHelper.GenerateRandomNo ());
+            catalog.UserId = user.Id;
 
             await _context.Users.AddAsync (user);
-
+            await _context.Catalogs.AddAsync (catalog);
             await _context.SaveChangesAsync ();
 
             return user;

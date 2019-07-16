@@ -24,18 +24,21 @@ export class CatalogListComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params["friendlyUrl"];
 
-      this.catalogService.getUserCatalogs(this.friendlyUrl);
-      this.store
-        .select(state => state.catalogState)
-        .subscribe(catState => {
-          this.catalogState = catState.catalog.filter(c => {
-            return c.userFriendlyUrl === this.friendlyUrl;
-          });
+      console.log("catalog friendlyUrl", this.friendlyUrl);
+      if (this.friendlyUrl) {
+        this.catalogService.getUserCatalogs(this.friendlyUrl);
+        this.store
+          .select(state => state.catalogState)
+          .subscribe(catState => {
+            this.catalogState = catState.catalog.filter(c => {
+              return c.userFriendlyUrl === this.friendlyUrl;
+            });
 
-          // if (this.catalogState.length === 0) {
-          //   this.catalogService.getUserCatalogs(this.friendlyUrl);
-          // }
-        });
+            // if (this.catalogState.length === 0) {
+            //   this.catalogService.getUserCatalogs(this.friendlyUrl);
+            // }
+          });
+      }
     });
   }
 }

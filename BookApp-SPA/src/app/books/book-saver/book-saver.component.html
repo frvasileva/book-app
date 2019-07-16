@@ -1,6 +1,11 @@
 <form [formGroup]="addToListForm" (ngSubmit)="onSubmit()">
   <div class="book-saver">
-    <strong>Add to catalog</strong>
+    <div class="header">
+      <span> <strong>Add to catalog</strong></span>
+      <a [routerLink]="['/books/catalog/add']" class="add-new-catalog">
+        <i class="far fa-plus-square"></i> New
+      </a>
+    </div>
     <ul class="user-list">
       <!-- <li>
         <div class="saver-container">

@@ -9,7 +9,7 @@ import * as UserProfileActions from "../_store/user.actions";
 import { environment } from "src/environments/environment";
 import { User } from "../_models/user";
 import { UserService } from "./user.service";
-import { BookSaverService } from './bookSaver.service';
+import { BookSaverService } from "./bookSaver.service";
 
 @Injectable({
   providedIn: "root"
@@ -43,7 +43,7 @@ export class AuthService {
         localStorage.setItem("token", response.token);
 
         this.bookSaverService.getUserCatalogList(response.user.friendlyUrl);
-        
+
         this.router.navigate(["/user/profile/", response.user.friendlyUrl]);
       })
     );
@@ -71,7 +71,14 @@ export class AuthService {
     return this.http.post(this.baseUrl + "register", model).pipe(
       map((response: any) => {
         localStorage.setItem("token", response.token);
-        this.router.navigate(["/user/profile"]);
+        const friendlyUrl = this.jwtHelper.decodeToken(response.token)
+          .unique_name;
+
+        this.store.dispatch(
+          new UserProfileActions.SetCurrentUserAction(<String>friendlyUrl)
+        );
+
+        this.router.navigate(["/user/profile/", friendlyUrl]);
       })
     );
   }

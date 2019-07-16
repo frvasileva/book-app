@@ -1,22 +1,22 @@
-<div class="card profile-card">
-  <div class="image-wrapper">
-    <img
-      class="card-img-top"
-      src="{{ profile?.avatarPath }}"
-      alt="{{ profile?.knownAs }}"
-    />
-
-    <a
-      [routerLink]="['/user/profile/edit-photo/', profile.friendlyUrl]"
-      class="btn btn-info btn-block"
-      *ngIf="isCurrentUser"
-    >
-      <i class="glyphicon glyphicon-pencil"></i>
-      Edit Photo
-    </a>
+<div class="row">
+  <div class="col-md-3">
+    <div class="image-wrapper">
+      <a
+        [routerLink]="['/user/profile/edit-photo/', profile.friendlyUrl]"
+        class="btn btn-info btn-block"
+        *ngIf="isCurrentUser"
+      >
+        <i class="glyphicon glyphicon-pencil"></i>
+        Edit Photo
+      </a>
+      <img
+        class="card-img-top"
+        src="{{ profile?.avatarPath }}"
+        alt="{{ profile?.knownAs }}"
+      />
+    </div>
   </div>
-
-  <div class="card-body">
+  <div class="col-md-9">
     <h4 class="card-title">{{ profile?.knownAs }}</h4>
     <p
       class="location-info"
@@ -26,41 +26,63 @@
       {{ profile?.city
       }}<span *ngIf="profile.country != null">, {{ profile?.country }} </span>
     </p>
-
     <div class="card-text" *ngIf="profile?.introduction">
       <p class="introduction">
         {{ profile?.introduction }}
       </p>
     </div>
-    <button
-      type="button"
-      class="button action"
-      *ngIf="!isCurrentUser && !isFollowing"
-      (click)="followUser(profile?.id)"
-    >
-      <span class="glyphicon glyphicon-plus"></span>
-      Follow
-    </button>
 
-    <button
-      type="button"
-      class="button action"
-      *ngIf="!isCurrentUser && isFollowing"
-      (click)="unFollowUser(profile?.id)"
-    >
-      <span class="glyphicon glyphicon-minus"></span>
-      Unfollow
-    </button>
+    <div class="row">
+      <div class="col-md-4">
+        <a
+          [routerLink]="['/user/profile/edit/', profile.friendlyUrl]"
+          class="btn btn-outline-info btn-block"
+          *ngIf="isCurrentUser"
+        >
+          <i class="glyphicon glyphicon-pencil"></i>
+          Edit Profile
+        </a>
 
-    <a
-      [routerLink]="['/user/profile/edit/', profile.friendlyUrl]"
-      class="btn btn-outline-info btn-block"
-      *ngIf="isCurrentUser"
-    >
-      <i class="glyphicon glyphicon-pencil"></i>
-      Edit Profile
-    </a>
+        <button
+          type="button"
+          class="button action"
+          *ngIf="!isCurrentUser && !isFollowing"
+          (click)="followUser(profile?.id)"
+        >
+          <span class="glyphicon glyphicon-plus"></span>
+          Follow
+        </button>
 
-
+        <button
+          type="button"
+          class="button action"
+          *ngIf="!isCurrentUser && isFollowing"
+          (click)="unFollowUser(profile?.id)"
+        >
+          <span class="glyphicon glyphicon-minus"></span>
+          Unfollow
+        </button>
+      </div>
+      <div class="col-md-4">
+        <a
+          [routerLink]="['/books/catalog/add']"
+          class="btn btn-outline-info btn-block"
+          *ngIf="isCurrentUser"
+        >
+          <i class="glyphicon glyphicon-pencil"></i>
+          Add Catalog
+        </a>
+      </div>
+      <div class="col-md-4">
+        <a
+          [routerLink]="['/books/add']"
+          class="btn btn-info btn-block"
+          *ngIf="isCurrentUser"
+        >
+          <i class="glyphicon glyphicon-pencil"></i>
+          Add Book
+        </a>
+      </div>
+    </div>
   </div>
 </div>
