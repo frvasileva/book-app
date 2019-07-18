@@ -4,8 +4,16 @@
   [currentUser]="currentUser"
 ></app-profile-card>
 
-<div class="row">
-  <div class="col-12">
-    <app-catalog-list></app-catalog-list>
-  </div>
+<div class="tab-wrapper">
+  <tabset>
+    <tab heading="Catalogs" id="tab1"
+      ><div class="row">
+        <div class="col-12">
+          <app-catalog-list></app-catalog-list>
+        </div>
+      </div>
+    </tab>
+    <tab heading="Books">Basic content 1</tab>
+    <tab heading="Basic Title 2">Basic content 2</tab>
+  </tabset>
 </div>

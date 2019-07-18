@@ -12,6 +12,7 @@ export class UserComponent implements OnInit {
   ngOnInit() {
     if (localStorage.getItem("token")) {
       this.userService.getUsers();
+      console.log("user component init");
     }
   }
 }

@@ -9,6 +9,7 @@ import { AuthenticationGuard } from "../_guards/authentication.guard";
 import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
 import { ProfilePhotoEditComponent } from "./profile-photo-edit/profile-photo-edit.component";
 import { InviteFriendComponent } from "./invite-friend/invite-friend.component";
+import { CurrentUserOnlyGuard } from "../_guards/current-user-only.guard";
 
 const userRoutes: Routes = [
   {
@@ -18,12 +19,6 @@ const userRoutes: Routes = [
       { path: "login", component: LoginComponent },
       { path: "sign-up", component: SignupComponent },
       {
-        path: "profile",
-        component: ProfileComponent,
-        canActivate: [AuthenticationGuard]
-        // resolve: { profile: ProfileResolver }
-      },
-      {
         path: "profile/:friendlyUrl",
         component: ProfileComponent,
         canActivate: [AuthenticationGuard]
@@ -32,13 +27,13 @@ const userRoutes: Routes = [
       {
         path: "profile/edit/:friendlyUrl",
         component: ProfileEditComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, CurrentUserOnlyGuard]
         // resolve: { profile: ProfileResolver }
       },
       {
         path: "profile/edit-photo/:friendlyUrl",
         component: ProfilePhotoEditComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard, CurrentUserOnlyGuard]
       },
       {
         path: "user-list",

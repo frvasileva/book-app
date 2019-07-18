@@ -2,6 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
+import { BsDropdownModule, TabsModule } from "ngx-bootstrap";
 
 import { UserComponent } from "./user.component";
 import { SignupComponent } from "./signup/signup.component";
@@ -36,7 +37,8 @@ import { InviteFriendComponent } from './invite-friend/invite-friend.component';
     UserRoutingModule,
     BooksModule,
     FileUploadModule,
-    SharedModule
+    SharedModule,
+    TabsModule.forRoot()
   ]
 })
 export class UserModule {}

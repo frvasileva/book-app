@@ -22,6 +22,6 @@ export class AuthorDetailsComponent implements OnInit {
         this.id = +params['id'];
         this.author = this.authorService.getAuthor(this.id.toString());
       }
-    )
+    );
   }
 }

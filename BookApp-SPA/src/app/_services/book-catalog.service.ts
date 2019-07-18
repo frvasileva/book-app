@@ -68,7 +68,6 @@ export class BookCatalogService {
       .get(this.baseUrl + "user-catalogs/" + userFriendlyUrl)
       .subscribe(
         data => {
-          console.log("service ", data);
           this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
         },
         error => {

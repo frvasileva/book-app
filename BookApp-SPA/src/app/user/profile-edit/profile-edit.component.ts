@@ -3,13 +3,13 @@ import { AlertifyService } from "src/app/_services/alertify.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import { Router } from "@angular/router";
-import { Title, Meta } from '@angular/platform-browser';
+import { Title, Meta } from "@angular/platform-browser";
 
 import { UserService } from "src/app/_services/user.service";
 import { User } from "src/app/_models/user";
 import { UserState } from "src/app/_store/user.reducer";
 
-import { settings } from 'src/app/_shared/settings';
+import { settings } from "src/app/_shared/settings";
 
 @Component({
   selector: "app-profile-edit",
@@ -34,12 +34,20 @@ export class ProfileEditComponent implements OnInit {
     this.store
       .select(state => state)
       .subscribe(res => {
-        this.profile = res.userState.users[res.userState.currentUser];
+        if (res.userState.currentUser && this.profile === undefined) {
+          this.userService.getUser(res.userState.currentUser);
+        }
+
+        this.profile = res.userState.users.filter(
+          item => item.friendlyUrl === res.userState.currentUser
+        )[0];
       });
 
     this.createForm();
 
-    this.titleService.setTitle("Edit " + this.profile.knownAs + settings.seo_appName_title);
+    this.titleService.setTitle(
+      "Edit " + this.profile.knownAs + settings.seo_appName_title
+    );
     this.metaTagService.updateTag({
       name: "description",
       content: this.profile.knownAs
