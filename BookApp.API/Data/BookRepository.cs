@@ -6,7 +6,6 @@ using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using BookApp.API.Models;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.API.Data {
@@ -89,7 +88,7 @@ namespace BookApp.API.Data {
     }
 
     public async Task<bool> RemoveBookFromCatalog (int catalogId, int bookId) {
-      var result = _context.BookCatalog.Where (item => item.CatalogId == catalogId && item.BookId == bookId).ToList().FirstOrDefault();
+      var result = _context.BookCatalog.Where (item => item.CatalogId == catalogId && item.BookId == bookId).ToList ().FirstOrDefault ();
 
       _context.BookCatalog.Attach (result);
       _context.BookCatalog.Remove (result);
@@ -105,6 +104,36 @@ namespace BookApp.API.Data {
     public async Task<List<BookPreviewDto>> GetAll () {
       var bookList = await _context.Books.Include (itm => itm.BookCatalogs).OrderByDescending (item => item.AddedOn).ToListAsync ();
       //  var mappedBookList = _mapper.Map<List<BookPreviewDto>> (bookList);
+      var mappedBookList = new List<BookPreviewDto> ();
+
+      foreach (var item in bookList) {
+        var bookPreview = new BookPreviewDto () {
+          Id = item.Id,
+          UserId = item.UserId,
+          Title = item.Title,
+          Description = item.Description,
+          PhotoPath = item.PhotoPath,
+          FriendlyUrl = item.FriendlyUrl
+        };
+
+        foreach (var itm in item.BookCatalogs) {
+          var bookCatalogListDto = new BookCatalogListDto () {
+            CatalogId = itm.CatalogId
+          };
+
+          bookPreview.BookCatalogs.Add (bookCatalogListDto);
+        }
+
+        mappedBookList.Add (bookPreview);
+      }
+
+      return mappedBookList;
+    }
+
+    public async Task<List<BookPreviewDto>> GetBooksAddedByUser (string friendlyUrl) {
+      var bookList = await _context.Books.Include (itm => itm.BookCatalogs)
+        .Where (item => item.User.FriendlyUrl == friendlyUrl).OrderByDescending (item => item.AddedOn).ToListAsync ();
+
       var mappedBookList = new List<BookPreviewDto> ();
 
       foreach (var item in bookList) {
@@ -159,5 +188,6 @@ namespace BookApp.API.Data {
       var res = await _context.SaveChangesAsync ();
       return res > 0;
     }
+
   }
 }

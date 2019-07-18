@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -65,6 +66,18 @@ namespace BookApp.API.Controllers {
 
       var bookToReturn = _mapper.Map<BookDetailsDto> (book);
       bookToReturn.PhotoPath = CloudinaryHelper.TransformUrl (bookToReturn.PhotoPath, TransformationType.Book_Details_Preset);
+
+      return Ok (bookToReturn);
+    }
+
+    [HttpGet ("get-books-added-by-user/{friendlyUrl?}")]
+    public async Task<IActionResult> GetBooksAddedByUser (string friendlyUrl) {
+      var books = await _repo.GetBooksAddedByUser (friendlyUrl);
+
+      var bookToReturn = _mapper.Map<List<BookDetailsDto>> (books);
+      foreach (var item in bookToReturn) {
+        item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Details_Preset);
+      }
 
       return Ok (bookToReturn);
     }

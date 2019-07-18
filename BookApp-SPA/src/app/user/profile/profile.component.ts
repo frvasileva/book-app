@@ -1,13 +1,15 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngrx/store";
+import { Title, Meta } from "@angular/platform-browser";
 
 import { Profile } from "src/app/_models/profile";
 import { Book } from "src/app/books/book.model";
 import { UserService } from "src/app/_services/user.service";
 import { UserState } from "src/app/_store/user.reducer";
-import { Title, Meta } from "@angular/platform-browser";
 import { settings } from "src/app/_shared/settings";
+import { BookService } from "src/app/_services/book.service";
+import { TabDirective } from "ngx-bootstrap/tabs";
 
 @Component({
   selector: "app-profile",
@@ -21,8 +23,11 @@ export class ProfileComponent implements OnInit {
   friendlyUrl: string;
   isCurrentUser: boolean;
 
+  userBooks: any;
+
   constructor(
     private userService: UserService,
+    private bookService: BookService,
     private route: ActivatedRoute,
     private store: Store<{ userState: UserState }>,
     private titleService: Title,
@@ -35,8 +40,12 @@ export class ProfileComponent implements OnInit {
     this.store
       .select(state => state.userState)
       .subscribe(userState => {
-        this.profile = userState.users.find(u => u.friendlyUrl === this.friendlyUrl);
-        this.currentUser = userState.users.find(u => u.friendlyUrl === userState.currentUser);
+        this.profile = userState.users.find(
+          u => u.friendlyUrl === this.friendlyUrl
+        );
+        this.currentUser = userState.users.find(
+          u => u.friendlyUrl === userState.currentUser
+        );
         this.isCurrentUser = userState.currentUser === this.friendlyUrl;
 
         if (!this.isCurrentUser && this.profile == null) {
@@ -45,6 +54,25 @@ export class ProfileComponent implements OnInit {
       });
 
     this.setSeoMetaTags();
+  }
+
+  getUserBooks() {
+    const result = this.bookService
+      .getBooksAddedByUser(this.friendlyUrl)
+      .subscribe(data => {
+        // this.store.dispatch(new BookActions.SetBooksAction(data));
+        this.userBooks = data;
+        console.log("books data", data);
+      });
+  }
+
+  onSelect(data: TabDirective): void {
+    if (data.id === "booksTab") {
+      this.getUserBooks();
+    }
+  }
+  setBooks() {
+    console.log("dataaa books");
   }
 
   setSeoMetaTags() {

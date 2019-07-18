@@ -6,14 +6,34 @@
 
 <div class="tab-wrapper">
   <tabset>
-    <tab heading="Catalogs" id="tab1"
-      ><div class="row">
+    <tab heading="Catalogs" id="catalogsTab" (select)="onSelect($event)">
+      <div class="row">
+        <div class="col-md">
+          <h2>Added books:</h2>
+        </div>
+      </div>
+      <div class="row">
         <div class="col-12">
           <app-catalog-list></app-catalog-list>
         </div>
       </div>
     </tab>
-    <tab heading="Books">Basic content 1</tab>
-    <tab heading="Basic Title 2">Basic content 2</tab>
+    <tab heading="Books" id="booksTab" (select)="onSelect($event)">
+      <div class="row">
+        <div class="col-md">
+          <h2>Added books:</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div
+          class="col-sm-6 col-md-3 col-xs-12"
+          *ngFor="let book of userBooks; let i = index"
+        >
+          <div class="book-card-wrapper">
+            <app-book-card-item [book]="book"></app-book-card-item>
+          </div>
+        </div>
+      </div>
+    </tab>
   </tabset>
 </div>

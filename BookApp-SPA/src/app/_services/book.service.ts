@@ -32,9 +32,7 @@ export class BookService {
     model.userId = this.token.nameid;
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
-        this.store.dispatch(
-          new BookActions.SetBookAction(<Book>response)
-        );
+        this.store.dispatch(new BookActions.SetBookAction(<Book>response));
 
         return response;
       })
@@ -44,9 +42,7 @@ export class BookService {
   getBook(friendlyUrl: string = "dummy url") {
     return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
       data => {
-        this.store.dispatch(
-          new BookActions.SetBookAction(<Book>data)
-        );
+        this.store.dispatch(new BookActions.SetBookAction(<Book>data));
       },
       error => {
         this.alertify.error(error);
@@ -63,5 +59,10 @@ export class BookService {
         this.alertify.error(error);
       }
     );
+  }
+
+  getBooksAddedByUser(userFriendlyUrl: string) {
+    return this.http
+      .get(this.baseUrl + "get-books-added-by-user/" + userFriendlyUrl);
   }
 }

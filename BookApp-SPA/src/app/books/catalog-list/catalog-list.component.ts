@@ -24,7 +24,6 @@ export class CatalogListComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params["friendlyUrl"];
 
-      console.log("catalog friendlyUrl", this.friendlyUrl);
       if (this.friendlyUrl) {
         this.catalogService.getUserCatalogs(this.friendlyUrl);
         this.store
