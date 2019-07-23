@@ -48,9 +48,15 @@ namespace DatingApp.API.Migrations
 
                     b.Property<int?>("AuthorId");
 
+                    b.Property<double>("AvarageRating");
+
                     b.Property<string>("Description");
 
+                    b.Property<int>("ExternalId");
+
                     b.Property<string>("FriendlyUrl");
+
+                    b.Property<string>("ISBN");
 
                     b.Property<string>("PhotoPath");
 
@@ -109,6 +115,25 @@ namespace DatingApp.API.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("BookListActions");
+                });
+
+            modelBuilder.Entity("BookApp.API.Models.BookTags", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AddedOn");
+
+                    b.Property<int>("BookExternalId");
+
+                    b.Property<int>("Count");
+
+                    b.Property<int>("TagExternalId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("BookTags");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.Catalog", b =>
@@ -214,6 +239,25 @@ namespace DatingApp.API.Migrations
                         .HasFilter("[NormalizedName] IS NOT NULL");
 
                     b.ToTable("AspNetRoles");
+                });
+
+            modelBuilder.Entity("BookApp.API.Models.Tag", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("AddedOn");
+
+                    b.Property<int>("ExternalId");
+
+                    b.Property<string>("FriendlyUrl");
+
+                    b.Property<string>("Name");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Tags");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.User", b =>

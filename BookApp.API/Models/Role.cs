@@ -4,6 +4,6 @@ using Microsoft.AspNetCore.Identity;
 namespace BookApp.API.Models {
     public class Role : IdentityRole<int> {
 
-public ICollection<UserRole> UserRoles { get; set; }
+        public ICollection<UserRole> UserRoles { get; set; }
     }
 }

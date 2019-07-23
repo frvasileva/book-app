@@ -19,5 +19,9 @@ namespace BookApp.API.Data {
     void Delete<T> (T entity) where T : class;
     Task<bool> SaveAll ();
     Task<Book> Get (string friendlyUrl);
+
+    Task<Book> ImportBooks ();
+    Task<Tag> ImportTags ();
+    Task<BookTags> ImportBookTags ();
   }
 }
