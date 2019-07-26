@@ -4,14 +4,16 @@ using BookApp.API.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20190726074409_BookCatalogPreferencesAdded2")]
+    partial class BookCatalogPreferencesAdded2
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -107,6 +109,8 @@ namespace DatingApp.API.Migrations
                     b.Property<int>("FkTag");
 
                     b.Property<string>("IconPath");
+
+                    b.Property<bool>("IsSelected");
 
                     b.Property<string>("Name");
 
@@ -345,21 +349,6 @@ namespace DatingApp.API.Migrations
                         .HasFilter("[NormalizedUserName] IS NOT NULL");
 
                     b.ToTable("AspNetUsers");
-                });
-
-            modelBuilder.Entity("BookApp.API.Models.UserBookCategoriesPreferences", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("BookCatalogPreferencesId");
-
-                    b.Property<string>("UserId");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("UserBookCategoriesPreferences");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.UserFollowers", b =>

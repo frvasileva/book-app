@@ -112,9 +112,16 @@ namespace BookApp.API.Data {
             return result;
         }
 
+        public async Task<List<BookCatalogPreferences>> GetCatalogForPreferences () {
+            var result = await _context.BookCatalogPreferences.ToListAsync ();
+
+            return result;
+        }
+
         public async Task<bool> SaveAll () {
             var res = await _context.SaveChangesAsync ();
             return res > 0;
         }
+
     }
 }

@@ -10,6 +10,7 @@ import { ProfileEditComponent } from "./profile-edit/profile-edit.component";
 import { ProfilePhotoEditComponent } from "./profile-photo-edit/profile-photo-edit.component";
 import { InviteFriendComponent } from "./invite-friend/invite-friend.component";
 import { CurrentUserOnlyGuard } from "../_guards/current-user-only.guard";
+import { UserBookPreferencesComponent } from './user-book-preferences/user-book-preferences.component';
 
 const userRoutes: Routes = [
   {
@@ -18,6 +19,7 @@ const userRoutes: Routes = [
     children: [
       { path: "login", component: LoginComponent },
       { path: "sign-up", component: SignupComponent },
+      { path: "book-preferences", component: UserBookPreferencesComponent },
       {
         path: "profile/:friendlyUrl",
         component: ProfileComponent,

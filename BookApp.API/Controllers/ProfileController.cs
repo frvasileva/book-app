@@ -16,7 +16,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
-using Newtonsoft.Json.Linq;
 
 namespace BookApp.API.Controllers {
 
@@ -29,7 +28,6 @@ namespace BookApp.API.Controllers {
     private readonly IMapper _mapper;
     private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
     private Cloudinary _cloudinary;
-
     private IHttpContextAccessor _httpContextAccessor;
 
     public ProfileController (IConfiguration config, IMapper mapper,
@@ -59,8 +57,8 @@ namespace BookApp.API.Controllers {
       if (profile == null)
         return BadRequest (string.Format ("No user with such friendlyUrl {0}", friendlyUrl));
 
-     if(!String.IsNullOrEmpty(profile.AvatarPath))
-      profile.AvatarPath = CloudinaryHelper.TransformUrl (profile.AvatarPath, TransformationType.User_Thumb_Preset);;
+      if (!String.IsNullOrEmpty (profile.AvatarPath))
+        profile.AvatarPath = CloudinaryHelper.TransformUrl (profile.AvatarPath, TransformationType.User_Thumb_Preset);;
 
       return Ok (profile);
     }
@@ -139,15 +137,32 @@ namespace BookApp.API.Controllers {
     [HttpGet ("unfollow-user/{userIdToFollow}")]
     public async Task<IActionResult> UnfollowUser (int userIdToFollow) {
 
+       _userRepository.UnfollowUser (userIdToFollow, GetUserId ());
+
+      return Ok ();
+    }
+
+    [HttpPost ("add-book-catalog-preferences")]
+    public async Task<IActionResult> BookCatalogPreferences (List<BookCatalogPreferencesDto> bookCatalogPreferences) {
+
+      
+      return Ok ();
+    }
+
+    [HttpGet ("get-catalog-for-preferences")]
+    public async Task<IActionResult> GetCatalogForPreferences () {
+      var result = await _userRepository.GetCatalogForPreferences ();
+      return Ok (result);
+    }
+
+    private int GetUserId () {
       var identity = HttpContext.User.Identity as ClaimsIdentity;
 
       int userId = 0;
       if (identity != null)
         userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
 
-      _userRepository.UnfollowUser (userIdToFollow, userId);
-      return Ok ();
-
+      return userId;
     }
   }
 }

@@ -45,7 +45,8 @@ namespace DatingApp.API.Controllers {
       userToCreate.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (userForRegisterDto.Email);
       userToCreate.KnownAs = userForRegisterDto.KnownAs;
       userToCreate.AvatarPath = "https://res.cloudinary.com/deumq4qrd/image/upload/v1563181144/book-avatar-anonymous.png";
-
+      userToCreate.Created = DateTime.Now;
+      
       var result = await _userManager.CreateAsync (userToCreate, userForRegisterDto.Password);
       var userToReturn = _mapper.Map<UserProfileDto> (userToCreate);
       var user = _mapper.Map<User> (userToReturn);
@@ -72,9 +73,14 @@ namespace DatingApp.API.Controllers {
       userForLoginDto.Email = userForLoginDto.Email.ToLower ();
 
       var user = await _userManager.FindByEmailAsync (userForLoginDto.Email);
+
       var result = await _signInManager.CheckPasswordSignInAsync (user, userForLoginDto.Password, false);
 
       if (result.Succeeded) {
+
+        user.LastActive = DateTime.UtcNow;
+        await _userManager.UpdateAsync (user);
+
         var appUser = await _userManager.Users.Include (p => p.Books).FirstOrDefaultAsync (u => u.NormalizedEmail == userForLoginDto.Email.ToUpper ());
         var userToReturn = _mapper.Map<UserProfileDto> (appUser);
 

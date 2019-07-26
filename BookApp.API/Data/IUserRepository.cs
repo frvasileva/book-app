@@ -27,5 +27,7 @@ namespace BookApp.API.Data {
         Task<UserProfileDto> GetUserProfile (string friendlyUrl);
 
         Task<List<UserProfileDto>> GetAllProfiles ();
+
+        Task <List<BookCatalogPreferences>> GetCatalogForPreferences();
     }
 }

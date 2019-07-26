@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-md">
+    <h2>Select your favorite book categories:</h2>
+    <br />
+  </div>
+</div>
+
+<div class="row">
+  <div
+    class="col-md-3"
+    *ngFor="let item of bookCategories"
+    (click)="selectPreferences(item)"
+  >
+    <div class="category-wrapper" [ngClass]="[item.isSelected ? 'selected' : 'not-selected']">
+      <i class="fas fa-user-astronaut"></i>
+      <br />
+      <span class="category-name"> {{ item.name }}</span>
+
+      <div class="selected-icon">
+        <i class="fas fa-check-circle"></i>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-md">
+    <button
+      class="button primary pull-right"
+      type="submit"
+      [disabled]="!enableSubmitting"
+    >
+      Continue
+    </button>
+  </div>
+</div>
+<br />
+<br />
+<br />
+<br />
+<br />

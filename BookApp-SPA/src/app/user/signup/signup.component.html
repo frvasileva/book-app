@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-md">
       <div class="form-wrapper register-form">
-        <h1 class="form-title">Sign up</h1>
+        <h1 class="form-title">Create profile</h1>
         <form [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
           <div class="form-group">
             <label for="">Email:</label>
@@ -80,18 +80,19 @@
               id="userAgreementChecked"
               formControlName="userAgreementChecked"
             />
-            <label for="userAgreementChecked" class="form-check-label"
-              >I agree with terms of use..</label
-            >
+            <label for="userAgreementChecked" class="form-check-label">
+              By clicking this button I agree with terms of use of this website.
+            </label>
 
-            <span
+            <p
               class="error-message"
               *ngIf="
                 !signUpForm.get('userAgreementChecked').valid &&
                 signUpForm.get('userAgreementChecked').touched
               "
-              >This field is required</span
             >
+              This field is required
+            </p>
           </div>
 
           <button
