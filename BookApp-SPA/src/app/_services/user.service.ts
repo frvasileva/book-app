@@ -8,7 +8,6 @@ import { User } from "../_models/user";
 
 import { AlertifyService } from "./alertify.service";
 import * as UserActions from "../_store/user.actions";
-import { UserBookCategoryPreferences } from "../_models/userBookCategoryPreferences";
 
 @Injectable({
   providedIn: "root"
@@ -98,15 +97,4 @@ export class UserService {
       );
   }
 
-  setUserBookCategoryPreferences(catalogs: any) {
-    return this.http
-      .get(this.baseUrl + "get-catalog-for-preferences")
-      .subscribe(data => {
-        console.log(data);
-      });
-  }
-
-  getUserBookCategoryPreferences() {
-    return this.http.get(this.baseUrl + "get-catalog-for-preferences");
-  }
 }

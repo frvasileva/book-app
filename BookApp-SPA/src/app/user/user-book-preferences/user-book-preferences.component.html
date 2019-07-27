@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-md">
-    <h2>Select your favorite book categories:</h2>
+    <h2>Select your 5 favorite book categories:</h2>
     <br />
   </div>
 </div>
@@ -28,7 +28,7 @@
     <button
       class="button primary pull-right"
       type="submit"
-      [disabled]="!enableSubmitting"
+      [disabled]="!enableSubmitting" (click)="sendCategoriesPreferences()"
     >
       Continue
     </button>

@@ -137,16 +137,15 @@ namespace BookApp.API.Controllers {
     [HttpGet ("unfollow-user/{userIdToFollow}")]
     public async Task<IActionResult> UnfollowUser (int userIdToFollow) {
 
-       _userRepository.UnfollowUser (userIdToFollow, GetUserId ());
+      _userRepository.UnfollowUser (userIdToFollow, GetUserId ());
 
       return Ok ();
     }
 
     [HttpPost ("add-book-catalog-preferences")]
-    public async Task<IActionResult> BookCatalogPreferences (List<BookCatalogPreferencesDto> bookCatalogPreferences) {
-
-      
-      return Ok ();
+    public async Task<IActionResult> BookCatalogPreferences (int[] bookCatalogPreferencesIds) {
+      var result = _userRepository.SetUserCatalogForPreferences (bookCatalogPreferencesIds, GetUserId ());
+      return Ok (result.Result);
     }
 
     [HttpGet ("get-catalog-for-preferences")]

@@ -78,8 +78,33 @@ export class AuthService {
           new UserProfileActions.SetCurrentUserAction(<String>friendlyUrl)
         );
 
-        this.router.navigate(["/user/profile/", friendlyUrl]);
+        this.router.navigate(["/user/book-preferences"]);
       })
+    );
+  }
+
+  setUserBookCategoryPreferences(catalogPreferences: any) {
+    console.log({ catalogPreferences });
+    console.log(this.baseUrl + "add-book-catalog-preferences");
+    return this.http
+      .post(
+        environment.apiUrl + "profile/add-book-catalog-preferences",
+        catalogPreferences
+      )
+      .pipe(
+        map((data: any) => {
+          if (data) {
+            const token = localStorage.getItem("token");
+            const friendlyUrl = this.jwtHelper.decodeToken(token).unique_name;
+            this.router.navigate(["/user/profile", friendlyUrl]);
+          }
+        })
+      );
+  }
+
+  getUserBookCategoryPreferences() {
+    return this.http.get(
+      environment.apiUrl + "profile/get-catalog-for-preferences"
     );
   }
 }

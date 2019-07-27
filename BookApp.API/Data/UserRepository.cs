@@ -118,6 +118,22 @@ namespace BookApp.API.Data {
             return result;
         }
 
+        public async Task<bool> SetUserCatalogForPreferences (int[] bookCatalogPreferencesIds, int userId) {
+
+            var userPreferences = new List<UserBookCategoriesPreferences> ();
+            foreach (var item in bookCatalogPreferencesIds) {
+                var userPreference = new UserBookCategoriesPreferences ();
+                userPreference.UserId = userId;
+                userPreference.BookCatalogPreferencesId = item;
+
+                _context.Add (userPreference);
+                //userPreferences.Add (userPreference);
+            }
+
+            _context.SaveChanges ();
+            return true;
+        }
+
         public async Task<bool> SaveAll () {
             var res = await _context.SaveChangesAsync ();
             return res > 0;
