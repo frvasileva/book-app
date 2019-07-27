@@ -29,13 +29,13 @@ export class CatalogListComponent implements OnInit {
         this.store
           .select(state => state.catalogState)
           .subscribe(catState => {
-            this.catalogState = catState.catalog.filter(c => {
-              return c.userFriendlyUrl === this.friendlyUrl;
-            });
-
-            // if (this.catalogState.length === 0) {
-            //   this.catalogService.getUserCatalogs(this.friendlyUrl);
-            // }
+            if (this.friendlyUrl !== "") {
+              this.catalogState = catState.catalog.filter(c => {
+                return c.userFriendlyUrl === this.friendlyUrl;
+              });
+            } else {
+              this.catalogState = catState.catalog;
+            }
           });
       }
     });

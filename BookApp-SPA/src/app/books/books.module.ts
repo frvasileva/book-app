@@ -20,6 +20,7 @@ import { CatalogListComponent } from './catalog-list/catalog-list.component';
 import { CatalogItemComponent } from './catalog-item/catalog-item.component';
 import { CatalogCreateComponent } from './catalog-create/catalog-create.component';
 import { CatalogDetailsComponent } from './catalog-details/catalog-details.component';
+import { PublicCatalogListComponent } from './public-catalog-list/public-catalog-list.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { CatalogDetailsComponent } from './catalog-details/catalog-details.compo
     CatalogListComponent,
     CatalogItemComponent,
     CatalogCreateComponent,
-    CatalogDetailsComponent
+    CatalogDetailsComponent,
+    PublicCatalogListComponent
   ],
   imports: [
     CommonModule,

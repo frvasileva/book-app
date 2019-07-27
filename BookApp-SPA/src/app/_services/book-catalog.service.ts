@@ -75,4 +75,15 @@ export class BookCatalogService {
         }
       );
   }
+
+  getPublicCatalogs() {
+    return this.http.get(this.baseUrl + "catalogs").subscribe(
+      data => {
+        this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
+      },
+      error => {
+        this.alertify.error(error);
+      }
+    );
+  }
 }

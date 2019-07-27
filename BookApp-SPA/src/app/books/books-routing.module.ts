@@ -10,6 +10,7 @@ import { CatalogCreateComponent } from "./catalog-create/catalog-create.componen
 import { CatalogListComponent } from "./catalog-list/catalog-list.component";
 import { CatalogDetailsComponent } from "./catalog-details/catalog-details.component";
 import { AuthenticationGuard } from "../_guards/authentication.guard";
+import { PublicCatalogListComponent } from "./public-catalog-list/public-catalog-list.component";
 
 const booksRoutes: Routes = [
   {
@@ -54,7 +55,7 @@ const booksRoutes: Routes = [
       },
       {
         path: "catalogs",
-        component: CatalogListComponent,
+        component: PublicCatalogListComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

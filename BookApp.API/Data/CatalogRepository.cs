@@ -41,7 +41,7 @@ namespace BookApp.API.Data {
     public async Task<CatalogItemDto> Get (string friendlyUrl) {
       var catalogs = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
       Where (item => item.FriendlyUrl == friendlyUrl).OrderByDescending (item => item.Created).ToListAsync ();
-   
+
       var catalogItem = catalogs.FirstOrDefault ();
       var catalog = new CatalogItemDto ();
       catalog.Id = catalogItem.Id;
@@ -108,6 +108,36 @@ namespace BookApp.API.Data {
 
       var mappedBookList = _mapper.Map<List<BookListItemDto>> (bookList);
       var test = catalogs;
+      return catalogs;
+    }
+
+    public async Task<List<CatalogItemDto>> GetAllPublic () {
+
+      var bookList = new List<Catalog> ();
+      var catalogs = new List<CatalogItemDto> ();
+
+      bookList = await _context.Catalogs.Include (item => item.BookCatalogs).ThenInclude (itm => itm.Book).ThenInclude (itm => itm.User).
+      Where (i => i.IsPublic && i.BookCatalogs.Count > 0).OrderByDescending (item => item.Created).ToListAsync ();
+
+      foreach (var item in bookList) {
+        var catalog = new CatalogItemDto ();
+        catalog.Id = item.Id;
+        catalog.Name = item.Name;
+        catalog.IsPublic = item.IsPublic;
+        catalog.UserId = item.UserId;
+        catalog.FriendlyUrl = item.FriendlyUrl;
+        catalog.Created = item.Created;
+        catalog.UserFriendlyUrl = "";
+
+        foreach (var itm in item.BookCatalogs) {
+          var book = _mapper.Map<BookItemDto> (itm.Book);
+          catalog.Books.Add (book);
+        }
+
+        catalogs.Add (catalog);
+      }
+
+      var mappedBookList = _mapper.Map<List<BookListItemDto>> (bookList);
       return catalogs;
     }
 

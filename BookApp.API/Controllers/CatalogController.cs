@@ -60,7 +60,23 @@ namespace BookApp.API.Controllers {
 
       foreach (var item in bookListItems) {
         foreach (var book in item.Books) {
-         book.PhotoPath = CloudinaryHelper.TransformUrl (book.PhotoPath, TransformationType.Book_Details_Preset);
+          if (book.PhotoPath.Contains ("cloudinary"))
+            book.PhotoPath = CloudinaryHelper.TransformUrl (book.PhotoPath, TransformationType.Book_Details_Preset);
+        }
+      }
+
+      return Ok (bookListItems);
+    }
+
+    [HttpGet ("catalogs")]
+    public async Task<IActionResult> GetPublicCatalogs () {
+
+      var bookListItems = await _repo.GetAllPublic ();
+
+      foreach (var item in bookListItems) {
+        foreach (var book in item.Books) {
+          if (book.PhotoPath.Contains ("cloudinary"))
+            book.PhotoPath = CloudinaryHelper.TransformUrl (book.PhotoPath, TransformationType.Book_Details_Preset);
         }
       }
 
