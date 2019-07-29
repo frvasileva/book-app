@@ -3,7 +3,7 @@
     <div class="image-wrapper">
       <a
         [routerLink]="['/user/profile/edit-photo/', profile.friendlyUrl]"
-        class="btn btn-info btn-block"
+        class="button default tiny full-width"
         *ngIf="isCurrentUser"
       >
         <i class="glyphicon glyphicon-pencil"></i>
@@ -14,6 +14,15 @@
         src="{{ profile?.avatarPath }}"
         alt="{{ profile?.knownAs }}"
       />
+
+      <a
+        [routerLink]="['/user/profile/edit/', profile.friendlyUrl]"
+        class="button default tiny full-width"
+        *ngIf="isCurrentUser"
+      >
+        <i class="glyphicon glyphicon-pencil"></i>
+        Edit Profile
+      </a>
     </div>
   </div>
   <div class="col-md-9">
@@ -33,19 +42,10 @@
     </div>
 
     <div class="row">
-      <div class="col-md-4">
-        <a
-          [routerLink]="['/user/profile/edit/', profile.friendlyUrl]"
-          class="btn btn-outline-info btn-block"
-          *ngIf="isCurrentUser"
-        >
-          <i class="glyphicon glyphicon-pencil"></i>
-          Edit Profile
-        </a>
-
+      <div class="col-md-4" *ngIf="!isCurrentUser">
         <button
           type="button"
-          class="button action"
+          class="button positive medium"
           *ngIf="!isCurrentUser && !isFollowing"
           (click)="followUser(profile?.id)"
         >
@@ -55,7 +55,7 @@
 
         <button
           type="button"
-          class="button action"
+          class="button primary medium"
           *ngIf="!isCurrentUser && isFollowing"
           (click)="unFollowUser(profile?.id)"
         >
@@ -66,20 +66,19 @@
       <div class="col-md-4">
         <a
           [routerLink]="['/books/catalog/add']"
-          class="btn btn-outline-info btn-block"
+          class="button positive medium full-width"
           *ngIf="isCurrentUser"
         >
-          <i class="glyphicon glyphicon-pencil"></i>
-          Add Catalog
+          <i class="fas fa-folder-plus"></i> Add Catalog
         </a>
       </div>
       <div class="col-md-4">
         <a
           [routerLink]="['/books/add']"
-          class="btn btn-info btn-block"
+          class="button neutral medium full-width"
           *ngIf="isCurrentUser"
         >
-          <i class="glyphicon glyphicon-pencil"></i>
+          <i class="fas fa-plus-circle"></i>
           Add Book
         </a>
       </div>
