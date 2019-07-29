@@ -7,7 +7,7 @@
 
 <div class="row">
   <div
-    class="col-md-3"
+    class="col-md-3 col-6"
     *ngFor="let item of bookCategories"
     (click)="selectPreferences(item)"
   >
@@ -34,7 +34,7 @@
   </div>
 </div>
 
-<div class="row">
+<div class="row row-footer">
   <div class="col-md-8">
     <p class="warning-message" *ngIf="isMoreThan5AreSelected">
         <i class="fas fa-exclamation-circle"></i>  Please select exactly 5 favorites categories.
@@ -51,8 +51,3 @@
     </button>
   </div>
 </div>
-<br />
-<br />
-<br />
-<br />
-<br />

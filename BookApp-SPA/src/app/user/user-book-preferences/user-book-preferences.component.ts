@@ -20,7 +20,6 @@ export class UserBookPreferencesComponent implements OnInit {
   ngOnInit() {
     this.authService.getUserBookCategoryPreferences().subscribe(data => {
       this.bookCategoriesTemp = data as UserBookCategoryPreferences[];
-      console.log("from server ", this.bookCategoriesTemp);
 
       this.bookCategoriesTemp.forEach(element => {
         this.bookCategories.push({
