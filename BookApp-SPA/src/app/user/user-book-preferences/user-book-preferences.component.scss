@@ -6,10 +6,10 @@
   text-align: center;
   position: relative;
 
-  &.not-selected .selected-icon{
+  &.not-selected .selected-icon {
     display: none;
   }
-  &.selected .selected-icon{
+  &.selected .selected-icon {
     display: block;
     position: absolute;
     top: -20px;
@@ -31,4 +31,15 @@
       margin-top: 90px;
     }
   }
+
+  .category-icon {
+    font-size: 26px;
+  }
+}
+
+.warning-message {
+  font-size: 24px;
+  color: #6ca04b;
+  font-weight: bold;
+  padding-top: 15px;
 }

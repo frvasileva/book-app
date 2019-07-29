@@ -11,8 +11,19 @@
     *ngFor="let item of bookCategories"
     (click)="selectPreferences(item)"
   >
-    <div class="category-wrapper" [ngClass]="[item.isSelected ? 'selected' : 'not-selected']">
-      <i class="fas fa-user-astronaut"></i>
+    <div
+      class="category-wrapper"
+      [ngClass]="[item.isSelected ? 'selected' : 'not-selected']"
+    >
+      <i
+        class="category-icon fas fa-user-astronaut"
+        *ngIf="item.iconPath == null"
+      ></i>
+      <i
+        class="category-icon {{ item.iconPath }}"
+        *ngIf="item.iconPath !== ''"
+      ></i>
+
       <br />
       <span class="category-name"> {{ item.name }}</span>
 
@@ -24,11 +35,17 @@
 </div>
 
 <div class="row">
-  <div class="col-md">
+  <div class="col-md-8">
+    <p class="warning-message" *ngIf="isMoreThan5AreSelected">
+        <i class="fas fa-exclamation-circle"></i>  Please select exactly 5 favorites categories.
+    </p>
+  </div>
+  <div class="col-md-4">
     <button
       class="button primary pull-right"
       type="submit"
-      [disabled]="!enableSubmitting" (click)="sendCategoriesPreferences()"
+      [disabled]="!enableSubmitting"
+      (click)="sendCategoriesPreferences()"
     >
       Continue
     </button>

@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { UserService } from "src/app/_services/user.service";
 import { UserBookCategoryPreferences } from "src/app/_models/userBookCategoryPreferences";
-import { AuthService } from 'src/app/_services/auth.service';
+import { AuthService } from "src/app/_services/auth.service";
 
 @Component({
   selector: "app-user-book-preferences",
@@ -14,6 +13,8 @@ export class UserBookPreferencesComponent implements OnInit {
 
   selectedCategories = new Array();
   enableSubmitting: boolean;
+  isMoreThan5AreSelected: boolean;
+
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
@@ -38,17 +39,19 @@ export class UserBookPreferencesComponent implements OnInit {
         i => i.id !== item.id
       );
     } else {
-      this.selectedCategories.push(item.id);
+      this.selectedCategories.push(item);
     }
 
     item.isSelected = !item.isSelected;
-
-    if (this.selectedCategories.length === 5) {
-      this.enableSubmitting = true;
-    }
+    this.enableSubmitting = this.selectedCategories.length === 5;
+    this.isMoreThan5AreSelected = this.selectedCategories.length > 5;
   }
 
   sendCategoriesPreferences() {
-    this.authService.setUserBookCategoryPreferences(this.selectedCategories).subscribe();
+    this.authService
+      .setUserBookCategoryPreferences(
+        this.selectedCategories.map(item => item.id)
+      )
+      .subscribe();
   }
 }
