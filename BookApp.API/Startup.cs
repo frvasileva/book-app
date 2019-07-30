@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
-using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Data;
 using BookApp.API.Helpers;
@@ -11,16 +8,14 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Neo4j.Driver.V1;
 
 namespace DatingApp.API {
   public class Startup {
@@ -80,6 +75,8 @@ namespace DatingApp.API {
         .AddJsonOptions (opt => {
           opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         });
+
+      services.AddSingleton (GraphDatabase.Driver ("bolt://localhost:7687", AuthTokens.Basic ("neo4j", "parola")));
 
       services.AddCors ();
       services.Configure<CloudinarySettings> (Configuration.GetSection ("CloudinarySettings"));

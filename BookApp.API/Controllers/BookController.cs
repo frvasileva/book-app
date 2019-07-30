@@ -12,6 +12,7 @@ using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Neo4jClient;
 
 namespace BookApp.API.Controllers {
 
@@ -95,6 +96,15 @@ namespace BookApp.API.Controllers {
     [HttpPost ("add")]
     public async Task<IActionResult> Add (BookCreateDto bookDto) {
       var result = await _repo.AddBook (bookDto);
+
+      var client = new GraphClient (new Uri ("http://localhost:7474/db/data"), "neo4j", "parola");
+      client.Connect ();
+
+      client.Cypher
+        .Create ("(book:BookDTO {newBook})")
+        .WithParam ("newBook", bookDto)
+        .ExecuteWithoutResults ();
+
       await _context.SaveChangesAsync ();
 
       return Ok (result);
