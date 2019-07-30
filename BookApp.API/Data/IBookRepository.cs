@@ -10,7 +10,6 @@ namespace BookApp.API.Data {
     Task<BookDetailsDto> GetBook (string friendlyUrl);
     Task<List<BookPreviewDto>> GetBooksAddedByUser (string friendlyUrl);
     Task<Book> AddBook (BookCreateDto book);
-    Task<BookListActions> AddBookAction (BookActionDto book);
 
     Task<bool> RemoveBookFromCatalog (int catalogId, int bookId);
     Task<BookCatalog> AddBookToCatalog (BookCatalogCreateDto bookCatalogDto);

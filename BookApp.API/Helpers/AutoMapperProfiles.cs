@@ -23,8 +23,6 @@ namespace BookApp.API.Helpers {
       CreateMap<BookItemDto, Book> ();
       CreateMap<Book, BookItemDto> ();
 
-      CreateMap<BookActionDto, BookListActions> ();
-
       CreateMap<AuthorCreateDto, Author> ();
       CreateMap<Author, AuthorCreateDto> ();
 

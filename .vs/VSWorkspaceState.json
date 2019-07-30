@@ -8,9 +8,9 @@
     "\\BookApp-SPA\\src\\app\\books\\books-list",
     "\\BookApp-SPA\\src\\app\\books\\catalog-details",
     "\\BookApp-SPA\\src\\app\\books\\catalog-list",
-    "\\BookApp-SPA\\src\\app\\_models",
-    "\\BookApp-SPA\\src\\app\\_services",
-    "\\BookApp-SPA\\src\\app\\_store"
+    "\\BookApp.API",
+    "\\BookApp.API\\Data"
   ],
+  "SelectedNode": "\\BookApp.API\\Data\\BookGraphRepository.cs",
   "PreviewInSolutionExplorer": false
 }

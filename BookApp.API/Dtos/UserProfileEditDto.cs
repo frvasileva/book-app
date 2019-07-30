@@ -1,5 +1,3 @@
-using System.ComponentModel.DataAnnotations;
-
 namespace BookApp.API.Dtos {
   public class UserProfileEditDto {
     public string KnownAs { get; set; }

@@ -121,8 +121,8 @@ namespace BookApp.API.Data {
         var bookTag = new BookTags ();
 
         bookTag.BookExternalId = Int32.Parse (item.ItemArray[0].ToString ());
-        bookTag.TagExternalId = Int32.Parse(item.ItemArray[1].ToString ());
-        bookTag.Count = Int32.Parse(item.ItemArray[2].ToString ());
+        bookTag.TagExternalId = Int32.Parse (item.ItemArray[1].ToString ());
+        bookTag.Count = Int32.Parse (item.ItemArray[2].ToString ());
         bookTag.AddedOn = DateTime.Now;
 
         await _context.BookTags.AddAsync (bookTag);
@@ -146,16 +146,6 @@ namespace BookApp.API.Data {
       }
 
       await _context.Books.AddAsync (result);
-      await _context.SaveChangesAsync ();
-
-      return result;
-    }
-
-    public async Task<BookListActions> AddBookAction (BookActionDto bookActionDto) {
-      var result = _mapper.Map<BookListActions> (bookActionDto);
-      result.AddedOn = DateTime.Now;
-
-      await _context.BookListActions.AddAsync (result);
       await _context.SaveChangesAsync ();
 
       return result;

@@ -16,6 +16,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Neo4j.Driver.V1;
+using Neo4jClient;
 
 namespace DatingApp.API {
   public class Startup {
@@ -28,6 +29,9 @@ namespace DatingApp.API {
     // This method gets called by the runtime. Use this method to add services to the container.
     public void ConfigureServices (IServiceCollection services) {
       services.AddDbContext<DataContext> (x => x.UseSqlServer (Configuration.GetConnectionString ("DefaultConnection")));
+
+      // Add Neo4j Driver As A Singleton Service
+      services.AddSingleton<IGraphClient> (provider => GraphClient ());
 
       IdentityBuilder builder = services.AddIdentityCore<User> (opt => {
         opt.Password.RequireDigit = false;
@@ -76,7 +80,7 @@ namespace DatingApp.API {
           opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         });
 
-      services.AddSingleton (GraphDatabase.Driver ("bolt://localhost:7687", AuthTokens.Basic ("neo4j", "parola")));
+      //services.AddSingleton (GraphDatabase.Driver ("bolt://localhost:7687", AuthTokens.Basic ("neo4j", "parola")));
 
       services.AddCors ();
       services.Configure<CloudinarySettings> (Configuration.GetSection ("CloudinarySettings"));
@@ -87,6 +91,7 @@ namespace DatingApp.API {
       services.AddScoped<IAuthorRepository, AuthorRepository> ();
       services.AddScoped<ICatalogRepository, CatalogRepository> ();
       services.AddScoped<IAuthRepository, AuthRepository> ();
+      services.AddScoped<IBookGraphRepository, BookGraphRepository> ();
 
       services.AddTransient<DbContext> ();
     }
@@ -104,6 +109,10 @@ namespace DatingApp.API {
       app.UseCors (x => x.AllowAnyOrigin ().AllowAnyHeader ().AllowAnyMethod ());
       app.UseAuthentication ();
       app.UseMvc ();
+    }
+
+    private IGraphClient GraphClient () {
+      return new GraphClient (new Uri ("http://localhost:7474/db/data"), "neo4j", "parola");
     }
   }
 }

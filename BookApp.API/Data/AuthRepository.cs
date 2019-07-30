@@ -1,40 +1,28 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
 using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Microsoft.EntityFrameworkCore;
+using Neo4jClient;
 
 namespace BookApp.API.Data {
     public class AuthRepository : IAuthRepository {
         private readonly DataContext _context;
-        public AuthRepository (DataContext context) {
-            _context = context;
-        }
 
-        public AuthRepository () { }
+        private readonly IGraphClient _graphClient;
+
+        public AuthRepository (DataContext context, IGraphClient graphClient) {
+            _context = context;
+            _graphClient = graphClient;
+            _graphClient.Connect ();
+        }
 
         public async Task<User> Login (string email, string password) {
             var user = await _context.Users.Include (p => p.Photos).FirstOrDefaultAsync (x => x.Email == email);
 
             if (user == null)
                 return null;
-
-            // if (!VerifyPasswordHash (password, user.PasswordHash, user.PasswordSalt))
-            //     return null;
-
             return user;
-        }
-
-        private bool VerifyPasswordHash (string password, byte[] passwordHash, byte[] passwordSalt) {
-            using (var hmac = new System.Security.Cryptography.HMACSHA512 (passwordSalt)) {
-                var computedHash = hmac.ComputeHash (System.Text.Encoding.UTF8.GetBytes (password));
-                for (int i = 0; i < computedHash.Length; i++) {
-                    if (computedHash[i] != passwordHash[i]) return false;
-                }
-                return true;
-            }
         }
 
         public async Task<User> Register (User user, string password) {
@@ -50,8 +38,14 @@ namespace BookApp.API.Data {
             catalog.UserId = user.Id;
 
             await _context.Users.AddAsync (user);
-            await _context.Catalogs.AddAsync (catalog);
-            await _context.SaveChangesAsync ();
+         //   await _context.Catalogs.AddAsync (catalog);
+            var result = await _context.SaveChangesAsync ();
+
+            if (result > 0) {
+                _graphClient.Cypher
+                    .Create ("(profile:Profile {profileId})")
+                    .WithParam ("profileId", user.Id).ExecuteWithoutResults ();
+            }
 
             return user;
         }

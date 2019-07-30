@@ -12,6 +12,8 @@ using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
+using Neo.Models;
+using Neo4j.Driver.V1;
 using Neo4jClient;
 
 namespace BookApp.API.Controllers {
@@ -26,12 +28,14 @@ namespace BookApp.API.Controllers {
 
     private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
     private Cloudinary _cloudinary;
+    private readonly IBookGraphRepository _bookGraph;
 
-    public BookController (IBookRepository repo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig) {
+    public BookController (IBookRepository repo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig, IBookGraphRepository bookGraph) {
       _repo = repo;
       _context = context;
       _mapper = mapper;
       _cloudinaryConfig = cloudinaryConfig;
+      _bookGraph = bookGraph;
 
       Account acc = new Account (
         _cloudinaryConfig.Value.CloudName,
@@ -97,13 +101,7 @@ namespace BookApp.API.Controllers {
     public async Task<IActionResult> Add (BookCreateDto bookDto) {
       var result = await _repo.AddBook (bookDto);
 
-      var client = new GraphClient (new Uri ("http://localhost:7474/db/data"), "neo4j", "parola");
-      client.Connect ();
-
-      client.Cypher
-        .Create ("(book:BookDTO {newBook})")
-        .WithParam ("newBook", bookDto)
-        .ExecuteWithoutResults ();
+      _bookGraph.AddBook (bookDto);
 
       await _context.SaveChangesAsync ();
 
