@@ -110,15 +110,6 @@ namespace BookApp.API.Controllers {
       return Ok (result);
     }
 
-    [HttpPost ("add-book-action")]
-    public async Task<IActionResult> AddBookAction (BookActionDto bookActionDto) {
-      await _repo.AddBookAction (bookActionDto);
-      await _context.SaveChangesAsync ();
-
-      //TODO: fix to return really updated result!
-      return Ok (bookActionDto);
-    }
-
     [HttpGet ("delete-book-from-catalog/{catalogId}/{bookId}")]
     public async Task<IActionResult> RemoveBookFromCatalog (int catalogId, int bookId) {
       await _repo.RemoveBookFromCatalog (catalogId, bookId);
@@ -148,7 +139,7 @@ namespace BookApp.API.Controllers {
     #endregion
 
     [HttpPost ("add-photo/{friendlyUrl}")]
-    public async Task<IActionResult> AddPhotoForUser (string friendlyUrl, [FromForm] PhotoForCreationDto photoForCreationDto) {
+    public async Task<IActionResult> AddPhotoForBook (string friendlyUrl, [FromForm] PhotoForCreationDto photoForCreationDto) {
 
       var book = await _repo.Get (friendlyUrl);
       var file = photoForCreationDto.File;

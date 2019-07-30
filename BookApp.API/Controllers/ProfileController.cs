@@ -86,13 +86,8 @@ namespace BookApp.API.Controllers {
     [HttpPost ("add-photo/{friendlyUrl}")]
     public async Task<IActionResult> AddPhotoForUser (string friendlyUrl, [FromForm] PhotoForCreationDto photoForCreationDto) {
 
-      //  if (userId != int.Parse (User.FindFirst (ClaimTypes.NameIdentifier).Value))
-      //      return Unauthorized ();
-
       var userFromRepo = await _userRepository.GetUser (friendlyUrl);
-
       var file = photoForCreationDto.File;
-
       var uploadResult = new ImageUploadResult ();
 
       if (file.Length > 0) {

@@ -26,7 +26,7 @@ namespace BookApp.API.Controllers {
       var newMovie = new Movie { Title = "Fanka", Released = 1900, TagLine = "Bla bla tag line" };
       var newBook = new Book { Title = "Winnie the Pooh", AddedOn = DateTime.Now, AvarageRating = 100, Description = "Winnie the Pooh description" };
       client.Cypher
-        .Create ("(book:FANKA {newBook})")
+        .Create ("(book:Book {newBook})")
         .WithParam ("newBook", newBook)
         .ExecuteWithoutResults ();
 
