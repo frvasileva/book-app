@@ -28,9 +28,9 @@ namespace BookApp.API.Controllers {
 
     private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
     private Cloudinary _cloudinary;
-    private readonly IBookGraphRepository _bookGraph;
+    private readonly IGraphRepository _bookGraph;
 
-    public BookController (IBookRepository repo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig, IBookGraphRepository bookGraph) {
+    public BookController (IBookRepository repo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig, IGraphRepository bookGraph) {
       _repo = repo;
       _context = context;
       _mapper = mapper;
@@ -101,9 +101,16 @@ namespace BookApp.API.Controllers {
     public async Task<IActionResult> Add (BookCreateDto bookDto) {
       var result = await _repo.AddBook (bookDto);
 
-      _bookGraph.AddBook (bookDto);
+      var identity = HttpContext.User.Identity as ClaimsIdentity;
+      int userId = 0;
+      if (identity != null)
+        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
 
       await _context.SaveChangesAsync ();
+
+      bookDto.UserId = userId;
+      bookDto.Id = result.Id;
+      _bookGraph.AddBook (bookDto);
 
       return Ok (result);
     }
@@ -126,9 +133,9 @@ namespace BookApp.API.Controllers {
       if (identity != null)
         userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
 
-      bookCatalogDto.UserId = userId;
-
       var result = await _repo.AddBookToCatalog (bookCatalogDto);
+      bookCatalogDto.UserId = userId;
+      _bookGraph.AddBookToCatalog (bookCatalogDto);
       await _context.SaveChangesAsync ();
 
       return Ok (result);

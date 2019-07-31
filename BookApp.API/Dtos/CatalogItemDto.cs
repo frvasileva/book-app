@@ -1,12 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using AutoMapper;
-using BookApp.API.Dtos;
-using BookApp.API.Helpers;
-using BookApp.API.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.API.Dtos {
   public class CatalogItemDto {

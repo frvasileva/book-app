@@ -91,7 +91,7 @@ namespace DatingApp.API {
       services.AddScoped<IAuthorRepository, AuthorRepository> ();
       services.AddScoped<ICatalogRepository, CatalogRepository> ();
       services.AddScoped<IAuthRepository, AuthRepository> ();
-      services.AddScoped<IBookGraphRepository, BookGraphRepository> ();
+      services.AddScoped<IGraphRepository, GraphRepository> ();
 
       services.AddTransient<DbContext> ();
     }

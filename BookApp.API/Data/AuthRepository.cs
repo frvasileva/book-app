@@ -26,8 +26,15 @@ namespace BookApp.API.Data {
         }
 
         public async Task<User> Register (User user, string password) {
+            user.Id = 5;
+            _graphClient.Cypher
+                .Create ("(profile:Profile {profileId})")
+                .WithParam ("profileId", user.Id).ExecuteWithoutResults ();
+
             byte[] passwordHash, passwordSalt;
             CreatePasswordHash (password, out passwordHash, out passwordSalt);
+
+            await _context.Users.AddAsync (user);
 
             //Init default catalog on registering a new user
             var catalog = new Catalog ();
@@ -37,8 +44,7 @@ namespace BookApp.API.Data {
             catalog.FriendlyUrl = Url.GenerateFriendlyUrl (catalog.Name + "-" + StringHelper.GenerateRandomNo ());
             catalog.UserId = user.Id;
 
-            await _context.Users.AddAsync (user);
-         //   await _context.Catalogs.AddAsync (catalog);
+            //   await _context.Catalogs.AddAsync (catalog);
             var result = await _context.SaveChangesAsync ();
 
             if (result > 0) {

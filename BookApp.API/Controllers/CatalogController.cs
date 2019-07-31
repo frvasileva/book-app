@@ -2,7 +2,6 @@ using System;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
-using AutoMapper.Configuration;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
@@ -18,10 +17,13 @@ namespace BookApp.API.Controllers {
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
-    public CatalogController (ICatalogRepository repo, DataContext context, IMapper mapper) {
+    private readonly IGraphRepository _graphRepo;
+
+    public CatalogController (ICatalogRepository repo, DataContext context, IMapper mapper, IGraphRepository graphRepo) {
       _repo = repo;
       _context = context;
       _mapper = mapper;
+      _graphRepo = graphRepo;
     }
 
     [HttpPost ("add")]
@@ -35,6 +37,10 @@ namespace BookApp.API.Controllers {
       catalogCteateDto.UserId = userId;
 
       var result = await _repo.Create (catalogCteateDto);
+
+      catalogCteateDto.Id = result.Id;
+      _graphRepo.AddCatalog(catalogCteateDto);
+      
       await _context.SaveChangesAsync ();
 
       return Ok (result);
