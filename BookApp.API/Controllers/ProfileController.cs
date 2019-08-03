@@ -29,11 +29,13 @@ namespace BookApp.API.Controllers {
     private readonly IOptions<CloudinarySettings> _cloudinaryConfig;
     private Cloudinary _cloudinary;
     private IHttpContextAccessor _httpContextAccessor;
+    private readonly IGraphRepository _graphRepo;
 
     public ProfileController (IConfiguration config, IMapper mapper,
       IUserRepository userRepository,
       IOptions<CloudinarySettings> cloudinaryConfig,
-      IHttpContextAccessor httpContextAccessor) {
+      IHttpContextAccessor httpContextAccessor,
+      IGraphRepository graphRepo) {
       _config = config;
       _mapper = mapper;
       _userRepository = userRepository;
@@ -47,6 +49,9 @@ namespace BookApp.API.Controllers {
 
       _cloudinary = new Cloudinary (acc);
       _httpContextAccessor = httpContextAccessor;
+
+      _graphRepo = graphRepo;
+
     }
 
     [HttpGet ("get/{friendlyUrl}")]
@@ -119,20 +124,17 @@ namespace BookApp.API.Controllers {
     [HttpGet ("follow-user/{userIdToFollow}")]
     public IActionResult FollowUser (int userIdToFollow) {
 
-      var identity = HttpContext.User.Identity as ClaimsIdentity;
-      int userId = 0;
-      if (identity != null)
-        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
-
-      var result = _userRepository.FollowUser (userIdToFollow, userId);
+      var result = _userRepository.FollowUser (userIdToFollow, GetUserId ());
+      _graphRepo.FollowUser (userIdToFollow, GetUserId ());
 
       return Ok (result);
     }
 
     [HttpGet ("unfollow-user/{userIdToFollow}")]
-    public async Task<IActionResult> UnfollowUser (int userIdToFollow) {
+    public IActionResult UnfollowUser (int userIdToFollow) {
 
       _userRepository.UnfollowUser (userIdToFollow, GetUserId ());
+      _graphRepo.UnfollowUser (userIdToFollow, GetUserId ());
 
       return Ok ();
     }

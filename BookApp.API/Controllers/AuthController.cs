@@ -28,16 +28,16 @@ namespace DatingApp.API.Controllers {
     private SignInManager<User> _signInManager;
     private ICatalogRepository _catalogRepo;
 
-    private readonly IGraphClient _graphClient;
+    private readonly IGraphRepository _graphRepository;
 
-    public AuthController (IConfiguration config, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager, ICatalogRepository catalogRepo, IGraphClient graphClient) {
+    public AuthController (IConfiguration config, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager,
+      ICatalogRepository catalogRepo, IGraphRepository graphRepository) {
       _config = config;
       _mapper = mapper;
       _userManager = userManager;
       _signInManager = signInManager;
       _catalogRepo = catalogRepo;
-      _graphClient = graphClient;
-      _graphClient.Connect ();
+      _graphRepository = graphRepository;
     }
 
     [HttpPost ("register")]
@@ -56,12 +56,13 @@ namespace DatingApp.API.Controllers {
       var userToReturn = _mapper.Map<UserProfileDto> (userToCreate);
       var user = _mapper.Map<User> (userToReturn);
 
-      _graphClient.Cypher
-        .Create ("(profile:Profile {profileId})")
-        .WithParam ("profileId", new { user.Id }).ExecuteWithoutResults ();
+      var profileDto = new ProfileDto () {
+        Id = user.Id,
+        Email = user.Email
+      };
+      _graphRepository.RegisterUser (profileDto);
 
       if (result.Succeeded) {
-
         var defaultCatalog = new CatalogCreateDto ();
         defaultCatalog.Name = "Want to read";
         defaultCatalog.IsPublic = true;

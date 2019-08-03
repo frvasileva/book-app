@@ -78,5 +78,33 @@ namespace BookApp.API.Data {
     public Task<List<BookPreviewDto>> GetBooksAddedByUser (string friendlyUrl) {
       throw new NotImplementedException ();
     }
+
+    public UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower) {
+      _graphClient.Cypher
+        .Match ("(profile:Profile)", "(follower:Profile)")
+        .Where ((ProfileDto profile) => profile.Id == userIdFollower)
+        .AndWhere ((ProfileDto follower) => follower.Id == userIdToFollow)
+        .Create ("(profile)-[r:FOLLOW_USER {date}]->(follower)")
+        .WithParam ("date", new { dateAdded = DateTime.Now }).ExecuteWithoutResults ();
+
+      return new UserFollowersDto ();
+    }
+
+    public UserFollowersDto UnfollowUser (int userIdToFollow, int userIdFollower) {
+      _graphClient.Cypher
+        .Match ("(profile:Profile)-[r:FOLLOW_USER]->(follower:Profile)")
+        .Where ((ProfileDto profile) => profile.Id == userIdFollower)
+        .AndWhere ((ProfileDto follower) => follower.Id == userIdToFollow)
+        .Delete ("r")
+        .ExecuteWithoutResults ();
+
+      return new UserFollowersDto ();
+    }
+
+    public void RegisterUser (ProfileDto user) {
+      _graphClient.Cypher
+        .Create ("(profile:Profile {profileId})")
+        .WithParam ("profileId", new { user.Id }).ExecuteWithoutResults ();
+    }
   }
 }

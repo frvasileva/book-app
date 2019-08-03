@@ -10,5 +10,13 @@ namespace BookApp.API.Data {
     BookItemDto AddBook (BookCreateDto book);
     void AddCatalog (CatalogCreateDto book);
     void AddBookToCatalog (BookCatalogCreateDto item);
+
+    #region User
+
+    void RegisterUser (ProfileDto user);
+    UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower);
+    UserFollowersDto UnfollowUser (int userIdToFollow, int userIdFollower);
+    #endregion User
+
   }
 }
