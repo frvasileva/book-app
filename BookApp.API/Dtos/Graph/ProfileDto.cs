@@ -2,10 +2,10 @@ using System;
 
 public class ProfileDto {
 
-  ProfileDto () {
+  public ProfileDto () {
     this.CreatedOn = DateTime.Now;
   }
-  
+
   public int Id { get; set; }
   public string Email { get; set; }
 

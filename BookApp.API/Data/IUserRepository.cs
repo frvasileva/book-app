@@ -29,7 +29,5 @@ namespace BookApp.API.Data {
         Task<List<UserProfileDto>> GetAllProfiles ();
 
         Task<List<BookCatalogPreferences>> GetCatalogForPreferences ();
-
-        Task<bool> SetUserCatalogForPreferences (int[] bookCatalogPreferencesIds, int userId);
     }
 }

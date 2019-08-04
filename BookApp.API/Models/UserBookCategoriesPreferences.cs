@@ -3,5 +3,7 @@ namespace BookApp.API.Models {
     public int Id { get; set; }
     public int UserId { get; set; }
     public int BookCatalogPreferencesId { get; set; }
+    public string CatalogName { get; set; }
+
   }
 }

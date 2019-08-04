@@ -1,6 +1,7 @@
 using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Models;
+using Neo4jClient;
 
 namespace BookApp.API.Helpers {
   public class AutoMapperProfiles : Profile {
@@ -59,6 +60,12 @@ namespace BookApp.API.Helpers {
       CreateMap<Photo, PhotoForReturnDto> ();
       CreateMap<PhotoForCreationDto, Photo> ();
       CreateMap<Photo, PhotoForCreationDto> ();
+
+      CreateMap<Node<ProfileDto>, ProfileDto> ();
+      CreateMap<ProfileDto, Node<ProfileDto>> ();
+
+      CreateMap<Node<BookDetailsDto>, BookDetailsDto> ();
+      CreateMap<BookDetailsDto, Node<BookDetailsDto>> ();
     }
 
     private string PhotoUrlMap (string photoPath) {

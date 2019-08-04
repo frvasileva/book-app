@@ -140,9 +140,18 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpPost ("add-book-catalog-preferences")]
-    public async Task<IActionResult> BookCatalogPreferences (int[] bookCatalogPreferencesIds) {
-      var result = _userRepository.SetUserCatalogForPreferences (bookCatalogPreferencesIds, GetUserId ());
-      return Ok (result.Result);
+    public async Task<IActionResult> BookCatalogPreferences (string[] bookCatalogPreferencesIds) {
+
+      foreach (var item in bookCatalogPreferencesIds) {
+        var catalogItemDto = new CatalogCreateDto {
+          Name = item,
+          IsPublic = true,
+          UserId = GetUserId (),
+        };
+
+        _graphRepo.AddCatalog (catalogItemDto);
+      }
+      return Ok ();
     }
 
     [HttpGet ("get-catalog-for-preferences")]

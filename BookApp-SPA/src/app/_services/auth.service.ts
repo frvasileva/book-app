@@ -95,7 +95,6 @@ export class AuthService {
 
   setUserBookCategoryPreferences(catalogPreferences: any) {
     console.log({ catalogPreferences });
-    console.log(this.baseUrl + "add-book-catalog-preferences");
     return this.http
       .post(
         environment.apiUrl + "profile/add-book-catalog-preferences",
@@ -107,6 +106,9 @@ export class AuthService {
             const token = localStorage.getItem("token");
             const friendlyUrl = this.jwtHelper.decodeToken(token).unique_name;
             this.router.navigate(["/user/profile", friendlyUrl]);
+          }
+          else{
+            console.log("can not navigate");
           }
         })
       );

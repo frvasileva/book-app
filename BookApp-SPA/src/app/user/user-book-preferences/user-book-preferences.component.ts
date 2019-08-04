@@ -49,7 +49,7 @@ export class UserBookPreferencesComponent implements OnInit {
   sendCategoriesPreferences() {
     this.authService
       .setUserBookCategoryPreferences(
-        this.selectedCategories.map(item => item.id)
+        this.selectedCategories.map(item => item.name)
       )
       .subscribe();
   }

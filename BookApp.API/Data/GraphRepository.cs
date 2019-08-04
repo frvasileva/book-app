@@ -6,6 +6,7 @@ using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using Neo4jClient;
+using Neo4jClient.Transactions;
 
 namespace BookApp.API.Data {
   public class GraphRepository : IGraphRepository {
@@ -33,7 +34,8 @@ namespace BookApp.API.Data {
         .Where ((ProfileDto profile) => profile.Id == bookDto.UserId)
         .AndWhere ((BookItemDto book) => book.Id == bookDto.Id)
         .Create ("(profile)-[r:BOOK_ADDED {message}]->(book)")
-        .WithParam ("message", new { dateAdded = DateTime.Now }).ExecuteWithoutResults ();
+        .WithParam ("message", new { dateAdded = DateTime.Now })
+        .ExecuteWithoutResults ();
 
       return new BookItemDto ();
     }
@@ -41,14 +43,17 @@ namespace BookApp.API.Data {
     public void AddCatalog (CatalogCreateDto catalogDto) {
       var result = _graphClient.Cypher
         .Create ("(catalog:Catalog {catalog})")
-        .WithParam ("catalog", catalogDto).Return<Node<CatalogCreateDto>> ("catalog").Results.Single ();
+        .WithParam ("catalog", catalogDto)
+        .Return<Node<CatalogCreateDto>> ("catalog").Results.Single ();
 
-      _graphClient.Cypher
+      var relResult = _graphClient.Cypher
         .Match ("(profile:Profile)", "(catalog:Catalog)")
         .Where ((ProfileDto profile) => profile.Id == catalogDto.UserId)
-        .AndWhere ((CatalogCreateDto catalog) => catalog.Id == catalogDto.Id)
-        .Create ("(profile)-[r:CATALOG_ADDED {date}]->(catalog)")
-        .WithParam ("date", new { dateAdded = DateTime.Now }).ExecuteWithoutResults ();
+        .AndWhere ((CatalogCreateDto catalog) => catalog.Id == result.Reference.Id)
+        .CreateUnique ("(profile)-[r:CATALOG_ADDED {date}]->(catalog)")
+        .WithParam ("date", new { dateAdded = DateTime.Now }).Return<CatalogCreateDto> ("catalog").Results;
+
+      var aa = relResult;
     }
 
     public void AddBookToCatalog (BookCatalogCreateDto item) {
@@ -64,15 +69,16 @@ namespace BookApp.API.Data {
       throw new NotImplementedException ();
     }
 
-    public Task<BookDetailsDto> GetBook (string friendlyUrl) {
-      throw new NotImplementedException ();
-
-      var bookitem =
+    public BookDetailsDto GetBook (string friendlyUrl) {
+      var result =
         _graphClient.Cypher.Match ("(book:Book)")
         .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
-        .Return (book => book.As<BookDetailsDto> ())
-        .Results
-        .Single ();
+        .Return<Node<BookDetailsDto>> ("profile")
+        .Results.Single ();
+
+      var mappedResult = _mapper.Map<BookDetailsDto> (result.Data);
+
+      return mappedResult;
     }
 
     public Task<List<BookPreviewDto>> GetBooksAddedByUser (string friendlyUrl) {
@@ -80,12 +86,12 @@ namespace BookApp.API.Data {
     }
 
     public UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower) {
-      _graphClient.Cypher
+      var result = _graphClient.Cypher
         .Match ("(profile:Profile)", "(follower:Profile)")
         .Where ((ProfileDto profile) => profile.Id == userIdFollower)
         .AndWhere ((ProfileDto follower) => follower.Id == userIdToFollow)
         .Create ("(profile)-[r:FOLLOW_USER {date}]->(follower)")
-        .WithParam ("date", new { dateAdded = DateTime.Now }).ExecuteWithoutResults ();
+        .WithParam ("date", new { dateAdded = DateTime.Now });
 
       return new UserFollowersDto ();
     }
@@ -102,9 +108,50 @@ namespace BookApp.API.Data {
     }
 
     public void RegisterUser (ProfileDto user) {
-      _graphClient.Cypher
-        .Create ("(profile:Profile {profileId})")
-        .WithParam ("profileId", new { user.Id }).ExecuteWithoutResults ();
+
+      var result = _graphClient.Cypher
+        .Create ("(profile:Profile {profile})")
+        .WithParam ("profile", user)
+        .Return<Node<ProfileDto>> ("profile")
+        .Results.Single ();
+
+      var mappedResult = _mapper.Map<ProfileDto> (result.Data);
     }
   }
 }
+
+// var results = client.Cypher
+// .Match(
+// "(actor:Person)-[:ACTED_IN]-&gt;(movie:Movie {title: {nameParam}})",
+// "(movie)&lt;-[:DIRECTED]-(director:Person)"
+// )
+// .WithParam("nameParam", movieName)
+// .Return((actor, director, movie) =&gt; new
+// {
+// Movie = movie.As&lt;Movie&gt;(),
+// Actors = actor.CollectAs&lt;Person&gt;(),
+// Director = director.As&lt;Person&gt;()
+// })
+// .Results.Single();
+
+// ITransactionalGraphClient txClient = _graphClient;
+
+// using (var tx = txClient.BeginTransaction ()) {
+//   txClient.Cypher
+//     .Match ("(m:Movie)")
+//     .Where ((Movie m) = & m.title == originalMovieName)
+//     .Set ("m.title = {newMovieNameParam}")
+//     .WithParam ("newMovieNameParam", newMovieName)
+//     .ExecuteWithoutResults ();
+
+//   txClient.Cypher
+//     .Match ("(m:Movie)")
+//     .Where ((Movie m) = & gt; m.title == newMovieName)
+//     .Create ("(p:Person {name: {actorNameParam}})-[:ACTED_IN]-&gt;(m)")
+//     .WithParam ("actorNameParam", newActorName)
+//     .ExecuteWithoutResults ();
+
+//   tx.Commit ();
+// }
+
+//https://thenewstack.io/graph-database-neo4j-net-client/

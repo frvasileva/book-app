@@ -15,9 +15,12 @@ namespace BookApp.API.Data {
 
         private readonly IMapper _mapper;
 
-        public UserRepository (DataContext context, IMapper mapper) {
+        private readonly IGraphRepository _graphRepository;
+
+        public UserRepository (DataContext context, IMapper mapper, IGraphRepository graphRepository) {
             _context = context;
             _mapper = mapper;
+            _graphRepository = graphRepository;
         }
         public void Add<T> (T entity) where T : class {
             _context.Add (entity);
@@ -112,26 +115,11 @@ namespace BookApp.API.Data {
             return result;
         }
 
+        // TODO Refactor this method to get default values from db?! Move it to another repository
         public async Task<List<BookCatalogPreferences>> GetCatalogForPreferences () {
             var result = await _context.BookCatalogPreferences.ToListAsync ();
 
             return result;
-        }
-
-        public async Task<bool> SetUserCatalogForPreferences (int[] bookCatalogPreferencesIds, int userId) {
-
-            var userPreferences = new List<UserBookCategoriesPreferences> ();
-            foreach (var item in bookCatalogPreferencesIds) {
-                var userPreference = new UserBookCategoriesPreferences ();
-                userPreference.UserId = userId;
-                userPreference.BookCatalogPreferencesId = item;
-
-                _context.Add (userPreference);
-                //userPreferences.Add (userPreference);
-            }
-
-            _context.SaveChanges ();
-            return true;
         }
 
         public async Task<bool> SaveAll () {
