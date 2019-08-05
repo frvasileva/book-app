@@ -63,12 +63,11 @@ namespace DatingApp.API.Controllers {
       _graphRepository.RegisterUser (profileDto);
 
       if (result.Succeeded) {
-        // var defaultCatalog = new CatalogCreateDto ();
-        // defaultCatalog.Name = "Want to read";
-        // defaultCatalog.IsPublic = true;
-        // defaultCatalog.UserId = user.Id;
-        // _graphRepository.AddCatalog (defaultCatalog);
-
+        var defaultCatalog = new CatalogCreateDto ();
+        defaultCatalog.Name = "Want to read";
+        defaultCatalog.IsPublic = true;
+        defaultCatalog.UserId = user.Id;
+        _graphRepository.AddCatalog (defaultCatalog);
         return Ok (new {
           token = GenerateJwtToken (user)
         });

@@ -12,7 +12,6 @@ using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Neo.Models;
 using Neo4j.Driver.V1;
 using Neo4jClient;
 
@@ -64,8 +63,7 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("get/{friendlyUrl?}")]
     public async Task<IActionResult> GetBook (string friendlyUrl) {
-      var book = await _repo.GetBook (friendlyUrl);
-
+      var book = _bookGraph.GetBook (friendlyUrl);
       if (book == null)
         return BadRequest ("No books");
 

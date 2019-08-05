@@ -143,7 +143,8 @@ namespace BookApp.API.Controllers {
         var catalogItemDto = new CatalogCreateDto {
           Name = item,
           IsPublic = true,
-          UserId = GetUserId ()
+          UserId = GetUserId (),
+          FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (item + "-" + Guid.NewGuid())
         };
 
         _graphRepo.AddCatalog (catalogItemDto);

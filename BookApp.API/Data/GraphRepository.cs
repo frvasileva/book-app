@@ -6,7 +6,6 @@ using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using Neo4jClient;
-using Neo4jClient.Transactions;
 
 namespace BookApp.API.Data {
   public class GraphRepository : IGraphRepository {
@@ -79,6 +78,23 @@ namespace BookApp.API.Data {
       var mappedResult = _mapper.Map<BookDetailsDto> (result.Data);
 
       return mappedResult;
+    }
+
+    public List<CatalogPureDto> GetPureCatalogs (long userId) {
+      var result =
+        _graphClient.Cypher.Match ("(catalog:Catalog)")
+        .Where ((CatalogPureDto catalog) => catalog.UserId == userId)
+        .Return ((catalog) => new {
+          cat = catalog.As<CatalogPureDto> ()
+        });
+      var catalogList = new List<CatalogPureDto> ();
+
+      var results = result.Results.ToList ();
+      foreach (var item in results) {
+        var itm = item.cat;
+        catalogList.Add (itm);
+      }
+      return catalogList;
     }
 
     public Task<List<BookPreviewDto>> GetBooksAddedByUser (string friendlyUrl) {

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Models;
@@ -23,6 +24,9 @@ namespace BookApp.API.Helpers {
 
       CreateMap<BookItemDto, Book> ();
       CreateMap<Book, BookItemDto> ();
+
+      CreateMap<BookDetailsDto, BookCreateDto> ();
+      CreateMap<BookCreateDto, BookDetailsDto> ();
 
       CreateMap<BookItemDto, BookCreateDto> ();
       CreateMap<BookCreateDto, BookItemDto> ();

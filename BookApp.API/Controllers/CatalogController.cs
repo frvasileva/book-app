@@ -39,8 +39,8 @@ namespace BookApp.API.Controllers {
       var result = await _repo.Create (catalogCteateDto);
 
       catalogCteateDto.Id = result.Id;
-      _graphRepo.AddCatalog(catalogCteateDto);
-      
+      _graphRepo.AddCatalog (catalogCteateDto);
+
       await _context.SaveChangesAsync ();
 
       return Ok (result);
@@ -93,13 +93,11 @@ namespace BookApp.API.Controllers {
     public async Task<IActionResult> GetPureCatalogsForUser (string friendlyUrl) {
 
       var identity = HttpContext.User.Identity as ClaimsIdentity;
-      string userFriendlyUrl = "";
+      int userId = 0;
       if (identity != null)
-        userFriendlyUrl = identity.FindFirst (ClaimTypes.Name).Value;
+        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
 
-      var isCurrentUser = friendlyUrl == userFriendlyUrl;
-
-      var catalogs = await _repo.GetPureForUser (friendlyUrl, isCurrentUser);
+      var catalogs = _graphRepo.GetPureCatalogs (userId);
       return Ok (catalogs);
     }
 

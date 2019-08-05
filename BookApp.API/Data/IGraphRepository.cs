@@ -9,6 +9,7 @@ namespace BookApp.API.Data {
     Task<List<BookPreviewDto>> GetBooksAddedByUser (string friendlyUrl);
     BookDetailsDto AddBook (BookCreateDto book);
     void AddCatalog (CatalogCreateDto book);
+    List<CatalogPureDto> GetPureCatalogs (long userId);
     void AddBookToCatalog (BookCatalogCreateDto item);
 
     #region User

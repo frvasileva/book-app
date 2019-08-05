@@ -1,4 +1,3 @@
-using System;
 using IdGen;
 
 namespace BookApp.API.Dtos {
@@ -6,7 +5,7 @@ namespace BookApp.API.Dtos {
 
     public CatalogCreateDto () {
       var generator = new IdGenerator (0);
-      this.Id = generator.CreateId ();
+      this.Id = generator.CreateId ();     
     }
     public long Id { get; set; }
 
@@ -15,5 +14,8 @@ namespace BookApp.API.Dtos {
     public bool IsPublic { get; set; }
 
     public int UserId { get; set; }
+
+    public string FriendlyUrl { get; set; }
+
   }
 }
