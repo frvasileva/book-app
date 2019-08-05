@@ -160,7 +160,7 @@ namespace BookApp.API.Data {
       };
 
       if (bookCatalogDto.CatalogId.HasValue) {
-        bookCatalogEntity.CatalogId = bookCatalogDto.CatalogId.Value;
+       // bookCatalogEntity.CatalogId = bookCatalogDto.CatalogId.Value;
       } else {
         var catalog = new Catalog ();
         catalog.UserId = bookCatalogDto.UserId;

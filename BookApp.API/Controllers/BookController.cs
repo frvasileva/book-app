@@ -131,12 +131,9 @@ namespace BookApp.API.Controllers {
       if (identity != null)
         userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
 
-      var result = await _repo.AddBookToCatalog (bookCatalogDto);
       bookCatalogDto.UserId = userId;
       _bookGraph.AddBookToCatalog (bookCatalogDto);
-      await _context.SaveChangesAsync ();
-
-      return Ok (result);
+      return Ok ("success");
     }
 
     #endregion

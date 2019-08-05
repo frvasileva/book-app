@@ -62,6 +62,8 @@ namespace BookApp.API.Data {
         .AndWhere ((CatalogCreateDto catalog) => catalog.Id == item.CatalogId)
         .Create ("(book)-[r:BOOK_ADDED_TO_CATALOG {info}]->(catalog)")
         .WithParam ("info", new { addedOn = DateTime.Now, userId = item.UserId }).ExecuteWithoutResults ();
+
+        //TODO: REturn BookCatalog dto
     }
 
     public Task<List<BookPreviewDto>> GetAll () {
