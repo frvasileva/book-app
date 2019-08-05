@@ -20,40 +20,40 @@ namespace BookApp.API.Data {
       _mapper = mapper;
     }
 
-    public BookItemDto AddBook (BookCreateDto bookDto) {
+    public BookDetailsDto AddBook (BookCreateDto bookDto) {
 
-      var bookItem = _mapper.Map<BookItemDto> (bookDto);
+      var bookItem = _mapper.Map<BookDetailsDto> (bookDto);
       bookItem.FriendlyUrl = Url.GenerateFriendlyUrl (bookDto.Title);
 
       var result = _graphClient.Cypher
         .Create ("(book:Book {bookDto})")
-        .WithParam ("bookDto", bookItem).Return<Node<BookItemDto>> ("book").Results.Single ();
+        .WithParam ("bookDto", bookItem).Return<Node<BookDetailsDto>> ("book").Results.Single ();
+
+      var mappedResult = _mapper.Map<BookDetailsDto> (result.Data);
 
       _graphClient.Cypher
         .Match ("(profile:Profile)", "(book:Book)")
         .Where ((ProfileDto profile) => profile.Id == bookDto.UserId)
         .AndWhere ((BookItemDto book) => book.Id == bookDto.Id)
         .Create ("(profile)-[r:BOOK_ADDED {message}]->(book)")
-        .WithParam ("message", new { dateAdded = DateTime.Now })
+        .WithParam ("message", new { addedOn = DateTime.Now })
         .ExecuteWithoutResults ();
 
-      return new BookItemDto ();
+      return mappedResult;
     }
 
     public void AddCatalog (CatalogCreateDto catalogDto) {
       var result = _graphClient.Cypher
-        .Create ("(catalog:Catalog {catalog})")
+        .Create ("(catalog:Catalog:Favorite {catalog})")
         .WithParam ("catalog", catalogDto)
         .Return<Node<CatalogCreateDto>> ("catalog").Results.Single ();
 
-      var relResult = _graphClient.Cypher
+      _graphClient.Cypher
         .Match ("(profile:Profile)", "(catalog:Catalog)")
         .Where ((ProfileDto profile) => profile.Id == catalogDto.UserId)
-        .AndWhere ((CatalogCreateDto catalog) => catalog.Id == result.Reference.Id)
+        .AndWhere ((CatalogCreateDto catalog) => catalog.Id == catalogDto.Id)
         .CreateUnique ("(profile)-[r:CATALOG_ADDED {date}]->(catalog)")
-        .WithParam ("date", new { dateAdded = DateTime.Now }).Return<CatalogCreateDto> ("catalog").Results;
-
-      var aa = relResult;
+        .WithParam ("date", new { addedOn = DateTime.Now }).ExecuteWithoutResults ();
     }
 
     public void AddBookToCatalog (BookCatalogCreateDto item) {
@@ -62,7 +62,7 @@ namespace BookApp.API.Data {
         .Where ((BookItemDto book) => book.Id == item.BookId)
         .AndWhere ((CatalogCreateDto catalog) => catalog.Id == item.CatalogId)
         .Create ("(book)-[r:BOOK_ADDED_TO_CATALOG {info}]->(catalog)")
-        .WithParam ("info", new { dateAdded = DateTime.Now, userId = item.UserId }).ExecuteWithoutResults ();
+        .WithParam ("info", new { addedOn = DateTime.Now, userId = item.UserId }).ExecuteWithoutResults ();
     }
 
     public Task<List<BookPreviewDto>> GetAll () {
@@ -91,7 +91,7 @@ namespace BookApp.API.Data {
         .Where ((ProfileDto profile) => profile.Id == userIdFollower)
         .AndWhere ((ProfileDto follower) => follower.Id == userIdToFollow)
         .Create ("(profile)-[r:FOLLOW_USER {date}]->(follower)")
-        .WithParam ("date", new { dateAdded = DateTime.Now });
+        .WithParam ("date", new { addedOn = DateTime.Now });
 
       return new UserFollowersDto ();
     }

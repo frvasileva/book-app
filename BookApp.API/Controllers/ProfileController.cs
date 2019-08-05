@@ -1,7 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using AutoMapper;
@@ -146,7 +143,7 @@ namespace BookApp.API.Controllers {
         var catalogItemDto = new CatalogCreateDto {
           Name = item,
           IsPublic = true,
-          UserId = GetUserId (),
+          UserId = GetUserId ()
         };
 
         _graphRepo.AddCatalog (catalogItemDto);

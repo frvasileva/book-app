@@ -17,6 +17,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using Neo4j.Driver.V1;
 using Neo4jClient;
+using Newtonsoft.Json.Serialization;
 
 namespace DatingApp.API {
   public class Startup {
@@ -112,7 +113,9 @@ namespace DatingApp.API {
     }
 
     private IGraphClient GraphClient () {
-      return new GraphClient (new Uri ("http://localhost:7474/db/data"), "neo4j", "parola");
+      return new GraphClient (new Uri ("http://localhost:7474/db/data"), "neo4j", "parola") {
+        JsonContractResolver = new CamelCasePropertyNamesContractResolver ()
+      };
     }
   }
 }

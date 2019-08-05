@@ -1,10 +1,14 @@
 using System;
+using IdGen;
 
-namespace BookApp.API.Dtos
-{
-  public class CatalogCreateDto
-  {
-    public int Id { get; set; }
+namespace BookApp.API.Dtos {
+  public class CatalogCreateDto {
+
+    public CatalogCreateDto () {
+      var generator = new IdGenerator (0);
+      this.Id = generator.CreateId ();
+    }
+    public long Id { get; set; }
 
     public string Name { get; set; }
 
