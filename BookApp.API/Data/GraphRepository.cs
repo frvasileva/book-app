@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
+using BookApp.API.Models;
 using Neo4jClient;
 
 namespace BookApp.API.Data {
@@ -55,26 +56,47 @@ namespace BookApp.API.Data {
         .WithParam ("date", new { addedOn = DateTime.Now }).ExecuteWithoutResults ();
     }
 
-    public void AddBookToCatalog (BookCatalogCreateDto item) {
-      _graphClient.Cypher
+    public BookCatalogItemDto AddBookToCatalog (BookCatalogCreateDto item) {
+      var result = _graphClient.Cypher
         .Match ("(book:Book)", "(catalog:Catalog)")
         .Where ((BookItemDto book) => book.Id == item.BookId)
         .AndWhere ((CatalogCreateDto catalog) => catalog.Id == item.CatalogId)
         .Create ("(book)-[r:BOOK_ADDED_TO_CATALOG {info}]->(catalog)")
-        .WithParam ("info", new { addedOn = DateTime.Now, userId = item.UserId }).ExecuteWithoutResults ();
+        .WithParam ("info", new { addedOn = DateTime.Now, userId = item.UserId })
+        .Return ((catalog, book, r) => new {
+          cat = catalog.As<CatalogCreateDto> (),
+            bk = book.As<BookItemDto> ()
+        });
 
-        //TODO: REturn BookCatalog dto
+      var bbb = result.Results.ToList ();
+
+      var bookCatalog = new BookCatalogItemDto ();
+      // bookCatalog.BookId = result.Results.ToList ().FirstOrDefault ().bk.Id;
+      // bookCatalog.CatalogId = result.Results.ToList ().FirstOrDefault ().cat.Id;
+      // bookCatalog.UserId = result.Results.ToList ().FirstOrDefault ().bk.UserId;
+      // bookCatalog.IsPublic = result.Results.ToList ().FirstOrDefault ().cat.IsPublic;
+      // bookCatalog.Name = result.Results.ToList ().FirstOrDefault ().cat.Name;
+
+      return bookCatalog;
     }
 
-    public Task<List<BookPreviewDto>> GetAll () {
-      throw new NotImplementedException ();
+    public List<BookDetailsDto> GetAll () {
+      var result =
+        _graphClient.Cypher.Match ("(book:Book)")
+        // .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
+        .Return<BookDetailsDto> ("book")
+        .Results;
+
+      var mappedResult = _mapper.Map<List<BookDetailsDto>> (result);
+
+      return mappedResult;
     }
 
     public BookDetailsDto GetBook (string friendlyUrl) {
       var result =
         _graphClient.Cypher.Match ("(book:Book)")
         .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
-        .Return<Node<BookDetailsDto>> ("profile")
+        .Return<Node<BookDetailsDto>> ("book")
         .Results.Single ();
 
       var mappedResult = _mapper.Map<BookDetailsDto> (result.Data);
@@ -126,7 +148,6 @@ namespace BookApp.API.Data {
     }
 
     public void RegisterUser (ProfileDto user) {
-
       var result = _graphClient.Cypher
         .Create ("(profile:Profile {profile})")
         .WithParam ("profile", user)

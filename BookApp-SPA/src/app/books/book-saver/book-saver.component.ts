@@ -43,6 +43,7 @@ export class BookSaverComponent implements OnInit {
   }
 
   addToCatalog(catalogId) {
+    console.log("catalog id", catalogId);
     this.bookSaverService.addBookToCatalog(catalogId, this.bookId);
   }
 

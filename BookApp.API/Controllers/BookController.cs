@@ -12,8 +12,6 @@ using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
-using Neo4j.Driver.V1;
-using Neo4jClient;
 
 namespace BookApp.API.Controllers {
 
@@ -49,16 +47,18 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("get-books")]
     public async Task<IActionResult> GetAllBooks () {
-      var books = await _repo.GetAll ();
 
-      if (books == null)
-        return BadRequest ("No books");
+      var bookList = _bookGraph.GetAll ();
+      // var books = await _repo.GetAll ();
+
+      // if (books == null)
+      //   return BadRequest ("No books");
 
       // foreach (var item in books) {
       //   item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
       // }
 
-      return Ok (books);
+      return Ok (bookList);
     }
 
     [HttpGet ("get/{friendlyUrl?}")]
@@ -133,7 +133,7 @@ namespace BookApp.API.Controllers {
 
       bookCatalogDto.UserId = userId;
       _bookGraph.AddBookToCatalog (bookCatalogDto);
-      return Ok ("success");
+      return Ok ();
     }
 
     #endregion
