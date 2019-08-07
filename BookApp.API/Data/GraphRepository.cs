@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
-using BookApp.API.Models;
 using Neo4jClient;
 
 namespace BookApp.API.Data {
@@ -16,7 +15,6 @@ namespace BookApp.API.Data {
     public GraphRepository (IGraphClient graphClient, IMapper mapper) {
       _graphClient = graphClient;
       _graphClient.Connect ();
-
       _mapper = mapper;
     }
 
@@ -27,7 +25,8 @@ namespace BookApp.API.Data {
 
       var result = _graphClient.Cypher
         .Create ("(book:Book {bookDto})")
-        .WithParam ("bookDto", bookItem).Return<Node<BookDetailsDto>> ("book").Results.Single ();
+        .WithParam ("bookDto", bookItem)
+        .Return<Node<BookDetailsDto>> ("book").Results.Single ();
 
       var mappedResult = _mapper.Map<BookDetailsDto> (result.Data);
 
@@ -42,11 +41,22 @@ namespace BookApp.API.Data {
       return mappedResult;
     }
 
-    public void AddCatalog (CatalogCreateDto catalogDto) {
+    public BookDetailsDto AddBookCover (int bookId, string photoPath) {
+      var result = _graphClient.Cypher
+        .Match ("(book:Book)")
+        .Where ((BookItemDto book) => book.Id == bookId)
+        .WithParam ("photoPath", photoPath)
+        .Set ("book.photoPath = {photoPath}")
+        .Return<Node<BookDetailsDto>> ("book").Results.Single ();
+
+      return result.Data;
+    }
+
+    public CatalogCreateDto AddCatalog (CatalogCreateDto catalogDto) {
       var result = _graphClient.Cypher
         .Create ("(catalog:Catalog:Favorite {catalog})")
         .WithParam ("catalog", catalogDto)
-        .Return<Node<CatalogCreateDto>> ("catalog").Results.Single ();
+        .Return<Node<CatalogCreateDto>> ("catalog").Results.Single ().Data;
 
       _graphClient.Cypher
         .Match ("(profile:Profile)", "(catalog:Catalog)")
@@ -54,6 +64,8 @@ namespace BookApp.API.Data {
         .AndWhere ((CatalogCreateDto catalog) => catalog.Id == catalogDto.Id)
         .CreateUnique ("(profile)-[r:CATALOG_ADDED {date}]->(catalog)")
         .WithParam ("date", new { addedOn = DateTime.Now }).ExecuteWithoutResults ();
+
+      return result;
     }
 
     public BookCatalogItemDto AddBookToCatalog (BookCatalogCreateDto item) {
@@ -88,7 +100,7 @@ namespace BookApp.API.Data {
         .Results;
 
       var mappedResult = _mapper.Map<List<BookDetailsDto>> (result);
-
+      mappedResult = mappedResult.OrderByDescending (item => item.CreatedOn).ToList();
       return mappedResult;
     }
 
@@ -126,12 +138,12 @@ namespace BookApp.API.Data {
     }
 
     public UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower) {
-      var result = _graphClient.Cypher
+      _graphClient.Cypher
         .Match ("(profile:Profile)", "(follower:Profile)")
         .Where ((ProfileDto profile) => profile.Id == userIdFollower)
         .AndWhere ((ProfileDto follower) => follower.Id == userIdToFollow)
         .Create ("(profile)-[r:FOLLOW_USER {date}]->(follower)")
-        .WithParam ("date", new { addedOn = DateTime.Now });
+        .WithParam ("date", new { addedOn = DateTime.Now }).ExecuteWithoutResults ();
 
       return new UserFollowersDto ();
     }

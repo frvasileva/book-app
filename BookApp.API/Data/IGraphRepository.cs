@@ -8,7 +8,8 @@ namespace BookApp.API.Data {
     BookDetailsDto GetBook (string friendlyUrl);
     Task<List<BookPreviewDto>> GetBooksAddedByUser (string friendlyUrl);
     BookDetailsDto AddBook (BookCreateDto book);
-    void AddCatalog (CatalogCreateDto book);
+    BookDetailsDto AddBookCover (int bookId, string photoPath);
+    CatalogCreateDto AddCatalog (CatalogCreateDto catalog);
     List<CatalogPureDto> GetPureCatalogs (long userId);
     BookCatalogItemDto AddBookToCatalog (BookCatalogCreateDto item);
 

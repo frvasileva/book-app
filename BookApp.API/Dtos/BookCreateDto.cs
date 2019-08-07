@@ -1,7 +1,12 @@
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace BookApp.API.Dtos {
   public class BookCreateDto {
+
+    public BookCreateDto () {
+      this.CreatedOn = DateTime.Now;
+    }
     public int Id { get; set; }
 
     [Required]
@@ -14,5 +19,7 @@ namespace BookApp.API.Dtos {
     public string AuthorName { get; set; }
 
     public int UserId { get; set; }
+
+    public DateTime CreatedOn { get; set; }
   }
 }

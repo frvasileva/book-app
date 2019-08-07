@@ -141,7 +141,7 @@ namespace BookApp.API.Controllers {
     [HttpPost ("add-photo/{friendlyUrl}")]
     public async Task<IActionResult> AddPhotoForBook (string friendlyUrl, [FromForm] PhotoForCreationDto photoForCreationDto) {
 
-      var book = await _repo.Get (friendlyUrl);
+      var book = _bookGraph.GetBook (friendlyUrl);
       var file = photoForCreationDto.File;
 
       var uploadResult = new ImageUploadResult ();
@@ -150,21 +150,17 @@ namespace BookApp.API.Controllers {
         using (var stream = file.OpenReadStream ()) {
           var uploadParams = new ImageUploadParams () {
           File = new FileDescription (file.Name, stream),
-          Transformation = new Transformation ()
-          .Width (500).Crop ("fill").Gravity ("face")
+          Transformation = new Transformation ().Width (500).Crop ("fill").Gravity ("face")
           };
 
           uploadResult = _cloudinary.Upload (uploadParams);
         }
       }
 
-      photoForCreationDto.Url = uploadResult.Uri.ToString ();
-      photoForCreationDto.PublicId = uploadResult.PublicId;
       book.PhotoPath = uploadResult.Uri.ToString ();
 
-      var photo = _mapper.Map<Photo> (photoForCreationDto);
-
-      if (await _repo.SaveAll ()) {
+      var res = _bookGraph.AddBookCover (book.Id, book.PhotoPath);
+      if (res != null) {
         return Ok (new { book.FriendlyUrl, book.PhotoPath });
       }
 
