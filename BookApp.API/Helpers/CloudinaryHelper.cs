@@ -10,7 +10,7 @@ namespace BookApp.API.Helpers {
 
     public static class CloudinaryHelper {
         public static string TransformUrl (string url, TransformationType transformationType) {
-            if (url == "")
+            if (url == "" || url == null)
                 return "";
 
             string transformedUrl = "";

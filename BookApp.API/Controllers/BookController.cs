@@ -48,17 +48,13 @@ namespace BookApp.API.Controllers {
     [HttpGet ("get-books")]
     public async Task<IActionResult> GetAllBooks () {
 
-      var bookList = _bookGraph.GetAll ();
-      // var books = await _repo.GetAll ();
+      var books = _bookGraph.GetAll ();
 
-      // if (books == null)
-      //   return BadRequest ("No books");
+      foreach (var item in books) {
+        item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
+      }
 
-      // foreach (var item in books) {
-      //   item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
-      // }
-
-      return Ok (bookList);
+      return Ok (books);
     }
 
     [HttpGet ("get/{friendlyUrl?}")]

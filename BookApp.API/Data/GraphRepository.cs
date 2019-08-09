@@ -6,6 +6,7 @@ using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using Neo4jClient;
+using Neo4jClient.Cypher;
 
 namespace BookApp.API.Data {
   public class GraphRepository : IGraphRepository {
@@ -93,15 +94,33 @@ namespace BookApp.API.Data {
     }
 
     public List<BookDetailsDto> GetAll () {
-      var result =
-        _graphClient.Cypher.Match ("(book:Book)")
-        // .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
-        .Return<BookDetailsDto> ("book")
-        .Results;
 
-      var mappedResult = _mapper.Map<List<BookDetailsDto>> (result);
-      mappedResult = mappedResult.OrderByDescending (item => item.CreatedOn).ToList();
-      return mappedResult;
+      var bookDetails = new List<BookDetailsDto> ();
+
+      var result =
+        _graphClient.Cypher
+        .Match ("(book:Book)")
+        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
+        .ReturnDistinct ((catalog, book) => new {
+          aa = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+            bk = book.As<BookDetailsDto> ()
+        });
+
+      var results = result.Results.ToList ();
+      foreach (var itm in results) {
+        var bookCatalogList = new List<BookCatalogListDto> ();
+        var bookDetail = itm.bk;
+
+        foreach (var i in itm.aa) { //[\r\n  1156930\r\n]
+          if (i != "[\r\n  null\r\n]")
+            bookCatalogList.Add (new BookCatalogListDto () { CatalogId = Int32.Parse (i.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) });
+        }
+
+        bookDetail.BookCatalogs = bookCatalogList;
+        bookDetails.Add (bookDetail);
+      }
+      bookDetails = bookDetails.OrderByDescending (item => item.CreatedOn).ToList ();
+      return bookDetails;
     }
 
     public BookDetailsDto GetBook (string friendlyUrl) {
