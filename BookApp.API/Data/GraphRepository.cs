@@ -53,11 +53,21 @@ namespace BookApp.API.Data {
       return result.Data;
     }
 
-    public CatalogCreateDto AddCatalog (CatalogCreateDto catalogDto) {
-      var result = _graphClient.Cypher
-        .Create ("(catalog:Catalog:Favorite {catalog})")
-        .WithParam ("catalog", catalogDto)
-        .Return<Node<CatalogCreateDto>> ("catalog").Results.Single ().Data;
+    public CatalogCreateDto AddCatalog (CatalogCreateDto catalogDto, bool isFavorite = false) {
+
+      var result = new CatalogCreateDto ();
+
+      if (isFavorite) {
+        result = _graphClient.Cypher
+          .Create ("(catalog:Catalog {catalog})")
+          .WithParam ("catalog", catalogDto)
+          .Return<Node<CatalogCreateDto>> ("catalog").Results.Single ().Data;
+      } else {
+        result = _graphClient.Cypher
+          .Create ("(catalog:Catalog:Favorite {catalog})")
+          .WithParam ("catalog", catalogDto)
+          .Return<Node<CatalogCreateDto>> ("catalog").Results.Single ().Data;
+      }
 
       _graphClient.Cypher
         .Match ("(profile:Profile)", "(catalog:Catalog)")
@@ -93,6 +103,17 @@ namespace BookApp.API.Data {
       return bookCatalog;
     }
 
+    public BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId) {
+      _graphClient.Cypher
+        .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .Where ((BookCatalogItemDto book) => book.Id == bookId)
+        .AndWhere ((CatalogItemDto catalog) => catalog.Id == catalogId)
+        .Delete ("r")
+        .ExecuteWithoutResults ();
+
+      return new BookCatalogItemDto ();
+    }
+
     public List<BookDetailsDto> GetAll () {
 
       var bookDetails = new List<BookDetailsDto> ();
@@ -102,7 +123,7 @@ namespace BookApp.API.Data {
         .Match ("(book:Book)")
         .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
         .ReturnDistinct ((catalog, book) => new {
-          aa = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
             bk = book.As<BookDetailsDto> ()
         });
 
@@ -111,7 +132,7 @@ namespace BookApp.API.Data {
         var bookCatalogList = new List<BookCatalogListDto> ();
         var bookDetail = itm.bk;
 
-        foreach (var i in itm.aa) { //[\r\n  1156930\r\n]
+        foreach (var i in itm.catalogs) { //[\r\n  1156930\r\n]
           if (i != "[\r\n  null\r\n]")
             bookCatalogList.Add (new BookCatalogListDto () { CatalogId = Int32.Parse (i.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) });
         }
@@ -124,15 +145,34 @@ namespace BookApp.API.Data {
     }
 
     public BookDetailsDto GetBook (string friendlyUrl) {
-      var result =
-        _graphClient.Cypher.Match ("(book:Book)")
+
+      var result = _graphClient.Cypher
+        .Match ("(book:Book)")
+        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
+        .With ("book, catalog")
         .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
-        .Return<Node<BookDetailsDto>> ("book")
-        .Results.Single ();
+        .ReturnDistinct ((catalog, book) => new {
+          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+            bk = book.As<BookDetailsDto> ()
+        });
 
-      var mappedResult = _mapper.Map<BookDetailsDto> (result.Data);
+      var item = result.Results.ToList ().FirstOrDefault ();
+      var bookDetails = new BookDetailsDto ();
 
-      return mappedResult;
+      if (item != null) {
+
+        var bookCatalogList = new List<BookCatalogListDto> ();
+        bookDetails = item.bk;
+
+        foreach (var i in item.catalogs) {
+          if (i != "[\r\n  null\r\n]")
+            bookCatalogList.Add (new BookCatalogListDto () { CatalogId = Int32.Parse (i.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) });
+        }
+
+        bookDetails.BookCatalogs = bookCatalogList;
+      }
+
+      return bookDetails;
     }
 
     public List<CatalogPureDto> GetPureCatalogs (long userId) {
@@ -149,11 +189,17 @@ namespace BookApp.API.Data {
         var itm = item.cat;
         catalogList.Add (itm);
       }
+      catalogList = catalogList.OrderByDescending (item => item.Created).ToList ();
       return catalogList;
     }
 
-    public Task<List<BookPreviewDto>> GetBooksAddedByUser (string friendlyUrl) {
-      throw new NotImplementedException ();
+    public List<BookPreviewDto> GetBooksAddedByUser (int userId) {
+      var result = _graphClient.Cypher
+        .Match ("(profile:Profile)-[r:BOOK_ADDED]->(book:Book)")
+        .Where ((ProfileDto profile) => profile.Id == userId)
+        .Return<BookPreviewDto> ("book").Results;
+
+      return result.ToList();
     }
 
     public UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower) {
@@ -161,7 +207,7 @@ namespace BookApp.API.Data {
         .Match ("(profile:Profile)", "(follower:Profile)")
         .Where ((ProfileDto profile) => profile.Id == userIdFollower)
         .AndWhere ((ProfileDto follower) => follower.Id == userIdToFollow)
-        .Create ("(profile)-[r:FOLLOW_USER {date}]->(follower)")
+        .CreateUnique ("(profile)-[r:FOLLOW_USER {date}]->(follower)")
         .WithParam ("date", new { addedOn = DateTime.Now }).ExecuteWithoutResults ();
 
       return new UserFollowersDto ();
@@ -187,6 +233,7 @@ namespace BookApp.API.Data {
 
       var mappedResult = _mapper.Map<ProfileDto> (result.Data);
     }
+
   }
 }
 

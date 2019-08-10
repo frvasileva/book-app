@@ -6,7 +6,6 @@ using AutoMapper;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
-using BookApp.API.Models;
 using CloudinaryDotNet;
 using CloudinaryDotNet.Actions;
 using Microsoft.AspNetCore.Authorization;
@@ -81,38 +80,33 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("get-books-added-by-user/{friendlyUrl?}")]
     public async Task<IActionResult> GetBooksAddedByUser (string friendlyUrl) {
-      var books = await _repo.GetBooksAddedByUser (friendlyUrl);
-
-      var bookToReturn = _mapper.Map<List<BookDetailsDto>> (books);
-      foreach (var item in bookToReturn) {
-        item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Details_Preset);
+      // var books = await _repo.GetBooksAddedByUser (friendlyUrl);
+      var books = _bookGraph.GetBooksAddedByUser (99);
+      foreach (var item in books) {
+        if (!String.IsNullOrEmpty (item.PhotoPath))
+          item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Details_Preset);
       }
 
-      return Ok (bookToReturn);
+      return Ok (books);
     }
 
     [HttpPost ("add")]
     public async Task<IActionResult> Add (BookCreateDto bookDto) {
-      var result = await _repo.AddBook (bookDto);
 
       var identity = HttpContext.User.Identity as ClaimsIdentity;
       int userId = 0;
       if (identity != null)
         userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
 
-      await _context.SaveChangesAsync ();
-
       bookDto.UserId = userId;
-      bookDto.Id = result.Id;
-      _bookGraph.AddBook (bookDto);
+      var result = _bookGraph.AddBook (bookDto);
 
       return Ok (result);
     }
 
     [HttpGet ("delete-book-from-catalog/{catalogId}/{bookId}")]
     public async Task<IActionResult> RemoveBookFromCatalog (int catalogId, int bookId) {
-      await _repo.RemoveBookFromCatalog (catalogId, bookId);
-      await _context.SaveChangesAsync ();
+      _bookGraph.RemoveBookToCatalog (catalogId, bookId);
 
       return Ok ();
     }

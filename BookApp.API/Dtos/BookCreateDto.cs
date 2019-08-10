@@ -5,7 +5,9 @@ namespace BookApp.API.Dtos {
   public class BookCreateDto {
 
     public BookCreateDto () {
+      var idGen = new IdGeneratorHelper ();
       this.CreatedOn = DateTime.Now;
+      this.Id = idGen.Generate ();
     }
     public int Id { get; set; }
 

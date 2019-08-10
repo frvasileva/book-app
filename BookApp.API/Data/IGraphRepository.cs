@@ -6,12 +6,14 @@ namespace BookApp.API.Data {
   public interface IGraphRepository {
     List<BookDetailsDto> GetAll ();
     BookDetailsDto GetBook (string friendlyUrl);
-    Task<List<BookPreviewDto>> GetBooksAddedByUser (string friendlyUrl);
+    List<BookPreviewDto> GetBooksAddedByUser (int userId);
     BookDetailsDto AddBook (BookCreateDto book);
     BookDetailsDto AddBookCover (int bookId, string photoPath);
-    CatalogCreateDto AddCatalog (CatalogCreateDto catalog);
+    CatalogCreateDto AddCatalog (CatalogCreateDto catalogDto, bool isFavorite);
     List<CatalogPureDto> GetPureCatalogs (long userId);
+
     BookCatalogItemDto AddBookToCatalog (BookCatalogCreateDto item);
+    BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId);
 
     #region User
 

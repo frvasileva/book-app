@@ -121,16 +121,13 @@ namespace BookApp.API.Controllers {
     [HttpGet ("follow-user/{userIdToFollow}")]
     public IActionResult FollowUser (int userIdToFollow) {
 
-      var result = _userRepository.FollowUser (userIdToFollow, GetUserId ());
-      _graphRepo.FollowUser (userIdToFollow, GetUserId ());
-
+      var result = _graphRepo.FollowUser (userIdToFollow, GetUserId ());
       return Ok (result);
     }
 
     [HttpGet ("unfollow-user/{userIdToFollow}")]
     public IActionResult UnfollowUser (int userIdToFollow) {
 
-      _userRepository.UnfollowUser (userIdToFollow, GetUserId ());
       _graphRepo.UnfollowUser (userIdToFollow, GetUserId ());
 
       return Ok ();
@@ -144,10 +141,10 @@ namespace BookApp.API.Controllers {
           Name = item,
           IsPublic = true,
           UserId = GetUserId (),
-          FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (item + "-" + Guid.NewGuid())
+          FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (item + "-" + Guid.NewGuid ())
         };
 
-        _graphRepo.AddCatalog (catalogItemDto);
+        _graphRepo.AddCatalog (catalogItemDto, true);
       }
       return Ok ();
     }
