@@ -75,7 +75,7 @@ namespace BookApp.API.Controllers {
     [HttpPost ("edit-user")]
     public async Task<IActionResult> Update (UserProfileEditDto profileForUpdate) {
 
-      var userFromRepo = await _userRepository.GetUser (profileForUpdate.FriendlyUrl);
+      var userFromRepo = _userRepository.GetUser (profileForUpdate.FriendlyUrl);
 
       _mapper.Map (profileForUpdate, userFromRepo);
 
@@ -88,7 +88,7 @@ namespace BookApp.API.Controllers {
     [HttpPost ("add-photo/{friendlyUrl}")]
     public async Task<IActionResult> AddPhotoForUser (string friendlyUrl, [FromForm] PhotoForCreationDto photoForCreationDto) {
 
-      var userFromRepo = await _userRepository.GetUser (friendlyUrl);
+      var userFromRepo = _userRepository.GetUser (friendlyUrl);
       var file = photoForCreationDto.File;
       var uploadResult = new ImageUploadResult ();
 

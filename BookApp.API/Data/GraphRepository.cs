@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
+using Neo4j.Driver.V1;
 using Neo4jClient;
 using Neo4jClient.Cypher;
+using Newtonsoft.Json;
 
 namespace BookApp.API.Data {
   public class GraphRepository : IGraphRepository {
@@ -94,12 +95,6 @@ namespace BookApp.API.Data {
       var bbb = result.Results.ToList ();
 
       var bookCatalog = new BookCatalogItemDto ();
-      // bookCatalog.BookId = result.Results.ToList ().FirstOrDefault ().bk.Id;
-      // bookCatalog.CatalogId = result.Results.ToList ().FirstOrDefault ().cat.Id;
-      // bookCatalog.UserId = result.Results.ToList ().FirstOrDefault ().bk.UserId;
-      // bookCatalog.IsPublic = result.Results.ToList ().FirstOrDefault ().cat.IsPublic;
-      // bookCatalog.Name = result.Results.ToList ().FirstOrDefault ().cat.Name;
-
       return bookCatalog;
     }
 
@@ -193,13 +188,34 @@ namespace BookApp.API.Data {
       return catalogList;
     }
 
-    public List<BookPreviewDto> GetBooksAddedByUser (int userId) {
-      var result = _graphClient.Cypher
-        .Match ("(profile:Profile)-[r:BOOK_ADDED]->(book:Book)")
-        .Where ((ProfileDto profile) => profile.Id == userId)
-        .Return<BookPreviewDto> ("book").Results;
+    public List<BookDetailsDto> GetBooksAddedByUser (int userId) {
+      var bookDetails = new List<BookDetailsDto> ();
 
-      return result.ToList();
+      var result =
+        _graphClient.Cypher
+        .Match ("(book:Book), (profile:Profile)")
+        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
+        .Where ((ProfileDto profile) => profile.Id == userId)
+        .ReturnDistinct ((catalog, book) => new {
+          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+            bk = book.As<BookDetailsDto> ()
+        });
+
+      var results = result.Results.ToList ();
+      foreach (var itm in results) {
+        var bookCatalogList = new List<BookCatalogListDto> ();
+        var bookDetail = itm.bk;
+
+        foreach (var i in itm.catalogs) { //[\r\n  1156930\r\n]
+          if (i != "[\r\n  null\r\n]")
+            bookCatalogList.Add (new BookCatalogListDto () { CatalogId = Int32.Parse (i.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) });
+        }
+
+        bookDetail.BookCatalogs = bookCatalogList;
+        bookDetails.Add (bookDetail);
+      }
+      bookDetails = bookDetails.OrderByDescending (item => item.CreatedOn).ToList ();
+      return bookDetails;
     }
 
     public UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower) {
@@ -234,41 +250,32 @@ namespace BookApp.API.Data {
       var mappedResult = _mapper.Map<ProfileDto> (result.Data);
     }
 
+    public List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser) {
+      var result = _graphClient.Cypher
+        .Match ("(catalog:Catalog)")
+        .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .With ("book, catalog")
+        .Where ((CatalogItemDto catalog) => catalog.UserId == userId)
+        .Return ((catalog, book) => new {
+          catalogs = catalog.As<CatalogItemDto> (),
+            boooks = Return.As<IEnumerable<BookItemDto>> 
+            ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
+        });
+
+      var catalogList = new List<CatalogItemDto> ();
+
+      foreach (var item in result.Results) {
+
+        var catList = new CatalogItemDto ();
+        catList = item.catalogs;
+
+        foreach (var bk in item.boooks) {
+          catList.Books.Add (bk);
+        }
+        catalogList.Add (catList);
+      }
+
+      return catalogList;
+    }
   }
 }
-
-// var results = client.Cypher
-// .Match(
-// "(actor:Person)-[:ACTED_IN]-&gt;(movie:Movie {title: {nameParam}})",
-// "(movie)&lt;-[:DIRECTED]-(director:Person)"
-// )
-// .WithParam("nameParam", movieName)
-// .Return((actor, director, movie) =&gt; new
-// {
-// Movie = movie.As&lt;Movie&gt;(),
-// Actors = actor.CollectAs&lt;Person&gt;(),
-// Director = director.As&lt;Person&gt;()
-// })
-// .Results.Single();
-
-// ITransactionalGraphClient txClient = _graphClient;
-
-// using (var tx = txClient.BeginTransaction ()) {
-//   txClient.Cypher
-//     .Match ("(m:Movie)")
-//     .Where ((Movie m) = & m.title == originalMovieName)
-//     .Set ("m.title = {newMovieNameParam}")
-//     .WithParam ("newMovieNameParam", newMovieName)
-//     .ExecuteWithoutResults ();
-
-//   txClient.Cypher
-//     .Match ("(m:Movie)")
-//     .Where ((Movie m) = & gt; m.title == newMovieName)
-//     .Create ("(p:Person {name: {actorNameParam}})-[:ACTED_IN]-&gt;(m)")
-//     .WithParam ("actorNameParam", newActorName)
-//     .ExecuteWithoutResults ();
-
-//   tx.Commit ();
-// }
-
-//https://thenewstack.io/graph-database-neo4j-net-client/

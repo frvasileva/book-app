@@ -81,27 +81,19 @@ namespace BookApp.API.Data {
             return mappedUsers;
         }
 
-        public async Task<User> GetUser (string friendlyUrl) {
-            var user = await _context.Users.Include (p => p.Books).FirstOrDefaultAsync (u => u.FriendlyUrl == friendlyUrl);
-
+        public User GetUser (string friendlyUrl) {
+            var user = _context.Users.ToList ().Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefault ();
             return user;
         }
 
-        public async Task<User> GetUser (int userId) {
-            var user = await _context.Users.Include (p => p.Books).FirstOrDefaultAsync (u => u.Id == userId);
-
+        public User GetUser (int userId) {
+            var user = _context.Users.ToList ().Where (item => item.Id == userId).FirstOrDefault ();
             return user;
         }
 
         public async Task<UserProfileDto> GetUserProfile (string friendlyUrl) {
             var currentUser = await _context.Users.Include (itm => itm.Books).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
             var mappedProfile = _mapper.Map<UserProfileDto> (currentUser);
-
-            //TODO: Get current user id from token and prefill is it follower 
-            // var userFollower = _context.UserFollowers.Where (u => u.FollowerUserId == currentUser.Id).ToList ();
-            // if (userFollower != null) {
-            //     mappedProfile.IsFollowedByCurrentUser = true;
-            // }
 
             return mappedProfile;
         }

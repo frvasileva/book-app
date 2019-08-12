@@ -17,12 +17,14 @@ namespace BookApp.API.Controllers {
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
+    private readonly IUserRepository _userRepo;
     private readonly IGraphRepository _graphRepo;
 
-    public CatalogController (ICatalogRepository repo, DataContext context, IMapper mapper, IGraphRepository graphRepo) {
+    public CatalogController (ICatalogRepository repo, DataContext context, IMapper mapper, IGraphRepository graphRepo, IUserRepository userRepo) {
       _repo = repo;
       _context = context;
       _mapper = mapper;
+      _userRepo = userRepo;
       _graphRepo = graphRepo;
     }
 
@@ -58,13 +60,21 @@ namespace BookApp.API.Controllers {
 
       var isCurrentUser = friendlyUrl == userFriendlyUrl;
 
-      var bookListItems = await _repo.GetForUser (friendlyUrl, isCurrentUser);
+      // var bookListItems = await _repo.GetForUser (friendlyUrl, isCurrentUser);
+
+      var user = _userRepo.GetUser (friendlyUrl);
+      if (user == null) {
+        return NotFound ();
+      }
+      var bookListItems = _graphRepo.GetCatalogsForUser (user.Id, true);
 
       foreach (var item in bookListItems) {
         foreach (var book in item.Books) {
-          if (book.PhotoPath.Contains ("cloudinary"))
+          if (!String.IsNullOrEmpty (book.PhotoPath) && book.PhotoPath.Contains ("cloudinary"))
             book.PhotoPath = CloudinaryHelper.TransformUrl (book.PhotoPath, TransformationType.Book_Details_Preset);
         }
+
+        item.UserFriendlyUrl = friendlyUrl;
       }
 
       return Ok (bookListItems);

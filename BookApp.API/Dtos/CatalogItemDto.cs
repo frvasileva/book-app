@@ -18,13 +18,3 @@ namespace BookApp.API.Dtos {
     public List<BookItemDto> Books { get; set; }
   }
 }
-
-// id?: number;
-//   name: string;
-//   isPublic: boolean;
-//   userId: number;
-//   userFriendlyUrl: string;
-//   books: Book[];
-//   friendlyUrl: string;
-//   user: any;
-//   created: Date;

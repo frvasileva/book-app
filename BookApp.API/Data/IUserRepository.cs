@@ -12,9 +12,9 @@ namespace BookApp.API.Data {
 
         Task<bool> SaveAll ();
 
-        Task<User> GetUser (string friendlyUrl);
+        User GetUser (string friendlyUrl);
 
-        Task<User> GetUser (int userId);
+        User GetUser (int userId);
 
         Task<UserFollowers> GetFollower (int followerId);
 

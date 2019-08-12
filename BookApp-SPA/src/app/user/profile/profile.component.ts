@@ -11,6 +11,8 @@ import { settings } from "src/app/_shared/settings";
 import { BookService } from "src/app/_services/book.service";
 import { TabDirective } from "ngx-bootstrap/tabs";
 
+import * as BookActions from "../../_store/book.actions";
+
 @Component({
   selector: "app-profile",
   templateUrl: "./profile.component.html",
@@ -60,7 +62,7 @@ export class ProfileComponent implements OnInit {
     const result = this.bookService
       .getBooksAddedByUser(this.friendlyUrl)
       .subscribe(data => {
-        // this.store.dispatch(new BookActions.SetBooksAction(data));
+        this.store.dispatch(new BookActions.SetBooksAction(data));
         this.userBooks = data;
         console.log("books data", data);
       });

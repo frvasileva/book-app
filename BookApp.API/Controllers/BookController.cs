@@ -19,6 +19,7 @@ namespace BookApp.API.Controllers {
   [AllowAnonymous]
   public class BookController : ControllerBase {
     private readonly IBookRepository _repo;
+    private readonly IUserRepository _userRepo;
     private readonly DataContext _context;
     private readonly IMapper _mapper;
 
@@ -26,12 +27,13 @@ namespace BookApp.API.Controllers {
     private Cloudinary _cloudinary;
     private readonly IGraphRepository _bookGraph;
 
-    public BookController (IBookRepository repo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig, IGraphRepository bookGraph) {
+    public BookController (IBookRepository repo, IUserRepository userRepo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig, IGraphRepository bookGraph) {
       _repo = repo;
       _context = context;
       _mapper = mapper;
       _cloudinaryConfig = cloudinaryConfig;
       _bookGraph = bookGraph;
+      _userRepo = userRepo;
 
       Account acc = new Account (
         _cloudinaryConfig.Value.CloudName,
@@ -80,13 +82,16 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("get-books-added-by-user/{friendlyUrl?}")]
     public async Task<IActionResult> GetBooksAddedByUser (string friendlyUrl) {
-      // var books = await _repo.GetBooksAddedByUser (friendlyUrl);
-      var books = _bookGraph.GetBooksAddedByUser (99);
+      var user = _userRepo.GetUser (friendlyUrl);
+      if (user == null) {
+        return NotFound ();
+      }
+
+      var books = _bookGraph.GetBooksAddedByUser (user.Id);
       foreach (var item in books) {
         if (!String.IsNullOrEmpty (item.PhotoPath))
           item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Details_Preset);
       }
-
       return Ok (books);
     }
 
