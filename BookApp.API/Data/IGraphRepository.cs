@@ -16,6 +16,9 @@ namespace BookApp.API.Data {
 
     List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser);
 
+    List<CatalogItemDto> GetAllPublicCatalogs ();
+    List<CatalogItemDto> GetCatalog (string friendlyUrl);
+
     #region User
 
     void RegisterUser (ProfileDto user);

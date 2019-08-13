@@ -4,10 +4,8 @@ using System.Linq;
 using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
-using Neo4j.Driver.V1;
 using Neo4jClient;
 using Neo4jClient.Cypher;
-using Newtonsoft.Json;
 
 namespace BookApp.API.Data {
   public class GraphRepository : IGraphRepository {
@@ -258,7 +256,63 @@ namespace BookApp.API.Data {
         .Where ((CatalogItemDto catalog) => catalog.UserId == userId)
         .Return ((catalog, book) => new {
           catalogs = catalog.As<CatalogItemDto> (),
-            boooks = Return.As<IEnumerable<BookItemDto>> 
+            boooks = Return.As<IEnumerable<BookItemDto>>
+            ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
+        });
+
+      var catalogList = new List<CatalogItemDto> ();
+
+      foreach (var item in result.Results) {
+
+        var catList = new CatalogItemDto ();
+        catList = item.catalogs;
+
+        foreach (var bk in item.boooks) {
+          catList.Books.Add (bk);
+        }
+        catalogList.Add (catList);
+      }
+
+      return catalogList;
+    }
+
+    public List<CatalogItemDto> GetCatalog (string friendlyUrl) {
+      var result = _graphClient.Cypher
+        .Match ("(catalog:Catalog)")
+        .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .With ("book, catalog")
+        .Where ((CatalogItemDto catalog) => catalog.FriendlyUrl == friendlyUrl)
+        .Return ((catalog, book) => new {
+          catalogs = catalog.As<CatalogItemDto> (),
+            boooks = Return.As<IEnumerable<BookItemDto>>
+            ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
+        });
+
+      var catalogList = new List<CatalogItemDto> ();
+
+      foreach (var item in result.Results) {
+
+        var catList = new CatalogItemDto ();
+        catList = item.catalogs;
+
+        foreach (var bk in item.boooks) {
+          catList.Books.Add (bk);
+        }
+        catalogList.Add (catList);
+      }
+
+      return catalogList;
+    }
+
+    public List<CatalogItemDto> GetAllPublicCatalogs () {
+      var result = _graphClient.Cypher
+        .Match ("(catalog:Catalog)")
+        .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .With ("book, catalog")
+        .Where ((CatalogItemDto catalog) => catalog.IsPublic == true)
+        .Return ((catalog, book) => new {
+          catalogs = catalog.As<CatalogItemDto> (),
+            boooks = Return.As<IEnumerable<BookItemDto>>
             ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
         });
 
