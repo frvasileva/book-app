@@ -51,10 +51,13 @@ export class BookCatalogService {
   }
 
   getCatalog(friendlyUrl: string) {
-    return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
+    console.log("SERVICE");
+    return this.http.get(this.baseUrl + "get/" + friendlyUrl)
+    .subscribe(
       data => {
+        console.log("data", data);
         this.store.dispatch(
-          new CatalogActions.AddCatalogAction(<CatalogCreateDto>data)
+          new CatalogActions.GetCatalogsAction(data)
         );
       },
       error => {
@@ -77,7 +80,8 @@ export class BookCatalogService {
   }
 
   getPublicCatalogs() {
-    return this.http.get(this.baseUrl + "catalogs").subscribe(
+    return this.http.get(this.baseUrl + "catalogs")
+    .subscribe(
       data => {
         this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
       },

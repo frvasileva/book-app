@@ -77,16 +77,16 @@ namespace BookApp.API.Controllers {
     [HttpGet ("catalogs")]
     public async Task<IActionResult> GetPublicCatalogs () {
 
-      var bookListItems = _graphRepo.GetAllPublicCatalogs ();
+      var catalogList = _graphRepo.GetAllPublicCatalogs ();
 
-      foreach (var item in bookListItems) {
+      foreach (var item in catalogList) {
         foreach (var book in item.Books) {
           if (book.PhotoPath != null && book.PhotoPath.Contains ("cloudinary"))
             book.PhotoPath = CloudinaryHelper.TransformUrl (book.PhotoPath, TransformationType.Book_Details_Preset);
         }
       }
 
-      return Ok (bookListItems);
+      return Ok (catalogList);
     }
 
     [HttpGet ("user-catalogs-pure-list/{friendlyUrl}")]

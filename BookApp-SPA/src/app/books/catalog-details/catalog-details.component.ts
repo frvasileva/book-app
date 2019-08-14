@@ -50,9 +50,6 @@ export class CatalogDetailsComponent implements OnInit {
               item => item.friendlyUrl === this.catalog.userFriendlyUrl
             );
           }
-
-          console.log(this.user);
-
           if (this.catalog) {
             this.titleService.setTitle(this.catalog.name);
             this.metaTagService.updateTag({

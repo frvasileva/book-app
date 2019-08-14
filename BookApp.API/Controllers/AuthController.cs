@@ -14,7 +14,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Neo4jClient;
 
 namespace DatingApp.API.Controllers {
   [AllowAnonymous]
@@ -68,6 +67,7 @@ namespace DatingApp.API.Controllers {
         defaultCatalog.IsPublic = true;
         defaultCatalog.UserId = user.Id;
         _graphRepository.AddCatalog (defaultCatalog, false);
+       
         return Ok (new {
           token = GenerateJwtToken (user)
         });

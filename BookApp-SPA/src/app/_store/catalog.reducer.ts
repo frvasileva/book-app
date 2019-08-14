@@ -28,6 +28,7 @@ export function catalogReducer(
       };
     }
     case CatalogActions.ADD_CATALOG: {
+      console.log("payload", action.payload);
       return {
         ...state,
         catalog: [...state.catalog, action.payload]
@@ -35,7 +36,9 @@ export function catalogReducer(
     }
     case BookActions.REMOVE_BOOK_FROM_CATALOG: {
       const { bookId, catalogId } = action.payload;
-      const catalog = state.catalog.find(catalogItem => catalogItem.id === catalogId);
+      const catalog = state.catalog.find(
+        catalogItem => catalogItem.id === catalogId
+      );
       catalog.books = catalog.books.filter(bookItem => bookItem.id !== bookId);
       return state;
     }

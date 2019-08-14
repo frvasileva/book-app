@@ -149,7 +149,7 @@ namespace BookApp.API.Controllers {
       return Ok ();
     }
 
-    [HttpGet ("get-catalog-for-preferences")]
+    [HttpGet ("get-preferences-catalog-list")]
     public async Task<IActionResult> GetCatalogForPreferences () {
       var result = await _userRepository.GetCatalogForPreferences ();
       return Ok (result);

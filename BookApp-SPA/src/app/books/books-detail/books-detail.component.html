@@ -7,8 +7,14 @@
         </div>
         <div class="clearfix"></div>
         <div class="book-cover">
-          <app-book-saver [bookId]="book?.id"></app-book-saver>
-
+          <div class="book-actions-wrapper">
+            <div class="add-book-to-list">
+              <i class="glyphicon glyphicon-plus"></i>
+            </div>
+            <div class="book-actions">
+              <app-book-saver [bookId]="book?.id"></app-book-saver>
+            </div>
+          </div>
           <img
             src="{{ book?.photoPath }}"
             alt="alt book text"

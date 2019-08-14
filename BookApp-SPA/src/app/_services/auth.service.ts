@@ -116,7 +116,7 @@ export class AuthService {
 
   getUserBookCategoryPreferences() {
     return this.http.get(
-      environment.apiUrl + "profile/get-catalog-for-preferences"
+      environment.apiUrl + "profile/get-preferences-catalog-list"
     );
   }
 }
