@@ -7,17 +7,26 @@
 .book-header {
   width: 50%;
   display: inline-block;
+  float: left;
 }
 
 .book-title {
+  font-size: 28px;
+  margin-bottom: 30px;
 }
 
 .book-author {
 }
 
 .book-cover {
-  width: 50%;
   display: inline-block;
+  float: left;
+  margin: 0 30px 30px 0;
+}
+
+.book-description {
+  font-size: 16px;
+  font-family: $main-font;
 }
 
 .book-list-item {
@@ -65,6 +74,7 @@
 .book-actions-wrapper:hover .book-actions {
   display: block;
   position: absolute;
+  right: 0;
 }
 
 .add-book-to-list {

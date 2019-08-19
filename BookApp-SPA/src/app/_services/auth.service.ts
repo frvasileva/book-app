@@ -101,13 +101,12 @@ export class AuthService {
         catalogPreferences
       )
       .pipe(
-        map((data: any) => {
-          if (data) {
+        map((response: any) => {
+          if (response) {
             const token = localStorage.getItem("token");
             const friendlyUrl = this.jwtHelper.decodeToken(token).unique_name;
             this.router.navigate(["/user/profile", friendlyUrl]);
-          }
-          else{
+          } else {
             console.log("can not navigate");
           }
         })

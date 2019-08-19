@@ -4,6 +4,7 @@ using System.Linq;
 using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
+using BookApp.API.Models;
 using Neo4jClient;
 using Neo4jClient.Cypher;
 
@@ -41,6 +42,26 @@ namespace BookApp.API.Data {
       return mappedResult;
     }
 
+    public BookDetailsDto AddBook (Book bookItem) {
+
+      var result = _graphClient.Cypher
+        .Create ("(book:Book {bookDto})")
+        .WithParam ("bookDto", bookItem)
+        .Return<Node<BookDetailsDto>> ("book").Results.Single ();
+
+      var mappedResult = _mapper.Map<BookDetailsDto> (result.Data);
+
+      _graphClient.Cypher
+        .Match ("(profile:Profile)", "(book:Book)")
+        .Where ((ProfileDto profile) => profile.Id == bookItem.UserId)
+        .AndWhere ((BookItemDto book) => book.Id == bookItem.Id)
+        .Create ("(profile)-[r:BOOK_ADDED {message}]->(book)")
+        .WithParam ("message", new { addedOn = DateTime.Now })
+        .ExecuteWithoutResults ();
+
+      return mappedResult;
+    }
+
     public BookDetailsDto AddBookCover (int bookId, string photoPath) {
       var result = _graphClient.Cypher
         .Match ("(book:Book)")
@@ -56,7 +77,7 @@ namespace BookApp.API.Data {
 
       var result = new CatalogCreateDto ();
 
-      if (isFavorite) {
+      if (!isFavorite) {
         result = _graphClient.Cypher
           .Create ("(catalog:Catalog {catalog})")
           .WithParam ("catalog", catalogDto)
@@ -89,8 +110,6 @@ namespace BookApp.API.Data {
           cat = catalog.As<CatalogCreateDto> (),
             bk = book.As<BookItemDto> ()
         });
-
-      var bbb = result.Results.ToList ();
 
       var bookCatalog = new BookCatalogItemDto ();
       return bookCatalog;
@@ -330,6 +349,131 @@ namespace BookApp.API.Data {
       }
 
       return catalogList;
+    }
+
+    public void ImportBooks () {
+      var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\books.csv";
+      var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
+      var fakeBook = new Book ();
+      for (int i = 0; i < data.Rows.Count; i++) {
+        var item = data.Rows[i];
+
+        var book = new Book ();
+        book.Title = item.ItemArray[9].ToString ();
+        book.Description = item.ItemArray[10].ToString ();
+        book.PhotoPath = item.ItemArray[21].ToString ();
+        book.FriendlyUrl = Url.GenerateFriendlyUrl (item.ItemArray[9].ToString ());
+        book.PublisherId = 0;
+        book.AuthorId = 0;
+        book.AddedOn = DateTime.Now;
+        book.Description = item.ItemArray[10].ToString ();
+        book.ExternalId = Int32.Parse (item.ItemArray[1].ToString ());
+        book.ISBN = item.ItemArray[5].ToString ();
+        book.AvarageRating = Convert.ToDouble (item.ItemArray[12]);
+        book.UserId = 0;
+
+        var authorName = item.ItemArray[7].ToString ();
+        //var author = this.AddAuthor (authorName, book.Id, book.UserId);
+        //book.AuthorId = author.Id;
+
+        this.AddBook (book);
+
+        var author = this.AddAuthor (authorName, book.Id, book.UserId);
+      }
+    }
+    public void ImportTags () {
+      var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\tags.csv";
+      var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
+      var fakeTag = new Tag ();
+      for (int i = 0; i < data.Rows.Count; i++) {
+        var item = data.Rows[i];
+
+        var catalog = new Catalog ();
+        catalog.AddedOn = DateTime.Now;
+        catalog.Name = item.ItemArray[1].ToString ();
+        catalog.FriendlyUrl = Url.GenerateFriendlyUrl (item.ItemArray[1].ToString ());
+        catalog.ExternalId = Int32.Parse (item.ItemArray[0].ToString ());
+        catalog.UserId = 0;
+        catalog.IsPublic = true;
+
+        var result = _graphClient.Cypher
+          .Create ("(catalog:Catalog {catalog})")
+          .WithParam ("catalog", catalog)
+          .Return<Node<CatalogCreateDto>> ("catalog").Results.Single ().Data;
+
+        _graphClient.Cypher
+          .Match ("(profile:Profile)", "(cat:Catalog)")
+          .Where ((ProfileDto profile) => profile.Id == catalog.UserId)
+          .AndWhere ((CatalogCreateDto cat) => cat.Id == catalog.Id)
+          .CreateUnique ("(profile)-[r:CATALOG_ADDED {date}]->(cat)")
+          .WithParam ("date", new { addedOn = DateTime.Now }).ExecuteWithoutResults ();
+      }
+    }
+    public void ImportBookTags () {
+      var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\book_tags.csv";
+      var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
+      var fakeBookTag = new BookTags ();
+      for (int i = 0; i < data.Rows.Count; i++) {
+        var item = data.Rows[i];
+        var bookTag = new BookTags ();
+
+        var bookExternalId = Int32.Parse (item.ItemArray[0].ToString ());
+        var categoryExternalId = Int32.Parse (item.ItemArray[1].ToString ());
+        bookTag.Count = Int32.Parse (item.ItemArray[2].ToString ());
+        bookTag.AddedOn = DateTime.Now;
+
+        _graphClient.Cypher
+          .Match ("(book:Book)", "(catalog:Catalog)")
+          .Where ((Book book) => book.ExternalId == bookExternalId)
+          .AndWhere ((Catalog catalog) => catalog.ExternalId == categoryExternalId)
+          .Create ("(book)-[r:BOOK_ADDED_TO_CATALOG {info}]->(catalog)")
+          .WithParam ("info", new { addedOn = DateTime.Now, userId = 0 })
+          .ExecuteWithoutResults ();
+        // .Return ((catalog, book, r) => new {
+        //   cat = catalog.As<Catalog> (),
+        //     bk = book.As<Book> ()
+        // });
+        // var res = result.Return.result.;
+        //   this.AddCatalog()
+      }
+    }
+
+    private Author AddAuthor (string authorName, int? bookId, int? userId) {
+      var resultAuthor = _graphClient.Cypher
+        .Match ("(author:Author)")
+        .Where ((Author author) => author.Name == authorName)
+        .Return<Author> ("author");
+
+      var authorDto = new Author () {
+        Name = authorName.Trim (),
+        FriendlyUrl = Url.GenerateFriendlyUrl (authorName)
+      };
+      var authors = resultAuthor.Results.FirstOrDefault ();
+
+      if (authors == null) {
+        authors = _graphClient.Cypher
+          .Create ("(author:Author {author})")
+          .WithParam ("author", authorDto)
+          .Return<Node<Author>> ("author").Results.Single ().Data;
+      }
+
+      _graphClient.Cypher
+        .Match ("(book:Book)", "(author:Author)")
+        .Where ((Book book) => book.Id == bookId)
+        .AndWhere ((Author author) => author.Id == authors.Id)
+        .Create ("(book)-[r:AUTHOR_ASSIGNED_TO_BOOK {info}]->(author)")
+        .WithParam ("info", new { addedOn = DateTime.Now, userId = userId })
+        .ExecuteWithoutResults ();
+
+      // _graphClient.Cypher
+      //   .Match ("(profile:Profile)", "(book:Book)")
+      //   .Where ((ProfileDto profile) => profile.Id == bookItem.UserId)
+      //   .AndWhere ((BookItemDto book) => book.Id == bookItem.Id)
+      //   .Create ("(profile)-[r:BOOK_ADDED {message}]->(book)")
+      //   .WithParam ("message", new { addedOn = DateTime.Now })
+      //   .ExecuteWithoutResults ();
+
+      return authors;
     }
   }
 }

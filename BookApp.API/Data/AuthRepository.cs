@@ -40,7 +40,7 @@ namespace BookApp.API.Data {
             var catalog = new Catalog ();
             catalog.Name = "Want to read";
             catalog.IsPublic = true;
-            catalog.Created = DateTime.Now;
+            catalog.AddedOn = DateTime.Now;
             catalog.FriendlyUrl = Url.GenerateFriendlyUrl (catalog.Name + "-" + StringHelper.GenerateRandomNo ());
             catalog.UserId = user.Id;
 

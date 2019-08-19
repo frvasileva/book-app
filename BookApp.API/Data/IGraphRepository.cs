@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using BookApp.API.Dtos;
+using BookApp.API.Models;
 
 namespace BookApp.API.Data {
   public interface IGraphRepository {
@@ -7,6 +8,7 @@ namespace BookApp.API.Data {
     BookDetailsDto GetBook (string friendlyUrl);
     List<BookDetailsDto> GetBooksAddedByUser (int userId);
     BookDetailsDto AddBook (BookCreateDto book);
+    BookDetailsDto AddBook (Book book);
     BookDetailsDto AddBookCover (int bookId, string photoPath);
     CatalogCreateDto AddCatalog (CatalogCreateDto catalogDto, bool isFavorite);
     List<CatalogPureDto> GetPureCatalogs (long userId);
@@ -14,6 +16,7 @@ namespace BookApp.API.Data {
     BookCatalogItemDto AddBookToCatalog (BookCatalogCreateDto item);
     BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId);
 
+ //   Author AddAuthor (string authorName, int? bookId, int? userId);
     List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser);
 
     List<CatalogItemDto> GetAllPublicCatalogs ();
@@ -25,6 +28,12 @@ namespace BookApp.API.Data {
     UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower);
     UserFollowersDto UnfollowUser (int userIdToFollow, int userIdFollower);
     #endregion User
+
+    #region ImportData
+    void ImportBooks ();
+    void ImportBookTags ();
+    void ImportTags ();
+    #endregion ImportData
 
   }
 }

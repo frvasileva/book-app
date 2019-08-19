@@ -73,10 +73,21 @@ namespace BookApp.API.Controllers {
     [HttpGet ("import-books")]
     public async Task<IActionResult> ImportBooks () {
 
-      // await _repo.ImportBooks ();
-      // await _repo.ImportTags ();
-      await _repo.ImportBookTags ();
+      _bookGraph.ImportBooks ();
+      return Ok ();
+    }
 
+    [HttpGet ("import-categories")]
+    public async Task<IActionResult> ImportCategories () {
+
+      _bookGraph.ImportTags ();
+      return Ok ();
+    }
+
+    [HttpGet ("import-books-categories")]
+    public async Task<IActionResult> ImportBookCategories () {
+
+      _bookGraph.ImportBookTags ();
       return Ok ();
     }
 

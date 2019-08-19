@@ -134,7 +134,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpPost ("add-book-catalog-preferences")]
-    public async Task<IActionResult> BookCatalogPreferences (string[] bookCatalogPreferencesIds) {
+    public  IActionResult BookCatalogPreferences (string[] bookCatalogPreferencesIds) {
 
       foreach (var item in bookCatalogPreferencesIds) {
         var catalogItemDto = new CatalogCreateDto {
@@ -144,9 +144,9 @@ namespace BookApp.API.Controllers {
           FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (item + "-" + Guid.NewGuid ())
         };
 
-        _graphRepo.AddCatalog (catalogItemDto, true);
+      _graphRepo.AddCatalog (catalogItemDto, true);
       }
-      return Ok ();
+      return Ok (new CatalogCreateDto());
     }
 
     [HttpGet ("get-preferences-catalog-list")]

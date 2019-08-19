@@ -23,7 +23,7 @@ namespace BookApp.API.Data {
       _repoAuthor = repoAuthor;
     }
 
-    private static DataTable ConvertCSVtoDataTable (string strFilePath = "") {
+    public static DataTable ConvertCSVtoDataTable (string strFilePath = "") {
 
       StreamReader sr = new StreamReader (strFilePath);
       string[] headers = sr.ReadLine ().Split (',');
@@ -49,7 +49,7 @@ namespace BookApp.API.Data {
     }
 
     public async Task<Book> ImportBooks () {
-      var strFilePath = "BookApp.API\\BookDataImports\\books.csv";
+      var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\books.csv";
       var data = ConvertCSVtoDataTable (strFilePath);
       var fakeBook = new Book ();
       for (int i = 0; i < data.Rows.Count; i++) {
@@ -160,14 +160,14 @@ namespace BookApp.API.Data {
       };
 
       if (bookCatalogDto.CatalogId.HasValue) {
-       // bookCatalogEntity.CatalogId = bookCatalogDto.CatalogId.Value;
+        // bookCatalogEntity.CatalogId = bookCatalogDto.CatalogId.Value;
       } else {
         var catalog = new Catalog ();
         catalog.UserId = bookCatalogDto.UserId;
         catalog.IsPublic = true;
         catalog.Name = bookCatalogDto.CatalogName;
         catalog.FriendlyUrl = Url.GenerateFriendlyUrl (catalog.Name + "-" + StringHelper.GenerateRandomNo ());
-        catalog.Created = DateTime.Now;
+        catalog.AddedOn = DateTime.Now;
 
         _context.Catalogs.Add (catalog);
         await _context.SaveChangesAsync ();

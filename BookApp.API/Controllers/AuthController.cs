@@ -54,7 +54,7 @@ namespace DatingApp.API.Controllers {
       var result = await _userManager.CreateAsync (userToCreate, userForRegisterDto.Password);
       var userToReturn = _mapper.Map<UserProfileDto> (userToCreate);
       var user = _mapper.Map<User> (userToReturn);
-      
+
       var profileDto = new ProfileDto () {
         Id = user.Id,
         Email = user.Email
@@ -63,11 +63,13 @@ namespace DatingApp.API.Controllers {
 
       if (result.Succeeded) {
         var defaultCatalog = new CatalogCreateDto ();
+
         defaultCatalog.Name = "Want to read";
         defaultCatalog.IsPublic = true;
         defaultCatalog.UserId = user.Id;
+        defaultCatalog.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (defaultCatalog.Name + Guid.NewGuid ());
         _graphRepository.AddCatalog (defaultCatalog, false);
-       
+
         return Ok (new {
           token = GenerateJwtToken (user)
         });

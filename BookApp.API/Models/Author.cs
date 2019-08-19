@@ -1,10 +1,13 @@
 using System;
 using System.Collections.Generic;
 
-namespace BookApp.API.Models
-{
-  public class Author
-  {
+namespace BookApp.API.Models {
+  public class Author {
+    public Author () {
+      var idGen = new IdGeneratorHelper ();
+      this.Id = idGen.Generate ();
+      this.AddedOn = DateTime.Now;
+    }
     public int Id { get; set; }
 
     public string Name { get; set; }
@@ -15,7 +18,6 @@ namespace BookApp.API.Models
     public DateTime AddedOn { get; set; }
 
     public ICollection<Book> Books { get; set; }
-
 
   }
 }

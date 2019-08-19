@@ -4,6 +4,10 @@ using System.Collections.Generic;
 namespace BookApp.API.Models {
 
   public class Book {
+    public Book () {
+      var idGen = new IdGeneratorHelper ();
+      this.Id = idGen.Generate ();
+    }
 
     public int Id { get; set; }
     public int ExternalId { get; set; }

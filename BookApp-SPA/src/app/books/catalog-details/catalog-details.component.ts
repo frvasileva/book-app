@@ -45,7 +45,6 @@ export class CatalogDetailsComponent implements OnInit {
             cat => cat.friendlyUrl === this.friendlyUrl
           );
           if (this.catalog) {
-            console.log("hello", this.catalog);
             this.user = state.userState.users.find(
               item => item.friendlyUrl === this.catalog.userFriendlyUrl
             );
