@@ -100,16 +100,13 @@ namespace BookApp.API.Data {
     }
 
     public BookCatalogItemDto AddBookToCatalog (BookCatalogCreateDto item) {
-      var result = _graphClient.Cypher
+      _graphClient.Cypher
         .Match ("(book:Book)", "(catalog:Catalog)")
         .Where ((BookItemDto book) => book.Id == item.BookId)
         .AndWhere ((CatalogCreateDto catalog) => catalog.Id == item.CatalogId)
         .Create ("(book)-[r:BOOK_ADDED_TO_CATALOG {info}]->(catalog)")
         .WithParam ("info", new { addedOn = DateTime.Now, userId = item.UserId })
-        .Return ((catalog, book, r) => new {
-          cat = catalog.As<CatalogCreateDto> (),
-            bk = book.As<BookItemDto> ()
-        });
+        .ExecuteWithoutResults ();
 
       var bookCatalog = new BookCatalogItemDto ();
       return bookCatalog;
@@ -137,7 +134,8 @@ namespace BookApp.API.Data {
         .ReturnDistinct ((catalog, book) => new {
           catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
             bk = book.As<BookDetailsDto> ()
-        });
+        })
+        .Limit (40);
 
       var results = result.Results.ToList ();
       foreach (var itm in results) {
@@ -152,7 +150,7 @@ namespace BookApp.API.Data {
         bookDetail.BookCatalogs = bookCatalogList;
         bookDetails.Add (bookDetail);
       }
-      bookDetails = bookDetails.OrderByDescending (item => item.CreatedOn).ToList ();
+      bookDetails = bookDetails.OrderByDescending (item => item.AddedOn).ToList ();
       return bookDetails;
     }
 
@@ -231,7 +229,7 @@ namespace BookApp.API.Data {
         bookDetail.BookCatalogs = bookCatalogList;
         bookDetails.Add (bookDetail);
       }
-      bookDetails = bookDetails.OrderByDescending (item => item.CreatedOn).ToList ();
+      bookDetails = bookDetails.OrderByDescending (item => item.AddedOn).ToList ();
       return bookDetails;
     }
 
@@ -333,7 +331,7 @@ namespace BookApp.API.Data {
           catalogs = catalog.As<CatalogItemDto> (),
             boooks = Return.As<IEnumerable<BookItemDto>>
             ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
-        });
+        }).Limit (40);
 
       var catalogList = new List<CatalogItemDto> ();
 
@@ -351,6 +349,7 @@ namespace BookApp.API.Data {
       return catalogList;
     }
 
+    #region ImportData
     public void ImportBooks () {
       var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\books.csv";
       var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
@@ -437,6 +436,7 @@ namespace BookApp.API.Data {
         //   this.AddCatalog()
       }
     }
+    #endregion ImportData
 
     private Author AddAuthor (string authorName, int? bookId, int? userId) {
       var resultAuthor = _graphClient.Cypher
@@ -475,5 +475,114 @@ namespace BookApp.API.Data {
 
       return authors;
     }
+
+    #region Recommendations
+
+    public List<string> GetFavoriteCatalogsForUser (int userId) {
+      var result = _graphClient.Cypher
+        .Match ("(favCatalog:Favorite)")
+        .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(favCatalog:Favorite)")
+        .With ("book, favCatalog")
+        .Where ((CatalogItemDto favCatalog) => favCatalog.UserId == userId)
+        .Return ((favCatalog) => new { catalogs = Return.As<string> ("{name:favCatalog.name }") });
+
+      var rerere = result.Results;
+      var strings = new List<string> ();
+      foreach (var itm in result.Results) {
+        var item = itm.catalogs.Replace ("{\r\n  \"name\": \"", "").Replace ("\"\r\n}", "");
+        strings.Add ("'" + item + "'");
+      }
+
+      return strings;
+    }
+    public List<BookDetailsDto> RecommendationByRelevance (int userId) {
+
+      var getFavCatalogs = GetFavoriteCatalogsForUser (userId);
+      getFavCatalogs.Add ("'football'");
+      getFavCatalogs.Add ("'1-the-best-to-read'");
+      getFavCatalogs.Add ("'100-fiction'");
+      string combindedString = "[" + string.Join (",", getFavCatalogs.ToArray ()) + "]";
+
+      var whereClause = "catalog.name in " + combindedString;
+      var result =
+        _graphClient.Cypher
+        .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .Where (whereClause)
+        .Return ((catalog, book) => new {
+          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+            bk = book.As<BookDetailsDto> ()
+        })
+        .OrderByDescending ("book.avarageRating")
+        .Limit (50);
+
+      var res = result.Results;
+      var bookList = new List<BookDetailsDto> ();
+
+      foreach (var b in result.Results) {
+        var bd = b.bk;
+        foreach (var c in b.catalogs) {
+          var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
+          bd.BookCatalogs.Add (bookCatalog);
+        }
+
+        bookList.Add (bd);
+      }
+      return bookList;
+    }
+
+    public List<BookDetailsDto> RecommendBySerendepity (int userId) {
+      var result =
+        _graphClient.Cypher
+        .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .Where ((BookDetailsDto book) => book.AvarageRating > 3)
+        .Return ((catalog, book, rand) => new {
+          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+            bk = book.As<BookDetailsDto> ()
+        })
+        .OrderByDescending ("rand()")
+        .Limit (20);
+
+      var res = result.Results;
+      var bookList = new List<BookDetailsDto> ();
+
+      foreach (var b in result.Results) {
+        var bd = b.bk;
+        foreach (var c in b.catalogs) {
+          var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
+          bd.BookCatalogs.Add (bookCatalog);
+        }
+
+        bookList.Add (bd);
+      }
+      return bookList;
+    }
+
+    public List<BookDetailsDto> RecommendByNovelty (int userId) {
+      var result =
+        _graphClient.Cypher
+        .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .Where ((BookDetailsDto book) => book.AvarageRating > 3)
+        .Return ((catalog, book, rand) => new {
+          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+            bk = book.As<BookDetailsDto> ()
+        })
+        .OrderByDescending ("book.addedOn")
+        .Limit (20);
+
+      var res = result.Results;
+      var bookList = new List<BookDetailsDto> ();
+
+      foreach (var b in result.Results) {
+        var bd = b.bk;
+        foreach (var c in b.catalogs) {
+          var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
+          bd.BookCatalogs.Add (bookCatalog);
+        }
+
+        bookList.Add (bd);
+      }
+      return bookList;
+    }
+    #endregion Recommendations
   }
 }

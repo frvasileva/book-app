@@ -18,6 +18,17 @@ namespace BookApp.API.Controllers {
   [ApiController]
   [AllowAnonymous]
   public class BookController : ControllerBase {
+
+    private int UserId {
+      get {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        int userId = 0;
+        if (identity != null)
+          userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
+
+        return userId;
+      }
+    }
     private readonly IBookRepository _repo;
     private readonly IUserRepository _userRepo;
     private readonly DataContext _context;
@@ -50,9 +61,50 @@ namespace BookApp.API.Controllers {
     public async Task<IActionResult> GetAllBooks () {
 
       var books = _bookGraph.GetAll ();
+      var booksss = _bookGraph.RecommendationByRelevance (UserId);
+
+      foreach (var item in booksss) {
+        if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
+          item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
+      }
+
+      return Ok (booksss);
+    }
+
+    [HttpGet ("recommend-relevance")]
+    public async Task<IActionResult> RecommendationByRelevance () {
+
+      var books = _bookGraph.RecommendationByRelevance(UserId);
 
       foreach (var item in books) {
-        item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
+        if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
+          item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
+      }
+
+      return Ok (books);
+    }
+
+    [HttpGet ("recommend-novelty")]
+    public async Task<IActionResult> RecommendByNovelty () {
+
+      var books = _bookGraph.RecommendByNovelty (UserId);
+
+      foreach (var item in books) {
+        if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
+          item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
+      }
+
+      return Ok (books);
+    }
+
+    [HttpGet ("recommend-serendepity")]
+    public async Task<IActionResult> RecommendBySerendepity () {
+
+      var books = _bookGraph.RecommendBySerendepity (UserId);
+
+      foreach (var item in books) {
+        if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
+          item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
       }
 
       return Ok (books);
@@ -73,8 +125,10 @@ namespace BookApp.API.Controllers {
     [HttpGet ("import-books")]
     public async Task<IActionResult> ImportBooks () {
 
-      _bookGraph.ImportBooks ();
-      return Ok ();
+      //  _bookGraph.ImportBooks ();
+      // var result =   _bookGraph.GetFavoriteCatalogsForUser (108);
+      var result = _bookGraph.RecommendationByRelevance (UserId);
+      return Ok (result);
     }
 
     [HttpGet ("import-categories")]
@@ -172,5 +226,14 @@ namespace BookApp.API.Controllers {
 
       return BadRequest ("Could not add the photo");
     }
+
+    // private int UserId () {
+    //   var identity = HttpContext.User.Identity as ClaimsIdentity;
+    //   int userId = 0;
+    //   if (identity != null)
+    //     userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
+
+    //   return userId;
+    // }
   }
 }

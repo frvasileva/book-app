@@ -21,7 +21,10 @@ namespace BookApp.API.Dtos {
 
     public string FriendlyUrl { get; set; }
 
-    public DateTime CreatedOn { get; set; }
+    public DateTime AddedOn { get; set; }
+
+    public double AvarageRating { get; set; }
+
     public List<BookCatalogListDto> BookCatalogs { get; set; }
 
   }

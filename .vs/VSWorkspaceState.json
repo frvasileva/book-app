@@ -6,11 +6,10 @@
     "\\BookApp-SPA\\src\\app",
     "\\BookApp-SPA\\src\\app\\books",
     "\\BookApp-SPA\\src\\app\\books\\books-list",
-    "\\BookApp-SPA\\src\\app\\books\\catalog-details",
-    "\\BookApp-SPA\\src\\app\\books\\catalog-list",
     "\\BookApp.API",
-    "\\BookApp.API\\Data"
+    "\\BookApp.API\\BookDataImports",
+    "\\BookApp.API\\Controllers",
+    "\\BookApp.API\\Helpers"
   ],
-  "SelectedNode": "\\BookApp.API\\Data\\BookGraphRepository.cs",
   "PreviewInSolutionExplorer": false
 }
