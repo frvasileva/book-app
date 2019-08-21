@@ -513,7 +513,7 @@ namespace BookApp.API.Data {
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("book.avarageRating")
-        .Limit (50);
+        .Limit (12);
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
@@ -530,7 +530,7 @@ namespace BookApp.API.Data {
       return bookList;
     }
 
-    public List<BookDetailsDto> RecommendBySerendepity (int userId) {
+    public List<BookDetailsDto> RecommendBySerendipity (int userId) {
       var result =
         _graphClient.Cypher
         .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
@@ -540,7 +540,7 @@ namespace BookApp.API.Data {
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("rand()")
-        .Limit (20);
+        .Limit (12);
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
@@ -560,14 +560,14 @@ namespace BookApp.API.Data {
     public List<BookDetailsDto> RecommendByNovelty (int userId) {
       var result =
         _graphClient.Cypher
-        .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
-        .Where ((BookDetailsDto book) => book.AvarageRating > 3)
+        .Match ("(book:Book)")
+        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
         .Return ((catalog, book, rand) => new {
           catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("book.addedOn")
-        .Limit (20);
+        .Limit (12);
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
@@ -575,8 +575,10 @@ namespace BookApp.API.Data {
       foreach (var b in result.Results) {
         var bd = b.bk;
         foreach (var c in b.catalogs) {
-          var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
-          bd.BookCatalogs.Add (bookCatalog);
+          if (c != "[\r\n  null\r\n]") {
+            var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
+            bd.BookCatalogs.Add (bookCatalog);
+          }
         }
 
         bookList.Add (bd);

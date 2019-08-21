@@ -16,7 +16,6 @@ namespace BookApp.API.Data {
     BookCatalogItemDto AddBookToCatalog (BookCatalogCreateDto item);
     BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId);
 
-    //   Author AddAuthor (string authorName, int? bookId, int? userId);
     List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser);
 
     List<CatalogItemDto> GetAllPublicCatalogs ();
@@ -37,7 +36,7 @@ namespace BookApp.API.Data {
 
     #region Recommendations
     List<BookDetailsDto> RecommendationByRelevance (int userId);
-    List<BookDetailsDto> RecommendBySerendepity (int userId);
+    List<BookDetailsDto> RecommendBySerendipity (int userId);
     List<BookDetailsDto> RecommendByNovelty (int userId);
 
     List<string> GetFavoriteCatalogsForUser (int userId);

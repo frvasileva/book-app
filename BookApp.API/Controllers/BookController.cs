@@ -97,10 +97,10 @@ namespace BookApp.API.Controllers {
       return Ok (books);
     }
 
-    [HttpGet ("recommend-serendepity")]
+    [HttpGet ("recommend-serendipity")]
     public async Task<IActionResult> RecommendBySerendepity () {
 
-      var books = _bookGraph.RecommendBySerendepity (UserId);
+      var books = _bookGraph.RecommendBySerendipity (UserId);
 
       foreach (var item in books) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))

@@ -6,7 +6,7 @@ namespace BookApp.API.Dtos {
 
     public BookCreateDto () {
       var idGen = new IdGeneratorHelper ();
-      this.CreatedOn = DateTime.Now;
+      this.AddedOn = DateTime.Now;
       this.Id = idGen.Generate ();
     }
     public int Id { get; set; }
@@ -22,6 +22,6 @@ namespace BookApp.API.Dtos {
 
     public int UserId { get; set; }
 
-    public DateTime CreatedOn { get; set; }
+    public DateTime AddedOn { get; set; }
   }
 }

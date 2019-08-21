@@ -62,7 +62,22 @@ export class BookService {
   }
 
   getBooksAddedByUser(userFriendlyUrl: string) {
-    return this.http
-      .get(this.baseUrl + "get-books-added-by-user/" + userFriendlyUrl);
+    return this.http.get(
+      this.baseUrl + "get-books-added-by-user/" + userFriendlyUrl
+    );
   }
+
+  RecommendByRelevance() {
+    return this.http.get(this.baseUrl + "recommend-relevance");
+  }
+  RecommendBySerendipity() {
+    return this.http.get(this.baseUrl + "recommend-serendipity");
+  }
+  RecommendByNovelty() {
+    return this.http.get(this.baseUrl + "recommend-novelty");
+  }
+
+  // List<BookDetailsDto> RecommendationByRelevance (int userId);
+  // List<BookDetailsDto> RecommendBySerendepity (int userId);
+  // List<BookDetailsDto> RecommendByNovelty (int userId);
 }
