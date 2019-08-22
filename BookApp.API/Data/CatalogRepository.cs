@@ -49,7 +49,7 @@ namespace BookApp.API.Data {
       catalog.IsPublic = catalogItem.IsPublic;
       catalog.UserId = catalogItem.UserId;
       catalog.FriendlyUrl = catalogItem.FriendlyUrl;
-      catalog.Created = catalogItem.AddedOn;
+      catalog.AddedOn = catalogItem.AddedOn;
       catalog.UserFriendlyUrl = catalogItem.User.FriendlyUrl;
 
       foreach (var itm in catalogItem.BookCatalogs) {
@@ -95,7 +95,7 @@ namespace BookApp.API.Data {
         catalog.IsPublic = item.IsPublic;
         catalog.UserId = item.UserId;
         catalog.FriendlyUrl = item.FriendlyUrl;
-        catalog.Created = item.AddedOn;
+        catalog.AddedOn = item.AddedOn;
         catalog.UserFriendlyUrl = item.User.FriendlyUrl;
 
         foreach (var itm in item.BookCatalogs) {
@@ -126,7 +126,7 @@ namespace BookApp.API.Data {
         catalog.IsPublic = item.IsPublic;
         catalog.UserId = item.UserId;
         catalog.FriendlyUrl = item.FriendlyUrl;
-        catalog.Created = item.AddedOn;
+        catalog.AddedOn = item.AddedOn;
         catalog.UserFriendlyUrl = "";
 
         foreach (var itm in item.BookCatalogs) {

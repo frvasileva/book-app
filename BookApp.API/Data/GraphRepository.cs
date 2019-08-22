@@ -208,13 +208,13 @@ namespace BookApp.API.Data {
 
       var result =
         _graphClient.Cypher
-        .Match ("(book:Book), (profile:Profile)")
+        .Match ("(profile)-[r:BOOK_ADDED]->(book)")
         .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
         .Where ((ProfileDto profile) => profile.Id == userId)
         .ReturnDistinct ((catalog, book) => new {
           catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
             bk = book.As<BookDetailsDto> ()
-        });
+        }).OrderByDescending ("book.addedOn");
 
       var results = result.Results.ToList ();
       foreach (var itm in results) {
@@ -275,7 +275,8 @@ namespace BookApp.API.Data {
           catalogs = catalog.As<CatalogItemDto> (),
             boooks = Return.As<IEnumerable<BookItemDto>>
             ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
-        });
+        })
+        .OrderByDescending ("catalog.addedOn");
 
       var catalogList = new List<CatalogItemDto> ();
 

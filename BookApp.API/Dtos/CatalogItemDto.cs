@@ -14,7 +14,7 @@ namespace BookApp.API.Dtos {
     public int UserId { get; set; }
     public string FriendlyUrl { get; set; }
     public string UserFriendlyUrl { get; set; }
-    public DateTime Created { get; set; }
+    public DateTime AddedOn { get; set; }
     public List<BookItemDto> Books { get; set; }
   }
 }

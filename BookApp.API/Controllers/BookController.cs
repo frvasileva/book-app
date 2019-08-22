@@ -74,7 +74,7 @@ namespace BookApp.API.Controllers {
     [HttpGet ("recommend-relevance")]
     public async Task<IActionResult> RecommendationByRelevance () {
 
-      var books = _bookGraph.RecommendationByRelevance(UserId);
+      var books = _bookGraph.RecommendationByRelevance (UserId);
 
       foreach (var item in books) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
@@ -163,12 +163,7 @@ namespace BookApp.API.Controllers {
     [HttpPost ("add")]
     public async Task<IActionResult> Add (BookCreateDto bookDto) {
 
-      var identity = HttpContext.User.Identity as ClaimsIdentity;
-      int userId = 0;
-      if (identity != null)
-        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
-
-      bookDto.UserId = userId;
+      bookDto.UserId = UserId;
       var result = _bookGraph.AddBook (bookDto);
 
       return Ok (result);
@@ -186,12 +181,7 @@ namespace BookApp.API.Controllers {
     [HttpPost ("add-to-catalog")]
     public async Task<IActionResult> AddBookToCatalog (BookCatalogCreateDto bookCatalogDto) {
 
-      var identity = HttpContext.User.Identity as ClaimsIdentity;
-      int userId = 0;
-      if (identity != null)
-        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
-
-      bookCatalogDto.UserId = userId;
+      bookCatalogDto.UserId = UserId;
       _bookGraph.AddBookToCatalog (bookCatalogDto);
       return Ok ();
     }
