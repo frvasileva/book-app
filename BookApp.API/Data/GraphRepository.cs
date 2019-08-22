@@ -12,6 +12,7 @@ namespace BookApp.API.Data {
   public class GraphRepository : IGraphRepository {
     private readonly IGraphClient _graphClient;
     private readonly IMapper _mapper;
+    private readonly int SHOW_MAX_RESULTS_PER_PAGE = 50;
 
     public GraphRepository (IGraphClient graphClient, IMapper mapper) {
       _graphClient = graphClient;
@@ -135,7 +136,7 @@ namespace BookApp.API.Data {
           catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
             bk = book.As<BookDetailsDto> ()
         })
-        .Limit (40);
+        .Limit (50);
 
       var results = result.Results.ToList ();
       foreach (var itm in results) {
@@ -496,7 +497,9 @@ namespace BookApp.API.Data {
 
       return strings;
     }
-    public List<BookDetailsDto> RecommendationByRelevance (int userId) {
+    public List<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId) {
+
+      var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
 
       var getFavCatalogs = GetFavoriteCatalogsForUser (userId);
       getFavCatalogs.Add ("'football'");
@@ -514,7 +517,7 @@ namespace BookApp.API.Data {
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("book.avarageRating")
-        .Limit (12);
+        .Skip (5).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
@@ -531,7 +534,10 @@ namespace BookApp.API.Data {
       return bookList;
     }
 
-    public List<BookDetailsDto> RecommendBySerendipity (int userId) {
+    public List<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId) {
+
+      var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
+
       var result =
         _graphClient.Cypher
         .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
@@ -541,7 +547,7 @@ namespace BookApp.API.Data {
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("rand()")
-        .Limit (12);
+        .Skip (5).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
@@ -558,7 +564,10 @@ namespace BookApp.API.Data {
       return bookList;
     }
 
-    public List<BookDetailsDto> RecommendByNovelty (int userId) {
+    public List<BookDetailsDto> RecommendByNovelty (int currentPage, int userId) {
+
+      var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
+
       var result =
         _graphClient.Cypher
         .Match ("(book:Book)")
@@ -568,7 +577,7 @@ namespace BookApp.API.Data {
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("book.addedOn")
-        .Limit (12);
+        .Skip (5).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();

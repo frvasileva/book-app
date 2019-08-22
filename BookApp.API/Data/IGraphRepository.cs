@@ -35,9 +35,9 @@ namespace BookApp.API.Data {
     #endregion ImportData
 
     #region Recommendations
-    List<BookDetailsDto> RecommendationByRelevance (int userId);
-    List<BookDetailsDto> RecommendBySerendipity (int userId);
-    List<BookDetailsDto> RecommendByNovelty (int userId);
+    List<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId);
+    List<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId);
+    List<BookDetailsDto> RecommendByNovelty (int currentPage, int userId);
 
     List<string> GetFavoriteCatalogsForUser (int userId);
     #endregion Recommendations

@@ -57,11 +57,11 @@ namespace BookApp.API.Controllers {
 
     #region Book CRUD Actions
 
-    [HttpGet ("get-books")]
-    public async Task<IActionResult> GetAllBooks () {
+    [HttpGet ("get-books/{currentPage}")]
+    public async Task<IActionResult> GetAllBooks (int currentPage) {
 
       var books = _bookGraph.GetAll ();
-      var booksss = _bookGraph.RecommendationByRelevance (UserId);
+      var booksss = _bookGraph.RecommendationByRelevance (currentPage, UserId);
 
       foreach (var item in booksss) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
@@ -71,23 +71,10 @@ namespace BookApp.API.Controllers {
       return Ok (booksss);
     }
 
-    [HttpGet ("recommend-relevance")]
-    public async Task<IActionResult> RecommendationByRelevance () {
+    [HttpGet ("recommend-relevance/{currentPage}")]
+    public async Task<IActionResult> RecommendationByRelevance (int currentPage = 0) {
 
-      var books = _bookGraph.RecommendationByRelevance (UserId);
-
-      foreach (var item in books) {
-        if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
-          item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
-      }
-
-      return Ok (books);
-    }
-
-    [HttpGet ("recommend-novelty")]
-    public async Task<IActionResult> RecommendByNovelty () {
-
-      var books = _bookGraph.RecommendByNovelty (UserId);
+      var books = _bookGraph.RecommendationByRelevance (currentPage, UserId);
 
       foreach (var item in books) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
@@ -97,10 +84,23 @@ namespace BookApp.API.Controllers {
       return Ok (books);
     }
 
-    [HttpGet ("recommend-serendipity")]
-    public async Task<IActionResult> RecommendBySerendepity () {
+    [HttpGet ("recommend-novelty/{currentPage}")]
+    public async Task<IActionResult> RecommendByNovelty (int currentPage = 0) {
 
-      var books = _bookGraph.RecommendBySerendipity (UserId);
+      var books = _bookGraph.RecommendByNovelty (currentPage, UserId);
+
+      foreach (var item in books) {
+        if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
+          item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
+      }
+
+      return Ok (books);
+    }
+
+    [HttpGet ("recommend-serendipity/{currentPage}")]
+    public async Task<IActionResult> RecommendBySerendepity (int currentPage) {
+
+      var books = _bookGraph.RecommendBySerendipity (currentPage, UserId);
 
       foreach (var item in books) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
@@ -127,7 +127,7 @@ namespace BookApp.API.Controllers {
 
       //  _bookGraph.ImportBooks ();
       // var result =   _bookGraph.GetFavoriteCatalogsForUser (108);
-      var result = _bookGraph.RecommendationByRelevance (UserId);
+      var result = _bookGraph.RecommendationByRelevance (0, UserId);
       return Ok (result);
     }
 

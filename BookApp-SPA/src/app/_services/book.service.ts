@@ -67,8 +67,8 @@ export class BookService {
     );
   }
 
-  RecommendByRelevance() {
-    return this.http.get(this.baseUrl + "recommend-relevance");
+  RecommendByRelevance(currentPage: number) {
+    return this.http.get(this.baseUrl + "recommend-relevance/" + currentPage);
   }
   RecommendBySerendipity() {
     return this.http.get(this.baseUrl + "recommend-serendipity");

@@ -39,7 +39,7 @@ export class BooksListComponent implements OnInit {
       content: "Books" + settings.seo_appName_title
     });
 
-    this.bookService.RecommendByRelevance().subscribe(data => {
+    this.bookService.RecommendByRelevance(0).subscribe(data => {
       this.booksByRelevance = data;
       console.log(this.booksByRelevance);
     });
