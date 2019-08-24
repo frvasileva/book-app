@@ -100,17 +100,23 @@ namespace BookApp.API.Data {
       return result;
     }
 
-    public BookCatalogItemDto AddBookToCatalog (BookCatalogCreateDto item) {
-      _graphClient.Cypher
+    public BookCatalog AddBookToCatalog (BookCatalogCreateDto item) {
+      var result = _graphClient.Cypher
         .Match ("(book:Book)", "(catalog:Catalog)")
         .Where ((BookItemDto book) => book.Id == item.BookId)
         .AndWhere ((CatalogCreateDto catalog) => catalog.Id == item.CatalogId)
         .Create ("(book)-[r:BOOK_ADDED_TO_CATALOG {info}]->(catalog)")
         .WithParam ("info", new { addedOn = DateTime.Now, userId = item.UserId })
-        .ExecuteWithoutResults ();
+        .Return<CatalogCreateDto> ("catalog").Results.Single ();
 
-      var bookCatalog = new BookCatalogItemDto ();
-      return bookCatalog;
+      var bookCatalogEntity = new BookCatalog () {
+        BookId = item.BookId,
+        Created = DateTime.Now,
+        UserId = item.UserId,
+        CatalogId = result.Id
+      };
+
+      return bookCatalogEntity;
     }
 
     public BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId) {
@@ -499,6 +505,9 @@ namespace BookApp.API.Data {
     }
     public List<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId) {
 
+      //  .Match ("(book:Book)")
+      //   .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
+
       var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
 
       var getFavCatalogs = GetFavoriteCatalogsForUser (userId);
@@ -517,7 +526,7 @@ namespace BookApp.API.Data {
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("book.avarageRating")
-        .Skip (5).Limit (SHOW_MAX_RESULTS_PER_PAGE);
+        .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
@@ -525,8 +534,10 @@ namespace BookApp.API.Data {
       foreach (var b in result.Results) {
         var bd = b.bk;
         foreach (var c in b.catalogs) {
-          var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
-          bd.BookCatalogs.Add (bookCatalog);
+          if (c != "[\r\n  null\r\n]") {
+            var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
+            bd.BookCatalogs.Add (bookCatalog);
+          }
         }
 
         bookList.Add (bd);
@@ -540,14 +551,15 @@ namespace BookApp.API.Data {
 
       var result =
         _graphClient.Cypher
-        .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .Match ("(book:Book)")
+        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
         .Where ((BookDetailsDto book) => book.AvarageRating > 3)
         .Return ((catalog, book, rand) => new {
           catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("rand()")
-        .Skip (5).Limit (SHOW_MAX_RESULTS_PER_PAGE);
+        .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
@@ -555,10 +567,11 @@ namespace BookApp.API.Data {
       foreach (var b in result.Results) {
         var bd = b.bk;
         foreach (var c in b.catalogs) {
-          var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
-          bd.BookCatalogs.Add (bookCatalog);
+          if (c != "[\r\n  null\r\n]") {
+            var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
+            bd.BookCatalogs.Add (bookCatalog);
+          }
         }
-
         bookList.Add (bd);
       }
       return bookList;
@@ -577,7 +590,7 @@ namespace BookApp.API.Data {
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("book.addedOn")
-        .Skip (5).Limit (SHOW_MAX_RESULTS_PER_PAGE);
+        .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();

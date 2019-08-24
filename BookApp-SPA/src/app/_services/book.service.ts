@@ -70,11 +70,11 @@ export class BookService {
   RecommendByRelevance(currentPage: number) {
     return this.http.get(this.baseUrl + "recommend-relevance/" + currentPage);
   }
-  RecommendBySerendipity() {
-    return this.http.get(this.baseUrl + "recommend-serendipity");
+  RecommendBySerendipity(currentPage: number) {
+    return this.http.get(this.baseUrl + "recommend-serendipity/" + currentPage);
   }
-  RecommendByNovelty() {
-    return this.http.get(this.baseUrl + "recommend-novelty");
+  RecommendByNovelty(currentPage: number) {
+    return this.http.get(this.baseUrl + "recommend-novelty/" + currentPage);
   }
 
   // List<BookDetailsDto> RecommendationByRelevance (int userId);

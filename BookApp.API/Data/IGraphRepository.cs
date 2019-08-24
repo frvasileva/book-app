@@ -13,7 +13,7 @@ namespace BookApp.API.Data {
     CatalogCreateDto AddCatalog (CatalogCreateDto catalogDto, bool isFavorite);
     List<CatalogPureDto> GetPureCatalogs (long userId);
 
-    BookCatalogItemDto AddBookToCatalog (BookCatalogCreateDto item);
+    BookCatalog AddBookToCatalog (BookCatalogCreateDto item);
     BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId);
 
     List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser);

@@ -43,8 +43,17 @@ export class BookSaverComponent implements OnInit {
   }
 
   addToCatalog(catalogId) {
-    console.log("catalog id", catalogId);
     this.bookSaverService.addBookToCatalog(catalogId, this.bookId);
+
+    this.store.subscribe(state => {
+      const book = state.bookState.books.find(b => b.id === this.bookId);
+      this.catalogs = state.userState.currentUserCatalogs.map(catalog => ({
+        ...catalog,
+        isSelected: book.bookCatalogs.some(
+          item => item.catalogId === catalog.id
+        )
+      }));
+    });
   }
 
   removeFromCatalog(catalogId) {

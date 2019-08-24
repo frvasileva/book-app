@@ -30,13 +30,17 @@ export function bookReducer(
       return state;
     }
     case BookActions.ADD_BOOK_TO_CATALOG: {
-      const book = state.books.find(b => b.id === action.payload.bookId);
+      const tempState = Object.keys(state.books).map(k => state.books[k]);
+      const book = tempState.find(b => b.id === action.payload.bookId);
       book.bookCatalogs.push({ catalogId: action.payload.catalogId });
+      console.log(state);
       return state;
     }
     case BookActions.REMOVE_BOOK_FROM_CATALOG: {
       const book = state.books.find(b => b.id === action.payload.bookId);
-      book.bookCatalogs = book.bookCatalogs.filter(i => i.catalogId !== action.payload.catalogId);
+      book.bookCatalogs = book.bookCatalogs.filter(
+        i => i.catalogId !== action.payload.catalogId
+      );
       return state;
     }
     default:

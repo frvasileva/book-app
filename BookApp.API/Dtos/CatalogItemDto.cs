@@ -8,7 +8,7 @@ namespace BookApp.API.Dtos {
       this.Books = new List<BookItemDto> ();
     }
 
-    public long Id { get; set; }
+    public int Id { get; set; }
     public string Name { get; set; }
     public bool IsPublic { get; set; }
     public int UserId { get; set; }

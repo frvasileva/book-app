@@ -182,8 +182,8 @@ namespace BookApp.API.Controllers {
     public async Task<IActionResult> AddBookToCatalog (BookCatalogCreateDto bookCatalogDto) {
 
       bookCatalogDto.UserId = UserId;
-      _bookGraph.AddBookToCatalog (bookCatalogDto);
-      return Ok ();
+      var result = _bookGraph.AddBookToCatalog (bookCatalogDto);
+      return Ok (result);
     }
 
     #endregion
