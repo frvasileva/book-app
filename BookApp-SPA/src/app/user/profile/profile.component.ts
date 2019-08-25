@@ -37,25 +37,26 @@ export class ProfileComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.friendlyUrl = this.route.snapshot.params["friendlyUrl"];
+    this.route.params.subscribe(params => {
+      this.friendlyUrl = params["friendlyUrl"];
+      this.store
+        .select(state => state.userState)
+        .subscribe(userState => {
+          this.profile = userState.users.find(
+            u => u.friendlyUrl === this.friendlyUrl
+          );
+          this.currentUser = userState.users.find(
+            u => u.friendlyUrl === userState.currentUser
+          );
+          this.isCurrentUser = userState.currentUser === this.friendlyUrl;
 
-    this.store
-      .select(state => state.userState)
-      .subscribe(userState => {
-        this.profile = userState.users.find(
-          u => u.friendlyUrl === this.friendlyUrl
-        );
-        this.currentUser = userState.users.find(
-          u => u.friendlyUrl === userState.currentUser
-        );
-        this.isCurrentUser = userState.currentUser === this.friendlyUrl;
+          if (!this.isCurrentUser && this.profile == null) {
+            this.userService.getUser(this.friendlyUrl);
+          }
+        });
 
-        if (!this.isCurrentUser && this.profile == null) {
-          this.userService.getUser(this.friendlyUrl);
-        }
-      });
-
-    this.setSeoMetaTags();
+      this.setSeoMetaTags();
+    });
   }
 
   getUserBooks() {
