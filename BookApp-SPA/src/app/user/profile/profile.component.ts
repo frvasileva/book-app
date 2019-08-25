@@ -50,7 +50,7 @@ export class ProfileComponent implements OnInit {
           );
           this.isCurrentUser = userState.currentUser === this.friendlyUrl;
 
-          if (!this.isCurrentUser && this.profile == null) {
+          if (!this.profile) {
             this.userService.getUser(this.friendlyUrl);
           }
         });
