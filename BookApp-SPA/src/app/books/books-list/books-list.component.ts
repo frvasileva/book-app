@@ -26,35 +26,33 @@ export class BooksListComponent implements OnInit {
       bookState: { books: Book[] };
       catalog: { catalogs: CatalogItemDto[] };
     }>,
-    private catalogService: BookCatalogService,
     private bookService: BookService,
     private titleService: Title,
     private metaTagService: Meta
   ) {}
 
   ngOnInit() {
+
+    this.bookService.RecommendByNovelty(0);
+    this.bookService.RecommendByRelevance(0);
+    this.bookService.RecommendBySerendipity(0);
+
     this.titleService.setTitle("Books" + settings.seo_appName_title);
     this.metaTagService.updateTag({
       name: "description",
       content: "Books" + settings.seo_appName_title
     });
 
-    this.bookService.RecommendByRelevance(0).subscribe(data => {
-      this.store.dispatch(new BookActions.SetBooksAction(data));
-      this.booksByRelevance = data;
-      console.log(this.booksByRelevance);
-    });
-    this.bookService.RecommendByNovelty(0).subscribe(data => {
-      this.store.dispatch(new BookActions.SetBooksAction(data));
-
-      this.booksByNovelty = data;
-      console.log(this.booksByNovelty);
-    });
-    this.bookService.RecommendBySerendipity(0).subscribe(data => {
-      this.store.dispatch(new BookActions.SetBooksAction(data));
-
-      this.booksBySerendipity = data;
-      console.log(this.booksBySerendipity);
+    this.store.subscribe(state => {
+      this.booksByRelevance = state.bookState.books.filter(
+        b => b.recommendationCategory === "RELEVANCE"
+      );
+      this.booksByNovelty = state.bookState.books.filter(
+        b => b.recommendationCategory === "NOVELTY"
+      );
+      this.booksBySerendipity = state.bookState.books.filter(
+        b => b.recommendationCategory === "SERENDIPITY"
+      );
     });
 
     // this.catalogService.getCatalog('1');

@@ -68,13 +68,25 @@ export class BookService {
   }
 
   RecommendByRelevance(currentPage: number) {
-    return this.http.get(this.baseUrl + "recommend-relevance/" + currentPage);
+    return this.http
+      .get(this.baseUrl + "recommend-relevance/" + currentPage)
+      .subscribe(data => {
+        this.store.dispatch(new BookActions.SetBooksAction(data));
+      });
   }
   RecommendBySerendipity(currentPage: number) {
-    return this.http.get(this.baseUrl + "recommend-serendipity/" + currentPage);
+    return this.http
+      .get(this.baseUrl + "recommend-serendipity/" + currentPage)
+      .subscribe(data => {
+        this.store.dispatch(new BookActions.SetBooksAction(data));
+      });
   }
   RecommendByNovelty(currentPage: number) {
-    return this.http.get(this.baseUrl + "recommend-novelty/" + currentPage);
+    return this.http
+      .get(this.baseUrl + "recommend-novelty/" + currentPage)
+      .subscribe(data => {
+        this.store.dispatch(new BookActions.SetBooksAction(data));
+      });
   }
 
   // List<BookDetailsDto> RecommendationByRelevance (int userId);

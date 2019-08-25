@@ -12,7 +12,7 @@ export function bookReducer(
     case BookActions.SET_BOOKS: {
       return {
         ...state,
-        books: action.payload
+        books: [...state.books, ...action.payload]
       };
     }
     case BookActions.SET_BOOK: {
@@ -30,8 +30,7 @@ export function bookReducer(
       return state;
     }
     case BookActions.ADD_BOOK_TO_CATALOG: {
-      const tempState = Object.keys(state.books).map(k => state.books[k]);
-      const book = tempState.find(b => b.id === action.payload.bookId);
+      const book = state.books.find(b => b.id === action.payload.bookId);
       book.bookCatalogs.push({ catalogId: action.payload.catalogId });
       console.log(state);
       return state;

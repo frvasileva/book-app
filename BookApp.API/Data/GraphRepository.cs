@@ -12,7 +12,7 @@ namespace BookApp.API.Data {
   public class GraphRepository : IGraphRepository {
     private readonly IGraphClient _graphClient;
     private readonly IMapper _mapper;
-    private readonly int SHOW_MAX_RESULTS_PER_PAGE = 50;
+    private readonly int SHOW_MAX_RESULTS_PER_PAGE = 18;
 
     public GraphRepository (IGraphClient graphClient, IMapper mapper) {
       _graphClient = graphClient;
@@ -488,11 +488,11 @@ namespace BookApp.API.Data {
 
     public List<string> GetFavoriteCatalogsForUser (int userId) {
       var result = _graphClient.Cypher
-        .Match ("(favCatalog:Favorite)")
-        .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(favCatalog:Favorite)")
-        .With ("book, favCatalog")
-        .Where ((CatalogItemDto favCatalog) => favCatalog.UserId == userId)
-        .Return ((favCatalog) => new { catalogs = Return.As<string> ("{name:favCatalog.name }") });
+        .Match ("(catalog:Catalog)")
+        .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .With ("book, catalog")
+        .Where ((CatalogItemDto catalog) => catalog.UserId == userId)
+        .ReturnDistinct ((catalog) => new { catalogs = Return.As<string> ("{name:catalog.name }") });
 
       var rerere = result.Results;
       var strings = new List<string> ();
@@ -505,15 +505,12 @@ namespace BookApp.API.Data {
     }
     public List<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId) {
 
-      //  .Match ("(book:Book)")
-      //   .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
-
       var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
 
       var getFavCatalogs = GetFavoriteCatalogsForUser (userId);
-      getFavCatalogs.Add ("'football'");
-      getFavCatalogs.Add ("'1-the-best-to-read'");
-      getFavCatalogs.Add ("'100-fiction'");
+      // getFavCatalogs.Add ("'novels'");
+      // getFavCatalogs.Add ("'Romance'");
+      // getFavCatalogs.Add ("'my-library'");
       string combindedString = "[" + string.Join (",", getFavCatalogs.ToArray ()) + "]";
 
       var whereClause = "catalog.name in " + combindedString;
@@ -533,6 +530,7 @@ namespace BookApp.API.Data {
 
       foreach (var b in result.Results) {
         var bd = b.bk;
+        bd.RecommendationCategory = "RELEVANCE";
         foreach (var c in b.catalogs) {
           if (c != "[\r\n  null\r\n]") {
             var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
@@ -566,6 +564,8 @@ namespace BookApp.API.Data {
 
       foreach (var b in result.Results) {
         var bd = b.bk;
+
+        bd.RecommendationCategory = "SERENDIPITY";
         foreach (var c in b.catalogs) {
           if (c != "[\r\n  null\r\n]") {
             var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
@@ -597,6 +597,7 @@ namespace BookApp.API.Data {
 
       foreach (var b in result.Results) {
         var bd = b.bk;
+        bd.RecommendationCategory = "NOVELTY";
         foreach (var c in b.catalogs) {
           if (c != "[\r\n  null\r\n]") {
             var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };

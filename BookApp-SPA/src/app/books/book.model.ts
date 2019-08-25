@@ -8,6 +8,7 @@ export class Book {
   public description?: string;
   public coverPath?: string;
   public publisher: string;
+  public recommendationCategory: string;
 
   public author?: Author;
   public tags: string[];
@@ -22,6 +23,7 @@ export class Book {
     description: string,
     coverPath: string,
     publisher: string,
+    recommendationCategory: string,
     author: Author,
     tags: string[],
     bookCatalogs: any
@@ -33,6 +35,7 @@ export class Book {
     this.description = description;
     this.coverPath = coverPath;
     this.publisher = publisher;
+    this.recommendationCategory = recommendationCategory;
     this.author = author;
     this.tags = tags;
     this.bookCatalogs = bookCatalogs;

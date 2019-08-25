@@ -17,7 +17,7 @@ export class BooksComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.bookService.getBooks();
+  //  this.bookService.getBooks();
 
     this.store
       .select(state => state.userState)
