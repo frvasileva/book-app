@@ -9,13 +9,14 @@ $color: $color-1, $color-2, $color-3, $color-4, $color-5;
 @mixin anim() {
   @keyframes scale {
     0% {
-        transform: scale(1);
+      transform: scale(1);
     }
     50%,
     75% {
       transform: scale(2.5);
     }
-    78%, 100% {
+    78%,
+    100% {
       opacity: 0;
     }
   }
@@ -25,13 +26,19 @@ body {
   overflow: hidden;
 }
 
-.container {
+.loader-container {
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   overflow: hidden;
   animation-delay: 1s;
+
+  position: absolute;
+  z-index: 1;
+  background-color: white;
+  left: 0;
+  right: 0;
 }
 
 @for $i from 1 through 5 {
@@ -48,7 +55,7 @@ body {
     align-items: center;
 
     &:before {
-      content: '';
+      content: "";
       width: 20px;
       height: 20px;
       border-radius: 50%;
