@@ -7,7 +7,7 @@
         </div>
         <div class="clearfix"></div>
         <div class="book-cover">
-          <div class="book-actions-wrapper">
+          <div class="book-actions-wrapper" *ngIf="book != undefined">
             <div class="add-book-to-list">
               <i class="glyphicon glyphicon-plus"></i>
             </div>
@@ -17,7 +17,7 @@
           </div>
           <img
             src="{{ book?.photoPath }}"
-            alt="alt book text"
+            alt="{{ book?.title }}"
             width="300"
             class="cover"
           />

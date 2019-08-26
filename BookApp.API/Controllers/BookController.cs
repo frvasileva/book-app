@@ -117,7 +117,8 @@ namespace BookApp.API.Controllers {
         return BadRequest ("No books");
 
       var bookToReturn = _mapper.Map<BookDetailsDto> (book);
-      bookToReturn.PhotoPath = CloudinaryHelper.TransformUrl (bookToReturn.PhotoPath, TransformationType.Book_Details_Preset);
+      if (bookToReturn.PhotoPath != null && bookToReturn.PhotoPath.Contains ("cloudinary"))
+        bookToReturn.PhotoPath = CloudinaryHelper.TransformUrl (bookToReturn.PhotoPath, TransformationType.Book_Details_Preset);
 
       return Ok (bookToReturn);
     }
@@ -154,7 +155,7 @@ namespace BookApp.API.Controllers {
 
       var books = _bookGraph.GetBooksAddedByUser (user.Id);
       foreach (var item in books) {
-        if (!String.IsNullOrEmpty (item.PhotoPath))
+        if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
           item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Details_Preset);
       }
       return Ok (books);

@@ -74,7 +74,8 @@
 .book-actions-wrapper:hover .book-actions {
   display: block;
   position: absolute;
-  right: 0;
+  right: -65px;
+  top: 38px;
 }
 
 .add-book-to-list {

@@ -29,6 +29,9 @@ export class BookSaverComponent implements OnInit {
   ngOnInit() {
     this.store.subscribe(state => {
       const book = state.bookState.books.find(b => b.id === this.bookId);
+      if (!book) {
+        return;
+      }
       this.catalogs = state.userState.currentUserCatalogs.map(catalog => ({
         ...catalog,
         isSelected: book.bookCatalogs.some(
@@ -58,6 +61,16 @@ export class BookSaverComponent implements OnInit {
 
   removeFromCatalog(catalogId) {
     this.bookSaverService.removeBookFromCatalog(catalogId, this.bookId);
+
+    this.store.subscribe(state => {
+      const book = state.bookState.books.find(b => b.id === this.bookId);
+      this.catalogs = state.userState.currentUserCatalogs.map(catalog => ({
+        ...catalog,
+        isSelected: book.bookCatalogs.some(
+          item => item.catalogId === catalog.id
+        )
+      }));
+    });
   }
 
   onSubmit() {

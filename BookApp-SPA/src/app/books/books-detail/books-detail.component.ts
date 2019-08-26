@@ -5,6 +5,7 @@ import { Store, select } from "@ngrx/store";
 import { BookService } from "src/app/_services/book.service";
 import { bookDetailsDto } from "src/app/_models/bookDetailsDto";
 import { Meta, Title } from "@angular/platform-browser";
+import { BookSaverService } from "src/app/_services/bookSaver.service";
 
 @Component({
   selector: "app-books-detail",
@@ -18,6 +19,7 @@ export class BooksDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
+    private bookSaverService: BookSaverService,
     private store: Store<{ bookState: { books: bookDetailsDto[] } }>,
     private titleService: Title,
     private metaTagService: Meta
@@ -25,10 +27,13 @@ export class BooksDetailComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.friendlyUrl = params["url"];
+      this.friendlyUrl = params.url;
       this.store
         .pipe(
-          select((state: { bookState: { books: bookDetailsDto[] } }) => state.bookState.books)
+          select(
+            (state: { bookState: { books: bookDetailsDto[] } }) =>
+              state.bookState.books
+          )
         )
         .subscribe(books => {
           this.book = books.find(book => book.friendlyUrl === this.friendlyUrl);
@@ -40,6 +45,7 @@ export class BooksDetailComponent implements OnInit {
             });
           } else {
             this.bookService.getBook(this.friendlyUrl);
+            this.bookSaverService.getUserCatalogList(this.friendlyUrl);
           }
         });
     });
