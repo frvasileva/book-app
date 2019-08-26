@@ -39,7 +39,11 @@ export function catalogReducer(
       const catalog = state.catalog.find(
         catalogItem => catalogItem.id === catalogId
       );
-      catalog.books = catalog.books.filter(bookItem => bookItem.id !== bookId);
+      if (catalog) {
+        catalog.books = catalog.books.filter(
+          bookItem => bookItem.id !== bookId
+        );
+      }
       return state;
     }
     default:
