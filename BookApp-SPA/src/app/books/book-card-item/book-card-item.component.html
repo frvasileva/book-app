@@ -1,8 +1,18 @@
 <div class="card-wrapper">
   <a [routerLink]="['/books/details', book?.friendlyUrl]">
-    <!-- <div class="book-title">{{ book?.title }}</div> -->
+    <div class="book-title" title="{{ book?.title }}">
+      {{
+        book?.title.length > 18
+          ? (book?.title | slice: 0:18) + "..."
+          : book?.title
+      }}
+    </div>
     <div class="text-md-center">
-      <img src="{{ book?.photoPath }}" class="book-cover-image" />
+      <img
+        src="{{ book?.photoPath }}"
+        class="book-cover-image"
+        title="{{ book?.title }}"
+      />
     </div>
   </a>
 
