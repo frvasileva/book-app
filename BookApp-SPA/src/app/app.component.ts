@@ -7,6 +7,9 @@ import {
   NavigationEnd,
   NavigationError
 } from "@angular/router";
+import { UserService } from "./_services/user.service";
+import { BookSaverService } from "./_services/bookSaver.service";
+import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Component({
   selector: "app-root",
@@ -21,7 +24,14 @@ export class AppComponent implements OnInit {
   currentModule: string;
   currentComponentPath: string;
 
-  constructor(private authService: AuthService, private router: Router) {
+  jwtHelper = new JwtHelperService();
+
+  constructor(
+    private authService: AuthService,
+    private userService: UserService,
+    private bookSaverService: BookSaverService,
+    private router: Router
+  ) {
     this.router.events.subscribe((event: Event) => {
       if (event instanceof NavigationStart) {
         // Show loading indicator
@@ -57,6 +67,12 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.authService.getCurrentUser();
+    const token = localStorage.getItem("token");
+    if (token) {
+      const friendlyUrl = this.jwtHelper.decodeToken(token).unique_name;
+      this.authService.getCurrentUser();
+      this.bookSaverService.getUserCatalogList(friendlyUrl);
+    }
+    console.log("app init here");
   }
 }

@@ -17,17 +17,15 @@ export class BooksComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-  //  this.bookService.getBooks();
-
-    this.store
-      .select(state => state.userState)
-      .subscribe(userState => {
-        if (
-          userState.currentUser &&
-          userState.currentUserCatalogs.length === 0
-        ) {
-          this.bookSaverService.getUserCatalogList(userState.currentUser);
-        }
-      });
+    // this.store
+    //   .select(state => state.userState)
+    //   .subscribe(userState => {
+    //     if (
+    //       userState.currentUser &&
+    //       userState.currentUserCatalogs.length === 0
+    //     ) {
+    //       this.bookSaverService.getUserCatalogList(userState.currentUser);
+    //     }
+    //   });
   }
 }

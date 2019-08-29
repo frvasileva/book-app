@@ -51,11 +51,9 @@ export class BookCatalogService {
   }
 
   getCatalog(friendlyUrl: string) {
-    console.log("SERVICE");
     return this.http.get(this.baseUrl + "get/" + friendlyUrl)
     .subscribe(
       data => {
-        console.log("data", data);
         this.store.dispatch(
           new CatalogActions.GetCatalogsAction(data)
         );

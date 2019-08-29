@@ -139,7 +139,7 @@ namespace BookApp.API.Data {
         .Match ("(book:Book)")
         .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
         .ReturnDistinct ((catalog, book) => new {
-          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
             bk = book.As<BookDetailsDto> ()
         })
         .Limit (50);
@@ -149,9 +149,8 @@ namespace BookApp.API.Data {
         var bookCatalogList = new List<BookCatalogListDto> ();
         var bookDetail = itm.bk;
 
-        foreach (var i in itm.catalogs) { //[\r\n  1156930\r\n]
-          if (i != "[\r\n  null\r\n]")
-            bookCatalogList.Add (new BookCatalogListDto () { CatalogId = Int32.Parse (i.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) });
+        foreach (var cat in itm.catalogs) { //[\r\n  1156930\r\n]
+          bookDetail.BookCatalogs.Add (cat);
         }
 
         bookDetail.BookCatalogs = bookCatalogList;
@@ -169,8 +168,7 @@ namespace BookApp.API.Data {
         .With ("book, catalog")
         .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
         .ReturnDistinct ((catalog, book) => new {
-          catalogs = Return.As<IEnumerable<BookCatalogListDto>>
-            ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
+          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
             bk = book.As<BookDetailsDto> ()
         });
 
@@ -182,18 +180,12 @@ namespace BookApp.API.Data {
         var bookCatalogList = new List<BookCatalogListDto> ();
         bookDetails = item.bk;
 
-        foreach (var i in item.catalogs) {
-          bookDetails.BookCatalogs.Add (i);
-          //   if (i != "[\r\n  null\r\n]")
-          //     bookCatalogList.Add (new BookCatalogListDto () { CatalogId = Int32.Parse (i.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) });
-          // }
-
-          // bookDetails.BookCatalogs = bookCatalogList;
+        foreach (var cat in item.catalogs) {
+          bookDetails.BookCatalogs.Add (cat);
         }
 
         return bookDetails;
-      }
-      else return new BookDetailsDto();
+      } else return new BookDetailsDto ();
     }
 
     public List<CatalogPureDto> GetPureCatalogs (long userId) {
@@ -523,7 +515,7 @@ namespace BookApp.API.Data {
         .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
         .Where (whereClause)
         .Return ((catalog, book) => new {
-          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("book.avarageRating")
@@ -536,10 +528,7 @@ namespace BookApp.API.Data {
         var bd = b.bk;
         bd.RecommendationCategory = "RELEVANCE";
         foreach (var c in b.catalogs) {
-          if (c != "[\r\n  null\r\n]") {
-            var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
-            bd.BookCatalogs.Add (bookCatalog);
-          }
+          bd.BookCatalogs.Add (c);
         }
 
         bookList.Add (bd);
@@ -557,7 +546,7 @@ namespace BookApp.API.Data {
         .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
         .Where ((BookDetailsDto book) => book.AvarageRating > 3)
         .Return ((catalog, book, rand) => new {
-          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("rand()")
@@ -571,10 +560,7 @@ namespace BookApp.API.Data {
 
         bd.RecommendationCategory = "SERENDIPITY";
         foreach (var c in b.catalogs) {
-          if (c != "[\r\n  null\r\n]") {
-            var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
-            bd.BookCatalogs.Add (bookCatalog);
-          }
+          bd.BookCatalogs.Add (c);
         }
         bookList.Add (bd);
       }
@@ -590,7 +576,7 @@ namespace BookApp.API.Data {
         .Match ("(book:Book)")
         .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
         .Return ((catalog, book, rand) => new {
-          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("book.addedOn")
@@ -603,10 +589,7 @@ namespace BookApp.API.Data {
         var bd = b.bk;
         bd.RecommendationCategory = "NOVELTY";
         foreach (var c in b.catalogs) {
-          if (c != "[\r\n  null\r\n]") {
-            var bookCatalog = new BookCatalogListDto () { CatalogId = Int32.Parse (c.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) };
-            bd.BookCatalogs.Add (bookCatalog);
-          }
+          bd.BookCatalogs.Add (c);
         }
 
         bookList.Add (bd);

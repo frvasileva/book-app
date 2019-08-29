@@ -43,6 +43,11 @@ namespace BookApp.API.Controllers {
     public async Task<IActionResult> Get (string friendlyUrl) {
       var bookListItem = _graphRepo.GetCatalog (friendlyUrl);
 
+      foreach (var book in bookListItem) {
+        var user = _userRepo.GetUser (book.UserId);
+        if (user != null)
+          book.UserFriendlyUrl = user.AvatarPath;
+      }
       return Ok (bookListItem);
     }
 

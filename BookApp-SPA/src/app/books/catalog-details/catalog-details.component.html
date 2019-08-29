@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="div col-md-2">
+  <div class="div col-md-2" *ngIf="user != null || user != undefined">
     <a [routerLink]="['/user/profile/', user?.friendlyUrl]">
       <img [src]="user?.avatarPath" class="user-avatar" />
     </a>
