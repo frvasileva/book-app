@@ -1,0 +1,10 @@
+<ul class="category-list">
+  <li *ngFor="let item of bookCatalogs; let i = index" class="category-item">
+    <a
+      [routerLink]="['/books/catalog/details', item?.friendlyUrl]"
+      class="category-link"
+    >
+      {{ item.name }}</a
+    >
+  </li>
+</ul>

@@ -43,10 +43,15 @@ export class BooksDetailComponent implements OnInit {
               name: "description",
               content: this.book.description
             });
+
+            console.log("book?.catalogList", this.book.bookCatalogs);
           } else {
             this.bookService.getBook(this.friendlyUrl);
             this.bookSaverService.getUserCatalogList(this.friendlyUrl);
           }
+
+          console.log("book?.catalogList", this.book);
+
         });
     });
   }

@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-12">
+    <div class="col-md-8">
       <div class="books-detail-top">
         <div class="book-header">
           <h3 class="book-title">{{ book?.title }}</h3>
@@ -23,6 +23,12 @@
         </div>
       </div>
       <div class="book-description">{{ book?.description }}</div>
+    </div>
+    <div class="col-md-4">
+      This book also appears in:
+      <app-catalog-list-pure
+        [bookCatalogs]="book?.bookCatalogs"
+      ></app-catalog-list-pure>
     </div>
   </div>
 </div>

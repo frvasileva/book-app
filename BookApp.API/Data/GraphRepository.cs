@@ -169,7 +169,8 @@ namespace BookApp.API.Data {
         .With ("book, catalog")
         .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
         .ReturnDistinct ((catalog, book) => new {
-          catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
+          catalogs = Return.As<IEnumerable<BookCatalogListDto>>
+            ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
             bk = book.As<BookDetailsDto> ()
         });
 
@@ -182,14 +183,17 @@ namespace BookApp.API.Data {
         bookDetails = item.bk;
 
         foreach (var i in item.catalogs) {
-          if (i != "[\r\n  null\r\n]")
-            bookCatalogList.Add (new BookCatalogListDto () { CatalogId = Int32.Parse (i.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) });
+          bookDetails.BookCatalogs.Add (i);
+          //   if (i != "[\r\n  null\r\n]")
+          //     bookCatalogList.Add (new BookCatalogListDto () { CatalogId = Int32.Parse (i.Replace ("[\r\n  ", "").Replace ("\r\n]", "")) });
+          // }
+
+          // bookDetails.BookCatalogs = bookCatalogList;
         }
 
-        bookDetails.BookCatalogs = bookCatalogList;
+        return bookDetails;
       }
-
-      return bookDetails;
+      else return new BookDetailsDto();
     }
 
     public List<CatalogPureDto> GetPureCatalogs (long userId) {
