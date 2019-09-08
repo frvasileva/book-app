@@ -19,7 +19,6 @@ namespace BookApp.API.Data {
       _graphClient.Connect ();
       _mapper = mapper;
     }
-
     public BookDetailsDto AddBook (BookCreateDto bookDto) {
 
       var bookItem = _mapper.Map<BookDetailsDto> (bookDto);
@@ -213,6 +212,7 @@ namespace BookApp.API.Data {
         _graphClient.Cypher
         .Match ("(profile)-[r:BOOK_ADDED]->(book)")
         .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
+        .With ("profile, book, catalog")
         .Where ((ProfileDto profile) => profile.Id == userId)
         .ReturnDistinct ((catalog, book) => new {
           catalogs = Return.As<IEnumerable<string>> ("collect([catalog.id])"),
@@ -518,7 +518,7 @@ namespace BookApp.API.Data {
           catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
             bk = book.As<BookDetailsDto> ()
         })
-        .OrderByDescending ("book.avarageRating")
+        // .OrderByDescending ("book.avarageRating")
         .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var res = result.Results;

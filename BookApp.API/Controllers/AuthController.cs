@@ -67,7 +67,7 @@ namespace DatingApp.API.Controllers {
         defaultCatalog.Name = "Want to read";
         defaultCatalog.IsPublic = true;
         defaultCatalog.UserId = user.Id;
-        defaultCatalog.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (defaultCatalog.Name + Guid.NewGuid ());
+        defaultCatalog.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (defaultCatalog.Name + "-" + Guid.NewGuid ());
         _graphRepository.AddCatalog (defaultCatalog, false);
 
         return Ok (new {

@@ -39,6 +39,7 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.friendlyUrl = params["friendlyUrl"];
+      console.log(" this.friendlyUrl", this.friendlyUrl);
       this.store
         .select(state => state.userState)
         .subscribe(userState => {
@@ -63,6 +64,7 @@ export class ProfileComponent implements OnInit {
     const result = this.bookService
       .getBooksAddedByUser(this.friendlyUrl)
       .subscribe(data => {
+        console.log("this.friendlyUrl", this.friendlyUrl);
         this.store.dispatch(new BookActions.SetBooksAction(data));
         this.userBooks = data;
         console.log("books data", data);

@@ -28,6 +28,17 @@ namespace BookApp.API.Controllers {
     private IHttpContextAccessor _httpContextAccessor;
     private readonly IGraphRepository _graphRepo;
 
+    private int UserId {
+      get {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        int userId = 0;
+        if (identity != null)
+          userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
+
+        return userId;
+      }
+    }
+
     public ProfileController (IConfiguration config, IMapper mapper,
       IUserRepository userRepository,
       IOptions<CloudinarySettings> cloudinaryConfig,
@@ -67,7 +78,7 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("get-all")]
     public async Task<IActionResult> GetAllProfiles () {
-      var profileList = await _userRepository.GetAllProfiles ();
+      var profileList = await _userRepository.GetAllProfiles (UserId);
 
       return Ok (profileList);
     }
@@ -121,48 +132,38 @@ namespace BookApp.API.Controllers {
     [HttpGet ("follow-user/{userIdToFollow}")]
     public IActionResult FollowUser (int userIdToFollow) {
 
-      var result = _graphRepo.FollowUser (userIdToFollow, GetUserId ());
+      var result = _graphRepo.FollowUser (userIdToFollow, UserId);
       return Ok (result);
     }
 
     [HttpGet ("unfollow-user/{userIdToFollow}")]
     public IActionResult UnfollowUser (int userIdToFollow) {
 
-      _graphRepo.UnfollowUser (userIdToFollow, GetUserId ());
+      _graphRepo.UnfollowUser (userIdToFollow, UserId);
 
       return Ok ();
     }
 
     [HttpPost ("add-book-catalog-preferences")]
-    public  IActionResult BookCatalogPreferences (string[] bookCatalogPreferencesIds) {
+    public IActionResult BookCatalogPreferences (string[] bookCatalogPreferencesIds) {
 
       foreach (var item in bookCatalogPreferencesIds) {
         var catalogItemDto = new CatalogCreateDto {
           Name = item,
           IsPublic = true,
-          UserId = GetUserId (),
+          UserId = UserId,
           FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (item + "-" + Guid.NewGuid ())
         };
 
-      _graphRepo.AddCatalog (catalogItemDto, true);
+        _graphRepo.AddCatalog (catalogItemDto, true);
       }
-      return Ok (new CatalogCreateDto());
+      return Ok (new CatalogCreateDto ());
     }
 
     [HttpGet ("get-preferences-catalog-list")]
     public async Task<IActionResult> GetCatalogForPreferences () {
       var result = await _userRepository.GetCatalogForPreferences ();
       return Ok (result);
-    }
-
-    private int GetUserId () {
-      var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-      int userId = 0;
-      if (identity != null)
-        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
-
-      return userId;
     }
   }
 }

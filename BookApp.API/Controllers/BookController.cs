@@ -138,7 +138,6 @@ namespace BookApp.API.Controllers {
       _bookGraph.ImportTags ();
       return Ok ();
     }
-
     [HttpGet ("import-books-categories")]
     public async Task<IActionResult> ImportBookCategories () {
 

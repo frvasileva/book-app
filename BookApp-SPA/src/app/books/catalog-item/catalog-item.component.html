@@ -13,7 +13,7 @@
         class="col-md-"
         *ngFor="let item of catalog.books | slice: 0:5; let i = index"
       >
-        <div class="book-thumbnail">
+        <div class="book-thumbnail" ngif="item!=null||item!=undefined">
           <a [routerLink]="['/books/details', item?.friendlyUrl]">
             <!-- <img src="{{ item.book.photoPath }}" width="100%" /> -->
             <img src="{{ item.photoPath }}" width="100%" />
@@ -21,19 +21,19 @@
         </div>
       </div>
       <div class="col-md-4">
-      <div class="book-thumbnail" *ngIf="bookCount == 5">
-        <div class="book-thumbnail-more">
-          <a
-            [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
-            class="card-link see-more"
-          >
-            <div class="more-info-icon-wrapper">
-              <i class="fas fa-angle-double-right"></i>
-            </div>
-          </a>
+        <div class="book-thumbnail" *ngIf="bookCount == 5">
+          <div class="book-thumbnail-more">
+            <a
+              [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
+              class="card-link see-more"
+            >
+              <div class="more-info-icon-wrapper">
+                <i class="fas fa-angle-double-right"></i>
+              </div>
+            </a>
+          </div>
         </div>
       </div>
-    </div>
       <div class="book-thumbnail" *ngIf="bookCount == 0">
         <p class="no-books-message">No books added</p>
       </div>

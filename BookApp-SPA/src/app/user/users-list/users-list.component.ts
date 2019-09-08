@@ -30,6 +30,11 @@ export class UsersListComponent implements OnInit {
       .select(state => state)
       .subscribe(res => {
         this.userList = Object.values(res.userState.users) as User[];
+
+        //Remove current user
+        this.userList = this.userList.filter(
+          item => item.friendlyUrl !== res.userState.currentUser
+        );
       });
   }
 }
