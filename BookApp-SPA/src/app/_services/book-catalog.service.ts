@@ -14,17 +14,19 @@ import { environment } from "src/environments/environment";
 import { CatalogItemDto } from "../_models/catalogItem";
 import { CatalogPureDto } from "../_models/catalogPureDto";
 
+import { AlertifyService } from "./alertify.service";
+
 @Injectable({
   providedIn: "root"
 })
 export class BookCatalogService {
   baseUrl = environment.apiUrl + "catalog/";
   jwtHelper = new JwtHelperService();
-  alertify: any;
 
   constructor(
     private http: HttpClient,
-    private store: Store<{ catalog: { catalog: CatalogCreateDto[] } }>
+    private store: Store<{ catalog: { catalog: CatalogCreateDto[] } }>,
+    private alertify: AlertifyService
   ) {}
 
   addCatalog(model: CatalogCreateDto) {
@@ -51,12 +53,9 @@ export class BookCatalogService {
   }
 
   getCatalog(friendlyUrl: string) {
-    return this.http.get(this.baseUrl + "get/" + friendlyUrl)
-    .subscribe(
+    return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
       data => {
-        this.store.dispatch(
-          new CatalogActions.GetCatalogsAction(data)
-        );
+        this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
       },
       error => {
         this.alertify.error(error);
@@ -78,8 +77,7 @@ export class BookCatalogService {
   }
 
   getPublicCatalogs() {
-    return this.http.get(this.baseUrl + "catalogs")
-    .subscribe(
+    return this.http.get(this.baseUrl + "catalogs").subscribe(
       data => {
         this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
       },

@@ -13,6 +13,7 @@ import { ActivatedRoute, Params } from "@angular/router";
 export class CatalogListComponent implements OnInit {
   catalogState: any;
   friendlyUrl: string;
+  catalogNumber: number;
 
   constructor(
     private route: ActivatedRoute,
@@ -36,6 +37,8 @@ export class CatalogListComponent implements OnInit {
             } else {
               this.catalogState = catState.catalog;
             }
+
+            this.catalogNumber = this.catalogState.length;
           });
       }
     });

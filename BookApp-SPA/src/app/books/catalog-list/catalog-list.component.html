@@ -1,4 +1,4 @@
-<div class="row">
+<div class="row" *ngIf="catalogNumber != 0">
   <div
     class="col-sm-6 col-md-6"
     *ngFor="let catalog of catalogState; let i = index"
@@ -6,5 +6,11 @@
     <div class="catalog-item-wrapper">
       <app-catalog-item [catalog]="catalog"></app-catalog-item>
     </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="catalogNumber == 0">
+  <div class="col-md">
+    <h4>User doesn't have catalogs!</h4>
   </div>
 </div>

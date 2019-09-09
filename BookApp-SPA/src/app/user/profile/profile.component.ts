@@ -24,6 +24,7 @@ export class ProfileComponent implements OnInit {
   books: Book[];
   friendlyUrl: string;
   isCurrentUser: boolean;
+  bookNumber: number;
 
   userBooks: any;
 
@@ -63,10 +64,9 @@ export class ProfileComponent implements OnInit {
     const result = this.bookService
       .getBooksAddedByUser(this.friendlyUrl)
       .subscribe(data => {
-        console.log("this.friendlyUrl", this.friendlyUrl);
         this.store.dispatch(new BookActions.SetBooksAction(data));
         this.userBooks = data;
-        console.log("books data", data);
+        this.bookNumber = this.userBooks.length;
       });
   }
 

@@ -285,7 +285,7 @@ namespace BookApp.API.Data {
             boooks = Return.As<IEnumerable<BookItemDto>>
             ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
         })
-        .OrderByDescending ("book.createdOn");
+        .OrderByDescending ("catalog.centrality");
 
       var catalogList = new List<CatalogItemDto> ();
 

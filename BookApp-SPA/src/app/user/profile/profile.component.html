@@ -22,7 +22,12 @@
     <tab heading="Books" id="booksTab" (select)="onSelect($event)">
       <div class="row">
         <div class="col-md">
-          <h2 class="section-title">User added books:</h2>
+          <h2 class="section-title" *ngIf="bookNumber > 0">
+            User added books:
+          </h2>
+          <h2 class="section-title" *ngIf="bookNumber == 0">
+            There are no books added
+          </h2>
         </div>
       </div>
       <div class="row">
