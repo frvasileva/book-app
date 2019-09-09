@@ -1,6 +1,6 @@
 <div class="container">
   <div class="row">
-    <div class="col-md-12 card-wrapper" *ngFor="let item of userList">
+    <div class="col-md-6 card-wrapper" *ngFor="let item of userList">
       <a [routerLink]="['/user/profile/', item.friendlyUrl]">
         <app-profile-card
           [profile]="item"

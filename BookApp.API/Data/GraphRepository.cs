@@ -285,7 +285,7 @@ namespace BookApp.API.Data {
             boooks = Return.As<IEnumerable<BookItemDto>>
             ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
         })
-        .OrderByDescending ("catalog.addedOn");
+        .OrderByDescending ("book.createdOn");
 
       var catalogList = new List<CatalogItemDto> ();
 
@@ -293,11 +293,13 @@ namespace BookApp.API.Data {
 
         var catList = new CatalogItemDto ();
         catList = item.catalogs;
-
-        foreach (var bk in item.boooks) {
+        foreach (var bk in item.boooks.Where (b => b.Id != 0)) {
           catList.Books.Add (bk);
         }
-        catalogList.Add (catList);
+
+        //Show catalog only if there are books assigned to it
+        if (catList.Books.Count > 0)
+          catalogList.Add (catList);
       }
 
       return catalogList;
