@@ -24,7 +24,7 @@ namespace BookApp.API.Data {
 
         Task<PagedList<User>> GetUsers (UserParams userParams);
 
-        Task<UserProfileDto> GetUserProfile (string friendlyUrl);
+        Task<UserProfileDto> GetUserProfile (string friendlyUrl, int currentUserId);
 
         Task<List<UserProfileDto>> GetAllProfiles (int currentUserId);
 

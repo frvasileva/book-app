@@ -91,10 +91,15 @@ namespace BookApp.API.Data {
             return user;
         }
 
-        public async Task<UserProfileDto> GetUserProfile (string friendlyUrl) {
-            var currentUser = await _context.Users.Include (itm => itm.Books).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
-            var mappedProfile = _mapper.Map<UserProfileDto> (currentUser);
+        public async Task<UserProfileDto> GetUserProfile (string friendlyUrl, int currentUserId) {
+            var userProfile = await _context.Users.Include (itm => itm.Books).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
+            var mappedProfile = _mapper.Map<UserProfileDto> (userProfile);
 
+            var userFollowers = await _context.UserFollowers.Where (itm => itm.FollowerUserId == userProfile.Id && itm.UserId == currentUserId).ToListAsync ();
+            if (userFollowers.Count > 0) {
+                mappedProfile.IsFollowedByCurrentUser = true;
+            }
+            
             return mappedProfile;
         }
 

@@ -39,7 +39,6 @@ export class ProfileComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe(params => {
       this.friendlyUrl = params["friendlyUrl"];
-      console.log(" this.friendlyUrl", this.friendlyUrl);
       this.store
         .select(state => state.userState)
         .subscribe(userState => {
@@ -81,12 +80,14 @@ export class ProfileComponent implements OnInit {
   }
 
   setSeoMetaTags() {
-    this.titleService.setTitle(
-      this.profile.knownAs + settings.seo_appName_title
-    );
-    this.metaTagService.updateTag({
-      name: "description",
-      content: this.profile.knownAs
-    });
+    if (this.profile) {
+      this.titleService.setTitle(
+        this.profile.knownAs + settings.seo_appName_title
+      );
+      this.metaTagService.updateTag({
+        name: "description",
+        content: this.profile.knownAs
+      });
+    }
   }
 }

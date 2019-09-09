@@ -38,6 +38,16 @@ namespace BookApp.API.Controllers {
         return userId;
       }
     }
+    private string UserFriendlyUrl {
+      get {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        string friendlyUrl = "";
+        if (identity != null)
+          friendlyUrl = identity.FindFirst (ClaimTypes.Name).Value;
+
+        return friendlyUrl;
+      }
+    }
 
     public ProfileController (IConfiguration config, IMapper mapper,
       IUserRepository userRepository,
@@ -65,7 +75,7 @@ namespace BookApp.API.Controllers {
     [HttpGet ("get/{friendlyUrl}")]
     public async Task<IActionResult> GetUserProfile (string friendlyUrl) {
 
-      var profile = await _userRepository.GetUserProfile (friendlyUrl);
+      var profile = await _userRepository.GetUserProfile (friendlyUrl, UserId);
 
       if (profile == null)
         return BadRequest (string.Format ("No user with such friendlyUrl {0}", friendlyUrl));
@@ -133,13 +143,16 @@ namespace BookApp.API.Controllers {
     public IActionResult FollowUser (int userIdToFollow) {
 
       var result = _graphRepo.FollowUser (userIdToFollow, UserId);
-      return Ok (result);
+      var followUser = _userRepository.FollowUser (userIdToFollow, UserId);
+
+      return Ok (followUser);
     }
 
     [HttpGet ("unfollow-user/{userIdToFollow}")]
     public IActionResult UnfollowUser (int userIdToFollow) {
 
       _graphRepo.UnfollowUser (userIdToFollow, UserId);
+      _userRepository.UnfollowUser (userIdToFollow, UserId);
 
       return Ok ();
     }

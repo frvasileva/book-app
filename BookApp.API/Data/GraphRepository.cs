@@ -244,7 +244,13 @@ namespace BookApp.API.Data {
         .CreateUnique ("(profile)-[r:FOLLOW_USER {date}]->(follower)")
         .WithParam ("date", new { addedOn = DateTime.Now }).ExecuteWithoutResults ();
 
-      return new UserFollowersDto ();
+      var followerDto = new UserFollowersDto () {
+        Id = userIdToFollow,
+        FollowerUserId = userIdFollower,
+        UserId = userIdToFollow
+      };
+
+      return followerDto;
     }
 
     public UserFollowersDto UnfollowUser (int userIdToFollow, int userIdFollower) {
