@@ -1,0 +1,42 @@
+<div class="row">
+  <div class="col-md-12">
+    <div class="card-wrapper">
+      <div class="image-wrapper">
+        <img
+          class="card-img-top"
+          src="{{ profile?.avatarPath }}"
+          alt="{{ profile?.knownAs }}"
+        />
+      </div>
+      <p class="card-title">{{ profile?.knownAs }}</p>
+      <p
+        class="location-info"
+        *ngIf="profile.country != null && profile.city != null"
+      >
+        <i class="glyphicon glyphicon-map-marker"></i>
+        {{ profile?.city }}
+        <span *ngIf="profile.country != null">, {{ profile?.country }} </span>
+      </p>
+
+      <button
+        type="button"
+        class="button positive medium full-width"
+        *ngIf="!isFollowing"
+        (click)="followUser(profile?.id)"
+      >
+        <span class="glyphicon glyphicon-plus"></span>
+        Follow
+      </button>
+
+      <button
+        type="button"
+        class="button primary medium full-width"
+        *ngIf="isFollowing"
+        (click)="unFollowUser(profile?.id)"
+      >
+        <span class="glyphicon glyphicon-minus"></span>
+        Unfollow
+      </button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+.card-wrapper {
+  padding: 5px;
+  border: 1px solid transparent;
+  opacity: 0.8;
+
+  &:hover {
+    transition: 0.4s;
+    border: 1px solid gainsboro;
+    opacity: 1;
+  }
+
+  p {
+    font-weight: bold;
+  }
+
+  img {
+    margin-bottom: 15px;
+  }
+}

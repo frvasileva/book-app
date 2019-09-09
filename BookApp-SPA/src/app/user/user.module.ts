@@ -18,6 +18,7 @@ import { ProfilePhotoEditComponent } from './profile-photo-edit/profile-photo-ed
 import { SharedModule } from '../_shared/shared/shared.module';
 import { InviteFriendComponent } from './invite-friend/invite-friend.component';
 import { UserBookPreferencesComponent } from './user-book-preferences/user-book-preferences.component';
+import { ProfilePreviewCardComponent } from './profile-preview-card/profile-preview-card.component';
 
 @NgModule({
   declarations: [
@@ -30,7 +31,8 @@ import { UserBookPreferencesComponent } from './user-book-preferences/user-book-
     ProfileEditComponent,
     ProfilePhotoEditComponent,
     InviteFriendComponent,
-    UserBookPreferencesComponent
+    UserBookPreferencesComponent,
+    ProfilePreviewCardComponent
   ],
   imports: [
     CommonModule,
