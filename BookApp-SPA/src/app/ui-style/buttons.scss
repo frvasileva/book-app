@@ -109,8 +109,33 @@
   // HELPERS:
 
   & .glyphicon,
-  & .fas
-   {
+  & .fas {
     margin-right: 10px;
+  }
+}
+
+@media screen and (max-width: 992px) {
+  .button {
+    font-size: 12px;
+    margin: 0 auto;
+
+    &.medium {
+      padding: 8px;
+    }
+
+    &.full-width {
+      max-width: 300px !important;
+    }
+  }
+
+  .card-wrapper img {
+    max-width: 150px;
+    margin: 0 auto;
+    display: block;
+    opacity: 1;
+  }
+
+  .card-wrapper p {
+    font-size: 14px;
   }
 }

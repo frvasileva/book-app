@@ -1,12 +1,17 @@
 .card-wrapper {
-  padding: 5px;
-  border: 1px solid transparent;
-  opacity: 0.8;
+  padding: 10px;
+  border: 2px solid transparent;
 
   &:hover {
     transition: 0.4s;
-    border: 1px solid gainsboro;
+    border: 2px solid darkslategrey;
+    border-radius: 5px;
     opacity: 1;
+  }
+
+  &:hover img {
+    opacity: 1;
+    transition: 0.2s;
   }
 
   p {
@@ -15,5 +20,6 @@
 
   img {
     margin-bottom: 15px;
+    opacity: 0.8;
   }
 }
