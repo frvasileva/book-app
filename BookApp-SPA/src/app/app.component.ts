@@ -73,6 +73,5 @@ export class AppComponent implements OnInit {
       this.authService.getCurrentUser();
       this.bookSaverService.getUserCatalogList(friendlyUrl);
     }
-    console.log("app init here");
   }
 }

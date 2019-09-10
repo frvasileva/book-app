@@ -507,14 +507,11 @@ namespace BookApp.API.Data {
 
       return strings;
     }
-    public List<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId) {
+    public Helpers.PagedList<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId) {
 
       var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
 
       var getFavCatalogs = GetFavoriteCatalogsForUser (userId);
-      // getFavCatalogs.Add ("'novels'");
-      // getFavCatalogs.Add ("'Romance'");
-      // getFavCatalogs.Add ("'my-library'");
       string combindedString = "[" + string.Join (",", getFavCatalogs.ToArray ()) + "]";
 
       var whereClause = "catalog.name in " + combindedString;
@@ -522,12 +519,21 @@ namespace BookApp.API.Data {
         _graphClient.Cypher
         .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
         .Where (whereClause)
-        .Return ((catalog, book) => new {
+        .Return ((catalog, book, count) => new {
           catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
             bk = book.As<BookDetailsDto> ()
         })
-        // .OrderByDescending ("book.avarageRating")
         .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
+
+      var totalBooks =
+        _graphClient.Cypher
+        .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .Where (whereClause)
+        .Return ((book) => new {
+          Count = Return.As<int> ("count (distinct book.title)")
+        });
+
+      var totalBooksCount = totalBooks.Results.FirstOrDefault ().Count;
 
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
@@ -541,7 +547,9 @@ namespace BookApp.API.Data {
 
         bookList.Add (bd);
       }
-      return bookList;
+
+      var pagedList = new Helpers.PagedList<BookDetailsDto> (bookList, totalBooksCount, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
+      return pagedList;
     }
 
     public List<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId) {

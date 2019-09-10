@@ -73,15 +73,14 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("recommend-relevance/{currentPage}")]
     public async Task<IActionResult> RecommendationByRelevance (int currentPage = 0) {
+      var result = _bookGraph.RecommendationByRelevance (currentPage, UserId);
 
-      var books = _bookGraph.RecommendationByRelevance (currentPage, UserId);
-
-      foreach (var item in books) {
+      foreach (var item in result.Items) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
           item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
       }
 
-      return Ok (books);
+      return Ok (new { items = result.Items, totalNumber = result.TotalCount, currentPage = result.CurrentPage });
     }
 
     [HttpGet ("recommend-novelty/{currentPage}")]
@@ -138,6 +137,7 @@ namespace BookApp.API.Controllers {
       _bookGraph.ImportTags ();
       return Ok ();
     }
+
     [HttpGet ("import-books-categories")]
     public async Task<IActionResult> ImportBookCategories () {
 

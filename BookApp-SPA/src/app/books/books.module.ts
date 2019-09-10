@@ -22,6 +22,7 @@ import { CatalogCreateComponent } from './catalog-create/catalog-create.componen
 import { CatalogDetailsComponent } from './catalog-details/catalog-details.component';
 import { PublicCatalogListComponent } from './public-catalog-list/public-catalog-list.component';
 import { CatalogListPureComponent } from './catalog-list-pure/catalog-list-pure.component';
+import { BooksListByCategoryComponent } from './books-list-by-category/books-list-by-category.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { CatalogListPureComponent } from './catalog-list-pure/catalog-list-pure.
     CatalogCreateComponent,
     CatalogDetailsComponent,
     PublicCatalogListComponent,
-    CatalogListPureComponent
+    CatalogListPureComponent,
+    BooksListByCategoryComponent
   ],
   imports: [
     CommonModule,

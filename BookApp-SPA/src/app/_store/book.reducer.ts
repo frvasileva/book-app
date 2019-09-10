@@ -1,7 +1,8 @@
 import * as BookActions from "./book.actions";
 
 const initialState = {
-  books: []
+  books: [],
+  totalNumber: 0
 };
 
 export function bookReducer(
@@ -12,7 +13,8 @@ export function bookReducer(
     case BookActions.SET_BOOKS: {
       return {
         ...state,
-        books: [...state.books, ...action.payload]
+        books: [...state.books, ...action.payload.items],
+        totalNumber: action.payload.totalNumber
       };
     }
     case BookActions.SET_BOOK: {

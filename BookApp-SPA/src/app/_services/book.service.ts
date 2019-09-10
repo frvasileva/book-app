@@ -71,6 +71,8 @@ export class BookService {
     return this.http
       .get(this.baseUrl + "recommend-relevance/" + currentPage)
       .subscribe(data => {
+        console.log("data", data.items);
+
         this.store.dispatch(new BookActions.SetBooksAction(data));
       });
   }
@@ -85,7 +87,7 @@ export class BookService {
     return this.http
       .get(this.baseUrl + "recommend-novelty/" + currentPage)
       .subscribe(data => {
-        this.store.dispatch(new BookActions.SetBooksAction(data));
+        this.store.dispatch(new BookActions.SetBooksAction(data.items));
       });
   }
 

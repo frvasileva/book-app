@@ -1,0 +1,24 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-8"><h2>Relevance:</h2></div>
+    <div class="col-md-4 text-right">
+      <a
+        routerLink="add"
+        routerLinkActive="active"
+        class="button medium positive"
+      >
+        <i class="fas fa-plus-circle"></i>Add Book</a
+      >
+    </div>
+  </div>
+  <div class="row">
+    <div
+      class="col-sm-4 col-md-2 col-xs-12"
+      *ngFor="let book of booksByRelevance; let i = index"
+    >
+      <div class="book-card-wrapper">
+        <app-book-card-item [book]="book"></app-book-card-item>
+      </div>
+    </div>
+  </div>
+</div>
