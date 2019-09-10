@@ -80,7 +80,7 @@ export class BookService {
     return this.http
       .get(this.baseUrl + "recommend-serendipity/" + currentPage)
       .subscribe(data => {
-        this.store.dispatch(new BookActions.SetBooksAction(data));
+        this.store.dispatch(new BookActions.SetBooksAction(data.items));
       });
   }
   RecommendByNovelty(currentPage: number) {

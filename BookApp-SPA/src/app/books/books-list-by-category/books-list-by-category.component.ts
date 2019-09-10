@@ -19,12 +19,18 @@ export class BooksListByCategoryComponent implements OnInit {
   booksByRelevance: any;
   booksByNovelty: any;
   booksBySerendipity: any;
+
+
   url: string;
+  currentPage: number;
+  totalItems: number;
   queryMade = false;
+
+  currentGridPage: number;
 
   constructor(
     private store: Store<{
-      bookState: { books: Book[] };
+      bookState: { books: Book[]; totalNumber: number };
     }>,
     private bookService: BookService,
     private titleService: Title,
@@ -36,13 +42,21 @@ export class BooksListByCategoryComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.url = params.category;
+      this.currentPage = params.pageNumber;
+      console.log("current page", params.pageNumber);
     });
 
     this.store.subscribe(state => {
-      this.selectCategoryToShow(state, 1);
+      this.totalItems = state.bookState.totalNumber;
+      this.selectCategoryToShow(state, this.currentPage);
     });
 
     this.setSeoMetaTags();
+  }
+
+  pageChanged(event: any): void {
+    this.currentGridPage = event.page;
+    this.bookService.RecommendByRelevance(this.currentGridPage - 1);
   }
 
   selectCategoryToShow(state, currentPage) {
@@ -53,9 +67,9 @@ export class BooksListByCategoryComponent implements OnInit {
 
     switch (this.url.trim().toUpperCase()) {
       case "RELEVANCE": {
-        this.booksByRelevance = state.bookState.books.filter(
-          b => b.recommendationCategory === "RELEVANCE"
-        );
+        this.booksByRelevance = state.bookState.books
+          .filter(b => b.recommendationCategory === "RELEVANCE")
+          .slice(this.currentGridPage + 12, 12);
 
         if (this.booksByRelevance.length === 0 && !this.queryMade) {
           this.queryMade = true;

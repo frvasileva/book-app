@@ -2,7 +2,7 @@ import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
 import { RouterModule } from "@angular/router";
 import { ReactiveFormsModule } from "@angular/forms";
-import { BsDropdownModule, TabsModule } from "ngx-bootstrap";
+import { TabsModule } from "ngx-bootstrap";
 
 import { UserComponent } from "./user.component";
 import { SignupComponent } from "./signup/signup.component";

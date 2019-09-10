@@ -3,7 +3,7 @@ import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { NgModule } from "@angular/core";
 import { HttpClientModule, HTTP_INTERCEPTORS } from "@angular/common/http";
 import { StoreModule } from "@ngrx/store";
-import { BsDropdownModule, TabsModule } from "ngx-bootstrap";
+import { BsDropdownModule, TabsModule, PaginationModule } from "ngx-bootstrap";
 import { FacebookModule } from "ngx-facebook";
 
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
@@ -61,6 +61,7 @@ import { LoadingScreenInterceptor } from "./_helpers/loading.interceptor";
     BsDropdownModule.forRoot(),
     FileUploadModule,
     TabsModule.forRoot(),
+    PaginationModule.forRoot(),
     StoreModule.forRoot({
       bookState: bookReducer,
       messageList: messageReducer,

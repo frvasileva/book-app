@@ -24,7 +24,7 @@ const booksRoutes: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: ":category",
+        path: ":category/:pageNumber",
         component: BooksListByCategoryComponent,
         canActivate: [AuthenticationGuard]
       },

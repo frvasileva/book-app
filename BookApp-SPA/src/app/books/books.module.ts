@@ -24,6 +24,9 @@ import { PublicCatalogListComponent } from './public-catalog-list/public-catalog
 import { CatalogListPureComponent } from './catalog-list-pure/catalog-list-pure.component';
 import { BooksListByCategoryComponent } from './books-list-by-category/books-list-by-category.component';
 
+
+import { PaginationModule } from "ngx-bootstrap";
+
 @NgModule({
   declarations: [
     BooksListComponent,
@@ -50,7 +53,8 @@ import { BooksListByCategoryComponent } from './books-list-by-category/books-lis
     FormsModule,
     ReactiveFormsModule,
     FileUploadModule,
-    SharedModule
+    SharedModule,
+    PaginationModule.forRoot()
   ],
   exports: [BookCardItemComponent, CatalogListComponent]
 })
