@@ -1,10 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Book } from "../book.model";
 import { Store } from "@ngrx/store";
-import { CatalogItemDto } from "src/app/_models/catalogItem";
 import { Title, Meta } from "@angular/platform-browser";
 import { BookService } from "src/app/_services/book.service";
-import { Observable } from "rxjs";
 import { settings } from "src/app/_shared/settings";
 import { ActivatedRoute, Params, Router } from "@angular/router";
 
@@ -14,19 +12,17 @@ import { ActivatedRoute, Params, Router } from "@angular/router";
   styleUrls: ["./books-list-by-category.component.scss"]
 })
 export class BooksListByCategoryComponent implements OnInit {
-  bookListState: Observable<{ books: Book[] }>;
-  catalogsState: Observable<{ catalogs: CatalogItemDto[] }>;
-  booksByRelevance: any;
-  booksByNovelty: any;
-  booksBySerendipity: any;
-
+  books: any;
 
   url: string;
   currentPage: number;
   totalItems: number;
   queryMade = false;
 
-  currentGridPage: number;
+  isPageChanged = false;
+  startItem = 0;
+  currentGridPage = 0;
+  itemsPerPage = 12;
 
   constructor(
     private store: Store<{
@@ -41,68 +37,39 @@ export class BooksListByCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
-      this.url = params.category;
+      this.url = params.category.trim().toUpperCase();
       this.currentPage = params.pageNumber;
-      console.log("current page", params.pageNumber);
-    });
-
-    this.store.subscribe(state => {
-      this.totalItems = state.bookState.totalNumber;
-      this.selectCategoryToShow(state, this.currentPage);
+      this.selectCategoryToShow();
     });
 
     this.setSeoMetaTags();
   }
 
   pageChanged(event: any): void {
-    this.currentGridPage = event.page;
-    this.bookService.RecommendByRelevance(this.currentGridPage - 1);
+    this.currentGridPage = event.page - 1;
+    this.isPageChanged = true;
+    this.selectCategoryToShow();
   }
 
-  selectCategoryToShow(state, currentPage) {
-    console.log("URL", this.url.trim().toUpperCase());
-    if (this.url === undefined) {
-      return;
-    }
-
-    switch (this.url.trim().toUpperCase()) {
-      case "RELEVANCE": {
-        this.booksByRelevance = state.bookState.books
-          .filter(b => b.recommendationCategory === "RELEVANCE")
-          .slice(this.currentGridPage + 12, 12);
-
-        if (this.booksByRelevance.length === 0 && !this.queryMade) {
-          this.queryMade = true;
-          this.bookService.RecommendByRelevance(currentPage);
-        }
-        break;
+  selectCategoryToShow() {
+    this.store.subscribe(state => {
+      this.totalItems = state.bookState.totalNumber;
+      if (this.url === undefined) {
+        return;
       }
-      case "NOVELTY": {
-        this.booksByNovelty = state.bookState.books.filter(
-          b => b.recommendationCategory === "NOVELTY"
-        );
 
-        if (this.booksByRelevance.length === 0 && !this.queryMade) {
-          this.queryMade = true;
-          this.bookService.RecommendByNovelty(currentPage);
-        }
-        break;
-      }
-      case "SERENDIPITY": {
-        this.booksBySerendipity = state.bookState.books.filter(
-          b => b.recommendationCategory === "SERENDIPITY"
-        );
+      this.startItem = this.itemsPerPage * this.currentGridPage;
 
-        if (this.booksByRelevance.length === 0 && !this.queryMade) {
-          this.queryMade = true;
-          this.bookService.RecommendBySerendipity(currentPage);
-        }
-        break;
+      this.books = state.bookState.books
+        .filter(b => b.recommendationCategory === this.url)
+        .slice(this.startItem, this.startItem + this.itemsPerPage);
+
+      if ((this.books.length === 0 && !this.queryMade) || this.isPageChanged) {
+        this.queryMade = true;
+        this.isPageChanged = false;
+        this.bookService.RecommendByRelevance(this.currentGridPage);
       }
-      default:
-        this.router.navigate(["/books"]);
-        break;
-    }
+    });
   }
 
   setSeoMetaTags() {
