@@ -67,7 +67,7 @@ export class BooksListByCategoryComponent implements OnInit {
       if ((this.books.length === 0 && !this.queryMade) || this.isPageChanged) {
         this.queryMade = true;
         this.isPageChanged = false;
-        this.bookService.RecommendByRelevance(this.currentGridPage);
+        this.bookService.getBooksByCategory(this.url, this.currentGridPage);
       }
     });
   }
@@ -80,3 +80,5 @@ export class BooksListByCategoryComponent implements OnInit {
     });
   }
 }
+
+

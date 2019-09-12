@@ -67,6 +67,23 @@ export class BookService {
     );
   }
 
+  getBooksByCategory(category: string, currentPage: number) {
+    switch (category) {
+      case "relevance": {
+        this.RecommendByRelevance(currentPage);
+        break;
+      }
+      case "serendipity": {
+        this.RecommendBySerendipity(currentPage);
+        break;
+      }
+      case "novelty": {
+        this.RecommendByNovelty(currentPage);
+        break;
+      }
+    }
+  }
+
   RecommendByRelevance(currentPage: number) {
     return this.http
       .get(this.baseUrl + "recommend-relevance/" + currentPage)
