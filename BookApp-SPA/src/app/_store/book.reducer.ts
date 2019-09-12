@@ -11,6 +11,7 @@ export function bookReducer(
 ) {
   switch (action.type) {
     case BookActions.SET_BOOKS: {
+      console.log("...action.payload.items", action.payload.items);
       return {
         ...state,
         books: [...state.books, ...action.payload.items],

@@ -36,8 +36,8 @@ namespace BookApp.API.Data {
 
     #region Recommendations
     Helpers.PagedList<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId);
-    List<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId);
-    List<BookDetailsDto> RecommendByNovelty (int currentPage, int userId);
+    Helpers.PagedList<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId);
+    Helpers.PagedList<BookDetailsDto> RecommendByNovelty (int currentPage, int userId);
 
     List<string> GetFavoriteCatalogsForUser (int userId);
     #endregion Recommendations

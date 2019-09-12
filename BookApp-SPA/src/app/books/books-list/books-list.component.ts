@@ -30,7 +30,6 @@ export class BooksListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-
     this.bookService.RecommendByNovelty(0);
     this.bookService.RecommendByRelevance(0);
     this.bookService.RecommendBySerendipity(0);

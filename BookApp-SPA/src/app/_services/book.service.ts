@@ -12,6 +12,7 @@ import { AlertifyService } from "./alertify.service";
 
 import * as BookActions from "../_store/book.actions";
 import { environment } from "src/environments/environment";
+import { debug } from "util";
 
 @Injectable({
   providedIn: "root"
@@ -68,7 +69,7 @@ export class BookService {
   }
 
   getBooksByCategory(category: string, currentPage: number) {
-    switch (category) {
+    switch (category.toLowerCase()) {
       case "relevance": {
         this.RecommendByRelevance(currentPage);
         break;
@@ -88,8 +89,6 @@ export class BookService {
     return this.http
       .get(this.baseUrl + "recommend-relevance/" + currentPage)
       .subscribe(data => {
-        console.log("data", data.items);
-
         this.store.dispatch(new BookActions.SetBooksAction(data));
       });
   }
@@ -97,14 +96,14 @@ export class BookService {
     return this.http
       .get(this.baseUrl + "recommend-serendipity/" + currentPage)
       .subscribe(data => {
-        this.store.dispatch(new BookActions.SetBooksAction(data.items));
+        this.store.dispatch(new BookActions.SetBooksAction(data));
       });
   }
   RecommendByNovelty(currentPage: number) {
     return this.http
       .get(this.baseUrl + "recommend-novelty/" + currentPage)
       .subscribe(data => {
-        this.store.dispatch(new BookActions.SetBooksAction(data.items));
+        this.store.dispatch(new BookActions.SetBooksAction(data));
       });
   }
 

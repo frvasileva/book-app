@@ -1,4 +1,6 @@
 import { Component, OnInit } from "@angular/core";
+import { Location } from "@angular/common";
+
 import { Book } from "../book.model";
 import { Store } from "@ngrx/store";
 import { Title, Meta } from "@angular/platform-browser";
@@ -32,7 +34,8 @@ export class BooksListByCategoryComponent implements OnInit {
     private titleService: Title,
     private metaTagService: Meta,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {}
 
   ngOnInit() {
@@ -47,6 +50,10 @@ export class BooksListByCategoryComponent implements OnInit {
 
   pageChanged(event: any): void {
     this.currentGridPage = event.page - 1;
+
+    let buildUrl = "/book/" + this.url.toLocaleLowerCase() + "/" + this.currentGridPage;
+    this.location.replaceState(buildUrl);
+
     this.isPageChanged = true;
     this.selectCategoryToShow();
   }
@@ -67,6 +74,7 @@ export class BooksListByCategoryComponent implements OnInit {
       if ((this.books.length === 0 && !this.queryMade) || this.isPageChanged) {
         this.queryMade = true;
         this.isPageChanged = false;
+        debugger;
         this.bookService.getBooksByCategory(this.url, this.currentGridPage);
       }
     });
@@ -80,5 +88,3 @@ export class BooksListByCategoryComponent implements OnInit {
     });
   }
 }
-
-

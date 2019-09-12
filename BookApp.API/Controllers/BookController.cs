@@ -86,27 +86,27 @@ namespace BookApp.API.Controllers {
     [HttpGet ("recommend-novelty/{currentPage}")]
     public async Task<IActionResult> RecommendByNovelty (int currentPage = 0) {
 
-      var books = _bookGraph.RecommendByNovelty (currentPage, UserId);
+      var result = _bookGraph.RecommendByNovelty (currentPage, UserId);
 
-      foreach (var item in books) {
+      foreach (var item in result.Items) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
           item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
       }
 
-      return Ok (books);
+      return Ok (new { items = result.Items, totalNumber = result.TotalCount, currentPage = result.CurrentPage });
     }
 
     [HttpGet ("recommend-serendipity/{currentPage}")]
     public async Task<IActionResult> RecommendBySerendepity (int currentPage) {
 
-      var books = _bookGraph.RecommendBySerendipity (currentPage, UserId);
+      var result = _bookGraph.RecommendBySerendipity (currentPage, UserId);
 
-      foreach (var item in books) {
+      foreach (var item in result.Items) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
           item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
       }
 
-      return Ok (books);
+      return Ok (new { items = result.Items, totalNumber = result.TotalCount, currentPage = result.CurrentPage });
     }
 
     [HttpGet ("get/{friendlyUrl?}")]

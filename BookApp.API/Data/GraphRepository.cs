@@ -552,7 +552,7 @@ namespace BookApp.API.Data {
       return pagedList;
     }
 
-    public List<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId) {
+    public Helpers.PagedList<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId) {
 
       var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
 
@@ -568,6 +568,17 @@ namespace BookApp.API.Data {
         .OrderByDescending ("rand()")
         .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
+      var totalBooks =
+        _graphClient.Cypher
+        .Match ("(book:Book)")
+        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
+        .Where ((BookDetailsDto book) => book.AvarageRating > 3)
+        .Return ((catalog, book, rand) => new {
+          Count = Return.As<int> ("count (distinct book.title)")
+        });
+
+      var totalBooksCount = totalBooks.Results.FirstOrDefault ().Count;
+
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
 
@@ -580,10 +591,13 @@ namespace BookApp.API.Data {
         }
         bookList.Add (bd);
       }
-      return bookList;
+
+      var pagedList = new Helpers.PagedList<BookDetailsDto> (bookList, totalBooksCount, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
+
+      return pagedList;
     }
 
-    public List<BookDetailsDto> RecommendByNovelty (int currentPage, int userId) {
+    public Helpers.PagedList<BookDetailsDto> RecommendByNovelty (int currentPage, int userId) {
 
       var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
 
@@ -598,6 +612,16 @@ namespace BookApp.API.Data {
         .OrderByDescending ("book.addedOn")
         .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
+      var totalBooks =
+        _graphClient.Cypher
+        .Match ("(book:Book)")
+        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
+        .Return ((book) => new {
+          Count = Return.As<int> ("count (distinct book.title)")
+        });
+
+      var totalBooksCount = totalBooks.Results.FirstOrDefault ().Count;
+
       var res = result.Results;
       var bookList = new List<BookDetailsDto> ();
 
@@ -610,7 +634,9 @@ namespace BookApp.API.Data {
 
         bookList.Add (bd);
       }
-      return bookList;
+      var pagedList = new Helpers.PagedList<BookDetailsDto> (bookList, totalBooksCount, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
+
+      return pagedList;
     }
     #endregion Recommendations
   }
