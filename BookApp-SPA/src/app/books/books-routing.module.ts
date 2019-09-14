@@ -11,7 +11,7 @@ import { CatalogListComponent } from "./catalog-list/catalog-list.component";
 import { CatalogDetailsComponent } from "./catalog-details/catalog-details.component";
 import { AuthenticationGuard } from "../_guards/authentication.guard";
 import { PublicCatalogListComponent } from "./public-catalog-list/public-catalog-list.component";
-import { BooksListByCategoryComponent } from './books-list-by-category/books-list-by-category.component';
+import { BooksListByCategoryComponent } from "./books-list-by-category/books-list-by-category.component";
 
 const booksRoutes: Routes = [
   {
@@ -24,13 +24,13 @@ const booksRoutes: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: ":category/:pageNumber",
-        component: BooksListByCategoryComponent,
+        path: "details/:url",
+        component: BooksDetailComponent,
         canActivate: [AuthenticationGuard]
       },
       {
-        path: "details/:url",
-        component: BooksDetailComponent,
+        path: ":category/:pageNumber",
+        component: BooksListByCategoryComponent,
         canActivate: [AuthenticationGuard]
       },
       {

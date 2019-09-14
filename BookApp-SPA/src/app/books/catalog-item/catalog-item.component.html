@@ -5,6 +5,8 @@
   >
     {{ catalog?.name }}
   </a>
+  <button (click)="editCatalog(catalog.id, catalog.isPublic)">Click</button>
+  <app-toggle-button [isChecked]="catalog.isPublic"></app-toggle-button>
   <div class="container">
     <div class="row">
       <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs"> -->

@@ -34,6 +34,14 @@ export function catalogReducer(
         catalog: [...state.catalog, action.payload]
       };
     }
+    case CatalogActions.UPDATE_CATALOG: {
+      const { id, isPublic } = action.payload;
+      const catalog = state.catalog.find(item => {
+        return item.id === id;
+      });
+      catalog.isPublic = isPublic;
+      return state;
+    }
     case BookActions.REMOVE_BOOK_FROM_CATALOG: {
       const { bookId, catalogId } = action.payload;
       const catalog = state.catalog.find(

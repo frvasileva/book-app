@@ -1,5 +1,6 @@
 import { Action } from "@ngrx/store";
 import { CatalogCreateDto } from "../_models/catalogCreateDto";
+import { CatalogEditItemDto } from "../_models/catalogEditItemDto";
 
 export const GET_CATALOGS = "GET_CATALOGS";
 export const ADD_CATALOG = "ADD_CATALOG";
@@ -16,7 +17,7 @@ export class AddCatalogAction implements Action {
 }
 export class UpdateCatalogAction implements Action {
   readonly type = UPDATE_CATALOG;
-  payload: CatalogCreateDto;
+  constructor(public payload: CatalogEditItemDto) {}
 }
 export class DeleteCatalogAction implements Action {
   readonly type = DELETE_CATALOG;

@@ -15,6 +15,7 @@ import { CatalogItemDto } from "../_models/catalogItem";
 import { CatalogPureDto } from "../_models/catalogPureDto";
 
 import { AlertifyService } from "./alertify.service";
+import { CatalogEditItemDto } from "../_models/catalogEditItemDto";
 
 @Injectable({
   providedIn: "root"
@@ -84,6 +85,18 @@ export class BookCatalogService {
       error => {
         this.alertify.error(error);
       }
+    );
+  }
+
+  editCatalog(model: CatalogEditItemDto) {
+    return this.http.post(this.baseUrl + "edit-catalog", model).pipe(
+      map((response: CatalogEditItemDto) => {
+        this.store.dispatch(
+          new CatalogActions.UpdateCatalogAction(<CatalogEditItemDto>response)
+        );
+
+        return response;
+      })
     );
   }
 }

@@ -21,6 +21,7 @@ namespace BookApp.API.Data {
     List<CatalogItemDto> GetAllPublicCatalogs ();
     List<CatalogItemDto> GetCatalog (string friendlyUrl);
 
+    CatalogEditDto EditCatalog (int catalogId, bool isPublic, int userId);
     #region User
 
     void RegisterUser (ProfileDto user);

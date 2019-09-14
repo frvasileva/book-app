@@ -188,6 +188,7 @@ namespace BookApp.API.Controllers {
 
     #endregion
 
+
     [HttpPost ("add-photo/{friendlyUrl}")]
     public async Task<IActionResult> AddPhotoForBook (string friendlyUrl, [FromForm] PhotoForCreationDto photoForCreationDto) {
 

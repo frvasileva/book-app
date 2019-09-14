@@ -1,11 +1,14 @@
 import { NgModule } from "@angular/core";
 import { CommonModule } from "@angular/common";
-import { PhotoEditorComponent } from "./photo-editor/photo-editor.component";
+
 import { FileUploadModule } from "ng2-file-upload";
+import { PhotoEditorComponent } from "./photo-editor/photo-editor.component";
+
+import { ToggleButtonComponent } from "src/app/shared/toggle-button/toggle-button.component";
 
 @NgModule({
-  declarations: [PhotoEditorComponent],
+  declarations: [PhotoEditorComponent, ToggleButtonComponent],
   imports: [CommonModule, FileUploadModule],
-  exports: [PhotoEditorComponent]
+  exports: [PhotoEditorComponent, ToggleButtonComponent]
 })
 export class SharedModule {}

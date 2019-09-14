@@ -74,7 +74,6 @@ export class BooksListByCategoryComponent implements OnInit {
       if ((this.books.length === 0 && !this.queryMade) || this.isPageChanged) {
         this.queryMade = true;
         this.isPageChanged = false;
-        debugger;
         this.bookService.getBooksByCategory(this.url, this.currentGridPage);
       }
     });

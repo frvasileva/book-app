@@ -18,6 +18,17 @@ namespace BookApp.API.Controllers {
     private readonly IUserRepository _userRepo;
     private readonly IGraphRepository _graphRepo;
 
+    private int UserId {
+      get {
+        var identity = HttpContext.User.Identity as ClaimsIdentity;
+        int userId = 0;
+        if (identity != null)
+          userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
+
+        return userId;
+      }
+    }
+
     public CatalogController (IMapper mapper, IGraphRepository graphRepo, IUserRepository userRepo) {
       _userRepo = userRepo;
       _graphRepo = graphRepo;
@@ -26,12 +37,7 @@ namespace BookApp.API.Controllers {
     [HttpPost ("add")]
     public async Task<IActionResult> Add (CatalogCreateDto catalogCteateDto) {
 
-      var identity = HttpContext.User.Identity as ClaimsIdentity;
-      int userId = 0;
-      if (identity != null)
-        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
-
-      catalogCteateDto.UserId = userId;
+      catalogCteateDto.UserId = UserId;
       catalogCteateDto.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (catalogCteateDto.Name + "-" + Guid.NewGuid ());
 
       var result = _graphRepo.AddCatalog (catalogCteateDto, false);
@@ -96,14 +102,14 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("user-catalogs-pure-list/{friendlyUrl}")]
     public async Task<IActionResult> GetPureCatalogsForUser (string friendlyUrl) {
-
-      var identity = HttpContext.User.Identity as ClaimsIdentity;
-      int userId = 0;
-      if (identity != null)
-        userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
-
-      var catalogs = _graphRepo.GetPureCatalogs (userId);
+      var catalogs = _graphRepo.GetPureCatalogs (UserId);
       return Ok (catalogs);
+    }
+
+    [HttpPost ("edit-catalog")]
+    public async Task<IActionResult> EditCatalog (CatalogEditDto catalog) {
+      var result = _graphRepo.EditCatalog (catalog.Id, catalog.IsPublic, UserId);
+      return Ok (result);
     }
   }
 }
