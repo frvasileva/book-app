@@ -9,6 +9,7 @@ import { CatalogEditItemDto } from "src/app/_models/catalogEditItemDto";
 })
 export class CatalogItemComponent implements OnInit {
   @Input() catalog: any;
+  @Input() isCurrentUser: boolean;
   bookCount: number;
   maxBooksToBeShown = 5;
 
@@ -16,6 +17,7 @@ export class CatalogItemComponent implements OnInit {
 
   ngOnInit() {
     this.bookCount = this.catalog.books.length;
+    console.log("is current user", this.isCurrentUser);
   }
 
   editCatalog(catalogId: number, isPublic: boolean) {

@@ -8,25 +8,28 @@
   padding: 0 0 15px 0;
   // min-height: 540px;
 
+  .card-link {
+    color: white;
+  }
+
   &:hover {
     box-shadow: 1px 7px 10px 2px grey;
     transition: 0.3s;
-
-    .card-link {
-      background-color: black;
-    }
   }
 }
 
-.card-link {
+.header-wrapper {
+  background-color: black;
   padding: 5px 15px;
   display: block;
   color: $white;
   background-color: #3e3b3b;
   margin: 0 0 20px 0;
+  cursor: pointer;
+}
 
+.card-link {
   &:hover {
-    background-color: white;
     transition: 0.2s;
     color: $white;
   }
