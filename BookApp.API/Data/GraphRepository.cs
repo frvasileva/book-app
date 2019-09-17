@@ -639,13 +639,14 @@ namespace BookApp.API.Data {
       return pagedList;
     }
 
-    public CatalogEditDto EditCatalog (int catalogId, bool isPublic, int userId) {
+    public CatalogEditDto EditCatalog (int catalogId, bool isPublic, string name, int userId) {
 
       var result = _graphClient.Cypher
         .Match ("(catalog:Catalog)")
         .Where ((CatalogItemDto catalog) => catalog.Id == catalogId)
         .WithParam ("isPublic", isPublic)
-        .Set ("catalog.isPublic = {isPublic}")
+        .WithParam ("name", name)
+        .Set ("catalog.isPublic = {isPublic}, catalog.name = {name}")
         .Return<CatalogEditDto> ("catalog").Results.Single ();
 
       return result;

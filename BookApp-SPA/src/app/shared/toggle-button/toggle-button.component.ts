@@ -11,12 +11,10 @@ export class ToggleButtonComponent implements OnInit {
   constructor() {}
 
   ngOnInit() {
-    console.log("ischekced", this.isChecked);
     this.checkBoxId = this.randomIntFromInterval(0, 10).toString();
   }
 
   randomIntFromInterval(min, max) {
-    // min and max included
     return Math.floor(Math.random() * (max - min + 1) + min);
   }
 }

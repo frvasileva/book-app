@@ -54,4 +54,14 @@ form label {
     @include border($main-highlight);
     transition: 1s;
   }
+
+  &.tiny {
+    padding: 5px 10px;
+    font-size: 12px;
+  }
+
+  &.tiny:hover,
+  &.tiny:active {
+    background-color: white;
+  }
 }

@@ -108,7 +108,7 @@ namespace BookApp.API.Controllers {
 
     [HttpPost ("edit-catalog")]
     public async Task<IActionResult> EditCatalog (CatalogEditDto catalog) {
-      var result = _graphRepo.EditCatalog (catalog.Id, catalog.IsPublic, UserId);
+      var result = _graphRepo.EditCatalog (catalog.Id, catalog.IsPublic, catalog.Name, UserId);
       return Ok (result);
     }
   }

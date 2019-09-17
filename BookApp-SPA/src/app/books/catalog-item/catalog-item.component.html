@@ -1,16 +1,61 @@
 <div class="card-wrapper">
   <div class="header-wrapper">
     <div class="row">
-      <div
-        class="col-md-9"
-        [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
-      >
+      <div class="col-md-8">
         <a
           [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
           class="card-link"
+          *ngIf="!showCatalogName"
         >
           {{ catalog?.name }}
         </a>
+
+        <form
+          [formGroup]="editCatalogNameForm"
+          (ngSubmit)="changeCatalogName()"
+          *ngIf="showCatalogName"
+        >
+          <div class="row">
+            <div class="col-md-8">
+              <input
+                type="text"
+                class="form-control tiny"
+                id="name"
+                formControlName="name"
+              />
+              <span
+                class="error-message"
+                *ngIf="
+                  !editCatalogNameForm.get('name').valid &&
+                  editCatalogNameForm.get('name').touched
+                "
+              >
+                This field is required
+              </span>
+            </div>
+            <div class="col-md-4">
+              <button
+                class="button info small"
+                type="submit"
+                [disabled]="!editCatalogNameForm.valid"
+              >
+                Create
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div
+        class="col-md-1"
+        *ngIf="isCurrentUser && !showCatalogName"
+        (click)="showChangeCatalogNameForm()"
+      >
+        <button class="button neutral small">
+          <i
+            class="glyphicon glyphicon-pencil"
+            (click)="showChangeCatalogNameForm()"
+          ></i>
+        </button>
       </div>
       <div class="col-md-3" *ngIf="isCurrentUser">
         <app-toggle-button

@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { BookCatalogService } from "src/app/_services/book-catalog.service";
 import { CatalogEditItemDto } from "src/app/_models/catalogEditItemDto";
+import { FormGroup, FormControl, Validators } from "@angular/forms";
 
 @Component({
   selector: "app-catalog-item",
@@ -12,20 +13,36 @@ export class CatalogItemComponent implements OnInit {
   @Input() isCurrentUser: boolean;
   bookCount: number;
   maxBooksToBeShown = 5;
+  model: CatalogEditItemDto;
+  editCatalogNameForm: FormGroup;
+  showCatalogName = false;
 
   constructor(private catalogService: BookCatalogService) {}
 
   ngOnInit() {
     this.bookCount = this.catalog.books.length;
-    console.log("is current user", this.isCurrentUser);
+    this.model = this.catalog;
+
+    this.editCatalogNameForm = new FormGroup({
+      name: new FormControl(this.catalog.name, Validators.required)
+    });
   }
 
-  editCatalog(catalogId: number, isPublic: boolean) {
-    const model = {} as CatalogEditItemDto;
-    model.id = catalogId;
-    model.isPublic = !isPublic;
-    this.catalogService.editCatalog(model).subscribe();
+  editCatalog(isPublic: boolean) {
+    this.model.isPublic = !isPublic;
     this.catalog.isPublic = !isPublic;
-    console.log("item", model);
+
+    this.catalogService.editCatalog(this.model).subscribe();
+  }
+
+  showChangeCatalogNameForm() {
+    this.showCatalogName = true;
+  }
+
+  changeCatalogName() {
+    const name: string = this.editCatalogNameForm.value.name.toString();
+    this.model.name = name;
+    this.catalogService.editCatalog(this.model).subscribe();
+    this.showCatalogName = false;
   }
 }
