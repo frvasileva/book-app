@@ -81,6 +81,16 @@
     }
   }
 
+  &.white {
+    background-color: white;
+    border: 3px solid black;
+    color: black;
+
+    &:hover {
+      background-color: #f3f7f1;
+    }
+  }
+
   &.info {
     background-color: #fcca3d;
     border: 3px solid #fcca3d;
@@ -111,6 +121,11 @@
   & .glyphicon,
   & .fas {
     margin-right: 10px;
+  }
+
+  &.no-text .glyphicon,
+  &.no-text .fas {
+    margin-right: 0;
   }
 }
 

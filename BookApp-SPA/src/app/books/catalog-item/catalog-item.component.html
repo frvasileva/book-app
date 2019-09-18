@@ -16,7 +16,7 @@
           *ngIf="showCatalogName"
         >
           <div class="row">
-            <div class="col-md-8">
+            <div class="col-md-8 col-sm-8 col-xs-8">
               <input
                 type="text"
                 class="form-control tiny"
@@ -33,13 +33,13 @@
                 This field is required
               </span>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-4 col-sm-4 col-xs-4">
               <button
-                class="button info small"
+                class="button wite small"
                 type="submit"
                 [disabled]="!editCatalogNameForm.valid"
               >
-                Create
+                Save
               </button>
             </div>
           </div>
@@ -50,7 +50,7 @@
         *ngIf="isCurrentUser && !showCatalogName"
         (click)="showChangeCatalogNameForm()"
       >
-        <button class="button neutral small">
+        <button class="button white small no-text">
           <i
             class="glyphicon glyphicon-pencil"
             (click)="showChangeCatalogNameForm()"
