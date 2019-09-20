@@ -6,6 +6,8 @@ import { BookSaverService } from "src/app/_services/bookSaver.service";
 import { CatalogPureDto } from "src/app/_models/catalogPureDto";
 import { UserState } from "src/app/_store/user.reducer";
 import { Book } from "../book.model";
+import { ActivatedRoute, Params } from "@angular/router";
+import { CatalogItemDto } from 'src/app/_models/catalogItem';
 
 @Component({
   selector: "app-book-saver",
@@ -17,24 +19,37 @@ export class BookSaverComponent implements OnInit {
   catalogs: CatalogPureDto[];
   addToListForm: FormGroup;
   currentUserUrl: string;
+  friendlyUrl: string;
 
   constructor(
+    private route: ActivatedRoute,
     private bookSaverService: BookSaverService,
     private store: Store<{
       userState: UserState;
       bookState: { books: Book[] };
+      catalogState: { catalog: CatalogItemDto[] };
     }>
   ) {}
 
   ngOnInit() {
+    this.route.params.subscribe((params: Params) => {
+      this.friendlyUrl = params["friendly-url"];
+    });
+
     this.store.subscribe(state => {
-      const book = state.bookState.books.find(b => b.id === this.bookId);
+      let book = state.bookState.books.find(b => b.id === this.bookId);
+      if (!book) {
+        const catalog = state.catalogState.catalog.find(c => c.friendlyUrl === this.friendlyUrl);
+        if (catalog) {
+          book = catalog.books.find(b => b.id = this.bookId);
+        }
+      }
       if (!book) {
         return;
       }
       this.catalogs = state.userState.currentUserCatalogs.map(catalog => ({
         ...catalog,
-        isSelected: book.bookCatalogs.some(
+        isSelected: (book.bookCatalogs || []).some(
           item => item.catalogId === catalog.id
         )
       }));

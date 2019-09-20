@@ -24,6 +24,7 @@ namespace BookApp.API.Data {
         .WithMany (b => b.BookCatalogs)
         .OnDelete (DeleteBehavior.Restrict);
 
+     
       modelBuilder.Entity<BookCatalog> ()
         .HasOne (bc => bc.Book)
         .WithMany (c => c.BookCatalogs)
@@ -31,6 +32,8 @@ namespace BookApp.API.Data {
     }
 
     public DbSet<Book> Books { get; set; }
+    public DbSet<Discussion> Discussions { get; set; }
+    public DbSet<DiscussionItem> DiscussionItem { get; set; }
     public DbSet<Photo> Photos { get; set; }
     public DbSet<Author> Authors { get; set; }
     public DbSet<Quote> Quotes { get; set; }

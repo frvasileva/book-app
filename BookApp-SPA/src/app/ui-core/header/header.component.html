@@ -43,6 +43,9 @@
 
               <li class="nav-item" *ngIf="this.isLoggedIn">
                 <div *ngIf="this.isLoggedIn" class="dropdown" dropdown>
+                  <a routerLink="/messages" class="text-light">
+                    <i class="glyphicon glyphicon-envelope"></i> (1)
+                  </a>
                   <span class="mr-1">
                     <!-- <img src="{{ photoUrl || '../../assets/user.png' }}" alt="" /> -->
                   </span>

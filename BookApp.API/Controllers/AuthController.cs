@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
-using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
