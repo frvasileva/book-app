@@ -5,9 +5,13 @@ export interface DiscussionDto {
   title: string;
   body: string;
   addedOn: Date;
-  userId: number;
   bookId: number;
   bookFriendlyUrl: string;
+  bookTitle: string;
   friendlyUrl: string;
   discussionItems: DiscussionItemDto[];
+  userAvatarPath: string;
+  userFriendlyUrl: string;
+  userId: number;
+  username: string;
 }

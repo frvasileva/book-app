@@ -47,7 +47,12 @@ export class DiscussionDetailsComponent implements OnInit {
       .createDiscussionReply({ body, discussionId: this.discussion.id })
       .subscribe(
         next => {
-          this.discussion.discussionItems.push(next);
+          const item = next;
+          item.username = this.discussion.username;
+          item.userAvatarPath = this.discussion.userAvatarPath;
+          item.userFriendlyUrl = this.discussion.userFriendlyUrl;
+
+          this.discussion.discussionItems.push(item);
           this.discussionReplyForm.reset();
         },
         error => {

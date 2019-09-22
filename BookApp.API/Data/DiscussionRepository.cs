@@ -2,15 +2,18 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BookApp.API.Dtos;
 using BookApp.API.Models;
 using Microsoft.EntityFrameworkCore;
 namespace BookApp.API.Data {
   public class DiscussionRepository : IDiscussionRepository {
 
     private readonly DataContext _context;
+    private readonly IGraphRepository _graphRepo;
 
-    public DiscussionRepository (DataContext context) {
+    public DiscussionRepository (DataContext context, IGraphRepository graphRepo) {
       _context = context;
+      _graphRepo = graphRepo;
     }
 
     public Discussion Create (Discussion model) {
@@ -41,9 +44,47 @@ namespace BookApp.API.Data {
       throw new NotImplementedException ();
     }
 
-    public Discussion GetDiscussion (string friendlyUrl) {
+    public DiscussionDetailsDto GetDiscussion (string friendlyUrl) {
       var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.FriendlyUrl == friendlyUrl).ToList ().FirstOrDefault ();
-      return result;
+      var user = _context.Users.Where (u => u.Id == result.UserId).FirstOrDefault ();
+      var book = _graphRepo.GetBookInfo (result.BookId);
+      var discussionDetailsItems = new List<DiscussionItemDto> ();
+
+      var discussion = new DiscussionDetailsDto () {
+        Id = result.Id,
+        Title = result.Title,
+        Body = result.Body,
+        //  DiscussionItems = result.DiscussionItems,
+        AddedOn = result.AddedOn,
+        FriendlyUrl = result.FriendlyUrl,
+        UserId = result.UserId,
+        UserAvatarPath = user.AvatarPath,
+        UserFriendlyUrl = user.FriendlyUrl,
+        Username = user.UserName,
+        BookFriendlyUrl = book.FriendlyUrl,
+        BookId = result.BookId,
+        BookTitle = book.Title
+      };
+ 
+      foreach (var disc in result.DiscussionItems) {
+        var usr = _context.Users.Where (u => u.Id == disc.UserId).FirstOrDefault ();
+        var d = new DiscussionItemDto () {
+          Id = disc.Id,
+          Username = usr.UserName,
+          UserAvatarPath = usr.AvatarPath,
+          UserFriendlyUrl = usr.FriendlyUrl,
+          AddedOn = disc.AddedOn,
+          Body = disc.Body,
+          DiscussionId = disc.DiscussionId,
+          UserId = usr.Id
+        };
+
+        discussionDetailsItems.Add (d);
+      }
+
+      discussion.DiscussionItems = discussionDetailsItems;
+
+      return discussion;
     }
 
     public List<Discussion> GetDiscussions () {

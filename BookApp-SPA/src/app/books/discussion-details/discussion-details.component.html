@@ -17,17 +17,14 @@
   *ngFor="let item of discussion?.discussionItems"
 >
   <div class="col-md-2">
-    <img
-      src="http://res.cloudinary.com/deumq4qrd/image/upload/v1559653292/q41pwh1barlaxuso4fjf.jpg"
-      class="user-avatar"
-    />
-    <a href="#" class="username">pen4o</a>
+    <img src="{{ item.userAvatarPath }}" class="user-avatar" />
+    <a href="#" class="username">{{ item.username }}</a>
   </div>
   <div class="col-md-10">
     <p>{{ item.body }}</p>
 
     <p class="posted-on-info">
-      posted on: {{ item.addedOn | date: "short" }} by pencho
+      posted on: {{ item.addedOn | date: "short" }}
     </p>
   </div>
 </div>

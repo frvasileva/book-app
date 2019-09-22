@@ -6,6 +6,7 @@ namespace BookApp.API.Data {
   public interface IGraphRepository {
     List<BookDetailsDto> GetAll ();
     BookDetailsDto GetBook (string friendlyUrl);
+    BookDetailsDto GetBookInfo (int bookId);
     List<BookDetailsDto> GetBooksAddedByUser (int userId);
     BookDetailsDto AddBook (BookCreateDto book);
     BookDetailsDto AddBook (Book book);

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using BookApp.API.Dtos;
 using BookApp.API.Models;
 
 namespace BookApp.API.Data {
@@ -10,7 +11,7 @@ namespace BookApp.API.Data {
         void Edit<T> (T entity) where T : class;
         void Delete<T> (T entity) where T : class;
 
-        Discussion GetDiscussion (string friendlyUrl);
+        DiscussionDetailsDto GetDiscussion (string friendlyUrl);
         List<Discussion> GetDiscussions ();
         List<Discussion> GetDiscussionsByBook (int bookId);
         List<Discussion> GetDiscussionsByUser (int userId);

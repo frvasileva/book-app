@@ -187,6 +187,21 @@ namespace BookApp.API.Data {
       } else return new BookDetailsDto ();
     }
 
+    public BookDetailsDto GetBookInfo (int bookId) {
+
+      var result = _graphClient.Cypher
+        .Match ("(book:Book)")
+        .Where ((BookDetailsDto book) => book.Id == bookId)
+        .ReturnDistinct ((book) => new {
+          bk = book.As<BookDetailsDto> ()
+        });
+
+      var item = result.Results.ToList ().FirstOrDefault ();
+      var bookDetails = new BookDetailsDto ();
+
+      return item.bk;
+    }
+
     public List<CatalogPureDto> GetPureCatalogs (long userId) {
       var result =
         _graphClient.Cypher.Match ("(catalog:Catalog)")
