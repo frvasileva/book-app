@@ -50,15 +50,15 @@ namespace BookApp.API.Controllers {
       return Ok (discussionItem);
     }
 
-    [HttpGet ("get/{id}")]
-    public async Task<IActionResult> GetDiscussion (int id) {
+    [HttpGet ("get/{friendlyUrl}")]
+    public async Task<IActionResult> GetDiscussion (string friendlyUrl) {
 
-      var discussion = _discussionRepo.GetDiscussion (id);
+      var discussion = _discussionRepo.GetDiscussion (friendlyUrl);
 
       return Ok (discussion);
     }
 
-    [HttpGet ("get-discussions/{id}")]
+    [HttpGet ("get-discussions")]
     public async Task<IActionResult> GetDiscussions () {
 
       var discussion = _discussionRepo.GetDiscussions ();
@@ -74,7 +74,7 @@ namespace BookApp.API.Controllers {
       return Ok (discussion);
     }
 
-    [HttpGet ("get-by-book/{id}")]
+    [HttpGet ("get-by-user/{id}")]
     public async Task<IActionResult> GetDiscussionsByUser (int id) {
 
       var discussion = _discussionRepo.GetDiscussionsByUser (id);

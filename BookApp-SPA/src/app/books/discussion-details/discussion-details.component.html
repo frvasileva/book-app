@@ -1,0 +1,62 @@
+<div class="row">
+  <div class="col-md">
+    <h3>{{ discussion?.title }}</h3>
+  </div>
+</div>
+<div class="row">
+  <div class="col-md-9">
+    <p>{{ discussion?.body }}</p>
+  </div>
+  <div class="col-md-3">
+    {{ discussion?.addedOn | date: "medium" }}
+  </div>
+</div>
+
+<div
+  class="row discussion-row"
+  *ngFor="let item of discussion?.discussionItems"
+>
+  <div class="col-md-2">
+    <img
+      src="http://res.cloudinary.com/deumq4qrd/image/upload/v1559653292/q41pwh1barlaxuso4fjf.jpg"
+      class="user-avatar"
+    />
+    <a href="#" class="username">pen4o</a>
+  </div>
+  <div class="col-md-10">
+    <p>{{ item.body }}</p>
+
+    <p class="posted-on-info">
+      posted on: {{ item.addedOn | date: "short" }} by pencho
+    </p>
+  </div>
+</div>
+<div class="row reply-wrapper">
+  <div class="col-md-12">
+    <h3 class="form-title">Share your thoughts</h3>
+    <form [formGroup]="discussionReplyForm" (ngSubmit)="addReply()">
+      <div class="form-group">
+        <textarea class="form-control" id="body" formControlName="body">
+        </textarea>
+
+        <span
+          class="error-message"
+          *ngIf="
+            !discussionReplyForm.get('body').valid &&
+            discussionReplyForm.get('body').touched
+          "
+        >
+          This field is required
+        </span>
+      </div>
+
+      <button
+        class="button primary large"
+        type="submit"
+        [disabled]="!discussionReplyForm.valid"
+      >
+        Send
+      </button>
+    </form>
+  </div>
+</div>

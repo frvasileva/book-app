@@ -3,6 +3,7 @@ import { CommonModule } from "@angular/common";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { FileUploadModule } from "ng2-file-upload";
 import { RouterModule } from "@angular/router";
+import { PaginationModule } from "ngx-bootstrap";
 
 import { SharedModule } from "../_shared/shared/shared.module";
 
@@ -20,11 +21,14 @@ import { CatalogListComponent } from "./catalog-list/catalog-list.component";
 import { CatalogItemComponent } from "./catalog-item/catalog-item.component";
 import { CatalogCreateComponent } from "./catalog-create/catalog-create.component";
 import { CatalogDetailsComponent } from "./catalog-details/catalog-details.component";
-import { PublicCatalogListComponent } from "./public-catalog-list/public-catalog-list.component";
 import { CatalogListPureComponent } from "./catalog-list-pure/catalog-list-pure.component";
 import { BooksListByCategoryComponent } from "./books-list-by-category/books-list-by-category.component";
+import { PublicCatalogListComponent } from "./public-catalog-list/public-catalog-list.component";
 
-import { PaginationModule } from "ngx-bootstrap";
+import { DiscussionCreateComponent } from './discussion-create/discussion-create.component';
+import { DiscussionDetailsComponent } from './discussion-details/discussion-details.component';
+import { DiscussionsListComponent } from './discussions-list/discussions-list.component';
+import { DiscussionsPerBookComponent } from './discussions-per-book/discussions-per-book.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +47,11 @@ import { PaginationModule } from "ngx-bootstrap";
     CatalogDetailsComponent,
     PublicCatalogListComponent,
     CatalogListPureComponent,
-    BooksListByCategoryComponent
+    BooksListByCategoryComponent,
+    DiscussionCreateComponent,
+    DiscussionDetailsComponent,
+    DiscussionsListComponent,
+    DiscussionsPerBookComponent
   ],
   imports: [
     CommonModule,

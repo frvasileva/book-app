@@ -23,6 +23,14 @@
         </div>
       </div>
       <div class="book-description">{{ book?.description }}</div>
+
+      <a
+        [routerLink]="['/books/discussions/add/' + book?.id]"
+        class="button neutral medium full-width"
+      >
+        <i class="fas fa-plus-circle"></i>
+        Add discussion
+      </a>
     </div>
     <div class="col-md-4">
       This book also appears in:

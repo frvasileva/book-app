@@ -7,11 +7,14 @@ import { AddBookComponent } from "./add-book/add-book.component";
 import { RequestBookComponent } from "./request-book/request-book.component";
 import { AddBookCoverComponent } from "./add-book-cover/add-book-cover.component";
 import { CatalogCreateComponent } from "./catalog-create/catalog-create.component";
-import { CatalogListComponent } from "./catalog-list/catalog-list.component";
 import { CatalogDetailsComponent } from "./catalog-details/catalog-details.component";
 import { AuthenticationGuard } from "../_guards/authentication.guard";
 import { PublicCatalogListComponent } from "./public-catalog-list/public-catalog-list.component";
 import { BooksListByCategoryComponent } from "./books-list-by-category/books-list-by-category.component";
+import { DiscussionCreateComponent } from "./discussion-create/discussion-create.component";
+import { DiscussionDetailsComponent } from "./discussion-details/discussion-details.component";
+import { DiscussionsListComponent } from "./discussions-list/discussions-list.component";
+import { DiscussionsPerBookComponent } from "./discussions-per-book/discussions-per-book.component";
 
 const booksRoutes: Routes = [
   {
@@ -62,6 +65,26 @@ const booksRoutes: Routes = [
       {
         path: "catalogs",
         component: PublicCatalogListComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "discussions/add/:bookId",
+        component: DiscussionCreateComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "discussions",
+        component: DiscussionsListComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "discussions/details/:friendlyUrl",
+        component: DiscussionDetailsComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
+        path: "discussions/per-book/:bookFriendyUrl",
+        component: DiscussionsPerBookComponent,
         canActivate: [AuthenticationGuard]
       }
     ]

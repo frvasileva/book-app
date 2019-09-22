@@ -41,25 +41,23 @@ namespace BookApp.API.Data {
       throw new NotImplementedException ();
     }
 
-    public Discussion GetDiscussion (int id) {
-      var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.Id == id).ToList ().FirstOrDefault ();
-      // var discussions = _context.DiscussionItem.Where (item => item.DiscussionId == id).ToList ();
-      // result.DiscussionItems = discussions;
+    public Discussion GetDiscussion (string friendlyUrl) {
+      var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.FriendlyUrl == friendlyUrl).ToList ().FirstOrDefault ();
       return result;
     }
 
     public List<Discussion> GetDiscussions () {
-      var result = _context.Discussions.Include (item => item.DiscussionItems).ToList ();
+      var result = _context.Discussions.Include (item => item.DiscussionItems).OrderByDescending (item => item.AddedOn).ToList ();
       return result;
     }
 
     public List<Discussion> GetDiscussionsByBook (int bookId) {
-      var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.BookId == bookId).ToList ();
+      var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.BookId == bookId).OrderByDescending (item => item.AddedOn).ToList ();
       return result;
     }
 
     public List<Discussion> GetDiscussionsByUser (int userId) {
-      var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.UserId == userId).ToList ();
+      var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.UserId == userId).OrderByDescending (item => item.AddedOn).ToList ();
       return result;
     }
 

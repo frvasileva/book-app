@@ -1,0 +1,51 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <div class="form-wrapper">
+        <h1 class="form-title">Create Discussion</h1>
+        <form [formGroup]="addDiscussionForm" (ngSubmit)="onSubmit()">
+          <div class="form-group">
+            <label for="">Title:</label>
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              formControlName="title"
+            />
+            <span
+              class="error-message"
+              *ngIf="
+                !addDiscussionForm.get('title').valid &&
+                addDiscussionForm.get('title').touched
+              "
+            >
+              This field is required
+            </span>
+          </div>
+          <div class="form-group">
+            <label for="">Body:</label>
+            <textarea class="form-control" id="body" formControlName="body">
+            </textarea>
+            <span
+              class="error-message"
+              *ngIf="
+                !addDiscussionForm.get('body').valid &&
+                addDiscussionForm.get('body').touched
+              "
+            >
+              This field is required
+            </span>
+          </div>
+
+          <button
+            class="button primary large"
+            type="submit"
+            [disabled]="!addDiscussionForm.valid"
+          >
+            Create
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,30 @@
+.discussion-row {
+  border-radius: 5px;
+  background-color: #efefef;
+  margin: 15px 0;
+  padding: 15px;
+  word-wrap: break-word;
+}
+
+.user-avatar {
+  border-radius: 50%;
+  max-width: 80px;
+  margin: 0 auto 10px auto;
+  text-align: center;
+  display: block;
+}
+
+.posted-on-info {
+  font-size: 12px;
+  font-style: italic;
+}
+
+.username {
+  font-size: 14px;
+  display: block;
+  text-align: center;
+}
+
+.reply-wrapper {
+  margin-top: 80px;
+}

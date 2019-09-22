@@ -10,7 +10,7 @@ namespace BookApp.API.Data {
         void Edit<T> (T entity) where T : class;
         void Delete<T> (T entity) where T : class;
 
-        Discussion GetDiscussion (int id);
+        Discussion GetDiscussion (string friendlyUrl);
         List<Discussion> GetDiscussions ();
         List<Discussion> GetDiscussionsByBook (int bookId);
         List<Discussion> GetDiscussionsByUser (int userId);
