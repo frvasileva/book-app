@@ -8,6 +8,7 @@ export interface DiscussionDto {
   bookId: number;
   bookFriendlyUrl: string;
   bookTitle: string;
+  bookPhotoPath: string;
   friendlyUrl: string;
   discussionItems: DiscussionItemDto[];
   userAvatarPath: string;

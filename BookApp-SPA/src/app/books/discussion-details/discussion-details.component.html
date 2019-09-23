@@ -4,11 +4,30 @@
   </div>
 </div>
 <div class="row">
-  <div class="col-md-9">
-    <p>{{ discussion?.body }}</p>
+  <div class="col-md-8 col-xs-12 col-sm-12">
+    <p class="discussion-reply">{{ discussion?.body }}</p>
+
+    <hr />
+    <p class="posted-on-info">
+      posted on: {{ discussion?.addedOn | date: "short" }} by
+      {{ discussion?.username }}
+    </p>
   </div>
-  <div class="col-md-3">
-    {{ discussion?.addedOn | date: "medium" }}
+  <div class="col-md-4">
+    <a [routerLink]="['/books/details', discussion?.bookFriendlyUrl]">
+      <img
+        src="{{ discussion?.bookPhotoPath }}"
+        class="book-cover-image"
+        title="{{ discussion?.bookTitle }}"
+      />
+      <div class="book-title" title="{{ discussion?.bookTitle }}">
+        {{
+          discussion?.bookTitle.length > 30
+            ? (discussion?.bookTitle | slice: 0:30) + "..."
+            : discussion?.bookTitle
+        }}
+      </div>
+    </a>
   </div>
 </div>
 
@@ -23,9 +42,7 @@
   <div class="col-md-10">
     <p>{{ item.body }}</p>
 
-    <p class="posted-on-info">
-      posted on: {{ item.addedOn | date: "short" }}
-    </p>
+    <p class="posted-on-info">posted on: {{ item.addedOn | date: "short" }}</p>
   </div>
 </div>
 <div class="row reply-wrapper">

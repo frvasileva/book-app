@@ -63,7 +63,8 @@ namespace BookApp.API.Data {
         Username = user.UserName,
         BookFriendlyUrl = book.FriendlyUrl,
         BookId = result.BookId,
-        BookTitle = book.Title
+        BookTitle = book.Title,
+        BookPhotoPath = book.PhotoPath
       };
  
       foreach (var disc in result.DiscussionItems) {

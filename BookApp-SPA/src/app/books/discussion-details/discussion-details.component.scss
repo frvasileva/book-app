@@ -6,12 +6,21 @@
   word-wrap: break-word;
 }
 
+.discussion-reply {
+  font-size: 16px;
+}
+
 .user-avatar {
   border-radius: 50%;
   max-width: 80px;
   margin: 0 auto 10px auto;
   text-align: center;
   display: block;
+
+  &.small {
+    display: inline;
+    max-width: 40px;
+  }
 }
 
 .posted-on-info {
@@ -27,4 +36,19 @@
 
 .reply-wrapper {
   margin-top: 80px;
+}
+
+.book-cover {
+  width: 100%;
+  margin: 0 auto;
+}
+
+.book-title {
+  font-size: 16px;
+  font-weight: bold;
+}
+.book-cover-image {
+  text-align: left;
+  display: block;
+  max-width: 250px;
 }

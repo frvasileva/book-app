@@ -15,6 +15,7 @@ namespace BookApp.API.Dtos {
     public int BookId { get; set; }
     public string BookTitle { get; set; }
     public string BookFriendlyUrl { get; set; }
+    public string BookPhotoPath { get; set; }
     public string FriendlyUrl { get; set; }
     public List<DiscussionItemDto> DiscussionItems { get; set; }
   }
