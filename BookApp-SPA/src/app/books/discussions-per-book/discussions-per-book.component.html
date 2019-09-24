@@ -1,3 +1,16 @@
-<p>
-  discussions-per-book works!
-</p>
+<div class="row">
+  <div class="col-md">
+    <h2>Discussions for book {{ bookTitle }}</h2>
+  </div>
+</div>
+
+<div class="row item-wrapper" *ngFor="let item of discussions">
+  <div class="col-md-8">
+    <a [routerLink]="['/books/discussions/details/' + item.friendlyUrl]">{{
+      item.title
+    }}</a>
+  </div>
+  <div class="col-md-4">
+    {{ item.addedOn | date: "medium" }}
+  </div>
+</div>

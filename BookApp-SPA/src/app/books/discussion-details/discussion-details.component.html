@@ -27,6 +27,9 @@
             : discussion?.bookTitle
         }}
       </div>
+      <a [routerLink]="['/books/discussions/per-book/' + discussion?.bookId]">
+        See all discussions
+      </a>
     </a>
   </div>
 </div>

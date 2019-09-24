@@ -44,7 +44,7 @@ namespace BookApp.API.Data {
       throw new NotImplementedException ();
     }
 
-    public DiscussionDetailsDto GetDiscussion (string friendlyUrl) {
+    public DiscussionDetailsDto GetDiscussion (string friendlyUrl, int? bookId, int? userId) {
       var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.FriendlyUrl == friendlyUrl).ToList ().FirstOrDefault ();
       var user = _context.Users.Where (u => u.Id == result.UserId).FirstOrDefault ();
       var book = _graphRepo.GetBookInfo (result.BookId);
@@ -54,7 +54,6 @@ namespace BookApp.API.Data {
         Id = result.Id,
         Title = result.Title,
         Body = result.Body,
-        //  DiscussionItems = result.DiscussionItems,
         AddedOn = result.AddedOn,
         FriendlyUrl = result.FriendlyUrl,
         UserId = result.UserId,
@@ -66,7 +65,7 @@ namespace BookApp.API.Data {
         BookTitle = book.Title,
         BookPhotoPath = book.PhotoPath
       };
- 
+
       foreach (var disc in result.DiscussionItems) {
         var usr = _context.Users.Where (u => u.Id == disc.UserId).FirstOrDefault ();
         var d = new DiscussionItemDto () {

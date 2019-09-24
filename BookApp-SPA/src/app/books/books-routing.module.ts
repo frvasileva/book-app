@@ -83,7 +83,7 @@ const booksRoutes: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: "discussions/per-book/:bookFriendyUrl",
+        path: "discussions/per-book/:bookId",
         component: DiscussionsPerBookComponent,
         canActivate: [AuthenticationGuard]
       }

@@ -46,15 +46,9 @@ export class DiscussionService {
   }
 
   getDiscussionByBook(bookId: number) {
-    return this.http.get(this.baseUrl + "get-by-book/" + bookId).subscribe(
-      data => {
-        return data;
-      },
-      error => {
-        this.alertify.error(error);
-      }
-    );
+    return this.http.get(this.baseUrl + "get-by-book/" + bookId);
   }
+
   getDiscussionsByUser(userId: number) {
     return this.http.get(this.baseUrl + "get-by-user" + userId).subscribe(
       data => {
