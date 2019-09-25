@@ -44,7 +44,7 @@ namespace BookApp.API.Data {
       throw new NotImplementedException ();
     }
 
-    public DiscussionDetailsDto GetDiscussion (string friendlyUrl, int? bookId, int? userId) {
+    public DiscussionDetailsDto GetDiscussion (string friendlyUrl) {
       var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.FriendlyUrl == friendlyUrl).ToList ().FirstOrDefault ();
       var user = _context.Users.Where (u => u.Id == result.UserId).FirstOrDefault ();
       var book = _graphRepo.GetBookInfo (result.BookId);
@@ -87,18 +87,69 @@ namespace BookApp.API.Data {
       return discussion;
     }
 
-    public List<Discussion> GetDiscussions () {
-      var result = _context.Discussions.Include (item => item.DiscussionItems).OrderByDescending (item => item.AddedOn).ToList ();
+    public List<DiscussionDetailsDto> GetDiscussions (int? bookId = 0, int? userId = 0) {
+      var result = new List<Discussion> ();
+      if (bookId.HasValue && bookId != 0) {
+        result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.BookId == bookId.Value).ToList ();
+      } else if (userId.HasValue && userId != 0) {
+        result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.UserId == userId).ToList ();
+      } else {
+        result = _context.Discussions.Include (item => item.DiscussionItems).ToList ();
+      }
+
+      var bookMapped = new List<DiscussionDetailsDto> ();
+
+      foreach (var item in result) {
+        var user = _context.Users.Where (u => u.Id == item.UserId).FirstOrDefault ();
+        var book = _graphRepo.GetBookInfo (item.BookId);
+        var discussionDetailsItems = new List<DiscussionItemDto> ();
+
+        var discussion = new DiscussionDetailsDto () {
+          Id = item.Id,
+          Title = item.Title,
+          Body = item.Body,
+          AddedOn = item.AddedOn,
+          FriendlyUrl = item.FriendlyUrl,
+          UserId = item.UserId,
+          UserAvatarPath = user.AvatarPath,
+          UserFriendlyUrl = user.FriendlyUrl,
+          Username = user.UserName,
+          BookFriendlyUrl = book.FriendlyUrl,
+          BookId = item.BookId,
+          BookTitle = book.Title,
+          BookPhotoPath = book.PhotoPath
+        };
+
+        foreach (var disc in item.DiscussionItems) {
+
+          var d = new DiscussionItemDto () {
+            Id = disc.Id,
+            Username = user.UserName,
+            UserAvatarPath = user.AvatarPath,
+            UserFriendlyUrl = user.FriendlyUrl,
+            AddedOn = disc.AddedOn,
+            Body = disc.Body,
+            DiscussionId = disc.DiscussionId,
+            UserId = user.Id
+          };
+
+          discussionDetailsItems.Add (d);
+        }
+
+        discussion.DiscussionItems = discussionDetailsItems;
+        bookMapped.Add (discussion);
+      }
+
+      return bookMapped;
+    }
+
+    public List<DiscussionDetailsDto> GetDiscussionsByBook (int bookId) {
+      var result = GetDiscussions (bookId, 0);
       return result;
     }
 
-    public List<Discussion> GetDiscussionsByBook (int bookId) {
-      var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.BookId == bookId).OrderByDescending (item => item.AddedOn).ToList ();
-      return result;
-    }
-
-    public List<Discussion> GetDiscussionsByUser (int userId) {
-      var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.UserId == userId).OrderByDescending (item => item.AddedOn).ToList ();
+    public List<DiscussionDetailsDto> GetDiscussionsByUser (int userId) {
+      var result = GetDiscussions (0, userId);
       return result;
     }
 

@@ -61,7 +61,7 @@ namespace BookApp.API.Controllers {
     [HttpGet ("get-discussions")]
     public async Task<IActionResult> GetDiscussions () {
 
-      var discussion = _discussionRepo.GetDiscussions ();
+      var discussion = _discussionRepo.GetDiscussions (null, null);
 
       return Ok (discussion);
     }

@@ -12,9 +12,9 @@ namespace BookApp.API.Data {
         void Delete<T> (T entity) where T : class;
 
         DiscussionDetailsDto GetDiscussion (string friendlyUrl);
-        List<Discussion> GetDiscussions ();
-        List<Discussion> GetDiscussionsByBook (int bookId);
-        List<Discussion> GetDiscussionsByUser (int userId);
+        List<DiscussionDetailsDto> GetDiscussions (int? bookId, int? userId);
+        List<DiscussionDetailsDto> GetDiscussionsByBook (int bookId);
+        List<DiscussionDetailsDto> GetDiscussionsByUser (int userId);
 
         Task<bool> SaveAll ();
 

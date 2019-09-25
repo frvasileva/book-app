@@ -197,9 +197,12 @@ namespace BookApp.API.Data {
         });
 
       var item = result.Results.ToList ().FirstOrDefault ();
-      var bookDetails = new BookDetailsDto ();
+      if (item != null) {
+        var bookDetails = new BookDetailsDto ();
 
-      return item.bk;
+        return item.bk;
+      }
+      return new BookDetailsDto ();
     }
 
     public List<CatalogPureDto> GetPureCatalogs (long userId) {

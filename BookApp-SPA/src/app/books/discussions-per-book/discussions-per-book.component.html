@@ -1,6 +1,11 @@
 <div class="row">
   <div class="col-md">
-    <h2>Discussions for book {{ bookTitle }}</h2>
+    <h2>
+      Discussions for book
+      <a [routerLink]="['/books/details/' + bookFriendlyUrl]" class="book-link">{{
+        bookTitle
+      }}</a>
+    </h2>
   </div>
 </div>
 
