@@ -81,20 +81,18 @@ namespace BookApp.API.Data {
 
         discussionDetailsItems.Add (d);
       }
-
       discussion.DiscussionItems = discussionDetailsItems;
-
       return discussion;
     }
 
     public List<DiscussionDetailsDto> GetDiscussions (int? bookId = 0, int? userId = 0) {
       var result = new List<Discussion> ();
       if (bookId.HasValue && bookId != 0) {
-        result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.BookId == bookId.Value).ToList ();
+        result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.BookId == bookId.Value).OrderByDescending (item => item.AddedOn).ToList ();
       } else if (userId.HasValue && userId != 0) {
-        result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.UserId == userId).ToList ();
+        result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.UserId == userId).OrderByDescending (item => item.AddedOn).ToList ();
       } else {
-        result = _context.Discussions.Include (item => item.DiscussionItems).ToList ();
+        result = _context.Discussions.Include (item => item.DiscussionItems).OrderByDescending (item => item.AddedOn).ToList ();
       }
 
       var bookMapped = new List<DiscussionDetailsDto> ();

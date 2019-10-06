@@ -32,6 +32,11 @@ const booksRoutes: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
+        path: "add-cover/:friendly-url",
+        component: AddBookCoverComponent,
+        canActivate: [AuthenticationGuard]
+      },
+      {
         path: ":category/:pageNumber",
         component: BooksListByCategoryComponent,
         canActivate: [AuthenticationGuard]
@@ -41,11 +46,7 @@ const booksRoutes: Routes = [
         component: AddBookComponent,
         canActivate: [AuthenticationGuard]
       },
-      {
-        path: "add-cover/:friendly-url",
-        component: AddBookCoverComponent,
-        canActivate: [AuthenticationGuard]
-      },
+
       { path: "request-book/:id", component: RequestBookComponent },
       {
         path: "catalog/add",
