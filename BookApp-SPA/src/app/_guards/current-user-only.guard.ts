@@ -10,9 +10,9 @@ import {
 } from "@angular/router";
 import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
-import { User } from "../_models/User";
 import { Profile } from "../_models/profile";
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { User } from '../_models/user';
 
 @Injectable({
   providedIn: "root"

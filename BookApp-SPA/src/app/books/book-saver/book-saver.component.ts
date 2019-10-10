@@ -41,7 +41,7 @@ export class BookSaverComponent implements OnInit {
       if (!book) {
         const catalog = state.catalogState.catalog.find(c => c.friendlyUrl === this.friendlyUrl);
         if (catalog) {
-          book = catalog.books.find(b => b.id = this.bookId);
+          book = catalog.books.find(b => b.id === this.bookId);
         }
       }
       if (!book) {
