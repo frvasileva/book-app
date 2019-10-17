@@ -7,8 +7,9 @@ import { MessagesComponent } from "./messages.component";
 import { MessageItemComponent } from "./message-item/message-item.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { SendMessageComponent } from "./send-message/send-message.component";
-import { ConversationComponent } from './conversation/conversation.component';
-import { ConversationItemComponent } from './conversation-item/conversation-item.component';
+import { ConversationComponent } from "./conversation/conversation.component";
+import { ConversationItemComponent } from "./conversation-item/conversation-item.component";
+import { CreateMessageComponent } from "./create-message/create-message.component";
 
 @NgModule({
   declarations: [
@@ -17,7 +18,8 @@ import { ConversationItemComponent } from './conversation-item/conversation-item
     MessageItemComponent,
     SendMessageComponent,
     ConversationComponent,
-    ConversationItemComponent
+    ConversationItemComponent,
+    CreateMessageComponent
   ],
   imports: [
     CommonModule,

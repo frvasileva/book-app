@@ -1,5 +1,5 @@
 import { Action } from "@ngrx/store";
-import { User } from "../_models/User";
+import { User } from "../_models/user";
 import { CatalogPureDto } from "../_models/catalogPureDto";
 
 export const SET_CURRENT_USER = "SET_CURRENT_USER";
