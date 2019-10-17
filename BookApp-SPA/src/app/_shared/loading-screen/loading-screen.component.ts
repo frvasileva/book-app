@@ -1,6 +1,6 @@
 import { Component, OnDestroy, OnInit } from "@angular/core";
 import { Subscription } from "rxjs";
-import { LoadingScreenService } from "src/app/_services/loading-screen.service";
+import { LoadingScreenService } from "../../_services/loading-screen.service";
 import { debounceTime } from "rxjs/operators";
 
 @Component({
@@ -9,6 +9,7 @@ import { debounceTime } from "rxjs/operators";
   styleUrls: ["./loading-screen.component.scss"]
 })
 export class LoadingScreenComponent implements OnInit, OnDestroy {
+
   loading: boolean = false;
   loadingSubscription: Subscription;
 

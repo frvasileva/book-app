@@ -11,7 +11,7 @@ import { Book } from "../_models/books";
 import { AlertifyService } from "./alertify.service";
 
 import * as BookActions from "../_store/book.actions";
-import { environment } from "src/environments/environment";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: "root"

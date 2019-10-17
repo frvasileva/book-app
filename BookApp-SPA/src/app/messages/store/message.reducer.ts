@@ -1,5 +1,5 @@
 import * as MessageActions from "./message.action";
-import { Message } from "../model/message.model";
+import { Message } from '../model/message.model';
 
 const initialMessagePreviewState = {
   messages: [

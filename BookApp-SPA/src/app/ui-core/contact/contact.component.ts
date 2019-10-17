@@ -3,7 +3,7 @@ import { FormGroup, FormControl, FormBuilder } from "@angular/forms";
 import {
   PersonalData,
   ContactRequest
-} from "src/app/shared/DTO/ContactRequest";
+} from "../../shared/DTO/ContactRequest";
 
 @Component({
   selector: "app-contact",

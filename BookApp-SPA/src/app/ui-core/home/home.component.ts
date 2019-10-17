@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Title, Meta } from "@angular/platform-browser";
-import { settings } from "src/app/_shared/settings";
-import { AuthService } from "src/app/_services/auth.service";
+import { settings } from "../../_shared/settings";
+import { AuthService } from "../../_services/auth.service";
 
 @Component({
   selector: "app-home",

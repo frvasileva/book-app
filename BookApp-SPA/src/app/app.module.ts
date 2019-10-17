@@ -21,7 +21,7 @@ import { ContactComponent } from "./ui-core/contact/contact.component";
 import { QuotesComponent } from "./quotes/quotes/quotes.component";
 
 import { bookReducer } from "./_store/book.reducer";
-import { messageReducer } from "./messages/store/message.reducer";
+// import { messageReducer } from "./messages/store/message.reducer";
 import { catalogReducer } from "./_store/catalog.reducer";
 import { userReducer } from "./_store/user.reducer";
 
@@ -64,7 +64,7 @@ import { LoadingScreenInterceptor } from "./_helpers/loading.interceptor";
     PaginationModule.forRoot(),
     StoreModule.forRoot({
       bookState: bookReducer,
-      messageList: messageReducer,
+      // messageList: messageReducer,
       catalogState: catalogReducer,
       userState: userReducer
     }),
