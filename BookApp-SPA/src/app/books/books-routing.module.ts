@@ -37,7 +37,7 @@ const booksRoutes: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: ":category/:pageNumber",
+        path: "category/:category/:pageNumber",
         component: BooksListByCategoryComponent,
         canActivate: [AuthenticationGuard]
       },
@@ -61,7 +61,8 @@ const booksRoutes: Routes = [
       {
         path: "catalog/details/:friendly-url",
         component: CatalogDetailsComponent,
-        canActivate: [AuthenticationGuard]
+        canActivate: [AuthenticationGuard],
+        pathMatch: 'full'
       },
       {
         path: "catalogs",

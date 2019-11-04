@@ -51,7 +51,8 @@ export class BooksListByCategoryComponent implements OnInit {
   pageChanged(event: any): void {
     this.currentGridPage = event.page - 1;
 
-    let buildUrl = "/book/" + this.url.toLocaleLowerCase() + "/" + this.currentGridPage;
+    let buildUrl =
+      "/book/" + this.url.toLocaleLowerCase() + "/" + this.currentGridPage;
     this.location.replaceState(buildUrl);
 
     this.isPageChanged = true;
