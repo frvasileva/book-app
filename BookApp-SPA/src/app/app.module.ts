@@ -21,7 +21,6 @@ import { ContactComponent } from "./ui-core/contact/contact.component";
 import { QuotesComponent } from "./quotes/quotes/quotes.component";
 
 import { bookReducer } from "./_store/book.reducer";
-import { messageReducer } from "./messages/store/message.reducer";
 import { catalogReducer } from "./_store/catalog.reducer";
 import { userReducer } from "./_store/user.reducer";
 
@@ -30,7 +29,6 @@ import { UserService } from "./user/user.service";
 import { AuthService } from "./_services/auth.service";
 import { AlertifyService } from "./_services/alertify.service";
 import { BookService } from "./_services/book.service";
-import { MessageService } from "./messages/message.service";
 import { BookSaverService } from "./_services/bookSaver.service";
 import { AuthenticationGuard } from "./_guards/authentication.guard";
 import { FileUploadModule } from "ng2-file-upload";
@@ -64,7 +62,6 @@ import { LoadingScreenInterceptor } from "./_helpers/loading.interceptor";
     PaginationModule.forRoot(),
     StoreModule.forRoot({
       bookState: bookReducer,
-      messageList: messageReducer,
       catalogState: catalogReducer,
       userState: userReducer
     }),
@@ -79,7 +76,6 @@ import { LoadingScreenInterceptor } from "./_helpers/loading.interceptor";
     AuthorService,
     BookService,
     UserService,
-    MessageService,
     BookSaverService,
     AlertifyService,
     AuthenticationGuard,
