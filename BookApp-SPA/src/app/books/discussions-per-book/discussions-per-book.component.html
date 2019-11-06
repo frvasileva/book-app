@@ -1,7 +1,7 @@
 <div class="row">
   <div class="col-md">
     <h2>
-      Discussions for book
+      Discussions for book {{ bookTitle}}
       <a [routerLink]="['/books/details/' + bookFriendlyUrl]" class="book-link">
         {{ bookTitle }}
       </a>
@@ -15,7 +15,10 @@
       item.title
     }}</a>
   </div>
-  <div class="col-md-4">
+  <div class="col-md-4" class="small-text">
     {{ item.addedOn | date: "medium" }}
+    <br />
+    <i class="fas fa-book"></i>
+    <a [routerLink]="['details/' + item.friendlyUrl]">{{ item.bookTitle }}</a>
   </div>
 </div>

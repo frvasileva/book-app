@@ -25,6 +25,7 @@ export class DiscussionsPerBookComponent implements OnInit {
       this.discussionService
         .getDiscussionByBook(this.bookId)
         .subscribe(data => {
+          console.log(data);
           this.discussions = data as DiscussionDto[];
           this.bookTitle = this.discussions[0].bookTitle;
           this.bookFriendlyUrl = this.discussions[0].bookFriendlyUrl;

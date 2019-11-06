@@ -18,3 +18,15 @@
 .book-link {
   text-decoration: underline;
 }
+
+.small-text {
+  font-size: 14px;
+
+  & a {
+    text-decoration: italic;
+  }
+
+  .fas {
+    margin-right: 10px;
+  }
+}
