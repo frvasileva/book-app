@@ -669,6 +669,31 @@ namespace BookApp.API.Data {
 
       return result;
     }
+
+    public int GetBooksAddedToCatalogs (long userId) {
+      var totalBooks =
+        _graphClient.Cypher
+        .Match ("(b:Book)-[r:BOOK_ADDED_TO_CATALOG {userId: " + userId + "}]->(c:Catalog)")
+        .Return ((book) => new {
+          Count = Return.As<int> ("count (b.id)")
+        });
+
+      var totalBooksCount = totalBooks.Results.FirstOrDefault ().Count;
+
+      return totalBooksCount;
+    }
+    public int GetUsersFollowingCount (long userId) {
+      var totalFollower =
+        _graphClient.Cypher
+        .Match ("(p:Profile)-[r:FOLLOW_USER]->(u:Profile {id: " + userId + "})").Return ((r) => new {
+          Count = Return.As<int> ("count (r)")
+        });
+
+      var totalFollowersCount = totalFollower.Results.FirstOrDefault ().Count;
+
+      return totalFollowersCount;
+    }
+
     #endregion Recommendations
   }
 }

@@ -99,7 +99,10 @@ namespace BookApp.API.Data {
             if (userFollowers.Count > 0) {
                 mappedProfile.IsFollowedByCurrentUser = true;
             }
-            
+
+            mappedProfile.ProfileActivities.UsersFollowingCount = 5;
+            mappedProfile.ProfileActivities.BooksAddedToCatalogsCount = 5;
+
             return mappedProfile;
         }
 

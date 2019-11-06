@@ -93,6 +93,8 @@ namespace DatingApp.API.Controllers {
 
         var appUser = await _userManager.Users.Include (p => p.Books).FirstOrDefaultAsync (u => u.NormalizedEmail == userForLoginDto.Email.ToUpper ());
         var userToReturn = _mapper.Map<UserProfileDto> (appUser);
+        userToReturn.ProfileActivities.BooksAddedToCatalogsCount = _graphRepository.GetBooksAddedToCatalogs(user.Id);
+        userToReturn.ProfileActivities.UsersFollowingCount = _graphRepository.GetUsersFollowingCount(user.Id);
 
         return Ok (new {
           token = GenerateJwtToken (appUser),

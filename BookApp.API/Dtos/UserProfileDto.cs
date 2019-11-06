@@ -1,9 +1,11 @@
-using System;
 using System.Collections.Generic;
-using BookApp.API.Models;
 
 namespace BookApp.API.Dtos {
   public class UserProfileDto {
+
+    public UserProfileDto () {
+      this.ProfileActivities = new ProfileActivities ();
+    }
 
     public int Id { get; set; }
     public string Email { get; set; }
@@ -17,5 +19,7 @@ namespace BookApp.API.Dtos {
     public bool IsFollowedByCurrentUser { get; set; }
 
     public List<BookDetailsDto> Books { get; set; }
+
+    public ProfileActivities ProfileActivities { get; set; }
   }
 }

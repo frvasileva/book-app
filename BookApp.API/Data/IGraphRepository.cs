@@ -14,6 +14,8 @@ namespace BookApp.API.Data {
     CatalogCreateDto AddCatalog (CatalogCreateDto catalogDto, bool isFavorite);
     List<CatalogPureDto> GetPureCatalogs (long userId);
 
+    int GetBooksAddedToCatalogs (long userId);
+    int GetUsersFollowingCount (long userId);
     BookCatalog AddBookToCatalog (BookCatalogCreateDto item);
     BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId);
 
