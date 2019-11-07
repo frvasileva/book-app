@@ -9,7 +9,7 @@ using Neo4jClient;
 using Neo4jClient.Cypher;
 
 namespace BookApp.API.Data {
-  public class GraphRepository : IGraphRepository {
+  public partial class GraphRepository : IGraphRepository {
     private readonly IGraphClient _graphClient;
     private readonly IMapper _mapper;
     private readonly int SHOW_MAX_RESULTS_PER_PAGE = 12;
@@ -379,95 +379,6 @@ namespace BookApp.API.Data {
       return catalogList;
     }
 
-    #region ImportData
-    public void ImportBooks () {
-      var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\books.csv";
-      var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
-      var fakeBook = new Book ();
-      for (int i = 0; i < data.Rows.Count; i++) {
-        var item = data.Rows[i];
-
-        var book = new Book ();
-        book.Title = item.ItemArray[9].ToString ();
-        book.Description = item.ItemArray[10].ToString ();
-        book.PhotoPath = item.ItemArray[21].ToString ();
-        book.FriendlyUrl = Url.GenerateFriendlyUrl (item.ItemArray[9].ToString ());
-        book.PublisherId = 0;
-        book.AuthorId = 0;
-        book.AddedOn = DateTime.Now;
-        book.Description = item.ItemArray[10].ToString ();
-        book.ExternalId = Int32.Parse (item.ItemArray[1].ToString ());
-        book.ISBN = item.ItemArray[5].ToString ();
-        book.AvarageRating = Convert.ToDouble (item.ItemArray[12]);
-        book.UserId = 0;
-
-        var authorName = item.ItemArray[7].ToString ();
-        //var author = this.AddAuthor (authorName, book.Id, book.UserId);
-        //book.AuthorId = author.Id;
-
-        this.AddBook (book);
-
-        var author = this.AddAuthor (authorName, book.Id, book.UserId);
-      }
-    }
-    public void ImportTags () {
-      var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\tags.csv";
-      var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
-      var fakeTag = new Tag ();
-      for (int i = 0; i < data.Rows.Count; i++) {
-        var item = data.Rows[i];
-
-        var catalog = new Catalog ();
-        catalog.AddedOn = DateTime.Now;
-        catalog.Name = item.ItemArray[1].ToString ();
-        catalog.FriendlyUrl = Url.GenerateFriendlyUrl (item.ItemArray[1].ToString ());
-        catalog.ExternalId = Int32.Parse (item.ItemArray[0].ToString ());
-        catalog.UserId = 0;
-        catalog.IsPublic = true;
-
-        var result = _graphClient.Cypher
-          .Create ("(catalog:Catalog {catalog})")
-          .WithParam ("catalog", catalog)
-          .Return<Node<CatalogCreateDto>> ("catalog").Results.Single ().Data;
-
-        _graphClient.Cypher
-          .Match ("(profile:Profile)", "(cat:Catalog)")
-          .Where ((ProfileDto profile) => profile.Id == catalog.UserId)
-          .AndWhere ((CatalogCreateDto cat) => cat.Id == catalog.Id)
-          .CreateUnique ("(profile)-[r:CATALOG_ADDED {date}]->(cat)")
-          .WithParam ("date", new { addedOn = DateTime.Now }).ExecuteWithoutResults ();
-      }
-    }
-    public void ImportBookTags () {
-      var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\book_tags.csv";
-      var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
-      var fakeBookTag = new BookTags ();
-      for (int i = 0; i < data.Rows.Count; i++) {
-        var item = data.Rows[i];
-        var bookTag = new BookTags ();
-
-        var bookExternalId = Int32.Parse (item.ItemArray[0].ToString ());
-        var categoryExternalId = Int32.Parse (item.ItemArray[1].ToString ());
-        bookTag.Count = Int32.Parse (item.ItemArray[2].ToString ());
-        bookTag.AddedOn = DateTime.Now;
-
-        _graphClient.Cypher
-          .Match ("(book:Book)", "(catalog:Catalog)")
-          .Where ((Book book) => book.ExternalId == bookExternalId)
-          .AndWhere ((Catalog catalog) => catalog.ExternalId == categoryExternalId)
-          .Create ("(book)-[r:BOOK_ADDED_TO_CATALOG {info}]->(catalog)")
-          .WithParam ("info", new { addedOn = DateTime.Now, userId = 0 })
-          .ExecuteWithoutResults ();
-        // .Return ((catalog, book, r) => new {
-        //   cat = catalog.As<Catalog> (),
-        //     bk = book.As<Book> ()
-        // });
-        // var res = result.Return.result.;
-        //   this.AddCatalog()
-      }
-    }
-    #endregion ImportData
-
     private Author AddAuthor (string authorName, int? bookId, int? userId) {
       var resultAuthor = _graphClient.Cypher
         .Match ("(author:Author)")
@@ -506,170 +417,6 @@ namespace BookApp.API.Data {
       return authors;
     }
 
-    #region Recommendations
-
-    public List<string> GetFavoriteCatalogsForUser (int userId) {
-      var result = _graphClient.Cypher
-        .Match ("(catalog:Catalog)")
-        .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
-        .With ("book, catalog")
-        .Where ((CatalogItemDto catalog) => catalog.UserId == userId)
-        .ReturnDistinct ((catalog) => new { catalogs = Return.As<string> ("{name:catalog.name }") });
-
-      var rerere = result.Results;
-      var strings = new List<string> ();
-      foreach (var itm in result.Results) {
-        var item = itm.catalogs.Replace ("{\r\n  \"name\": \"", "").Replace ("\"\r\n}", "");
-        strings.Add ("'" + item + "'");
-      }
-
-      return strings;
-    }
-    public Helpers.PagedList<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId) {
-
-      var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
-
-      var getFavCatalogs = GetFavoriteCatalogsForUser (userId);
-      string combindedString = "[" + string.Join (",", getFavCatalogs.ToArray ()) + "]";
-
-      var whereClause = "catalog.name in " + combindedString;
-      var result =
-        _graphClient.Cypher
-        .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
-        .Where (whereClause)
-        .Return ((catalog, book, count) => new {
-          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
-            bk = book.As<BookDetailsDto> ()
-        })
-        .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
-
-      var totalBooks =
-        _graphClient.Cypher
-        .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
-        .Where (whereClause)
-        .Return ((book) => new {
-          Count = Return.As<int> ("count (distinct book.title)")
-        });
-
-      var totalBooksCount = totalBooks.Results.FirstOrDefault ().Count;
-
-      var res = result.Results;
-      var bookList = new List<BookDetailsDto> ();
-
-      foreach (var b in result.Results) {
-        var bd = b.bk;
-        bd.RecommendationCategory = "RELEVANCE";
-        foreach (var c in b.catalogs) {
-          bd.BookCatalogs.Add (c);
-        }
-
-        bookList.Add (bd);
-      }
-
-      var pagedList = new Helpers.PagedList<BookDetailsDto> (bookList, totalBooksCount, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
-      return pagedList;
-    }
-
-    public Helpers.PagedList<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId) {
-
-      var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
-
-      var result =
-        _graphClient.Cypher
-        .Match ("(book:Book)")
-        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
-        .Where ((BookDetailsDto book) => book.AvarageRating > 3)
-        .Return ((catalog, book, rand) => new {
-          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
-            bk = book.As<BookDetailsDto> ()
-        })
-        .OrderByDescending ("rand()")
-        .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
-
-      var totalBooks =
-        _graphClient.Cypher
-        .Match ("(book:Book)")
-        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
-        .Where ((BookDetailsDto book) => book.AvarageRating > 3)
-        .Return ((catalog, book, rand) => new {
-          Count = Return.As<int> ("count (distinct book.title)")
-        });
-
-      var totalBooksCount = totalBooks.Results.FirstOrDefault ().Count;
-
-      var res = result.Results;
-      var bookList = new List<BookDetailsDto> ();
-
-      foreach (var b in result.Results) {
-        var bd = b.bk;
-
-        bd.RecommendationCategory = "SERENDIPITY";
-        foreach (var c in b.catalogs) {
-          bd.BookCatalogs.Add (c);
-        }
-        bookList.Add (bd);
-      }
-
-      var pagedList = new Helpers.PagedList<BookDetailsDto> (bookList, totalBooksCount, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
-
-      return pagedList;
-    }
-
-    public Helpers.PagedList<BookDetailsDto> RecommendByNovelty (int currentPage, int userId) {
-
-      var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
-
-      var result =
-        _graphClient.Cypher
-        .Match ("(book:Book)")
-        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
-        .Return ((catalog, book, rand) => new {
-          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
-            bk = book.As<BookDetailsDto> ()
-        })
-        .OrderByDescending ("book.addedOn")
-        .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
-
-      var totalBooks =
-        _graphClient.Cypher
-        .Match ("(book:Book)")
-        .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
-        .Return ((book) => new {
-          Count = Return.As<int> ("count (distinct book.title)")
-        });
-
-      var totalBooksCount = totalBooks.Results.FirstOrDefault ().Count;
-
-      var res = result.Results;
-      var bookList = new List<BookDetailsDto> ();
-
-      foreach (var b in result.Results) {
-        var bd = b.bk;
-        bd.RecommendationCategory = "NOVELTY";
-        foreach (var c in b.catalogs) {
-          bd.BookCatalogs.Add (c);
-        }
-
-        bookList.Add (bd);
-      }
-      var pagedList = new Helpers.PagedList<BookDetailsDto> (bookList, totalBooksCount, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
-
-      return pagedList;
-    }
-
-    public CatalogEditDto EditCatalog (int catalogId, bool isPublic, string name, int userId) {
-
-      var result = _graphClient.Cypher
-        .Match ("(catalog:Catalog)")
-        .Where ((CatalogItemDto catalog) => catalog.Id == catalogId)
-        .WithParam ("isPublic", isPublic)
-        .WithParam ("name", name)
-        .Set ("catalog.isPublic = {isPublic}, catalog.name = {name}")
-        .Return<CatalogEditDto> ("catalog").Results.Single ();
-
-      return result;
-    }
-
     public int GetBooksAddedToCatalogs (long userId) {
       var totalBooks =
         _graphClient.Cypher
@@ -694,6 +441,18 @@ namespace BookApp.API.Data {
       return totalFollowersCount;
     }
 
-    #endregion Recommendations
+    public CatalogEditDto EditCatalog (int catalogId, bool isPublic, string name, int userId) {
+
+      var result = _graphClient.Cypher
+        .Match ("(catalog:Catalog)")
+        .Where ((CatalogItemDto catalog) => catalog.Id == catalogId)
+        .WithParam ("isPublic", isPublic)
+        .WithParam ("name", name)
+        .Set ("catalog.isPublic = {isPublic}, catalog.name = {name}")
+        .Return<CatalogEditDto> ("catalog").Results.Single ();
+
+      return result;
+    }
+
   }
 }
