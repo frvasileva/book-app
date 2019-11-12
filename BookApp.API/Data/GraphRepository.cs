@@ -454,5 +454,22 @@ namespace BookApp.API.Data {
       return result;
     }
 
+    public List<string> GetFavoriteCatalogsForUser (int userId) {
+      var result = _graphClient.Cypher
+        .Match ("(catalog:Catalog)")
+        .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .With ("book, catalog")
+        .Where ((CatalogItemDto catalog) => catalog.UserId == userId)
+        .ReturnDistinct ((catalog) => new { catalogs = Return.As<string> ("{name:catalog.name }") });
+
+      var rerere = result.Results;
+      var strings = new List<string> ();
+      foreach (var itm in result.Results) {
+        var item = itm.catalogs.Replace ("{\r\n  \"name\": \"", "").Replace ("\"\r\n}", "");
+        strings.Add ("'" + item + "'");
+      }
+
+      return strings;
+    }
   }
 }

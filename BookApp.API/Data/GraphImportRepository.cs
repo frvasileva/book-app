@@ -1,12 +1,9 @@
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Neo4jClient;
-using Neo4jClient.Cypher;
 
 namespace BookApp.API.Data {
   public partial class GraphRepository : IGraphRepository {
@@ -20,7 +17,11 @@ namespace BookApp.API.Data {
         var item = data.Rows[i];
 
         var book = new Book ();
-        book.Title = item.ItemArray[9].ToString ();
+        if (book.Title != "")
+          book.Title = item.ItemArray[9].ToString ();
+        else {
+          book.Title = item.ItemArray[10].ToString ();
+        }
         book.Description = item.ItemArray[10].ToString ();
         book.PhotoPath = item.ItemArray[21].ToString ();
         book.FriendlyUrl = Url.GenerateFriendlyUrl (item.ItemArray[9].ToString ());
@@ -40,6 +41,7 @@ namespace BookApp.API.Data {
         this.AddBook (book);
 
         var author = this.AddAuthor (authorName, book.Id, book.UserId);
+        //TODO: Update author ID in book object
       }
     }
     public void ImportTags () {
