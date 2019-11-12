@@ -36,15 +36,6 @@ namespace BookApp.API.Data {
                 .Create ("(profile:Profile {profileId})")
                 .WithParam ("profileId", new { user.Id, user.Email }).ExecuteWithoutResults ();
 
-            //Init default catalog on registering a new user
-            var catalog = new Catalog ();
-            catalog.Name = "Want to read";
-            catalog.IsPublic = true;
-            catalog.AddedOn = DateTime.Now;
-            catalog.FriendlyUrl = Url.GenerateFriendlyUrl (catalog.Name + "-" + StringHelper.GenerateRandomNo ());
-            catalog.UserId = user.Id;
-
-            //   await _context.Catalogs.AddAsync (catalog);
             var result = await _context.SaveChangesAsync ();
 
             if (result > 0) {

@@ -28,7 +28,7 @@ namespace DatingApp.API.Controllers {
     private readonly IGraphRepository _graphRepository;
 
     public AuthController (IConfiguration config, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager,
-       IGraphRepository graphRepository) {
+      IGraphRepository graphRepository) {
       _config = config;
       _mapper = mapper;
       _userManager = userManager;
@@ -59,13 +59,13 @@ namespace DatingApp.API.Controllers {
       _graphRepository.RegisterUser (profileDto);
 
       if (result.Succeeded) {
-        // var defaultCatalog = new CatalogCreateDto ();
+        var defaultCatalog = new CatalogCreateDto ();
 
-        // defaultCatalog.Name = "Want to read";
-        // defaultCatalog.IsPublic = true;
-        // defaultCatalog.UserId = user.Id;
-        // defaultCatalog.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (defaultCatalog.Name + "-" + Guid.NewGuid ());
-        // _graphRepository.AddCatalog (defaultCatalog, false);
+        defaultCatalog.Name = "Want to read";
+        defaultCatalog.IsPublic = true;
+        defaultCatalog.UserId = user.Id;
+        defaultCatalog.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (defaultCatalog.Name + "-" + Guid.NewGuid ());
+        _graphRepository.AddCatalog (defaultCatalog, true);
 
         return Ok (new {
           token = GenerateJwtToken (user)
@@ -91,8 +91,8 @@ namespace DatingApp.API.Controllers {
 
         var appUser = await _userManager.Users.Include (p => p.Books).FirstOrDefaultAsync (u => u.NormalizedEmail == userForLoginDto.Email.ToUpper ());
         var userToReturn = _mapper.Map<UserProfileDto> (appUser);
-        userToReturn.ProfileActivities.BooksAddedToCatalogsCount = _graphRepository.GetBooksAddedToCatalogs(user.Id);
-        userToReturn.ProfileActivities.UsersFollowingCount = _graphRepository.GetUsersFollowingCount(user.Id);
+        userToReturn.ProfileActivities.BooksAddedToCatalogsCount = _graphRepository.GetBooksAddedToCatalogs (user.Id);
+        userToReturn.ProfileActivities.UsersFollowingCount = _graphRepository.GetUsersFollowingCount (user.Id);
 
         return Ok (new {
           token = GenerateJwtToken (appUser),
