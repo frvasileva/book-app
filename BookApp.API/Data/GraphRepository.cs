@@ -219,7 +219,9 @@ namespace BookApp.API.Data {
         var itm = item.cat;
         catalogList.Add (itm);
       }
-      catalogList = catalogList.OrderByDescending (item => item.Created).ToList ();
+
+      catalogList = catalogList.OrderByDescending (item => item.Name == "Want to read").ThenBy (item => item.Created).ToList ();
+
       return catalogList;
     }
 

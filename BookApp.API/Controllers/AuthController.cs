@@ -59,13 +59,13 @@ namespace DatingApp.API.Controllers {
       _graphRepository.RegisterUser (profileDto);
 
       if (result.Succeeded) {
-        var defaultCatalog = new CatalogCreateDto ();
+        // var defaultCatalog = new CatalogCreateDto ();
 
-        defaultCatalog.Name = "Want to read";
-        defaultCatalog.IsPublic = true;
-        defaultCatalog.UserId = user.Id;
-        defaultCatalog.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (defaultCatalog.Name + "-" + Guid.NewGuid ());
-        _graphRepository.AddCatalog (defaultCatalog, false);
+        // defaultCatalog.Name = "Want to read";
+        // defaultCatalog.IsPublic = true;
+        // defaultCatalog.UserId = user.Id;
+        // defaultCatalog.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (defaultCatalog.Name + "-" + Guid.NewGuid ());
+        // _graphRepository.AddCatalog (defaultCatalog, false);
 
         return Ok (new {
           token = GenerateJwtToken (user)

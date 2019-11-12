@@ -13,7 +13,7 @@ namespace BookApp.API.Data {
 
       var userBooksAddedToCatalogsCount = this.GetBooksAddedToCatalogs (userId);
       var userFollowingCount = this.GetUsersFollowingCount (userId);
-      if (userBooksAddedToCatalogsCount > MIN_BOOKS_ADDED_TO_CATALOGS)
+      if (userBooksAddedToCatalogsCount <= MIN_BOOKS_ADDED_TO_CATALOGS)
         return this.RecommendByFavoriteCategories (currentPage, userId);
       else
         return this.RecommendByBooksAddedCategories (currentPage, userId);

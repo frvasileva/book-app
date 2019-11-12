@@ -37,7 +37,7 @@ namespace BookApp.API.Controllers {
     private Cloudinary _cloudinary;
     private readonly IGraphRepository _bookGraph;
 
-    public BookController ( IUserRepository userRepo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig, IGraphRepository bookGraph) {
+    public BookController (IUserRepository userRepo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig, IGraphRepository bookGraph) {
       _context = context;
       _mapper = mapper;
       _cloudinaryConfig = cloudinaryConfig;
@@ -123,8 +123,8 @@ namespace BookApp.API.Controllers {
     [HttpGet ("import-books")]
     public async Task<IActionResult> ImportBooks () {
 
-        _bookGraph.ImportBooks ();
-      //  var result =   _bookGraph.GetFavoriteCatalogsForUser (108);
+      _bookGraph.ImportBooks ();
+      // var result =   _bookGraph.GetFavoriteCatalogsForUser (108);
       // var result = _bookGraph.RecommendationByRelevance (0, UserId);
       return Ok ();
     }
@@ -185,7 +185,6 @@ namespace BookApp.API.Controllers {
     }
 
     #endregion
-
 
     [HttpPost ("add-photo/{friendlyUrl}")]
     public async Task<IActionResult> AddPhotoForBook (string friendlyUrl, [FromForm] PhotoForCreationDto photoForCreationDto) {
