@@ -4,6 +4,18 @@ using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Neo4jClient;
+using System;
+using System.Collections.Generic;
+using System.Data;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using AutoMapper;
+using BookApp.API.Dtos;
+using BookApp.API.Helpers;
+using BookApp.API.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.API.Data {
   public partial class GraphRepository : IGraphRepository {
@@ -11,7 +23,7 @@ namespace BookApp.API.Data {
     #region ImportData
     public void ImportBooks () {
       var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\books.csv";
-      var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
+      var data = ConvertCSVtoDataTable (strFilePath);
       var fakeBook = new Book ();
       for (int i = 0; i < data.Rows.Count; i++) {
         var item = data.Rows[i];
@@ -46,7 +58,7 @@ namespace BookApp.API.Data {
     }
     public void ImportTags () {
       var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\tags.csv";
-      var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
+      var data = ConvertCSVtoDataTable (strFilePath);
       var fakeTag = new Tag ();
       for (int i = 0; i < data.Rows.Count; i++) {
         var item = data.Rows[i];
@@ -74,7 +86,7 @@ namespace BookApp.API.Data {
     }
     public void ImportBookTags () {
       var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\book_tags.csv";
-      var data = BookRepository.ConvertCSVtoDataTable (strFilePath);
+      var data = ConvertCSVtoDataTable (strFilePath);
       var fakeBookTag = new BookTags ();
       for (int i = 0; i < data.Rows.Count; i++) {
         var item = data.Rows[i];
@@ -100,6 +112,33 @@ namespace BookApp.API.Data {
         //   this.AddCatalog()
       }
     }
-    #endregion ImportData
-  }
+        #endregion ImportData
+
+        #region Helpers
+        private static DataTable ConvertCSVtoDataTable(string strFilePath = "")
+        {
+
+            StreamReader sr = new StreamReader(strFilePath);
+            string[] headers = sr.ReadLine().Split(',');
+            DataTable dt = new DataTable();
+            foreach (string header in headers)
+            {
+                dt.Columns.Add(header);
+            }
+            while (!sr.EndOfStream)
+            {
+                string[] rows = Regex.Split(sr.ReadLine(), ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+                DataRow dr = dt.NewRow();
+                for (int i = 0; i < headers.Length; i++)
+                {
+                    dr[i] = rows[i];
+                }
+
+                dt.Rows.Add(dr);
+            }
+            return dt;
+        }
+
+        #endregion Helpers
+    }
 }

@@ -31,7 +31,7 @@ namespace BookApp.API.Data {
         .OnDelete (DeleteBehavior.Restrict);
     }
 
-    public DbSet<Book> Books { get; set; }
+    // public DbSet<Book> Books { get; set; }
     public DbSet<Discussion> Discussions { get; set; }
     public DbSet<DiscussionItem> DiscussionItem { get; set; }
     public DbSet<Photo> Photos { get; set; }

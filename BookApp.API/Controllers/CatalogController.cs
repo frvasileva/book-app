@@ -13,7 +13,6 @@ namespace BookApp.API.Controllers {
   [ApiController]
   [Authorize]
   public class CatalogController : ControllerBase {
-    private readonly ICatalogRepository _repo;
 
     private readonly IUserRepository _userRepo;
     private readonly IGraphRepository _graphRepo;

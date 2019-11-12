@@ -88,9 +88,9 @@ namespace DatingApp.API {
 
       services.AddAutoMapper ();
       services.AddScoped<IUserRepository, UserRepository> ();
-      services.AddScoped<IBookRepository, BookRepository> ();
-      services.AddScoped<IAuthorRepository, AuthorRepository> ();
-      services.AddScoped<ICatalogRepository, CatalogRepository> ();
+      // services.AddScoped<IBookRepository, BookRepository> ();
+      // services.AddScoped<IAuthorRepository, AuthorRepository> ();
+      // services.AddScoped<ICatalogRepository, CatalogRepository> ();
       services.AddScoped<IAuthRepository, AuthRepository> ();
       services.AddScoped<IDiscussionRepository, DiscussionRepository> ();
       services.AddScoped<IGraphRepository, GraphRepository> ();

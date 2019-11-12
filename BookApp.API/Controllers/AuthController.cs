@@ -24,17 +24,15 @@ namespace DatingApp.API.Controllers {
 
     private UserManager<User> _userManager;
     private SignInManager<User> _signInManager;
-    private ICatalogRepository _catalogRepo;
 
     private readonly IGraphRepository _graphRepository;
 
     public AuthController (IConfiguration config, IMapper mapper, UserManager<User> userManager, SignInManager<User> signInManager,
-      ICatalogRepository catalogRepo, IGraphRepository graphRepository) {
+       IGraphRepository graphRepository) {
       _config = config;
       _mapper = mapper;
       _userManager = userManager;
       _signInManager = signInManager;
-      _catalogRepo = catalogRepo;
       _graphRepository = graphRepository;
     }
 

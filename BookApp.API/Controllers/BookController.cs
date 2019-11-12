@@ -29,7 +29,6 @@ namespace BookApp.API.Controllers {
         return userId;
       }
     }
-    private readonly IBookRepository _repo;
     private readonly IUserRepository _userRepo;
     private readonly DataContext _context;
     private readonly IMapper _mapper;
@@ -38,8 +37,7 @@ namespace BookApp.API.Controllers {
     private Cloudinary _cloudinary;
     private readonly IGraphRepository _bookGraph;
 
-    public BookController (IBookRepository repo, IUserRepository userRepo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig, IGraphRepository bookGraph) {
-      _repo = repo;
+    public BookController ( IUserRepository userRepo, DataContext context, IMapper mapper, IOptions<CloudinarySettings> cloudinaryConfig, IGraphRepository bookGraph) {
       _context = context;
       _mapper = mapper;
       _cloudinaryConfig = cloudinaryConfig;
