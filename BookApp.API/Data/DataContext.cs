@@ -24,23 +24,16 @@ namespace BookApp.API.Data {
         .WithMany (b => b.BookCatalogs)
         .OnDelete (DeleteBehavior.Restrict);
 
-     
       modelBuilder.Entity<BookCatalog> ()
         .HasOne (bc => bc.Book)
         .WithMany (c => c.BookCatalogs)
         .OnDelete (DeleteBehavior.Restrict);
     }
 
-    // public DbSet<Book> Books { get; set; }
     public DbSet<Discussion> Discussions { get; set; }
     public DbSet<DiscussionItem> DiscussionItem { get; set; }
     public DbSet<Photo> Photos { get; set; }
-    public DbSet<Author> Authors { get; set; }
-    public DbSet<Quote> Quotes { get; set; }
-    public DbSet<Publisher> Publishers { get; set; }
     public DbSet<BookListActions> BookListActions { get; set; }
-    public DbSet<Catalog> Catalogs { get; set; }
-    public DbSet<BookCatalog> BookCatalog { get; set; }
     public DbSet<UserFollowers> UserFollowers { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<BookTags> BookTags { get; set; }

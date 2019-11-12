@@ -123,10 +123,10 @@ namespace BookApp.API.Controllers {
     [HttpGet ("import-books")]
     public async Task<IActionResult> ImportBooks () {
 
-      //  _bookGraph.ImportBooks ();
-      // var result =   _bookGraph.GetFavoriteCatalogsForUser (108);
-      var result = _bookGraph.RecommendationByRelevance (0, UserId);
-      return Ok (result);
+        _bookGraph.ImportBooks ();
+      //  var result =   _bookGraph.GetFavoriteCatalogsForUser (108);
+      // var result = _bookGraph.RecommendationByRelevance (0, UserId);
+      return Ok ();
     }
 
     [HttpGet ("import-categories")]

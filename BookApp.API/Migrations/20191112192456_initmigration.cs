@@ -4,7 +4,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DatingApp.API.Migrations
 {
-    public partial class InitialCreate : Migration
+    public partial class initmigration : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -59,7 +59,7 @@ namespace DatingApp.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Authors",
+                name: "Author",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -71,7 +71,7 @@ namespace DatingApp.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Authors", x => x.Id);
+                    table.PrimaryKey("PK_Author", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -140,7 +140,7 @@ namespace DatingApp.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Publishers",
+                name: "Publisher",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -151,7 +151,7 @@ namespace DatingApp.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Publishers", x => x.Id);
+                    table.PrimaryKey("PK_Publisher", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -314,7 +314,7 @@ namespace DatingApp.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Catalogs",
+                name: "Catalog",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -328,9 +328,9 @@ namespace DatingApp.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Catalogs", x => x.Id);
+                    table.PrimaryKey("PK_Catalog", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Catalogs_AspNetUsers_UserId",
+                        name: "FK_Catalog_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -360,27 +360,6 @@ namespace DatingApp.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Quotes",
-                columns: table => new
-                {
-                    Id = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    Content = table.Column<string>(nullable: true),
-                    AddedOn = table.Column<DateTime>(nullable: false),
-                    AuthorId = table.Column<int>(nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Quotes", x => x.Id);
-                    table.ForeignKey(
-                        name: "FK_Quotes_Authors_AuthorId",
-                        column: x => x.AuthorId,
-                        principalTable: "Authors",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "DiscussionItem",
                 columns: table => new
                 {
@@ -403,7 +382,7 @@ namespace DatingApp.API.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Books",
+                name: "Book",
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
@@ -422,21 +401,21 @@ namespace DatingApp.API.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Books", x => x.Id);
+                    table.PrimaryKey("PK_Book", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Books_Authors_AuthorId",
+                        name: "FK_Book_Author_AuthorId",
                         column: x => x.AuthorId,
-                        principalTable: "Authors",
+                        principalTable: "Author",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Books_Publishers_PublisherId",
+                        name: "FK_Book_Publisher_PublisherId",
                         column: x => x.PublisherId,
-                        principalTable: "Publishers",
+                        principalTable: "Publisher",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Books_AspNetUsers_UserId",
+                        name: "FK_Book_AspNetUsers_UserId",
                         column: x => x.UserId,
                         principalTable: "AspNetUsers",
                         principalColumn: "Id",
@@ -458,15 +437,15 @@ namespace DatingApp.API.Migrations
                 {
                     table.PrimaryKey("PK_BookCatalog", x => new { x.BookId, x.CatalogId });
                     table.ForeignKey(
-                        name: "FK_BookCatalog_Books_BookId",
+                        name: "FK_BookCatalog_Book_BookId",
                         column: x => x.BookId,
-                        principalTable: "Books",
+                        principalTable: "Book",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_BookCatalog_Catalogs_CatalogId",
+                        name: "FK_BookCatalog_Catalog_CatalogId",
                         column: x => x.CatalogId,
-                        principalTable: "Catalogs",
+                        principalTable: "Catalog",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -516,28 +495,28 @@ namespace DatingApp.API.Migrations
                 filter: "[NormalizedUserName] IS NOT NULL");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Book_AuthorId",
+                table: "Book",
+                column: "AuthorId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Book_PublisherId",
+                table: "Book",
+                column: "PublisherId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Book_UserId",
+                table: "Book",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_BookCatalog_CatalogId",
                 table: "BookCatalog",
                 column: "CatalogId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Books_AuthorId",
-                table: "Books",
-                column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_PublisherId",
-                table: "Books",
-                column: "PublisherId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Books_UserId",
-                table: "Books",
-                column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Catalogs_UserId",
-                table: "Catalogs",
+                name: "IX_Catalog_UserId",
+                table: "Catalog",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -549,11 +528,6 @@ namespace DatingApp.API.Migrations
                 name: "IX_Photos_UserId",
                 table: "Photos",
                 column: "UserId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Quotes_AuthorId",
-                table: "Quotes",
-                column: "AuthorId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -592,9 +566,6 @@ namespace DatingApp.API.Migrations
                 name: "Photos");
 
             migrationBuilder.DropTable(
-                name: "Quotes");
-
-            migrationBuilder.DropTable(
                 name: "Tags");
 
             migrationBuilder.DropTable(
@@ -607,19 +578,19 @@ namespace DatingApp.API.Migrations
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
-                name: "Books");
+                name: "Book");
 
             migrationBuilder.DropTable(
-                name: "Catalogs");
+                name: "Catalog");
 
             migrationBuilder.DropTable(
                 name: "Discussions");
 
             migrationBuilder.DropTable(
-                name: "Authors");
+                name: "Author");
 
             migrationBuilder.DropTable(
-                name: "Publishers");
+                name: "Publisher");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

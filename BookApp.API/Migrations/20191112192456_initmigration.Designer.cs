@@ -10,8 +10,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DatingApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    [Migration("20191112165356_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20191112192456_initmigration")]
+    partial class initmigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -37,7 +37,7 @@ namespace DatingApp.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Authors");
+                    b.ToTable("Author");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.Book", b =>
@@ -76,7 +76,7 @@ namespace DatingApp.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Books");
+                    b.ToTable("Book");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.BookCatalog", b =>
@@ -177,7 +177,7 @@ namespace DatingApp.API.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Catalogs");
+                    b.ToTable("Catalog");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.Discussion", b =>
@@ -259,26 +259,7 @@ namespace DatingApp.API.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Publishers");
-                });
-
-            modelBuilder.Entity("BookApp.API.Models.Quote", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<DateTime>("AddedOn");
-
-                    b.Property<int?>("AuthorId");
-
-                    b.Property<string>("Content");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AuthorId");
-
-                    b.ToTable("Quotes");
+                    b.ToTable("Publisher");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.Role", b =>
@@ -567,13 +548,6 @@ namespace DatingApp.API.Migrations
                         .WithMany("Photos")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("BookApp.API.Models.Quote", b =>
-                {
-                    b.HasOne("BookApp.API.Models.Author", "Author")
-                        .WithMany()
-                        .HasForeignKey("AuthorId");
                 });
 
             modelBuilder.Entity("BookApp.API.Models.UserRole", b =>
