@@ -44,7 +44,7 @@ export class AuthService {
 
         this.bookSaverService.getUserCatalogList(response.user.friendlyUrl);
 
-        this.router.navigate(["/user/profile/", response.user.friendlyUrl]);
+        this.router.navigate(["/books"]);
       })
     );
   }
