@@ -50,7 +50,7 @@
         *ngIf="isCurrentUser && !showCatalogName"
         (click)="showChangeCatalogNameForm()"
       >
-        <button class="button white small no-text">
+        <button class="button white small no-text" *ngIf="!isWantToReadCategory">
           <i
             class="glyphicon glyphicon-pencil"
             (click)="showChangeCatalogNameForm()"

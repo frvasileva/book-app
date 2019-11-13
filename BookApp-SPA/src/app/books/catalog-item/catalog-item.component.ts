@@ -16,6 +16,7 @@ export class CatalogItemComponent implements OnInit {
   model: CatalogEditItemDto;
   editCatalogNameForm: FormGroup;
   showCatalogName = false;
+  isWantToReadCategory = false;
 
   constructor(private catalogService: BookCatalogService) {}
 
@@ -26,6 +27,10 @@ export class CatalogItemComponent implements OnInit {
     this.editCatalogNameForm = new FormGroup({
       name: new FormControl(this.catalog.name, Validators.required)
     });
+
+    if (this.catalog.name === "Want to read") {
+      this.isWantToReadCategory = true;
+    }
   }
 
   editCatalog(isPublic: boolean) {
