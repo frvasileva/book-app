@@ -2,6 +2,7 @@ import { Component, OnInit, Input } from "@angular/core";
 import { BookCatalogService } from "src/app/_services/book-catalog.service";
 import { CatalogEditItemDto } from "src/app/_models/catalogEditItemDto";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
+import { settings } from "src/app/_shared/settings";
 
 @Component({
   selector: "app-catalog-item",
@@ -28,9 +29,9 @@ export class CatalogItemComponent implements OnInit {
       name: new FormControl(this.catalog.name, Validators.required)
     });
 
-    if (this.catalog.name === "Want to read") {
-      this.isWantToReadCategory = true;
-    }
+    this.isWantToReadCategory =
+      settings.defaultCatalogNames.filter(x => x === this.catalog.name).length >
+      0;
   }
 
   editCatalog(isPublic: boolean) {
