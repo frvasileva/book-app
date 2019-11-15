@@ -1,8 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { ActivatedRoute, Params } from "@angular/router";
-import { Store } from "@ngrx/store";
 import { BookCatalogService } from "src/app/_services/book-catalog.service";
-import { CatalogItemDto } from "src/app/_models/catalogItem";
 
 @Component({
   selector: "app-public-catalog-list",
@@ -10,20 +7,13 @@ import { CatalogItemDto } from "src/app/_models/catalogItem";
   styleUrls: ["./public-catalog-list.component.scss"]
 })
 export class PublicCatalogListComponent implements OnInit {
-  catalogState: any;
+  catalogList: any;
 
-  constructor(
-    private route: ActivatedRoute,
-    private store: Store<{ catalogState: { catalog: CatalogItemDto[] } }>,
-    private catalogService: BookCatalogService
-  ) {}
+  constructor(private catalogService: BookCatalogService) {}
 
   ngOnInit() {
-    this.catalogService.getPublicCatalogs();
-    this.store
-      .select(state => state.catalogState)
-      .subscribe(catState => {
-        this.catalogState = catState.catalog;
-      });
+    this.catalogService.getPublicCatalogs().subscribe(data => {
+      this.catalogList = data;
+    });
   }
 }

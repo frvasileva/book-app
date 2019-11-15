@@ -6,6 +6,7 @@ import { BookService } from "src/app/_services/book.service";
 import { bookDetailsDto } from "src/app/_models/bookDetailsDto";
 import { Meta, Title } from "@angular/platform-browser";
 import { BookSaverService } from "src/app/_services/bookSaver.service";
+import { AlertifyService } from "src/app/_services/alertify.service";
 
 @Component({
   selector: "app-books-detail",
@@ -19,8 +20,7 @@ export class BooksDetailComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
-    private bookSaverService: BookSaverService,
-    private store: Store<{ bookState: { books: bookDetailsDto[] } }>,
+    private alertify: AlertifyService,
     private titleService: Title,
     private metaTagService: Meta
   ) {}
@@ -28,31 +28,15 @@ export class BooksDetailComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params.url;
-      this.store
-        .pipe(
-          select(
-            (state: { bookState: { books: bookDetailsDto[] } }) =>
-              state.bookState.books
-          )
-        )
-        .subscribe(books => {
-          this.book = books.find(book => book.friendlyUrl === this.friendlyUrl);
-          if (this.book) {
-            this.titleService.setTitle(this.book.title);
-            this.metaTagService.updateTag({
-              name: "description",
-              content: this.book.description
-            });
 
-            console.log("book?.catalogList", this.book.bookCatalogs);
-          } else {
-            this.bookService.getBook(this.friendlyUrl);
-            this.bookSaverService.getUserCatalogList(this.friendlyUrl);
-          }
-
-          console.log("book?.catalogList", this.book);
-
-        });
+      this.bookService.getBook(this.friendlyUrl).subscribe(
+        data => {
+          this.book = data;
+        },
+        error => {
+          this.alertify.error(error);
+        }
+      );
     });
   }
 }

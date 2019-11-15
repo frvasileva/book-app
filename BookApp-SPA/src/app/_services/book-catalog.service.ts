@@ -54,14 +54,7 @@ export class BookCatalogService {
   }
 
   getCatalog(friendlyUrl: string) {
-    return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
-      data => {
-        this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
-      },
-      error => {
-        this.alertify.error(error);
-      }
-    );
+    return this.http.get(this.baseUrl + "get/" + friendlyUrl);
   }
 
   getUserCatalogs(userFriendlyUrl: string) {
@@ -78,14 +71,7 @@ export class BookCatalogService {
   }
 
   getPublicCatalogs() {
-    return this.http.get(this.baseUrl + "catalogs").subscribe(
-      data => {
-        this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
-      },
-      error => {
-        this.alertify.error(error);
-      }
-    );
+    return this.http.get(this.baseUrl + "catalogs");
   }
 
   editCatalog(model: CatalogEditItemDto) {

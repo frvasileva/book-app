@@ -40,14 +40,7 @@ export class BookService {
   }
 
   getBook(friendlyUrl: string = "dummy url") {
-    return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
-      data => {
-        this.store.dispatch(new BookActions.SetBookAction(<Book>data));
-      },
-      error => {
-        this.alertify.error(error);
-      }
-    );
+    return this.http.get(this.baseUrl + "get/" + friendlyUrl);
   }
 
   getBooks() {
@@ -85,28 +78,12 @@ export class BookService {
   }
 
   RecommendByRelevance(currentPage: number) {
-    return this.http
-      .get(this.baseUrl + "recommend-relevance/" + currentPage)
-      .subscribe(data => {
-        this.store.dispatch(new BookActions.SetBooksAction(data));
-      });
+    return this.http.get(this.baseUrl + "recommend-relevance/" + currentPage);
   }
   RecommendBySerendipity(currentPage: number) {
-    return this.http
-      .get(this.baseUrl + "recommend-serendipity/" + currentPage)
-      .subscribe(data => {
-        this.store.dispatch(new BookActions.SetBooksAction(data));
-      });
+    return this.http.get(this.baseUrl + "recommend-serendipity/" + currentPage);
   }
   RecommendByNovelty(currentPage: number) {
-    return this.http
-      .get(this.baseUrl + "recommend-novelty/" + currentPage)
-      .subscribe(data => {
-        this.store.dispatch(new BookActions.SetBooksAction(data));
-      });
+    return this.http.get(this.baseUrl + "recommend-novelty/" + currentPage);
   }
-
-  // List<BookDetailsDto> RecommendationByRelevance (int userId);
-  // List<BookDetailsDto> RecommendBySerendepity (int userId);
-  // List<BookDetailsDto> RecommendByNovelty (int userId);
 }
