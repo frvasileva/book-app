@@ -7,7 +7,6 @@ import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Profile } from "src/app/_models/profile";
 import * as UserProfileActions from "../../../_store/user.actions";
-import * as BookActions from "../../../_store/book.actions";
 
 @Component({
   selector: "app-photo-editor",
@@ -69,9 +68,6 @@ export class PhotoEditorComponent implements OnInit {
           this.alertify.success("Photo updated");
         } else if (this.uploaderType === "book-cover-photo") {
           this.router.navigate(["/books"]);
-          this.store.dispatch(
-            new BookActions.SetBookPhotoAction(JSON.parse(response))
-          );
         }
       }
     };

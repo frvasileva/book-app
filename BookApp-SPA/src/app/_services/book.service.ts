@@ -10,7 +10,6 @@ import { Book } from "../_models/books";
 
 import { AlertifyService } from "./alertify.service";
 
-import * as BookActions from "../_store/book.actions";
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -32,8 +31,6 @@ export class BookService {
     model.userId = this.token.nameid;
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
-        this.store.dispatch(new BookActions.SetBookAction(<Book>response));
-
         return response;
       })
     );
@@ -43,16 +40,6 @@ export class BookService {
     return this.http.get(this.baseUrl + "get/" + friendlyUrl);
   }
 
-  getBooks() {
-    return this.http.get(this.baseUrl + "get-books").subscribe(
-      data => {
-        this.store.dispatch(new BookActions.SetBooksAction(data));
-      },
-      error => {
-        this.alertify.error(error);
-      }
-    );
-  }
 
   getBooksAddedByUser(userFriendlyUrl: string) {
     return this.http.get(

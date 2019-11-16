@@ -49,7 +49,6 @@ export class BookSaverService {
       .post(this.baseUrlBookService + "add-to-catalog", model)
       .pipe(
         map((response: any) => {
-          console.log({ bookId, catalogId });
           this.store.dispatch(
             new BookActions.AddBookToCatalogAction({ bookId, catalogId })
           );

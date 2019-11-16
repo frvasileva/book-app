@@ -33,9 +33,6 @@ export class BookCatalogService {
   addCatalog(model: CatalogCreateDto) {
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: CatalogItemDto) => {
-        this.store.dispatch(
-          new CatalogActions.AddCatalogAction(<CatalogCreateDto>response)
-        );
         const catalogPure: CatalogPureDto = {
           id: response.id,
           created: response.created,
@@ -47,7 +44,6 @@ export class BookCatalogService {
         this.store.dispatch(
           new UserActions.AddCurrentUserCatalogsAction(catalogPure)
         );
-
         return response;
       })
     );
@@ -78,9 +74,9 @@ export class BookCatalogService {
     return this.http.post(this.baseUrl + "edit-catalog", model).pipe(
       map((response: CatalogEditItemDto) => {
         this.store.dispatch(
+          //TODO: Update user's pure catalogs if name changed
           new CatalogActions.UpdateCatalogAction(<CatalogEditItemDto>response)
         );
-
         return response;
       })
     );
