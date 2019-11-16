@@ -17,7 +17,7 @@ import { TabDirective } from "ngx-bootstrap/tabs";
   styleUrls: ["./profile.component.scss"]
 })
 export class ProfileComponent implements OnInit {
-  profile: Profile;
+  profile: any;
   currentUser: Profile;
   books: Book[];
   friendlyUrl: string;
@@ -30,6 +30,7 @@ export class ProfileComponent implements OnInit {
     private userService: UserService,
     private bookService: BookService,
     private route: ActivatedRoute,
+    private store: Store<{ userState: UserState }>,
     private titleService: Title,
     private metaTagService: Meta
   ) {}
@@ -40,17 +41,13 @@ export class ProfileComponent implements OnInit {
       this.store
         .select(state => state.userState)
         .subscribe(userState => {
-          this.profile = userState.users.find(
-            u => u.friendlyUrl === this.friendlyUrl
-          );
+          this.userService.getUser(this.friendlyUrl).subscribe(data => {
+            this.profile = data;
+          });
           this.currentUser = userState.users.find(
             u => u.friendlyUrl === userState.currentUser
           );
           this.isCurrentUser = userState.currentUser === this.friendlyUrl;
-
-          if (!this.profile) {
-            this.userService.getUser(this.friendlyUrl);
-          }
         });
 
       this.setSeoMetaTags();

@@ -33,14 +33,7 @@ export class UserService {
   }
 
   getUser(friendlyUrl: string) {
-    return this.http.get(this.baseUrl + "get/" + friendlyUrl).subscribe(
-      data => {
-        this.store.dispatch(new UserActions.SetUserAction(<User>data));
-      },
-      error => {
-        this.alertify.error(error);
-      }
-    );
+    return this.http.get(this.baseUrl + "get/" + friendlyUrl);
   }
 
   updateUser(user: User) {
@@ -96,5 +89,4 @@ export class UserService {
         }
       );
   }
-
 }
