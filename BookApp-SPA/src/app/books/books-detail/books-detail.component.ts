@@ -1,12 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
-import { Store, select } from "@ngrx/store";
 
 import { BookService } from "src/app/_services/book.service";
-import { bookDetailsDto } from "src/app/_models/bookDetailsDto";
 import { Meta, Title } from "@angular/platform-browser";
-import { BookSaverService } from "src/app/_services/bookSaver.service";
 import { AlertifyService } from "src/app/_services/alertify.service";
+import { settings } from "src/app/_shared/settings";
 
 @Component({
   selector: "app-books-detail",
@@ -32,11 +30,20 @@ export class BooksDetailComponent implements OnInit {
       this.bookService.getBook(this.friendlyUrl).subscribe(
         data => {
           this.book = data;
+          this.setSeoMetaTags(this.book.title);
         },
         error => {
           this.alertify.error(error);
         }
       );
+    });
+  }
+
+  setSeoMetaTags(bookTitle: string = "") {
+    this.titleService.setTitle(bookTitle + settings.seo_appName_title);
+    this.metaTagService.updateTag({
+      name: "description",
+      content: bookTitle + "| Books" + settings.seo_appName_title
     });
   }
 }

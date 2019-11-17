@@ -2,11 +2,10 @@ import { Component, OnInit } from "@angular/core";
 import { DiscussionService } from "src/app/_services/discussion.service";
 import { DiscussionDto } from "src/app/_models/discussionDto";
 import { ActivatedRoute, Params } from "@angular/router";
-import { Title, Meta } from "@angular/platform-browser";
-import { DiscussionItemDto } from "src/app/_models/discussionItemDto";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AlertifyService } from "src/app/_services/alertify.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
+import { SeoHelperService } from "src/app/_shared/seo-helper.service";
 
 @Component({
   selector: "app-discussion-details",
@@ -18,15 +17,13 @@ export class DiscussionDetailsComponent implements OnInit {
   friendlyUrl: string;
 
   jwtHelper = new JwtHelperService();
-
   discussionReplyForm: FormGroup;
 
   constructor(
     private discussionService: DiscussionService,
     private route: ActivatedRoute,
-    private titleService: Title,
-    private metaTagService: Meta,
-    private alertify: AlertifyService
+    private alertify: AlertifyService,
+    private seoService: SeoHelperService
   ) {}
 
   ngOnInit() {
@@ -50,7 +47,6 @@ export class DiscussionDetailsComponent implements OnInit {
       .createDiscussionReply({ body, discussionId: this.discussion.id })
       .subscribe(
         next => {
-          console.log("next", next);
           const item = next;
           item.username = item.username;
           item.userAvatarPath = this.discussion.userAvatarPath;
@@ -58,6 +54,8 @@ export class DiscussionDetailsComponent implements OnInit {
 
           this.discussion.discussionItems.push(item);
           this.discussionReplyForm.reset();
+
+          this.seoService.setSeoMetaTags(this.discussion.title);
         },
         error => {
           this.alertify.error("Failed to create discussion");

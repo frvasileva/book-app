@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Title, Meta } from "@angular/platform-browser";
-import { settings } from "src/app/_shared/settings";
 import { AuthService } from "src/app/_services/auth.service";
+import { SeoHelperService } from "src/app/_shared/seo-helper.service";
 
 @Component({
   selector: "app-home",
@@ -12,18 +11,12 @@ export class HomeComponent implements OnInit {
   isAuthenticated: boolean;
 
   constructor(
-    private titleService: Title,
-    private metaTagService: Meta,
-    private authService: AuthService
+    private authService: AuthService,
+    private seoService: SeoHelperService
   ) {}
 
   ngOnInit() {
     this.isAuthenticated = this.authService.isAuthenticated();
-
-    this.titleService.setTitle("📖 " + settings.seo_appName_title);
-    this.metaTagService.updateTag({
-      name: "description",
-      content: settings.seo_appName_title
-    });
+    this.seoService.setSeoMetaTags("📖");
   }
 }

@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { Title, Meta } from "@angular/platform-browser";
 import { ActivatedRoute, Params } from "@angular/router";
 import { BookCatalogService } from "src/app/_services/book-catalog.service";
+import { SeoHelperService } from "src/app/_shared/seo-helper.service";
 
 @Component({
   selector: "app-catalog-details",
@@ -14,8 +14,7 @@ export class CatalogDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private titleService: Title,
-    private metaTagService: Meta,
+    private seoService: SeoHelperService,
     private catalogService: BookCatalogService
   ) {}
 
@@ -24,6 +23,7 @@ export class CatalogDetailsComponent implements OnInit {
       this.friendlyUrl = params["friendly-url"];
       this.catalogService.getCatalog(this.friendlyUrl).subscribe(data => {
         this.catalog = data[0];
+        this.seoService.setSeoMetaTags(this.catalog.name);
       });
     });
   }

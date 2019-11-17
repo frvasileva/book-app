@@ -3,10 +3,9 @@ import { Location } from "@angular/common";
 
 import { Book } from "../book.model";
 import { Store } from "@ngrx/store";
-import { Title, Meta } from "@angular/platform-browser";
 import { BookService } from "src/app/_services/book.service";
-import { settings } from "src/app/_shared/settings";
-import { ActivatedRoute, Params, Router } from "@angular/router";
+import { ActivatedRoute, Params } from "@angular/router";
+import { SeoHelperService } from "src/app/_shared/seo-helper.service";
 
 @Component({
   selector: "app-books-list-by-category",
@@ -27,15 +26,11 @@ export class BooksListByCategoryComponent implements OnInit {
   itemsPerPage = 12;
 
   constructor(
-    private store: Store<{
-      bookState: { books: Book[]; totalNumber: number };
-    }>,
+    private store: Store<{ bookState: { books: Book[]; totalNumber: number } }>,
     private bookService: BookService,
-    private titleService: Title,
-    private metaTagService: Meta,
     private route: ActivatedRoute,
-    private router: Router,
-    private location: Location
+    private location: Location,
+    private seoService: SeoHelperService
   ) {}
 
   ngOnInit() {
@@ -45,7 +40,7 @@ export class BooksListByCategoryComponent implements OnInit {
       this.selectCategoryToShow();
     });
 
-    this.setSeoMetaTags();
+    this.seoService.setSeoMetaTags(this.url);
   }
 
   pageChanged(event: any): void {
@@ -77,14 +72,6 @@ export class BooksListByCategoryComponent implements OnInit {
         this.isPageChanged = false;
         this.bookService.getBooksByCategory(this.url, this.currentGridPage);
       }
-    });
-  }
-
-  setSeoMetaTags() {
-    this.titleService.setTitle("Books" + settings.seo_appName_title);
-    this.metaTagService.updateTag({
-      name: "description",
-      content: "Books" + settings.seo_appName_title
     });
   }
 }

@@ -3,13 +3,13 @@ import { AlertifyService } from "src/app/_services/alertify.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import { Router } from "@angular/router";
-import { Title, Meta } from "@angular/platform-browser";
 
 import { UserService } from "src/app/_services/user.service";
 import { User } from "src/app/_models/user";
 import { UserState } from "src/app/_store/user.reducer";
 
 import { settings } from "src/app/_shared/settings";
+import { SeoHelperService } from "src/app/_shared/seo-helper.service";
 
 @Component({
   selector: "app-profile-edit",
@@ -26,8 +26,7 @@ export class ProfileEditComponent implements OnInit {
     private router: Router,
     private userService: UserService,
     private store: Store<{ userState: UserState }>,
-    private titleService: Title,
-    private metaTagService: Meta
+    private seoHelper: SeoHelperService
   ) {}
 
   ngOnInit() {
@@ -44,14 +43,9 @@ export class ProfileEditComponent implements OnInit {
       });
 
     this.createForm();
-
-    this.titleService.setTitle(
+    this.seoHelper.setSeoMetaTags(
       "Edit " + this.profile.knownAs + settings.seo_appName_title
     );
-    this.metaTagService.updateTag({
-      name: "description",
-      content: this.profile.knownAs
-    });
   }
 
   createForm() {

@@ -2,8 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
 import { User } from "src/app/_models/user";
 import { UserState } from "src/app/_store/user.reducer";
-import { Title, Meta } from "@angular/platform-browser";
-import { settings } from "src/app/_shared/settings";
+import { SeoHelperService } from "src/app/_shared/seo-helper.service";
 
 @Component({
   selector: "app-users-list",
@@ -15,16 +14,11 @@ export class UsersListComponent implements OnInit {
 
   constructor(
     private store: Store<{ userState: UserState }>,
-    private titleService: Title,
-    private metaTagService: Meta
+    private seoHelper: SeoHelperService
   ) {}
 
   ngOnInit() {
-    this.titleService.setTitle("Users " + settings.seo_appName_title);
-    this.metaTagService.updateTag({
-      name: "description",
-      content: "Book App Users"
-    });
+    this.seoHelper.setSeoMetaTags("Users");
 
     this.store
       .select(state => state)

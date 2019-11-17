@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { Title, Meta } from "@angular/platform-browser";
-import { settings } from "src/app/_shared/settings";
 import { BookService } from "src/app/_services/book.service";
+import { SeoHelperService } from "src/app/_shared/seo-helper.service";
 
 @Component({
   selector: "app-books-list",
@@ -15,8 +14,7 @@ export class BooksListComponent implements OnInit {
 
   constructor(
     private bookService: BookService,
-    private titleService: Title,
-    private metaTagService: Meta
+    private seoService: SeoHelperService
   ) {}
 
   ngOnInit() {
@@ -24,11 +22,7 @@ export class BooksListComponent implements OnInit {
     this.bookService.RecommendByRelevance(0);
     this.bookService.RecommendBySerendipity(0);
 
-    this.titleService.setTitle("Books" + settings.seo_appName_title);
-    this.metaTagService.updateTag({
-      name: "description",
-      content: "Books" + settings.seo_appName_title
-    });
+    this.seoService.setSeoMetaTags();
 
     this.bookService.RecommendByRelevance(0).subscribe(data => {
       this.booksByRelevance = data.items;
