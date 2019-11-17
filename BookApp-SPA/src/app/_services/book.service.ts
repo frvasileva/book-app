@@ -65,12 +65,12 @@ export class BookService {
   }
 
   RecommendByRelevance(currentPage: number) {
-    return this.http.get(this.baseUrl + "recommend-relevance/" + currentPage);
+    return this.http.get(this.baseUrl + "recommend-relevance/" + currentPage) as any;
   }
   RecommendBySerendipity(currentPage: number) {
-    return this.http.get(this.baseUrl + "recommend-serendipity/" + currentPage);
+    return this.http.get(this.baseUrl + "recommend-serendipity/" + currentPage) as any;
   }
   RecommendByNovelty(currentPage: number) {
-    return this.http.get(this.baseUrl + "recommend-novelty/" + currentPage);
+    return this.http.get(this.baseUrl + "recommend-novelty/" + currentPage) as any;
   }
 }

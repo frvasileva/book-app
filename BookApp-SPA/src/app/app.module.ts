@@ -51,7 +51,7 @@ import { LoadingScreenInterceptor } from "./_helpers/loading.interceptor";
     LoadingScreenComponent
   ],
   imports: [
-    BrowserModule.withServerTransition({ appId: 'serverApp' }),
+    BrowserModule.withServerTransition({ appId: "serverApp" }),
     HttpClientModule,
     FormsModule,
     AppRoutingModule,

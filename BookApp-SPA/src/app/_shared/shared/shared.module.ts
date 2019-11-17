@@ -10,6 +10,7 @@ import { SeoHelperService } from "../seo-helper.service";
 @NgModule({
   declarations: [PhotoEditorComponent, ToggleButtonComponent],
   imports: [CommonModule, FileUploadModule],
-  exports: [PhotoEditorComponent, ToggleButtonComponent, SeoHelperService]
+  exports: [PhotoEditorComponent, ToggleButtonComponent],
+  providers: [SeoHelperService]
 })
 export class SharedModule {}
