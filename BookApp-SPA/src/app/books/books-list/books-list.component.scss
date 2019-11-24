@@ -1,0 +1,15 @@
+.section-wrapper {
+  padding: 60px 0;
+
+  &.relevance {
+    background-color: #f7f7ee;
+    margin-top: -60px;
+  }
+  &.novelty {
+    background-color: #ccc5b9;
+  }
+  &.serendipity {
+    background-color: #c0bda5;
+    margin-bottom: -60px;
+  }
+}

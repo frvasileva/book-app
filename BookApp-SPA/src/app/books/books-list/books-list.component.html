@@ -1,53 +1,65 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-8">
-      <a routerLink="category/relevance/0"><h2>Relevance</h2></a>
+<div class="section-wrapper relevance">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-8">
+        <a routerLink="category/relevance/0"><h2>Relevance</h2></a>
+      </div>
+      <div class="col-md-4 text-right">
+        <a
+          routerLink="add"
+          routerLinkActive="active"
+          class="button medium positive"
+        >
+          <i class="fas fa-plus-circle"></i>Add Book</a
+        >
+      </div>
     </div>
-    <div class="col-md-4 text-right">
-      <a
-        routerLink="add"
-        routerLinkActive="active"
-        class="button medium positive"
+    <div class="row">
+      <div
+        class="col-sm-4 col-md-2 col-xs-12"
+        *ngFor="let book of booksByRelevance; let i = index"
       >
-        <i class="fas fa-plus-circle"></i>Add Book</a
-      >
-    </div>
-  </div>
-  <div class="row">
-    <div
-      class="col-sm-4 col-md-2 col-xs-12"
-      *ngFor="let book of booksByRelevance; let i = index"
-    >
-      <div class="book-card-wrapper">
-        <app-book-card-item [book]="book"></app-book-card-item>
+        <div class="book-card-wrapper">
+          <app-book-card-item [book]="book"></app-book-card-item>
+        </div>
       </div>
     </div>
   </div>
-  <hr />
-  <div class="row">
-    <a routerLink="category/novelty/0"><h2>Novelty</h2></a>
-  </div>
-  <div class="row">
-    <div
-      class="col-sm-4 col-md-2 col-xs-12"
-      *ngFor="let book of booksByNovelty; let i = index"
-    >
-      <div class="book-card-wrapper">
-        <app-book-card-item [book]="book"></app-book-card-item>
+</div>
+
+
+<div class="section-wrapper novelty">
+  <div class="container">
+    <div class="row">
+      <a routerLink="category/novelty/0"><h2>Novelty</h2></a>
+    </div>
+    <div class="row">
+      <div
+        class="col-sm-4 col-md-2 col-xs-12"
+        *ngFor="let book of booksByNovelty; let i = index"
+      >
+        <div class="book-card-wrapper">
+          <app-book-card-item [book]="book"></app-book-card-item>
+        </div>
       </div>
     </div>
   </div>
-  <hr />
-  <div class="row">
-    <a routerLink="category/serendipity/0"><h2>Serendipity</h2></a>
-  </div>
-  <div class="row">
-    <div
-      class="col-sm-4 col-md-2 col-xs-12"
-      *ngFor="let book of booksBySerendipity; let i = index"
-    >
-      <div class="book-card-wrapper">
-        <app-book-card-item [book]="book"></app-book-card-item>
+</div>
+
+
+<div class="section-wrapper serendipity">
+  <div class="container">
+    <div class="row">
+      <a routerLink="category/serendipity/0"><h2>Serendipity</h2></a>
+    </div>
+    <div class="row">
+      <div
+        class="col-sm-4 col-md-2 col-xs-12"
+        *ngFor="let book of booksBySerendipity; let i = index"
+      >
+        <div class="book-card-wrapper">
+          <app-book-card-item [book]="book"></app-book-card-item>
+        </div>
       </div>
     </div>
   </div>

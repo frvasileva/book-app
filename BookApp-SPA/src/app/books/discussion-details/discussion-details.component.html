@@ -1,79 +1,86 @@
-<div class="row">
-  <div class="col-md">
-    <h3>{{ discussion?.title }}</h3>
+<div class="container">
+  <div class="row">
+    <div class="col-md">
+      <h3>{{ discussion?.title }}</h3>
+    </div>
   </div>
-</div>
-<div class="row">
-  <div class="col-md-8 col-xs-12 col-sm-12">
-    <p class="discussion-reply">{{ discussion?.body }}</p>
+  <div class="row">
+    <div class="col-md-8 col-xs-12 col-sm-12">
+      <p class="discussion-reply">{{ discussion?.body }}</p>
 
-    <hr />
-    <p class="posted-on-info">
-      posted on: {{ discussion?.addedOn | date: "short" }} by
-      {{ discussion?.username }}
-    </p>
-  </div>
-  <div class="col-md-4">
-    <a [routerLink]="['/books/details', discussion?.bookFriendlyUrl]">
-      <img
-        src="{{ discussion?.bookPhotoPath }}"
-        class="book-cover-image"
-        title="{{ discussion?.bookTitle }}"
-      />
-      <div class="book-title" title="{{ discussion?.bookTitle }}">
-        {{
-          discussion?.bookTitle.length > 30
-            ? (discussion?.bookTitle | slice: 0:30) + "..."
-            : discussion?.bookTitle
-        }}
-      </div>
-      <a [routerLink]="['/books/discussions/per-book/' + discussion?.bookId]" class="button neutral medium full-width">
-        See all discussions
-      </a>
-    </a>
-  </div>
-</div>
-
-<div
-  class="row discussion-row"
-  *ngFor="let item of discussion?.discussionItems"
->
-  <div class="col-md-2">
-    <img src="{{ item.userAvatarPath }}" class="user-avatar" />
-    <a href="#" class="username">{{ item.username }}</a>
-  </div>
-  <div class="col-md-10">
-    <p>{{ item.body }}</p>
-
-    <p class="posted-on-info">posted on: {{ item.addedOn | date: "short" }}</p>
-  </div>
-</div>
-<div class="row reply-wrapper">
-  <div class="col-md-12">
-    <h3 class="form-title">Share your thoughts</h3>
-    <form [formGroup]="discussionReplyForm" (ngSubmit)="addReply()">
-      <div class="form-group">
-        <textarea class="form-control" id="body" formControlName="body">
-        </textarea>
-
-        <span
-          class="error-message"
-          *ngIf="
-            !discussionReplyForm.get('body').valid &&
-            discussionReplyForm.get('body').touched
-          "
+      <hr />
+      <p class="posted-on-info">
+        posted on: {{ discussion?.addedOn | date: "short" }} by
+        {{ discussion?.username }}
+      </p>
+    </div>
+    <div class="col-md-4">
+      <a [routerLink]="['/books/details', discussion?.bookFriendlyUrl]">
+        <img
+          src="{{ discussion?.bookPhotoPath }}"
+          class="book-cover-image"
+          title="{{ discussion?.bookTitle }}"
+        />
+        <div class="book-title" title="{{ discussion?.bookTitle }}">
+          {{
+            discussion?.bookTitle.length > 30
+              ? (discussion?.bookTitle | slice: 0:30) + "..."
+              : discussion?.bookTitle
+          }}
+        </div>
+        <a
+          [routerLink]="['/books/discussions/per-book/' + discussion?.bookId]"
+          class="button neutral medium full-width"
         >
-          This field is required
-        </span>
-      </div>
+          See all discussions
+        </a>
+      </a>
+    </div>
+  </div>
 
-      <button
-        class="button primary large"
-        type="submit"
-        [disabled]="!discussionReplyForm.valid"
-      >
-        Send
-      </button>
-    </form>
+  <div
+    class="row discussion-row"
+    *ngFor="let item of discussion?.discussionItems"
+  >
+    <div class="col-md-2">
+      <img src="{{ item.userAvatarPath }}" class="user-avatar" />
+      <a href="#" class="username">{{ item.username }}</a>
+    </div>
+    <div class="col-md-10">
+      <p>{{ item.body }}</p>
+
+      <p class="posted-on-info">
+        posted on: {{ item.addedOn | date: "short" }}
+      </p>
+    </div>
+  </div>
+  <div class="row reply-wrapper">
+    <div class="col-md-12">
+      <h3 class="form-title">Share your thoughts</h3>
+      <form [formGroup]="discussionReplyForm" (ngSubmit)="addReply()">
+        <div class="form-group">
+          <textarea class="form-control" id="body" formControlName="body">
+          </textarea>
+
+          <span
+            class="error-message"
+            *ngIf="
+              !discussionReplyForm.get('body').valid &&
+              discussionReplyForm.get('body').touched
+            "
+          >
+            This field is required
+          </span>
+        </div>
+
+        <button
+          class="button primary large"
+          type="submit"
+          [disabled]="!discussionReplyForm.valid"
+        >
+          Send
+        </button>
+      </form>
+    </div>
   </div>
 </div>
