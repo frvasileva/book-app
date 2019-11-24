@@ -12,7 +12,7 @@ namespace BookApp.API.Data {
   public partial class GraphRepository : IGraphRepository {
     private readonly IGraphClient _graphClient;
     private readonly IMapper _mapper;
-    private readonly int SHOW_MAX_RESULTS_PER_PAGE = 12;
+    private readonly int SHOW_MAX_RESULTS_PER_PAGE = 18;
 
     public GraphRepository (IGraphClient graphClient, IMapper mapper) {
       _graphClient = graphClient;

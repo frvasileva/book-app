@@ -29,7 +29,9 @@ export class BooksListByCategoryComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params: Params) => {
+      this.category = params.category.trim().toUpperCase();
       this.currentPage = params.pageNumber;
+
       this.bookService
         .getBooksByCategory(this.category, this.currentPage)
         .subscribe(data => {
@@ -37,13 +39,15 @@ export class BooksListByCategoryComponent implements OnInit {
           this.totalItems = data.totalNumber;
         });
 
-      this.category = params.category.trim().toUpperCase();
       this.seoService.setSeoMetaTags(this.category);
     });
   }
 
   pageChanged(event: any): void {
     this.currentGridPage = event.page;
-    this.router.navigate(["/books/category/novelty/", this.currentGridPage]);
+    this.router.navigate([
+      "/books/category/" + this.category.toLowerCase() + "/",
+      this.currentGridPage
+    ]);
   }
 }
