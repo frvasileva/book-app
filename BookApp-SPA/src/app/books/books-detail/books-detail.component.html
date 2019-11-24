@@ -12,7 +12,10 @@
               <i class="glyphicon glyphicon-plus"></i>
             </div>
             <div class="book-actions">
-              <app-book-saver [bookId]="book?.id"></app-book-saver>
+              <app-book-saver
+                [bookId]="book?.id"
+                [bookCatalogs]="book?.bookCatalogs"
+              ></app-book-saver>
             </div>
           </div>
           <img

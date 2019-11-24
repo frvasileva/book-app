@@ -1,13 +1,11 @@
 import { Component, OnInit, Input } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
+import { ActivatedRoute, Params } from "@angular/router";
 
 import { BookSaverService } from "src/app/_services/bookSaver.service";
 import { CatalogPureDto } from "src/app/_models/catalogPureDto";
 import { UserState } from "src/app/_store/user.reducer";
-import { Book } from "../book.model";
-import { ActivatedRoute, Params } from "@angular/router";
-import { CatalogItemDto } from 'src/app/_models/catalogItem';
 
 @Component({
   selector: "app-book-saver",
@@ -16,6 +14,8 @@ import { CatalogItemDto } from 'src/app/_models/catalogItem';
 })
 export class BookSaverComponent implements OnInit {
   @Input() bookId: number;
+  @Input() bookCatalogs: any = [];
+
   catalogs: CatalogPureDto[];
   addToListForm: FormGroup;
   currentUserUrl: string;
@@ -24,11 +24,7 @@ export class BookSaverComponent implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private bookSaverService: BookSaverService,
-    private store: Store<{
-      userState: UserState;
-      bookState: { books: Book[] };
-      catalogState: { catalog: CatalogItemDto[] };
-    }>
+    private store: Store<{ userState: UserState }>
   ) {}
 
   ngOnInit() {
@@ -37,19 +33,9 @@ export class BookSaverComponent implements OnInit {
     });
 
     this.store.subscribe(state => {
-      let book = state.bookState.books.find(b => b.id === this.bookId);
-      if (!book) {
-        const catalog = state.catalogState.catalog.find(c => c.friendlyUrl === this.friendlyUrl);
-        if (catalog) {
-          book = catalog.books.find(b => b.id === this.bookId);
-        }
-      }
-      if (!book) {
-        return;
-      }
       this.catalogs = state.userState.currentUserCatalogs.map(catalog => ({
         ...catalog,
-        isSelected: (book.bookCatalogs || []).some(
+        isSelected: (this.bookCatalogs || []).some(
           item => item.catalogId === catalog.id
         )
       }));
@@ -62,20 +48,18 @@ export class BookSaverComponent implements OnInit {
 
   addToCatalog(catalogId) {
     this.bookSaverService.addBookToCatalog(catalogId, this.bookId);
-
-    this.store.subscribe(state => {
-      const book = state.bookState.books.find(b => b.id === this.bookId);
-      this.catalogs = state.userState.currentUserCatalogs.map(catalog => ({
-        ...catalog,
-        isSelected: book.bookCatalogs.some(
-          item => item.catalogId === catalog.id
-        )
-      }));
+    this.bookCatalogs.push({
+      catalogId: catalogId,
+      bookId: this.bookId,
+      catalogName: ""
     });
   }
 
   removeFromCatalog(catalogId) {
     this.bookSaverService.removeBookFromCatalog(catalogId, this.bookId);
+    this.bookCatalogs = this.bookCatalogs.filter(
+      item => item.bookId !== this.bookId && item.catalogId !== catalogId
+    );
   }
 
   onSubmit() {

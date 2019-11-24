@@ -9,7 +9,5 @@ export class CatalogListPureComponent implements OnInit {
   @Input() bookCatalogs: any;
   constructor() {}
 
-  ngOnInit() {
-    console.log("catalogList", this.bookCatalogs);
-  }
+  ngOnInit() {}
 }
