@@ -40,7 +40,6 @@ export class BookService {
     return this.http.get(this.baseUrl + "get/" + friendlyUrl);
   }
 
-
   getBooksAddedByUser(userFriendlyUrl: string) {
     return this.http.get(
       this.baseUrl + "get-books-added-by-user/" + userFriendlyUrl
@@ -50,27 +49,30 @@ export class BookService {
   getBooksByCategory(category: string, currentPage: number) {
     switch (category.toLowerCase()) {
       case "relevance": {
-        this.RecommendByRelevance(currentPage);
-        break;
+        return this.RecommendByRelevance(currentPage);
       }
       case "serendipity": {
-        this.RecommendBySerendipity(currentPage);
-        break;
+        return this.RecommendBySerendipity(currentPage);
       }
       case "novelty": {
-        this.RecommendByNovelty(currentPage);
-        break;
+        return this.RecommendByNovelty(currentPage);
       }
     }
   }
 
   RecommendByRelevance(currentPage: number) {
-    return this.http.get(this.baseUrl + "recommend-relevance/" + currentPage) as any;
+    return this.http.get(
+      this.baseUrl + "recommend-relevance/" + currentPage
+    ) as any;
   }
   RecommendBySerendipity(currentPage: number) {
-    return this.http.get(this.baseUrl + "recommend-serendipity/" + currentPage) as any;
+    return this.http.get(
+      this.baseUrl + "recommend-serendipity/" + currentPage
+    ) as any;
   }
   RecommendByNovelty(currentPage: number) {
-    return this.http.get(this.baseUrl + "recommend-novelty/" + currentPage) as any;
+    return this.http.get(
+      this.baseUrl + "recommend-novelty/" + currentPage
+    ) as any;
   }
 }
