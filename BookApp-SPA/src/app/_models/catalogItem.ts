@@ -1,6 +1,6 @@
 import { Book } from "../books/book.model";
 
-export interface CatalogItemDto {
+export interface rpCatalogItemDto {
   id?: number;
   name: string;
   isPublic: boolean;
