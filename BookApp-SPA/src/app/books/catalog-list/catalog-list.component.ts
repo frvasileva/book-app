@@ -32,7 +32,6 @@ export class CatalogListComponent implements OnInit {
         this.store
           .select(state => state.userState)
           .subscribe(userState => {
-            debugger;
             if (this.friendlyUrl !== "") {
               this.isCurrentUser = userState.currentUser === this.friendlyUrl;
             }
