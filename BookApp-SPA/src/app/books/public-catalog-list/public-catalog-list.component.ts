@@ -23,7 +23,7 @@ export class PublicCatalogListComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.currentPage = params.pageNumber;
 
-      this.catalogService.getPublicCatalogs(0).subscribe(data => {
+      this.catalogService.getPublicCatalogs(this.currentPage).subscribe(data => {
         this.catalogList = data.items;
         this.totalItems = data.totalNumber;
       });

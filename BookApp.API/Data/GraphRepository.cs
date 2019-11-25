@@ -368,6 +368,15 @@ namespace BookApp.API.Data {
             ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
         }).Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
+      var totalCatalogs =
+        _graphClient.Cypher
+        .Match ("(catalog:Catalog)")
+        .Return ((catalog) => new {
+          Count = Return.As<int> ("count (catalog.id)")
+        });
+
+      var totalCatalogsCount = totalCatalogs.Results.FirstOrDefault ().Count;
+
       var catalogList = new List<CatalogItemDto> ();
 
       foreach (var item in result.Results) {
@@ -381,7 +390,7 @@ namespace BookApp.API.Data {
         catalogList.Add (catList);
       }
 
-      var pagedList = new Helpers.PagedList<CatalogItemDto> (catalogList, 1000, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
+      var pagedList = new Helpers.PagedList<CatalogItemDto> (catalogList, totalCatalogsCount, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
       return pagedList;
     }
 
