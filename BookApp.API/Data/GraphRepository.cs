@@ -353,7 +353,10 @@ namespace BookApp.API.Data {
       return catalogList;
     }
 
-    public List<CatalogItemDto> GetAllPublicCatalogs () {
+    public Helpers.PagedList<CatalogItemDto> GetAllPublicCatalogs (int currentPage = 0) {
+
+      var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
+
       var result = _graphClient.Cypher
         .Match ("(catalog:Catalog)")
         .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
@@ -363,7 +366,7 @@ namespace BookApp.API.Data {
           catalogs = catalog.As<CatalogItemDto> (),
             boooks = Return.As<IEnumerable<BookItemDto>>
             ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
-        }).Limit (40);
+        }).Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var catalogList = new List<CatalogItemDto> ();
 
@@ -378,7 +381,8 @@ namespace BookApp.API.Data {
         catalogList.Add (catList);
       }
 
-      return catalogList;
+      var pagedList = new Helpers.PagedList<CatalogItemDto> (catalogList, 1000, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
+      return pagedList;
     }
 
     private Author AddAuthor (string authorName, int? bookId, int? userId) {

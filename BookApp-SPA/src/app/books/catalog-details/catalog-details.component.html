@@ -1,25 +1,21 @@
-<div class="row">
-  <div class="div col-md-2" *ngIf="user != null || user != undefined">
-    <a [routerLink]="['/user/profile/', user?.friendlyUrl]">
-      <img [src]="user?.avatarPath" class="user-avatar" />
-    </a>
-  </div>
-  <div class="div col-md-10">
-    <h2>{{ catalog?.name }}</h2>
-  </div>
-</div>
-
-<div class="row">
-  <div
-    class="col-sm-4 col-md-2 col-xs-4"
-    *ngFor="let item of catalog?.books; let i = index"
-  >
-    <!-- <div class="book-thumbnail">
-      <a [routerLink]="['/books/details', item.book?.friendlyUrl]">
-        <img src="{{ item?.book.photoPath }}" width="100%" />
+<div class="container">
+  <div class="row">
+    <div class="div col-md-2" *ngIf="user != null || user != undefined">
+      <a [routerLink]="['/user/profile/', user?.friendlyUrl]">
+        <img [src]="user?.avatarPath" class="user-avatar" />
       </a>
-    </div> -->
+    </div>
+    <div class="div col-md-10">
+      <h2>{{ catalog?.name }}</h2>
+    </div>
+  </div>
 
-    <app-book-card-item [book]="item"></app-book-card-item>
+  <div class="row">
+    <div
+      class="col-sm-4 col-md-2 col-xs-4"
+      *ngFor="let item of catalog?.books; let i = index"
+    >
+      <app-book-card-item [book]="item"></app-book-card-item>
+    </div>
   </div>
 </div>

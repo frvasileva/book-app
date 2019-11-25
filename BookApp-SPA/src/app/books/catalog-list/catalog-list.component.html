@@ -1,19 +1,21 @@
-<div class="row" *ngIf="catalogNumber != 0">
-  <div
-    class="col-sm-6 col-md-6"
-    *ngFor="let catalog of catalogList; let i = index"
-  >
-    <div class="catalog-item-wrapper">
-      <app-catalog-item
-        [catalog]="catalog"
-        [isCurrentUser]="isCurrentUser"
-      ></app-catalog-item>
+<div class="container">
+  <div class="row" *ngIf="catalogNumber != 0">
+    <div
+      class="col-sm-6 col-md-6"
+      *ngFor="let catalog of catalogList; let i = index"
+    >
+      <div class="catalog-item-wrapper">
+        <app-catalog-item
+          [catalog]="catalog"
+          [isCurrentUser]="isCurrentUser"
+        ></app-catalog-item>
+      </div>
     </div>
   </div>
-</div>
 
-<div class="row" *ngIf="catalogNumber == 0">
-  <div class="col-md">
-    <h4>User doesn't have catalogs!</h4>
+  <div class="row" *ngIf="catalogNumber == 0">
+    <div class="col-md">
+      <h4>User doesn't have catalogs!</h4>
+    </div>
   </div>
 </div>

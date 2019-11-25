@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { BookCatalogService } from "src/app/_services/book-catalog.service";
+import { UserState } from "src/app/_store/user.reducer";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { UserState } from "src/app/_store/user.reducer";
 import { Router } from "@angular/router";
 
 @Component({
@@ -31,7 +31,7 @@ export class CatalogListComponent implements OnInit {
     this.path = this.router.url;
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params["friendlyUrl"];
-      console.log(params);
+
       if (this.friendlyUrl) {
         this.store
           .select(state => state.userState)
@@ -51,7 +51,8 @@ export class CatalogListComponent implements OnInit {
           });
       } else {
         this.catalogService.getPublicCatalogs().subscribe(data => {
-          this.catalogList = data;
+          console.log(data);
+          this.catalogList = data.items;
           this.catalogNumber = 1;
         });
       }

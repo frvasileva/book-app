@@ -22,7 +22,7 @@ export class BooksListComponent implements OnInit {
     this.bookService.RecommendByRelevance(0);
     this.bookService.RecommendBySerendipity(0);
 
-    this.seoService.setSeoMetaTags();
+    this.seoService.setSeoMetaTags("Books");
 
     this.bookService.RecommendByRelevance(0).subscribe(data => {
       this.booksByRelevance = data.items;

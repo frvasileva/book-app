@@ -21,7 +21,7 @@ namespace BookApp.API.Data {
 
     List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser);
 
-    List<CatalogItemDto> GetAllPublicCatalogs ();
+    Helpers.PagedList<CatalogItemDto> GetAllPublicCatalogs (int currentPage = 0);
     List<CatalogItemDto> GetCatalog (string friendlyUrl);
 
     CatalogEditDto EditCatalog (int catalogId, bool isPublic, string name, int userId);

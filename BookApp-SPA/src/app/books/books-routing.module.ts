@@ -65,7 +65,7 @@ const booksRoutes: Routes = [
         pathMatch: 'full'
       },
       {
-        path: "catalogs",
+        path: "catalogs/:pageNumber",
         component: PublicCatalogListComponent,
         canActivate: [AuthenticationGuard]
       },

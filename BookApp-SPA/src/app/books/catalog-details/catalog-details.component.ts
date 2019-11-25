@@ -11,6 +11,7 @@ import { SeoHelperService } from "src/app/_shared/seo-helper.service";
 export class CatalogDetailsComponent implements OnInit {
   friendlyUrl: string;
   catalog: any;
+  user: any;
 
   constructor(
     private route: ActivatedRoute,
