@@ -54,16 +54,7 @@ export class BookCatalogService {
   }
 
   getUserCatalogs(userFriendlyUrl: string) {
-    return this.http
-      .get(this.baseUrl + "user-catalogs/" + userFriendlyUrl)
-      .subscribe(
-        data => {
-          this.store.dispatch(new CatalogActions.GetCatalogsAction(data));
-        },
-        error => {
-          this.alertify.error(error);
-        }
-      );
+    return this.http.get(this.baseUrl + "user-catalogs/" + userFriendlyUrl);
   }
 
   getPublicCatalogs() {

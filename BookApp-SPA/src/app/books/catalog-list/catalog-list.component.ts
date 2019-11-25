@@ -3,6 +3,7 @@ import { BookCatalogService } from "src/app/_services/book-catalog.service";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { UserState } from "src/app/_store/user.reducer";
+import { Router } from "@angular/router";
 
 @Component({
   selector: "app-catalog-list",
@@ -15,9 +16,11 @@ export class CatalogListComponent implements OnInit {
   catalogNumber: number;
   isCurrentUser = false;
   catalogList: any;
+  path: string;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private catalogService: BookCatalogService,
     private store: Store<{
       userState: UserState;
@@ -25,9 +28,10 @@ export class CatalogListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    this.path = this.router.url;
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params["friendlyUrl"];
-
+      console.log(params);
       if (this.friendlyUrl) {
         this.store
           .select(state => state.userState)
@@ -38,12 +42,19 @@ export class CatalogListComponent implements OnInit {
           });
       }
 
-      // TODO: Check if current user, if not - show only public catalogs
-      this.catalogService.getPublicCatalogs().subscribe(data => {
-        this.catalogList = data;
-        this.catalogNumber = 1;
-      });
-
+      if (this.path.indexOf("profile")) {
+        this.catalogService
+          .getUserCatalogs(this.friendlyUrl)
+          .subscribe(data => {
+            this.catalogList = data;
+            this.catalogNumber = 1;
+          });
+      } else {
+        this.catalogService.getPublicCatalogs().subscribe(data => {
+          this.catalogList = data;
+          this.catalogNumber = 1;
+        });
+      }
     });
   }
 }
