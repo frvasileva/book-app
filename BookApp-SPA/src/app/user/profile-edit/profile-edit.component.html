@@ -3,7 +3,11 @@
     <div class="col-md-8">
       <div class="">
         <h1 class="form-title">Edit profile</h1>
-        <form [formGroup]="profileEditForm" (ngSubmit)="onSubmit()">
+        <form
+          [formGroup]="profileEditForm"
+          (ngSubmit)="onSubmit()"
+          *ngIf="profile"
+        >
           <div class="form-group">
             <label for="">Name:</label>
             <input

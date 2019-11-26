@@ -2,7 +2,7 @@ import { Component, OnInit } from "@angular/core";
 import { AlertifyService } from "src/app/_services/alertify.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
-import { Router } from "@angular/router";
+import { Router, ActivatedRoute } from "@angular/router";
 
 import { UserService } from "src/app/_services/user.service";
 import { User } from "src/app/_models/user";
@@ -18,34 +18,32 @@ import { SeoHelperService } from "src/app/_shared/seo-helper.service";
 })
 export class ProfileEditComponent implements OnInit {
   profileEditForm: FormGroup;
-  profile: User;
+  profile: any;
   profileToSubmit: User;
+  friendlyUrl: string;
 
   constructor(
     private alertify: AlertifyService,
     private router: Router,
+    private route: ActivatedRoute,
     private userService: UserService,
     private store: Store<{ userState: UserState }>,
     private seoHelper: SeoHelperService
   ) {}
 
   ngOnInit() {
-    this.store
-      .select(state => state)
-      .subscribe(res => {
-        if (res.userState.currentUser && this.profile === undefined) {
-          this.userService.getUser(res.userState.currentUser);
-        }
+    this.route.params.subscribe(params => {
+      this.friendlyUrl = params["friendlyUrl"];
 
-        this.profile = res.userState.users.filter(
-          item => item.friendlyUrl === res.userState.currentUser
-        )[0];
+      this.userService.getUser(this.friendlyUrl).subscribe(data => {
+        this.profile = data;
+        this.createForm();
+
+        this.seoHelper.setSeoMetaTags(
+          "Edit " + this.profile.knownAs + settings.seo_appName_title
+        );
       });
-
-    this.createForm();
-    this.seoHelper.setSeoMetaTags(
-      "Edit " + this.profile.knownAs + settings.seo_appName_title
-    );
+    });
   }
 
   createForm() {
