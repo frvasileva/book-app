@@ -44,7 +44,6 @@ export class BookSaverService {
 
   addBookToCatalog(catalogId: number, bookId: number) {
     const model = { catalogId, bookId, catalogName: "" };
-    console.log(model);
     return this.http
       .post(this.baseUrlBookService + "add-to-catalog", model)
       .pipe(

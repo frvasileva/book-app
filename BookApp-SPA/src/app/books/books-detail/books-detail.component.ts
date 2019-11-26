@@ -14,6 +14,7 @@ import { settings } from "src/app/_shared/settings";
 export class BooksDetailComponent implements OnInit {
   friendlyUrl: string;
   book: any;
+  dummyBookDescription = settings.dummy_book_description;
 
   constructor(
     private route: ActivatedRoute,
