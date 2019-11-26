@@ -44,6 +44,7 @@ export class PhotoEditorComponent implements OnInit {
   }
 
   initializeUploader() {
+    console.log("init");
     this.uploader = new FileUploader({
       url: this.apiDestinationUrl,
       authToken: "Bearer " + localStorage.getItem("token"),
@@ -59,12 +60,15 @@ export class PhotoEditorComponent implements OnInit {
     };
 
     this.uploader.onSuccessItem = (item, response, status, headers) => {
+
       if (response) {
+        console.log("response", response);
         if (this.uploaderType === "profile-photo") {
           this.store.dispatch(
             new UserProfileActions.UpdateUserAvatarAction(response)
           );
-          this.router.navigate(["/user/profile/teodor-url"]);
+
+          this.router.navigate(["/user/profile/", JSON.parse(response).friendlyUrl]);
           this.alertify.success("Photo updated");
         } else if (this.uploaderType === "book-cover-photo") {
           this.router.navigate(["/books"]);

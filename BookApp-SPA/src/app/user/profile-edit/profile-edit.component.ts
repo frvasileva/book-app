@@ -1,12 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { AlertifyService } from "src/app/_services/alertify.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { Store } from "@ngrx/store";
 import { Router, ActivatedRoute } from "@angular/router";
 
 import { UserService } from "src/app/_services/user.service";
 import { User } from "src/app/_models/user";
-import { UserState } from "src/app/_store/user.reducer";
 
 import { settings } from "src/app/_shared/settings";
 import { SeoHelperService } from "src/app/_shared/seo-helper.service";
@@ -27,7 +25,6 @@ export class ProfileEditComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private userService: UserService,
-    private store: Store<{ userState: UserState }>,
     private seoHelper: SeoHelperService
   ) {}
 

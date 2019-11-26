@@ -133,7 +133,7 @@ namespace BookApp.API.Controllers {
       userFromRepo.Photos.Add (photo);
 
       if (await _userRepository.SaveAll ()) {
-        return Ok (userFromRepo.AvatarPath);
+        return Ok (new { avararPath = userFromRepo.AvatarPath, friendlyUrl = userFromRepo.FriendlyUrl });
       }
 
       return BadRequest ("Could not add the photo");
