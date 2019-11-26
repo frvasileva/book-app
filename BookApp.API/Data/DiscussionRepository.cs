@@ -24,12 +24,24 @@ namespace BookApp.API.Data {
       return model;
     }
 
-    public DiscussionItem CreateDiscussionItem (DiscussionItem model) {
+    public DiscussionItemDto CreateDiscussionItem (DiscussionItem model) {
 
       _context.DiscussionItem.AddAsync (model);
+      var user = _context.Users.Where (u => u.Id == model.UserId).FirstOrDefault ();
+
+      var item = new DiscussionItemDto ();
+      item.Username = user.UserName;
+      item.UserFriendlyUrl = user.FriendlyUrl;
+      item.UserId = user.Id;
+      item.UserAvatarPath = user.AvatarPath;
+      item.AddedOn = model.AddedOn;
+      item.Body = model.Body;
+      item.DiscussionId = model.DiscussionId;
+      item.Id = model.DiscussionId;
+
       _context.SaveChangesAsync ();
 
-      return model;
+      return item;
     }
 
     public void Add<T> (T entity) where T : class {

@@ -41,7 +41,7 @@ namespace BookApp.API.Controllers {
       return Ok (discussion);
     }
 
-    [HttpPost ("post-discussion-item")]
+    [HttpPost ("add-discussion-item")]
     public async Task<IActionResult> CreateDiscussionItem (DiscussionItem item) {
 
       item.UserId = UserId;

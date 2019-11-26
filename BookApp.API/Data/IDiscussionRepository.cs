@@ -6,7 +6,7 @@ using BookApp.API.Models;
 namespace BookApp.API.Data {
     public interface IDiscussionRepository {
         Discussion Create (Discussion model);
-        DiscussionItem CreateDiscussionItem (DiscussionItem model);
+        DiscussionItemDto CreateDiscussionItem (DiscussionItem model);
         void Add<T> (T entity) where T : class;
         void Edit<T> (T entity) where T : class;
         void Delete<T> (T entity) where T : class;

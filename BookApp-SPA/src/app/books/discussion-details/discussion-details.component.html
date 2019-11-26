@@ -21,13 +21,13 @@
           class="book-cover-image"
           title="{{ discussion?.bookTitle }}"
         />
-        <div class="book-title" title="{{ discussion?.bookTitle }}">
+        <!-- <div class="book-title" title="{{ discussion?.bookTitle }}">
           {{
             discussion?.bookTitle.length > 30
               ? (discussion?.bookTitle | slice: 0:30) + "..."
               : discussion?.bookTitle
           }}
-        </div>
+        </div> -->
         <a
           [routerLink]="['/books/discussions/per-book/' + discussion?.bookId]"
           class="button neutral medium full-width"
@@ -43,8 +43,10 @@
     *ngFor="let item of discussion?.discussionItems"
   >
     <div class="col-md-2">
-      <img src="{{ item.userAvatarPath }}" class="user-avatar" />
-      <a href="#" class="username">{{ item.username }}</a>
+      <a href="/user/profile/{{ item.userFriendlyUrl }}" class="username">
+        <img src="{{ item.userAvatarPath }}" class="user-avatar" />
+        {{ item.username }}
+      </a>
     </div>
     <div class="col-md-10">
       <p>{{ item.body }}</p>

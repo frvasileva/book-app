@@ -30,7 +30,7 @@ export class DiscussionService {
   }
 
   createDiscussionReply(model: any) {
-    return this.http.post(this.baseUrl + "post-discussion-item", model).pipe(
+    return this.http.post(this.baseUrl + "add-discussion-item", model).pipe(
       map((response: any) => {
         return response;
       })
