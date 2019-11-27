@@ -53,6 +53,7 @@ export class ProfileComponent implements OnInit {
   getUserBooks() {
     this.bookService.getBooksAddedByUser(this.friendlyUrl).subscribe(data => {
       this.userBooks = data;
+      console.log(data);
       this.bookNumber = this.userBooks.length;
     });
   }

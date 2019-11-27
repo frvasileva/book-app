@@ -13,7 +13,7 @@ import { Router } from "@angular/router";
 export class CatalogListComponent implements OnInit {
   catalogState: any;
   friendlyUrl: string;
-  catalogNumber: number;
+  catalogNumber = 0;
   isCurrentUser = false;
   catalogList: any;
   path: string;
@@ -47,13 +47,16 @@ export class CatalogListComponent implements OnInit {
           .getUserCatalogs(this.friendlyUrl)
           .subscribe(data => {
             this.catalogList = data;
-            this.catalogNumber = 1;
+            if (this.catalogList.length > 0) {
+              this.catalogNumber = data.items.length;
+            }
           });
       } else {
         this.catalogService.getPublicCatalogs().subscribe(data => {
-          console.log(data);
           this.catalogList = data.items;
-          this.catalogNumber = 1;
+          if (this.catalogList.length > 0) {
+            this.catalogNumber = data.items.length;
+          }
         });
       }
     });
