@@ -30,11 +30,11 @@ namespace BookApp.API.Data {
             _context.Remove (entity);
         }
 
-        public UserFollowersDto FollowUser (int userIdToFollow, int userIdFollower) {
+        public UserFollowersDto FollowUser (int userIdToFollow, int currentUserId) {
 
             UserFollowers followUser = new UserFollowers ();
             followUser.FollowerUserId = userIdToFollow;
-            followUser.UserId = userIdFollower;
+            followUser.UserId = currentUserId;
             followUser.Created = DateTime.Now;
 
             _context.Add (followUser);
@@ -43,7 +43,7 @@ namespace BookApp.API.Data {
 
             var followerDto = new UserFollowersDto () {
                 Id = followUser.Id,
-                FollowerUserId = userIdFollower,
+                FollowerUserId = currentUserId,
                 UserId = userIdToFollow,
                 FollowerFriendlyUrl = user.FirstOrDefault ().FriendlyUrl
             };
@@ -68,7 +68,7 @@ namespace BookApp.API.Data {
 
             var allUsers = await _context.Users.Include (user => user.Books).Where (item => item.Id != currentUserId).OrderByDescending (u => u.Created).ToListAsync ();
             var mappedUsers = _mapper.Map<List<User>, List<UserProfileDto>> (allUsers);
-            var userFollowers = await _context.UserFollowers.ToListAsync ();
+            var userFollowers = await _context.UserFollowers.Where (item => item.UserId == currentUserId).ToListAsync ();
 
             foreach (var user in mappedUsers) {
                 foreach (var follower in userFollowers) {
@@ -77,7 +77,6 @@ namespace BookApp.API.Data {
                     }
                 }
             }
-
             return mappedUsers;
         }
 
