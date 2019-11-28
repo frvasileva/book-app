@@ -13,14 +13,12 @@ namespace BookApp.API.Data {
 
       var userBooksAddedToCatalogsCount = this.GetBooksAddedToCatalogs (userId);
       var userFollowingCount = this.GetUsersFollowingCount (userId);
-      if (userBooksAddedToCatalogsCount <= MIN_BOOKS_ADDED_TO_CATALOGS)
-        return this.RecommendByFavoriteCategories (currentPage, userId);
-      else
+      if (userBooksAddedToCatalogsCount >= MIN_BOOKS_ADDED_TO_CATALOGS)
         return this.RecommendByBooksAddedCategories (currentPage, userId);
-
-      if (userFollowingCount > MIN_USERS_FOLLOWING) {
-
-      }
+      else if (userFollowingCount > MIN_USERS_FOLLOWING) {
+        return this.RecommendByBooksLikedByFollower (currentPage, userId);
+      } else
+        return this.RecommendByFavoriteCategories (currentPage, userId);
     }
 
     private Helpers.PagedList<BookDetailsDto> RecommendByFavoriteCategories (int currentPage, int userId) {
@@ -68,7 +66,7 @@ namespace BookApp.API.Data {
     }
 
     private Helpers.PagedList<BookDetailsDto> RecommendByBooksAddedCategories (int currentPage, int userId) {
-      var whereClause = "currentUser.id = 116";
+      var whereClause = "currentUser.id = " + userId;
       var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
 
       var result = _graphClient.Cypher
@@ -100,7 +98,38 @@ namespace BookApp.API.Data {
       return pagedList;
     }
 
-    // private Helpers.PagedList<BookDetailsDto> RecommendByBooksLikedByFollower (int currentPage, int userId) {}
+    private Helpers.PagedList<BookDetailsDto> RecommendByBooksLikedByFollower (int currentPage, int userId) {
+      var whereClause = "currentUser.id = " + userId;
+      var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
+
+      var result = _graphClient.Cypher
+        .Match ("(currentUser:Profile)-[:FOLLOW_USER]->(p2:Profile)")
+        .Where (whereClause)
+        .With (@"collect(distinct p2.id) as followersIds 
+                 match (b:Book)-[r:BOOK_ADDED_TO_CATALOG]->(c:Catalog) 
+                 where r.userId  in followersIds with  collect(b) as BookTitles")
+        .Unwind ("BookTitles", "Books")
+        .Return ((Books) => new {
+          Count = Return.As<int> ("count (*)"),
+            Books = Return.As<BookDetailsDto> ("Books")
+        })
+        .OrderByDescending ("Count")
+        .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
+
+      var aaa = result.Results;
+
+      var bookList = new List<BookDetailsDto> ();
+
+      foreach (var b in result.Results) {
+        var bd = b.Books;
+        bd.RecommendationCategory = "RELEVANCE";
+
+        bookList.Add (bd);
+      }
+
+      var pagedList = new Helpers.PagedList<BookDetailsDto> (bookList, 10, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
+      return pagedList;
+    }
 
     public Helpers.PagedList<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId) {
 

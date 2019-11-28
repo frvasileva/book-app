@@ -46,16 +46,17 @@ export class CatalogListComponent implements OnInit {
         this.catalogService
           .getUserCatalogs(this.friendlyUrl)
           .subscribe(data => {
+            console.log("his.catalogList = data;", data);
             this.catalogList = data;
             if (this.catalogList.length > 0) {
-              this.catalogNumber = data.items.length;
+              this.catalogNumber = this.catalogList.length;
             }
           });
       } else {
         this.catalogService.getPublicCatalogs().subscribe(data => {
           this.catalogList = data.items;
           if (this.catalogList.length > 0) {
-            this.catalogNumber = data.items.length;
+            this.catalogNumber = this.catalogList.length;
           }
         });
       }
