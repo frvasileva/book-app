@@ -15,6 +15,5 @@ namespace BookApp.API.Dtos {
     public string FriendlyUrl { get; set; }
 
     public DateTime CreatedOn { get; set; }
-
   }
 }

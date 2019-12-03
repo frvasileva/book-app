@@ -17,6 +17,5 @@ namespace BookApp.API.Helpers {
             CurrentPage = pageNumber;
             TotalPages = (int) Math.Ceiling (count / (double) pageSize);
         }
-
     }
 }

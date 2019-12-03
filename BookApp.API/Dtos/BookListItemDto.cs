@@ -1,5 +1,4 @@
 using System;
-using BookApp.API.Models;
 
 namespace BookApp.API.Dtos
 {

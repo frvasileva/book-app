@@ -9,6 +9,5 @@ namespace BookApp.API.Dtos {
         public bool IsPublic { get; set; }
         public DateTime Created { get; set; }
         public int UserId { get; set; }
-
     }
 }

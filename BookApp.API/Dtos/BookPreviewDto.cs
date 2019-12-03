@@ -1,5 +1,4 @@
 using System.Collections.Generic;
-using BookApp.API.Models;
 
 namespace BookApp.API.Dtos {
   public class BookPreviewDto {

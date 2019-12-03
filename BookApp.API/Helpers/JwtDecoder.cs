@@ -4,24 +4,7 @@ using Newtonsoft.Json.Linq;
 
 public class JwtDecoder {
 
-  // public string CurrentUserId () {
-
-  //   var identity = HttpContext.User.Identity as ClaimsIdentity;
-
-  //   string currentUserId = "";
-  //   if (identity != null) {
-  //     IEnumerable<Claim> claims = identity.Claims;
-  //     // or
-  //     // var id = identity.FindFirst ("nameid").Value;
-
-  //     var usernameClaim = claims.Where (x => x.Type == ClaimTypes.NameIdentifier).FirstOrDefault ().Value;
-  //     // var usernameClaim = claims.Where (x => x.Type == ClaimTypes.).FirstOrDefault ();
-  //   }
-
-  //   return currentUserId;
-  // }
-
-  public static string Decode () {
+   public static string Decode () {
     var jwtHandler = new JwtSecurityTokenHandler ();
     var jwtInput = "eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJuYW1laWQiOiIxNiIsInVuaXF1ZV9uYW1lIjoidGVvZG9yLXVybCIsIm5iZiI6MTU1ODYwMzk5NSwiZXhwIjoxNTU4NjkwMzk1LCJpYXQiOjE1NTg2MDM5OTV9.SyJdoiW7RFJoBcTdi9zriaRUBq4XMrk-KNlh7YUBuDAoyeAdY4xv62xggIUi1SzL2cseuBdiZhjEJgmtY7YWag";
     var outputText = "";

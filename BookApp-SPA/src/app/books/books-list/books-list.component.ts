@@ -18,20 +18,18 @@ export class BooksListComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.bookService.RecommendByNovelty(0);
-    this.bookService.RecommendByRelevance(0);
-    this.bookService.RecommendBySerendipity(0);
-
-    this.seoService.setSeoMetaTags("Books");
-
     this.bookService.RecommendByRelevance(0).subscribe(data => {
       this.booksByRelevance = data.items;
+
+      this.bookService.RecommendByNovelty(0).subscribe(dataNovelty => {
+        this.booksByNovelty = dataNovelty.items;
+      });
+
+      this.bookService.RecommendBySerendipity(0).subscribe(dataSerendepity => {
+        this.booksBySerendipity = dataSerendepity.items;
+      });
     });
-    this.bookService.RecommendByNovelty(0).subscribe(data => {
-      this.booksByNovelty = data.items;
-    });
-    this.bookService.RecommendBySerendipity(0).subscribe(data => {
-      this.booksBySerendipity = data.items;
-    });
+
+    this.seoService.setSeoMetaTags("Books");
   }
 }

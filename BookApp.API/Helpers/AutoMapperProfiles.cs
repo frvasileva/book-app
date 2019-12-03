@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using AutoMapper;
 using BookApp.API.Dtos;
 using BookApp.API.Models;
