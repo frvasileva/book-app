@@ -217,5 +217,30 @@ namespace BookApp.API.Data {
 
       return pagedList;
     }
+
+    public List<BookDetailsDto> RecommendSimiliarBooks (string bookFriendlyUrl) {
+
+      var result = _graphClient.Cypher
+        .Match ("(p1:Book{friendlyUrl:'" + bookFriendlyUrl + "'})-[r:BOOK_ADDED_TO_CATALOG]->(catalog1:Catalog)")
+        .With ("p1, collect(id(catalog1)) AS p1Catalog")
+        .Match ("(p2:Book)-[:BOOK_ADDED_TO_CATALOG]->(catalog2:Catalog)")
+        .Where ("p1 <> p2")
+        .With ("p1, p1Catalog, p2, collect(id(catalog2)) AS p2Catalog")
+        .Return ((p1, p2, similiarity) => new {
+          book = p1.As<BookDetailsDto> (),
+            recommendation = p2.As<BookDetailsDto> (),
+            similarity = Return.As<double> ("algo.similarity.jaccard(p1Catalog, p2Catalog)")
+        }).OrderByDescending ("similarity")
+        .Limit (4);
+
+      var books = result.Results;
+      var recommendatedBooks = new List<BookDetailsDto> ();
+
+      foreach (var item in books) {
+        recommendatedBooks.Add (item.recommendation);
+      }
+
+      return recommendatedBooks;
+    }
   }
 }

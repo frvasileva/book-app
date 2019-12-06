@@ -42,7 +42,7 @@ namespace BookApp.API.Data {
     Helpers.PagedList<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId);
     Helpers.PagedList<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId);
     Helpers.PagedList<BookDetailsDto> RecommendByNovelty (int currentPage, int userId);
-
+    List<BookDetailsDto> RecommendSimiliarBooks (string bookFriendlyUrl);
     List<string> GetFavoriteCatalogsForUser (int userId);
     #endregion Recommendations
   }

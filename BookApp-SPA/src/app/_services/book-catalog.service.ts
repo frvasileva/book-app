@@ -58,7 +58,7 @@ export class BookCatalogService {
   }
 
   getPublicCatalogs(pageNumber: number = 0) {
-    return this.http.get(this.baseUrl + "public-catalogs/" + pageNumber);
+    return this.http.get(this.baseUrl + "public-catalogs/" + pageNumber) as any;
   }
 
   editCatalog(model: CatalogEditItemDto) {

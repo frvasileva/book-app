@@ -69,10 +69,18 @@ namespace BookApp.API.Controllers {
       return Ok (booksss);
     }
 
+    [AllowAnonymous]
+    [HttpGet ("recommend-similiar-book/{similiarToFriendlyUrl}")]
+    public async Task<IActionResult> RecommendSimiliarBooks (string similiarToFriendlyUrl) {
+      var res = _bookGraph.RecommendSimiliarBooks (similiarToFriendlyUrl);
+
+      return Ok (res);
+    }
+
     [HttpGet ("recommend-relevance/{currentPage}")]
     public async Task<IActionResult> RecommendationByRelevance (int currentPage = 0) {
       var result = _bookGraph.RecommendationByRelevance (currentPage, UserId);
-
+      var res = _bookGraph.RecommendSimiliarBooks ("");
       foreach (var item in result.Items) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
           item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);

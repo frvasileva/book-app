@@ -1,0 +1,15 @@
+{
+  "version": "0.2.1",
+  "tasks": [
+    {
+      "taskName": "task-DatingApp.API",
+      "appliesTo": "BookApp.API/DatingApp.API.csproj",
+      "type": "msbuild"
+    },
+    {
+      "taskName": "task-DatingApp.API",
+      "appliesTo": "BookApp.API/DatingApp.API.csproj",
+      "type": "msbuild"
+    }
+  ]
+}

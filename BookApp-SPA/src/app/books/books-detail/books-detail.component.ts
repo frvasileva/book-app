@@ -14,6 +14,7 @@ import { settings } from "src/app/_shared/settings";
 export class BooksDetailComponent implements OnInit {
   friendlyUrl: string;
   book: any;
+  similiarBooks: [];
   dummyBookDescription = settings.dummy_book_description;
 
   constructor(
@@ -37,6 +38,13 @@ export class BooksDetailComponent implements OnInit {
           this.alertify.error(error);
         }
       );
+
+      this.bookService
+        .RecommendSimiliarBooks(this.friendlyUrl)
+        .subscribe(data => {
+          this.similiarBooks = data;
+          console.log("similiarity");
+        });
     });
   }
 

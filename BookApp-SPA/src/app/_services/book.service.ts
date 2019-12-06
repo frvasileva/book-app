@@ -75,4 +75,9 @@ export class BookService {
       this.baseUrl + "recommend-novelty/" + currentPage
     ) as any;
   }
+  RecommendSimiliarBooks(friendlyUrl: string) {
+    return this.http.get(
+      this.baseUrl + "recommend-similiar-book/" + friendlyUrl
+    ) as any;
+  }
 }
