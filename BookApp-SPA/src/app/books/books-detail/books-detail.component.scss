@@ -15,13 +15,16 @@
   margin-bottom: 30px;
 }
 
+.book-title-link {
+  font-size: 14px;
+}
+
 .book-author {
 }
 
 .book-cover {
   display: inline-block;
-  float: left;
-  margin: 0 30px 30px 0;
+  margin: 0 20px 20px 0;
 }
 
 .book-description {
@@ -52,6 +55,10 @@
   .book-attributes a {
     display: block;
   }
+}
+
+.recommendation-section {
+  margin: 20px 0;
 }
 
 //TODO: TEMP styling! DELETE IT!
@@ -94,7 +101,12 @@
 }
 
 .cover {
-  width: 170px;
+  max-width: 180px;
+  width: 100%;
+
+  &.main {
+    min-width: 180px;
+  }
 }
 
 .category-list {
@@ -121,4 +133,12 @@
   text-align: center;
   text-decoration: underline;
   margin-bottom: 30px;
+}
+
+@media only screen and (max-width: 600px) {
+  .discussion-wrapper {
+    padding-top: 40px;
+    border-top: 1px solid gray;
+    margin-top: 40px;
+  }
 }

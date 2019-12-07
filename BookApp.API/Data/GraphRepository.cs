@@ -167,7 +167,7 @@ namespace BookApp.API.Data {
         .With ("book, catalog")
         .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
         .ReturnDistinct ((catalog, book) => new {
-          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
+          catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})[..20]"),
             bk = book.As<BookDetailsDto> ()
         });
 

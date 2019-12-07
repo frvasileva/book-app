@@ -21,7 +21,7 @@
           <img
             src="{{ book?.photoPath }}"
             alt="{{ book?.title }}"
-            class="cover"
+            class="cover main"
           />
         </div>
       </div>
@@ -30,18 +30,21 @@
         <i> {{ dummyBookDescription }}</i>
       </div>
       <hr />
-      <br />
-      <h3>You may also like:</h3>
+      <h3 class="recommendation-section">You may also like:</h3>
 
       <div class="row">
         <div
-          class="col-sm-12 col-md-3"
+          class="col-sm-6 col-md-3 col-6"
           *ngFor="let bk of similiarBooks; let i = index"
         >
-          <a [routerLink]="['/books/details/' + bk?.friendlyUrl]">
+          <a
+            [routerLink]="['/books/details/' + bk?.friendlyUrl]"
+            class="book-title-link"
+          >
             <img
               src="{{ bk?.photoPath }}"
               alt="{{ bk?.title }}"
+              title="{{ bk?.title }}"
               class="cover"
             />
             <br />
@@ -50,7 +53,7 @@
         </div>
       </div>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-4 discussion-wrapper">
       <a
         [routerLink]="['/books/discussions/add/' + book?.id]"
         class="button neutral medium full-width"

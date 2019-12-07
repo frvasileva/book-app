@@ -83,8 +83,6 @@ namespace BookApp.API.Data {
         .OrderByDescending ("Count")
         .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
-      var aaa = result.Results;
-
       var bookList = new List<BookDetailsDto> ();
 
       foreach (var b in result.Results) {
@@ -115,8 +113,6 @@ namespace BookApp.API.Data {
         })
         .OrderByDescending ("Count")
         .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
-
-      var aaa = result.Results;
 
       var bookList = new List<BookDetailsDto> ();
 

@@ -36,7 +36,7 @@ export class BookService {
     );
   }
 
-  getBook(friendlyUrl: string = "dummy url") {
+  getBook(friendlyUrl: string = "") {
     return this.http.get(this.baseUrl + "get/" + friendlyUrl);
   }
 

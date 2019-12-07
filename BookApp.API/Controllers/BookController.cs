@@ -80,7 +80,6 @@ namespace BookApp.API.Controllers {
     [HttpGet ("recommend-relevance/{currentPage}")]
     public async Task<IActionResult> RecommendationByRelevance (int currentPage = 0) {
       var result = _bookGraph.RecommendationByRelevance (currentPage, UserId);
-      var res = _bookGraph.RecommendSimiliarBooks ("");
       foreach (var item in result.Items) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
           item.PhotoPath = CloudinaryHelper.TransformUrl (item.PhotoPath, TransformationType.Book_Thumb_Preset);
