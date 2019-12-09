@@ -41,5 +41,33 @@
         </div>
       </div>
     </tab>
+    <tab
+      heading="Preferences"
+      id="preferencesTab"
+      (select)="onSelect($event)"
+      *ngIf="isCurrentUser"
+    >
+      <div class="row">
+        <div class="col-md">
+          <h2 class="section-title">
+            Preferences:
+          </h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6 col-12">
+          <ul class="list-group">
+            <li
+              class="list-group-item"
+              [ngClass]="pref.isSelected === true ? 'selected' : 'not-selected'"
+              *ngFor="let pref of userBookCategoryPreferences; let i = index"
+              (click)="togglePreferences(pref.id, !pref.isSelected)"
+            >
+              {{ pref.name }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </tab>
   </tabset>
 </div>

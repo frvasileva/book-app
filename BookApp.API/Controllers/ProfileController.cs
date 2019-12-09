@@ -174,8 +174,21 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("get-preferences-catalog-list")]
-    public async Task<IActionResult> GetCatalogForPreferences () {
+    public async Task<IActionResult> GetDefaultCatalogForPreferences () {
+      // var result = _graphRepo.GetFavoriteCatalogsForUser_Enriched (UserId);
       var result = await _userRepository.GetCatalogForPreferences ();
+      return Ok (result);
+    }
+
+    [HttpGet ("get-user-selected-preferences-catalog-list")]
+    public async Task<IActionResult> GetUserSelectedCatalogForPreferences () {
+      var result = _graphRepo.GetFavoriteCatalogsForUser_Enriched (UserId);
+      return Ok (result);
+    }
+
+    [HttpGet ("toggle-preferences-catalog/{catalogId}/{isSelected}")]
+    public async Task<IActionResult> TogglePreferencedCatalogs (int catalogId, int isSelected) {
+      var result = _graphRepo.ToggleUserCatalogFromFavorites (UserId, catalogId, true);
       return Ok (result);
     }
   }

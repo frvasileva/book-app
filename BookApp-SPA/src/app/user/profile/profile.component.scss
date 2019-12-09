@@ -14,3 +14,24 @@
 .alert-warning {
   margin: 20px 20px 20px 0;
 }
+
+.selected {
+  background-color: green;
+}
+
+.not-selected {
+  background-color: pink;
+}
+.list-group-item.not-selected {
+  background-color: green;
+}
+
+.list-group-item.selected {
+  background-color: pink;
+
+}
+
+.list-group-item:hover {
+  cursor: pointer;
+  background-color: #c1c1c1;
+}

@@ -19,7 +19,11 @@ namespace BookApp.API.Data {
     BookCatalog AddBookToCatalog (BookCatalogCreateDto item);
     BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId);
 
+    List<UserBookCategoriesPreferencesDto> ToggleUserCatalogFromFavorites (int userId, int catalogId, bool IsSelected);
     List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser);
+
+    // List<UserBookCategoriesPreferencesDto> GetUserCatalogPreferences (int userId);
+    List<UserBookCategoriesPreferencesDto> GetFavoriteCatalogsForUser_Enriched (int userId);
 
     Helpers.PagedList<CatalogItemDto> GetAllPublicCatalogs (int currentPage = 0);
     List<CatalogItemDto> GetCatalog (string friendlyUrl);

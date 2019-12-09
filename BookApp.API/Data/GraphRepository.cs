@@ -207,8 +207,8 @@ namespace BookApp.API.Data {
 
     public List<CatalogPureDto> GetPureCatalogs (long userId) {
       var result =
-        _graphClient.Cypher.Match ("(catalog:Catalog)")
-        .Where ((CatalogPureDto catalog) => catalog.UserId == userId)
+        _graphClient.Cypher.Match ("(catalog:Catalog)-[r:CATALOG_ADDED]-(profile:Profile)")
+        .Where ((ProfileDto profile) => profile.Id == userId)
         .Return ((catalog) => new {
           cat = catalog.As<CatalogPureDto> ()
         });
@@ -485,6 +485,35 @@ namespace BookApp.API.Data {
       }
 
       return strings;
+    }
+
+    public List<UserBookCategoriesPreferencesDto> GetFavoriteCatalogsForUser_Enriched (int userId) {
+      var result = _graphClient.Cypher
+        .Match ("(catalog:Favorite)-[r:CATALOG_ADDED]-(p:Profile)")
+        .Where ((CatalogItemDto catalog) => catalog.UserId == userId)
+        .Return ((catalog) => new {
+          catalogs = catalog.As<UserBookCategoriesPreferencesDto> ()
+        });
+
+      var catalogs = new List<UserBookCategoriesPreferencesDto> ();
+      foreach (var itm in result.Results) {
+        itm.catalogs.IsSelected = true;
+
+        catalogs.Add (itm.catalogs);
+      }
+
+      return catalogs;
+    }
+
+    public List<UserBookCategoriesPreferencesDto> ToggleUserCatalogFromFavorites (int userId, int catalogId, bool IsSelected) {
+      _graphClient.Cypher
+        .Match ("(fCatalog:Favorite)-[r:CATALOG_ADDED]-(profile:Profile)")
+        .Where ((CatalogItemDto fCatalog) => fCatalog.Id == catalogId)
+        .AndWhere ((ProfileDto profile) => profile.Id == userId)
+        .Delete ("r")
+        .ExecuteWithoutResults ();
+
+      return new List<UserBookCategoriesPreferencesDto> ();
     }
   }
 }

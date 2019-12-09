@@ -89,4 +89,24 @@ export class UserService {
         }
       );
   }
+
+  getUserPreferencesCatalogs() {
+    return this.http.get(this.baseUrl + "get-preferences-catalog-list");
+  }
+
+  getUserSelectedPreferencesCatalogs() {
+    return this.http.get(
+      this.baseUrl + "get-user-selected-preferences-catalog-list"
+    );
+  }
+
+  toggleUserPreferencesCatalogs(catalogId: number, isSelected: number) {
+    return this.http.get(
+      this.baseUrl +
+        "toggle-preferences-catalog/" +
+        catalogId +
+        "/" +
+        isSelected
+    );
+  }
 }

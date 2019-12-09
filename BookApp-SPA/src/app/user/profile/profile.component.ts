@@ -8,6 +8,7 @@ import { UserState } from "src/app/_store/user.reducer";
 import { BookService } from "src/app/_services/book.service";
 import { TabDirective } from "ngx-bootstrap/tabs";
 import { SeoHelperService } from "src/app/_shared/seo-helper.service";
+import { AuthService } from "src/app/_services/auth.service";
 
 @Component({
   selector: "app-profile",
@@ -21,11 +22,13 @@ export class ProfileComponent implements OnInit {
   friendlyUrl: string;
   isCurrentUser: boolean;
   bookNumber: number;
+  userBookCategoryPreferences: [];
 
   userBooks: any;
 
   constructor(
     private userService: UserService,
+    private authService: AuthService,
     private bookService: BookService,
     private route: ActivatedRoute,
     private store: Store<{ userState: UserState }>,
@@ -58,9 +61,24 @@ export class ProfileComponent implements OnInit {
     });
   }
 
+  getUserPreferences() {
+    this.userService.getUserSelectedPreferencesCatalogs().subscribe(data => {
+      this.userBookCategoryPreferences = data as [];
+      console.log(data);
+    });
+  }
+
   onSelect(data: TabDirective): void {
     if (data.id === "booksTab") {
       this.getUserBooks();
     }
+    if (data.id === "preferencesTab") {
+      this.getUserPreferences();
+    }
+  }
+
+  togglePreferences(id: number) {
+    this.userService.toggleUserPreferencesCatalogs(id, 1).subscribe();
+    console.log("item clicked", id);
   }
 }
