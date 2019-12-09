@@ -64,7 +64,8 @@
 //TODO: TEMP styling! DELETE IT!
 .button {
   display: block;
-  min-width: 330px;
+  max-width: 330px;
+  width:100%;
   margin-bottom: 10px;
 }
 
@@ -135,10 +136,10 @@
   margin-bottom: 30px;
 }
 
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 768px) {
   .discussion-wrapper {
     padding-top: 40px;
-    border-top: 1px solid gray;
+    border-top: 1px solid #c1c1c1;
     margin-top: 40px;
   }
 }
