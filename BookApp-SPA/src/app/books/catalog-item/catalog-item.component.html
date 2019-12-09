@@ -1,7 +1,7 @@
 <div class="card-wrapper">
   <div class="header-wrapper">
     <div class="row">
-      <div class="col-md-8">
+      <div class="col-md-8 col-7">
         <a
           [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
           class="card-link"
@@ -46,7 +46,7 @@
         </form>
       </div>
       <div
-        class="col-md-1"
+        class="col-md-1 col-1"
         *ngIf="isCurrentUser && !showCatalogName"
         (click)="showChangeCatalogNameForm()"
       >
@@ -57,7 +57,7 @@
           ></i>
         </button>
       </div>
-      <div class="col-md-3" *ngIf="isCurrentUser">
+      <div class="col-md-3 col-4" *ngIf="isCurrentUser">
         <app-toggle-button
           [isChecked]="catalog.isPublic"
           (click)="editCatalog(catalog.id, catalog.isPublic)"
@@ -68,20 +68,18 @@
 
   <div class="container">
     <div class="row">
-      <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs"> -->
-      <!-- <div class="col-md-4" *ngFor="let item of catalog.bookCatalogs | slice:0:5; let i=index" > -->
+
       <div
-        class="col-md-4"
-        *ngFor="let item of catalog.books | slice: 0:5; let i = index"
+        class="col-md-4 col-4"
+        *ngFor="let item of catalog.books | slice: 0:6; let i = index"
       >
         <div class="book-thumbnail" ngif="item!=null||item!=undefined">
           <a [routerLink]="['/books/details', item?.friendlyUrl]">
-            <!-- <img src="{{ item.book.photoPath }}" width="100%" /> -->
             <img src="{{ item.photoPath }}" width="100%" />
           </a>
         </div>
       </div>
-      <div class="col-md-4">
+      <div class="col-md-4 col-4">
         <div class="book-thumbnail" *ngIf="bookCount == 5">
           <div class="book-thumbnail-more">
             <a

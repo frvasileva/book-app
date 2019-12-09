@@ -1,5 +1,5 @@
 <div class="row">
-  <div class="col-md-3">
+  <div class="col-md-3 col-12">
     <div class="image-wrapper">
       <a
         [routerLink]="['/user/profile/edit-photo/', profile.friendlyUrl]"
@@ -25,22 +25,23 @@
       </a>
     </div>
   </div>
-  <div class="col-md-9">
-    <h4 class="card-title">{{ profile?.knownAs }}</h4>
-    <p
-      class="location-info"
-      *ngIf="profile.country != null && profile.city != null"
-    >
-      <i class="glyphicon glyphicon-map-marker"></i>
-      {{ profile?.city
-      }}<span *ngIf="profile.country != null">, {{ profile?.country }} </span>
-    </p>
-    <div class="card-text" *ngIf="profile?.introduction">
-      <p class="introduction">
-        {{ profile?.introduction }}
+  <div class="col-md-9 col-12">
+    <div class="user-info">
+      <h4 class="card-title">{{ profile?.knownAs }}</h4>
+      <p
+        class="location-info"
+        *ngIf="profile.country != null && profile.city != null"
+      >
+        <i class="glyphicon glyphicon-map-marker"></i>
+        {{ profile?.city
+        }}<span *ngIf="profile.country != null">, {{ profile?.country }} </span>
       </p>
+      <div class="card-text" *ngIf="profile?.introduction">
+        <p class="introduction">
+          {{ profile?.introduction }}
+        </p>
+      </div>
     </div>
-
     <div class="row">
       <div class="col-md-6" *ngIf="!isCurrentUser">
         <button
@@ -63,10 +64,11 @@
           Unfollow
         </button>
       </div>
+
       <div class="col-md-6">
         <a
           [routerLink]="['/books/catalog/add']"
-          class="button positive medium full-width"
+          class="button positive medium full-width add-to-catalog"
           *ngIf="isCurrentUser"
         >
           <i class="fas fa-folder-plus"></i> Add Catalog

@@ -10,3 +10,19 @@
   font-size: 14px;
 }
 
+@media only screen and (max-width: 768px) {
+  .image-wrapper {
+    margin: 0 auto;
+    text-align: center;
+    max-width: 250px;
+  }
+
+  .add-to-catalog {
+    margin-bottom: 15px;
+  }
+
+  .user-info {
+    text-align: center;
+    margin-top: 30px;
+  }
+}

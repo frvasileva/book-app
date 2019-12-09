@@ -1,13 +1,13 @@
 <div class="container">
   <div class="row item-wrapper" *ngFor="let item of discussions">
-    <div class="col-md-8">
+    <div class="col-md-8 col-12">
       <a [routerLink]="['details/' + item.friendlyUrl]">{{ item.title }}</a>
     </div>
-    <div class="col-md-4" class="small-text">
+    <div class="col-md-4 col-12 small-text">
       {{ item.addedOn | date: "medium" }}
       <br />
       <i class="fas fa-book"></i>
-      <a [routerLink]="['details/' + item.friendlyUrl]">{{ item.title }}</a>
+      <a [routerLink]="['/books/details/' + item.bookFriendlyUrl]">{{ item.bookTitle }}</a>
     </div>
   </div>
 </div>

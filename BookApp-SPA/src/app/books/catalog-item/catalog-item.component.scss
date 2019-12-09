@@ -10,6 +10,7 @@
 
   .card-link {
     color: white;
+    background-color: #3e3b3b;
   }
 
   &:hover {
@@ -39,7 +40,7 @@
     height: 50px;
     position: absolute;
     width: 50px;
-    top: 110%;
+    top: 50%;
   }
 }
 
@@ -68,7 +69,7 @@
     display: block;
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    transform: translateY(-50%) translateX(15px);
   }
 
   .no-books-message {
