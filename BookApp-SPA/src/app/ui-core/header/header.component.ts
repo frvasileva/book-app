@@ -11,6 +11,9 @@ import { UserState } from "src/app/_store/user.reducer";
 export class HeaderComponent implements OnInit {
   friendlyUrl: String;
   isLoggedIn: Boolean;
+
+  navbarOpen = false;
+
   constructor(
     public authService: AuthService,
     private store: Store<{ userState: UserState }>
@@ -23,5 +26,9 @@ export class HeaderComponent implements OnInit {
         this.friendlyUrl = userState.currentUser;
         this.isLoggedIn = userState.currentUser != null;
       });
+  }
+
+  toggleNavbar() {
+    this.navbarOpen = !this.navbarOpen;
   }
 }
