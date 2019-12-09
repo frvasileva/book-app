@@ -43,7 +43,6 @@ export class BooksDetailComponent implements OnInit {
         .RecommendSimiliarBooks(this.friendlyUrl)
         .subscribe(data => {
           this.similiarBooks = data;
-          console.log("similiarity");
         });
     });
   }

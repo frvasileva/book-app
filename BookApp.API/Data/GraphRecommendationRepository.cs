@@ -7,7 +7,7 @@ namespace BookApp.API.Data {
   public partial class GraphRepository : IGraphRepository {
 
     private const int MIN_BOOKS_ADDED_TO_CATALOGS = 30;
-    private const int MIN_USERS_FOLLOWING = 30;
+    private const int MIN_USERS_FOLLOWING = 10;
 
     public Helpers.PagedList<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId) {
 
@@ -27,16 +27,19 @@ namespace BookApp.API.Data {
       var getFavCatalogs = GetFavoriteCatalogsForUser (userId);
       string combindedString = "[" + string.Join (",", getFavCatalogs.ToArray ()) + "]";
 
+      //order by rating by book!
       var whereClause = "catalog.name in " + combindedString;
       var result =
         _graphClient.Cypher
         .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
         .Where (whereClause)
-        .Return ((catalog, book, count) => new {
+        .Return ((catalog, book, count, rand) => new {
           catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})"),
-            bk = book.As<BookDetailsDto> ()
+          bk = book.As<BookDetailsDto> ()
         })
-        .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
+        .OrderByDescending ("rand()")
+        .Skip (skipResults)
+        .Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var totalBooks =
         _graphClient.Cypher
@@ -141,7 +144,8 @@ namespace BookApp.API.Data {
             bk = book.As<BookDetailsDto> ()
         })
         .OrderByDescending ("rand()")
-        .Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
+        .Skip (skipResults)
+        .Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var totalBooks =
         _graphClient.Cypher

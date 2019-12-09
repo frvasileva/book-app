@@ -28,17 +28,19 @@ export class BookSaverComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log("book changed");
+
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params["friendly-url"];
-    });
-
-    this.store.subscribe(state => {
-      this.catalogs = state.userState.currentUserCatalogs.map(catalog => ({
-        ...catalog,
-        isSelected: (this.bookCatalogs || []).some(
-          item => item.catalogId === catalog.id
-        )
-      }));
+      console.log("url changed");
+      this.store.subscribe(state => {
+        this.catalogs = state.userState.currentUserCatalogs.map(catalog => ({
+          ...catalog,
+          isSelected: (this.bookCatalogs || []).some(
+            item => item.catalogId === catalog.id
+          )
+        }));
+      });
     });
 
     this.addToListForm = new FormGroup({
