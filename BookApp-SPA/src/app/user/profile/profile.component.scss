@@ -16,22 +16,14 @@
 }
 
 .selected {
-  background-color: green;
+  background-color: #93b77c;
 }
 
 .not-selected {
-  background-color: pink;
-}
-.list-group-item.not-selected {
-  background-color: green;
-}
-
-.list-group-item.selected {
-  background-color: pink;
-
+  background-color: transparent;
 }
 
 .list-group-item:hover {
   cursor: pointer;
-  background-color: #c1c1c1;
+  background-color: #e4e3e3;
 }

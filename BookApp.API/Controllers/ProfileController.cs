@@ -165,7 +165,7 @@ namespace BookApp.API.Controllers {
           Name = item,
           IsPublic = true,
           UserId = UserId,
-          FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (item + "-" + Guid.NewGuid ())
+          FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (item + "-" + UserId)
         };
 
         _graphRepo.AddCatalog (catalogItemDto, true);
@@ -175,7 +175,6 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("get-preferences-catalog-list")]
     public async Task<IActionResult> GetDefaultCatalogForPreferences () {
-      // var result = _graphRepo.GetFavoriteCatalogsForUser_Enriched (UserId);
       var result = await _userRepository.GetCatalogForPreferences ();
       return Ok (result);
     }
@@ -183,13 +182,27 @@ namespace BookApp.API.Controllers {
     [HttpGet ("get-user-selected-preferences-catalog-list")]
     public async Task<IActionResult> GetUserSelectedCatalogForPreferences () {
       var result = _graphRepo.GetFavoriteCatalogsForUser_Enriched (UserId);
-      return Ok (result);
+      var defaultCategories = _userRepository.GetCatalogForPreferences ();
+      return Ok (new { userSelectedCategories = result, defaultCategories = defaultCategories.Result });
     }
 
-    [HttpGet ("toggle-preferences-catalog/{catalogId}/{isSelected}")]
-    public async Task<IActionResult> TogglePreferencedCatalogs (int catalogId, int isSelected) {
-      var result = _graphRepo.ToggleUserCatalogFromFavorites (UserId, catalogId, true);
-      return Ok (result);
+    [HttpGet ("toggle-preferences-catalog/{catalogId}/{catalogName}/{isSelected}")]
+    public async Task<IActionResult> TogglePreferencedCatalogs (int catalogId, string catalogName, int isSelected) {
+      var selected = isSelected == 1;
+
+      if (catalogId > 0) {
+        _graphRepo.ToggleUserCatalogFromFavorites (UserId, catalogId, catalogName, selected);
+      } else {
+        var catalogItemDto = new CatalogCreateDto {
+          Name = catalogName,
+          IsPublic = true,
+          UserId = UserId,
+          FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (catalogName + "-" + Guid.NewGuid ())
+        };
+
+        _graphRepo.AddCatalog (catalogItemDto, true);
+      }
+      return Ok ();
     }
   }
 }

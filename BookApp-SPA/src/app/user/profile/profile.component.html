@@ -60,8 +60,10 @@
             <li
               class="list-group-item"
               [ngClass]="pref.isSelected === true ? 'selected' : 'not-selected'"
-              *ngFor="let pref of userBookCategoryPreferences; let i = index"
-              (click)="togglePreferences(pref.id, !pref.isSelected)"
+              *ngFor="let pref of defaultBookCategoryPreferences; let i = index"
+              (click)="
+                togglePreferences(pref.catalogId, pref.name, pref.isSelected)
+              "
             >
               {{ pref.name }}
             </li>

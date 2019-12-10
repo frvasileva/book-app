@@ -46,7 +46,6 @@ export class CatalogListComponent implements OnInit {
         this.catalogService
           .getUserCatalogs(this.friendlyUrl)
           .subscribe(data => {
-            console.log("his.catalogList = data;", data);
             this.catalogList = data;
             if (this.catalogList.length > 0) {
               this.catalogNumber = this.catalogList.length;

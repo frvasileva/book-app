@@ -97,14 +97,23 @@ export class UserService {
   getUserSelectedPreferencesCatalogs() {
     return this.http.get(
       this.baseUrl + "get-user-selected-preferences-catalog-list"
-    );
+    ) as any;
   }
 
-  toggleUserPreferencesCatalogs(catalogId: number, isSelected: number) {
+  toggleUserPreferencesCatalogs(
+    catalogId: number,
+    catalogName: string,
+    isSelected: number
+  ) {
+    if (catalogId === undefined) {
+      catalogId = 0;
+    }
     return this.http.get(
       this.baseUrl +
         "toggle-preferences-catalog/" +
         catalogId +
+        "/" +
+        catalogName +
         "/" +
         isSelected
     );

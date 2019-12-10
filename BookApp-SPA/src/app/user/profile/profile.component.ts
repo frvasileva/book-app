@@ -8,7 +8,6 @@ import { UserState } from "src/app/_store/user.reducer";
 import { BookService } from "src/app/_services/book.service";
 import { TabDirective } from "ngx-bootstrap/tabs";
 import { SeoHelperService } from "src/app/_shared/seo-helper.service";
-import { AuthService } from "src/app/_services/auth.service";
 
 @Component({
   selector: "app-profile",
@@ -22,13 +21,13 @@ export class ProfileComponent implements OnInit {
   friendlyUrl: string;
   isCurrentUser: boolean;
   bookNumber: number;
-  userBookCategoryPreferences: [];
-
+  userBookCategoryPreferences: any;
+  defaultBookCategoryPreferences: any;
+  mappedPreferences: [];
   userBooks: any;
 
   constructor(
     private userService: UserService,
-    private authService: AuthService,
     private bookService: BookService,
     private route: ActivatedRoute,
     private store: Store<{ userState: UserState }>,
@@ -56,15 +55,25 @@ export class ProfileComponent implements OnInit {
   getUserBooks() {
     this.bookService.getBooksAddedByUser(this.friendlyUrl).subscribe(data => {
       this.userBooks = data;
-      console.log(data);
       this.bookNumber = this.userBooks.length;
     });
   }
 
   getUserPreferences() {
     this.userService.getUserSelectedPreferencesCatalogs().subscribe(data => {
-      this.userBookCategoryPreferences = data as [];
-      console.log(data);
+      this.userBookCategoryPreferences = data.userSelectedCategories as [];
+      this.defaultBookCategoryPreferences = data.defaultCategories as [];
+      this.defaultBookCategoryPreferences.forEach(value => {
+        value.isSelected = this.userBookCategoryPreferences.some(
+          item => item.name === value.name
+        );
+
+        if (value.isSelected) {
+          value.catalogId = this.userBookCategoryPreferences.find(
+            item => item.name === value.name
+          ).id;
+        }
+      });
     });
   }
 
@@ -77,8 +86,17 @@ export class ProfileComponent implements OnInit {
     }
   }
 
-  togglePreferences(id: number) {
-    this.userService.toggleUserPreferencesCatalogs(id, 1).subscribe();
-    console.log("item clicked", id);
+  togglePreferences(id: number, catalogName: string, isSelected: boolean) {
+    const selected = isSelected ? 1 : 0;
+
+    this.userService
+      .toggleUserPreferencesCatalogs(id, catalogName, selected)
+      .subscribe();
+
+    let item = this.defaultBookCategoryPreferences.find(
+      x => x.name === catalogName
+    );
+
+    item.isSelected = !isSelected;
   }
 }

@@ -19,7 +19,7 @@ namespace BookApp.API.Data {
     BookCatalog AddBookToCatalog (BookCatalogCreateDto item);
     BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId);
 
-    List<UserBookCategoriesPreferencesDto> ToggleUserCatalogFromFavorites (int userId, int catalogId, bool IsSelected);
+    void ToggleUserCatalogFromFavorites(int userId, int catalogId, string catalogName, bool IsSelected);
     List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser);
 
     // List<UserBookCategoriesPreferencesDto> GetUserCatalogPreferences (int userId);

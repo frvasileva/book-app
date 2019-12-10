@@ -471,13 +471,10 @@ namespace BookApp.API.Data {
 
     public List<string> GetFavoriteCatalogsForUser (int userId) {
       var result = _graphClient.Cypher
-        .Match ("(catalog:Catalog)")
-        .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
-        .With ("book, catalog")
+        .Match ("(catalog:Favorite)")
         .Where ((CatalogItemDto catalog) => catalog.UserId == userId)
         .ReturnDistinct ((catalog) => new { catalogs = Return.As<string> ("{name:catalog.name }") });
 
-      var rerere = result.Results;
       var strings = new List<string> ();
       foreach (var itm in result.Results) {
         var item = itm.catalogs.Replace ("{\r\n  \"name\": \"", "").Replace ("\"\r\n}", "");
@@ -505,15 +502,20 @@ namespace BookApp.API.Data {
       return catalogs;
     }
 
-    public List<UserBookCategoriesPreferencesDto> ToggleUserCatalogFromFavorites (int userId, int catalogId, bool IsSelected) {
-      _graphClient.Cypher
-        .Match ("(fCatalog:Favorite)-[r:CATALOG_ADDED]-(profile:Profile)")
-        .Where ((CatalogItemDto fCatalog) => fCatalog.Id == catalogId)
-        .AndWhere ((ProfileDto profile) => profile.Id == userId)
-        .Delete ("r")
-        .ExecuteWithoutResults ();
-
-      return new List<UserBookCategoriesPreferencesDto> ();
+    public void ToggleUserCatalogFromFavorites (int userId, int catalogId, string catalogName, bool IsSelected) {
+      if (IsSelected) {
+        _graphClient.Cypher
+          .Match ("(fCatalog:Favorite)")
+          .Where ((CatalogItemDto fCatalog) => fCatalog.Id == catalogId)
+          .Remove ("fCatalog:Favorite")
+          .ExecuteWithoutResults ();
+      } else {
+        _graphClient.Cypher
+          .Match ("(fCatalog:Catalog)")
+          .Where ((CatalogItemDto fCatalog) => fCatalog.Id == catalogId)
+          .Set ("fCatalog:Favorite")
+          .ExecuteWithoutResults ();
+      }
     }
   }
 }
