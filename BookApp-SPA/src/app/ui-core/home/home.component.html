@@ -20,20 +20,26 @@
       <div class="col-md">
         <h2>Want to find nice books?</h2>
         <p>
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry's standard dummy text ever
-          since the 1500s, when an unknown printer took a galley of type and
-          scrambled it to make a type specimen book. It has survived not only
-          five centuries, but also the leap into electronic typesetting,
-          remaining essentially unchanged. It was popularised in the 1960s with
-          the release of Letraset sheets containing Lorem Ipsum passages.
+          A social cataloging application is a web application designed to help
+          users to catalog things—books, CDs, etc.—owned or otherwise of
+          interest to them. The phrase refers to two characteristics that
+          generally arise from a multi-user cataloging environment:
+        </p>
+        <p>
+          The ability to share catalogs and interact with others based upon
+          shared items;
+        </p>
+        <p>
+          The enrichment or improvement of cataloging description through either
+          explicit cooperation in the production of cataloging metadata or
+          through the analysis of implicit data.
         </p>
       </div>
     </div>
   </div>
 </div>
 
-<div class="div container-wrapper book-preview-wrapper">
+<div class="div container-wrapper book-preview-wrapper" *ngIf="this.isAuthenticated">
   <div class="container">
     <div class="row">
       <div class="col-md">
@@ -41,25 +47,16 @@
       </div>
     </div>
     <div class="row">
-      <div class="col-md-3 col-6">
-        <img
-          src="http://res.cloudinary.com/deumq4qrd/image/upload/c_thumb,w_200,h_300/v1560584535/sifwdxeafnmuinwnjidh.jpg"
-        />
-      </div>
-      <div class="col-md-3 col-6">
-        <img
-          src="http://res.cloudinary.com/deumq4qrd/image/upload/c_thumb,w_200,h_300/v1560584169/zkegd1n1vcipmwpsvdkg.jpg"
-        />
-      </div>
-      <div class="col-md-3 col-6">
-        <img
-          src="http://res.cloudinary.com/deumq4qrd/image/upload/c_thumb,w_200,h_300/v1560458341/bdsqrugeueufkpozcxx2.png"
-        />
-      </div>
-      <div class="col-md-3 col-6">
-        <img
-          src="http://res.cloudinary.com/deumq4qrd/image/upload/c_thumb,w_200,h_300/v1560584535/sifwdxeafnmuinwnjidh.jpg"
-        />
+      <div class="col-md-2 col-6" *ngFor="let book of bookList">
+        <div class="card-wrapper">
+          <a [routerLink]="['/books/details', book?.friendlyUrl]">
+            <img
+              src="{{ book?.photoPath }}"
+              class="book-cover-image"
+              title="{{ book?.title }}"
+            />
+          </a>
+        </div>
       </div>
     </div>
   </div>
