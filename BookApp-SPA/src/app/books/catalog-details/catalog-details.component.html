@@ -18,4 +18,15 @@
       <app-book-card-item [book]="item"></app-book-card-item>
     </div>
   </div>
+
+  <div class="row" style="margin-top:50px;">
+    <div class="col-md">
+      <pagination
+        [totalItems]="this.totalItems"
+        [itemsPerPage]="12"
+        (pageChanged)="pageChanged($event)"
+        [maxSize]="10"
+      ></pagination>
+    </div>
+  </div>
 </div>

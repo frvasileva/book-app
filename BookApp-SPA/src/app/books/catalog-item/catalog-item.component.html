@@ -3,7 +3,9 @@
     <div class="row">
       <div class="col-md-8 col-7">
         <a
-          [routerLink]="['/books/catalog/details', catalog?.friendlyUrl]"
+          [routerLink]="[
+            '/books/catalog/details/' + catalog?.friendlyUrl + '/0'
+          ]"
           class="card-link"
           *ngIf="!showCatalogName"
         >
@@ -50,7 +52,10 @@
         *ngIf="isCurrentUser && !showCatalogName"
         (click)="showChangeCatalogNameForm()"
       >
-        <button class="button white small no-text" *ngIf="!isWantToReadCategory">
+        <button
+          class="button white small no-text"
+          *ngIf="!isWantToReadCategory"
+        >
           <i
             class="glyphicon glyphicon-pencil"
             (click)="showChangeCatalogNameForm()"
@@ -68,7 +73,6 @@
 
   <div class="container">
     <div class="row">
-
       <div
         class="col-md-4 col-4"
         *ngFor="let item of catalog.books | slice: 0:6; let i = index"

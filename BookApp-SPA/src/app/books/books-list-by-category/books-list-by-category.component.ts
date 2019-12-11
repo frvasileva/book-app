@@ -12,7 +12,6 @@ export class BooksListByCategoryComponent implements OnInit {
   books: any;
   currentPage: number;
   totalItems: number;
-  queryMade = false;
 
   isPageChanged = false;
   startItem = 0;
@@ -31,7 +30,6 @@ export class BooksListByCategoryComponent implements OnInit {
     this.route.params.subscribe((params: Params) => {
       this.category = params.category.trim().toUpperCase();
       this.currentPage = params.pageNumber;
-
       this.bookService
         .getBooksByCategory(this.category, this.currentPage)
         .subscribe(data => {

@@ -49,8 +49,10 @@ export class BookCatalogService {
     );
   }
 
-  getCatalog(friendlyUrl: string) {
-    return this.http.get(this.baseUrl + "get/" + friendlyUrl);
+  getCatalog(friendlyUrl: string, currentPage: number) {
+    return this.http.get(
+      this.baseUrl + "get/" + friendlyUrl + "/" + currentPage
+    ) as any;
   }
 
   getUserCatalogs(userFriendlyUrl: string) {

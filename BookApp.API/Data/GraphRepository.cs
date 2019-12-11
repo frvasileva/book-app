@@ -325,7 +325,21 @@ namespace BookApp.API.Data {
       return catalogList;
     }
 
-    public List<CatalogItemDto> GetCatalog (string friendlyUrl) {
+    public Helpers.PagedList<CatalogItemDto> GetCatalog (string friendlyUrl, int currentPage) {
+      const int ITEMS_PER_PAGE = 24;
+      int skipResults = currentPage * ITEMS_PER_PAGE;
+      int startFrom = skipResults - ITEMS_PER_PAGE;
+
+      string queryString;
+      if (currentPage == 0) {
+        queryString = String.Format ("[..{0}]", ITEMS_PER_PAGE);
+      } else {
+        queryString = String.Format ("[{0}..{1}]", startFrom, startFrom + ITEMS_PER_PAGE);
+      }
+
+      var collectBookQuery = @"collect({id:book.id, title: book.title,description:book.description, 
+      photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })" + queryString;
+
       var result = _graphClient.Cypher
         .Match ("(catalog:Catalog)")
         .OptionalMatch ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
@@ -333,8 +347,7 @@ namespace BookApp.API.Data {
         .Where ((CatalogItemDto catalog) => catalog.FriendlyUrl == friendlyUrl)
         .Return ((catalog, book) => new {
           catalogs = catalog.As<CatalogItemDto> (),
-            boooks = Return.As<IEnumerable<BookItemDto>>
-            ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
+            boooks = Return.As<IEnumerable<BookItemDto>> (collectBookQuery)
         });
 
       var catalogList = new List<CatalogItemDto> ();
@@ -350,7 +363,8 @@ namespace BookApp.API.Data {
         catalogList.Add (catList);
       }
 
-      return catalogList;
+      var pagedList = new Helpers.PagedList<CatalogItemDto> (catalogList, 100, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
+      return pagedList;
     }
 
     public Helpers.PagedList<CatalogItemDto> GetAllPublicCatalogs (int currentPage = 0) {
@@ -365,8 +379,12 @@ namespace BookApp.API.Data {
         .Return ((catalog, book) => new {
           catalogs = catalog.As<CatalogItemDto> (),
             boooks = Return.As<IEnumerable<BookItemDto>>
-            ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })")
-        }).Skip (skipResults).Limit (SHOW_MAX_RESULTS_PER_PAGE);
+            ("collect({id:book.id, title: book.title,description:book.description, photoPath:book.photoPath, friendlyUrl:book.friendlyUrl, createdOn:book.createdOn, userId: book.userId })[..6]"),
+            countBooksInCatalog = Return.As<int> ("count (book.id)")
+        })
+        .OrderByDescending ("countBooksInCatalog")
+        .Skip (skipResults)
+        .Limit (SHOW_MAX_RESULTS_PER_PAGE);
 
       var totalCatalogs =
         _graphClient.Cypher

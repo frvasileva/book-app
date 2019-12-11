@@ -59,7 +59,7 @@ const booksRoutes: Routes = [
         canActivate: [AuthenticationGuard]
       },
       {
-        path: "catalog/details/:friendly-url",
+        path: "catalog/details/:friendly-url/:pageNumber",
         component: CatalogDetailsComponent,
         canActivate: [AuthenticationGuard],
         pathMatch: 'full'

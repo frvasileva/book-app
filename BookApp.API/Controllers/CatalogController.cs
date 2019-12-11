@@ -44,16 +44,18 @@ namespace BookApp.API.Controllers {
       return Ok (result);
     }
 
-    [HttpGet ("get/{friendlyUrl}")]
-    public async Task<IActionResult> Get (string friendlyUrl) {
-      var bookListItem = _graphRepo.GetCatalog (friendlyUrl);
+    [HttpGet ("get/{friendlyUrl}/{currentPage}")]
+    public async Task<IActionResult> Get (string friendlyUrl, int currentPage) {
+      var result = _graphRepo.GetCatalog (friendlyUrl, currentPage);
 
-      foreach (var book in bookListItem) {
+      foreach (var book in result) {
         var user = _userRepo.GetUser (book.UserId);
         if (user != null)
           book.UserFriendlyUrl = user.AvatarPath;
       }
-      return Ok (bookListItem);
+
+      return Ok (new { items = result.Items, totalNumber = result.TotalCount, currentPage = result.CurrentPage });
+
     }
 
     [HttpGet ("user-catalogs/{friendlyUrl}")]

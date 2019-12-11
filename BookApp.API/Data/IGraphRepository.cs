@@ -26,7 +26,7 @@ namespace BookApp.API.Data {
     List<UserBookCategoriesPreferencesDto> GetFavoriteCatalogsForUser_Enriched (int userId);
 
     Helpers.PagedList<CatalogItemDto> GetAllPublicCatalogs (int currentPage = 0);
-    List<CatalogItemDto> GetCatalog (string friendlyUrl);
+    Helpers.PagedList<CatalogItemDto> GetCatalog (string friendlyUrl, int currentPage = 0);
 
     CatalogEditDto EditCatalog (int catalogId, bool isPublic, string name, int userId);
     #region User
