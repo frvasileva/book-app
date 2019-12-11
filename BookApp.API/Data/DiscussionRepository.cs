@@ -44,18 +44,6 @@ namespace BookApp.API.Data {
       return item;
     }
 
-    public void Add<T> (T entity) where T : class {
-      throw new NotImplementedException ();
-    }
-
-    public void Delete<T> (T entity) where T : class {
-      throw new NotImplementedException ();
-    }
-
-    public void Edit<T> (T entity) where T : class {
-      throw new NotImplementedException ();
-    }
-
     public DiscussionDetailsDto GetDiscussion (string friendlyUrl) {
       var result = _context.Discussions.Include (item => item.DiscussionItems).Where (item => item.FriendlyUrl == friendlyUrl).ToList ().FirstOrDefault ();
       var user = _context.Users.Where (u => u.Id == result.UserId).FirstOrDefault ();

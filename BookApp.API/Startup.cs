@@ -15,7 +15,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
-using Neo4j.Driver.V1;
 using Neo4jClient;
 using Newtonsoft.Json.Serialization;
 
@@ -81,17 +80,13 @@ namespace DatingApp.API {
           opt.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore;
         });
 
-      //services.AddSingleton (GraphDatabase.Driver ("bolt://localhost:7687", AuthTokens.Basic ("neo4j", "parola")));
-
       services.AddCors ();
       services.Configure<CloudinarySettings> (Configuration.GetSection ("CloudinarySettings"));
 
       services.AddAutoMapper ();
       services.AddScoped<IUserRepository, UserRepository> ();
-      services.AddScoped<IAuthRepository, AuthRepository> ();
       services.AddScoped<IDiscussionRepository, DiscussionRepository> ();
       services.AddScoped<IGraphRepository, GraphRepository> ();
-
       services.AddTransient<DbContext> ();
     }
 

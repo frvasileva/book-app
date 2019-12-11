@@ -22,13 +22,6 @@ namespace BookApp.API.Data {
             _mapper = mapper;
             _graphRepository = graphRepository;
         }
-        public void Add<T> (T entity) where T : class {
-            _context.Add (entity);
-        }
-
-        public void Delete<T> (T entity) where T : class {
-            _context.Remove (entity);
-        }
 
         public UserFollowersDto FollowUser (int userIdToFollow, int currentUserId) {
 
@@ -103,15 +96,6 @@ namespace BookApp.API.Data {
             mappedProfile.ProfileActivities.BooksAddedToCatalogsCount = 5;
 
             return mappedProfile;
-        }
-
-        public Task<PagedList<User>> GetUsers (UserParams userParams) {
-            throw new System.NotImplementedException ();
-        }
-
-        public async Task<UserFollowers> GetFollower (int followerId) {
-            var result = await _context.UserFollowers.Where (item => item.Id == followerId).FirstOrDefaultAsync ();
-            return result;
         }
 
         // TODO Refactor this method to get default values from db?! Move it to another repository

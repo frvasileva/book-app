@@ -122,7 +122,6 @@ namespace BookApp.API.Data {
       foreach (var b in result.Results) {
         var bd = b.Books;
         bd.RecommendationCategory = "RELEVANCE";
-
         bookList.Add (bd);
       }
 
