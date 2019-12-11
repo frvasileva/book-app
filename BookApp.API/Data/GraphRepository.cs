@@ -347,23 +347,25 @@ namespace BookApp.API.Data {
         .Where ((CatalogItemDto catalog) => catalog.FriendlyUrl == friendlyUrl)
         .Return ((catalog, book) => new {
           catalogs = catalog.As<CatalogItemDto> (),
-            boooks = Return.As<IEnumerable<BookItemDto>> (collectBookQuery)
+            boooks = Return.As<IEnumerable<BookItemDto>> (collectBookQuery),
+            countBooksInCatalog = Return.As<int> ("count (book.id)")
         });
 
       var catalogList = new List<CatalogItemDto> ();
-
+      var totalBookCount = 0;
       foreach (var item in result.Results) {
-
         var catList = new CatalogItemDto ();
         catList = item.catalogs;
+        totalBookCount = item.countBooksInCatalog;
 
         foreach (var bk in item.boooks) {
           catList.Books.Add (bk);
         }
+
         catalogList.Add (catList);
       }
 
-      var pagedList = new Helpers.PagedList<CatalogItemDto> (catalogList, 100, currentPage, SHOW_MAX_RESULTS_PER_PAGE);
+      var pagedList = new Helpers.PagedList<CatalogItemDto> (catalogList, totalBookCount, currentPage, ITEMS_PER_PAGE);
       return pagedList;
     }
 
@@ -438,14 +440,6 @@ namespace BookApp.API.Data {
         .Create ("(book)-[r:AUTHOR_ASSIGNED_TO_BOOK {info}]->(author)")
         .WithParam ("info", new { addedOn = DateTime.Now, userId = userId })
         .ExecuteWithoutResults ();
-
-      // _graphClient.Cypher
-      //   .Match ("(profile:Profile)", "(book:Book)")
-      //   .Where ((ProfileDto profile) => profile.Id == bookItem.UserId)
-      //   .AndWhere ((BookItemDto book) => book.Id == bookItem.Id)
-      //   .Create ("(profile)-[r:BOOK_ADDED {message}]->(book)")
-      //   .WithParam ("message", new { addedOn = DateTime.Now })
-      //   .ExecuteWithoutResults ();
 
       return authors;
     }
