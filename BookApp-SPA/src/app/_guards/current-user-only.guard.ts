@@ -5,14 +5,13 @@ import {
   RouterStateSnapshot,
   UrlTree,
   Router,
-  ActivatedRoute,
-  Params
+  ActivatedRoute
 } from "@angular/router";
 import { Observable } from "rxjs";
 import { Store } from "@ngrx/store";
 import { Profile } from "../_models/profile";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { User } from '../_models/user';
+import { User } from "../_models/user";
 
 @Injectable({
   providedIn: "root"
@@ -46,10 +45,8 @@ export class CurrentUserOnlyGuard implements CanActivate {
 
     const friendlyUrl = this.jwtHelper.decodeToken(this.token).unique_name;
     const currentFriendlyUrl = state.url.split("/")[4];
-    console.log(currentFriendlyUrl, friendlyUrl);
 
     if (this.token !== null && currentFriendlyUrl === friendlyUrl) {
-      console.log("should activate");
       return true;
     }
 

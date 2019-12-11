@@ -4,18 +4,9 @@ using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Neo4jClient;
-using System;
-using System.Collections.Generic;
 using System.Data;
 using System.IO;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using AutoMapper;
-using BookApp.API.Dtos;
-using BookApp.API.Helpers;
-using BookApp.API.Models;
-using Microsoft.EntityFrameworkCore;
 
 namespace BookApp.API.Data {
   public partial class GraphRepository : IGraphRepository {

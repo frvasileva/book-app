@@ -2,10 +2,6 @@ import * as CatalogActions from "./catalog.actions";
 import * as BookActions from "./book.actions";
 import { CatalogItemDto } from "../_models/catalogItem";
 
-// const initialState = {
-//   catalog: []
-// };
-
 export interface CatalogState {
   catalog: CatalogItemDto[];
 }
@@ -13,8 +9,6 @@ export interface CatalogState {
 export const initialState: CatalogState = {
   catalog: []
 };
-
-// TODO: Initial version! Change what the state returns
 
 export function catalogReducer(
   state = initialState,
@@ -28,7 +22,6 @@ export function catalogReducer(
       };
     }
     case CatalogActions.ADD_CATALOG: {
-      console.log("payload", action.payload);
       return {
         ...state,
         catalog: [...state.catalog, action.payload]

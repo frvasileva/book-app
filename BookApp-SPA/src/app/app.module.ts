@@ -17,8 +17,6 @@ import { HomeComponent } from "./ui-core/home/home.component";
 import { AboutComponent } from "./ui-core/about/about.component";
 import { AppRoutingModule } from "./app-routing.module";
 import { NotFoundComponent } from "./ui-core/not-found/not-found.component";
-import { ContactComponent } from "./ui-core/contact/contact.component";
-import { QuotesComponent } from "./quotes/quotes/quotes.component";
 
 import { bookReducer } from "./_store/book.reducer";
 import { catalogReducer } from "./_store/catalog.reducer";
@@ -46,8 +44,6 @@ import { LoadingScreenInterceptor } from "./_helpers/loading.interceptor";
     AboutComponent,
     LayoutComponent,
     NotFoundComponent,
-    ContactComponent,
-    QuotesComponent,
     LoadingScreenComponent
   ],
   imports: [

@@ -17,7 +17,7 @@ export class UserService {
 
   constructor(
     private http: HttpClient,
-    private store: Store<{ users: { users: User } }>, //TODO: Refactor!
+    private store: Store<{ users: { users: User } }>,
     private alertify: AlertifyService
   ) {}
 

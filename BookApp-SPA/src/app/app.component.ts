@@ -7,7 +7,6 @@ import {
   NavigationEnd,
   NavigationError
 } from "@angular/router";
-import { UserService } from "./_services/user.service";
 import { BookSaverService } from "./_services/bookSaver.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
 
@@ -28,7 +27,6 @@ export class AppComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private userService: UserService,
     private bookSaverService: BookSaverService,
     private router: Router
   ) {

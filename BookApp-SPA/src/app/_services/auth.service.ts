@@ -94,7 +94,6 @@ export class AuthService {
   }
 
   setUserBookCategoryPreferences(catalogPreferences: any) {
-    console.log({ catalogPreferences });
     return this.http
       .post(
         environment.apiUrl + "profile/add-book-catalog-preferences",

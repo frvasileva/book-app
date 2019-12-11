@@ -1,6 +1,5 @@
 using System;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
@@ -34,7 +33,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpPost ("add")]
-    public async Task<IActionResult> Add (CatalogCreateDto catalogCteateDto) {
+    public IActionResult Add (CatalogCreateDto catalogCteateDto) {
 
       catalogCteateDto.UserId = UserId;
       catalogCteateDto.FriendlyUrl = BookApp.API.Helpers.Url.GenerateFriendlyUrl (catalogCteateDto.Name + "-" + Guid.NewGuid ());
@@ -45,7 +44,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("get/{friendlyUrl}/{currentPage}")]
-    public async Task<IActionResult> Get (string friendlyUrl, int currentPage) {
+    public IActionResult Get (string friendlyUrl, int currentPage) {
       var result = _graphRepo.GetCatalog (friendlyUrl, currentPage);
 
       foreach (var book in result) {
@@ -59,7 +58,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("user-catalogs/{friendlyUrl}")]
-    public async Task<IActionResult> GetForUser (string friendlyUrl) {
+    public IActionResult GetForUser (string friendlyUrl) {
 
       var identity = HttpContext.User.Identity as ClaimsIdentity;
       string userFriendlyUrl = "";
@@ -87,7 +86,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("public-catalogs/{currentPage}")]
-    public async Task<IActionResult> GetPublicCatalogs (int currentPage = 0) {
+    public IActionResult GetPublicCatalogs (int currentPage = 0) {
 
       var result = _graphRepo.GetAllPublicCatalogs (currentPage);
 
@@ -102,13 +101,13 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("user-catalogs-pure-list/{friendlyUrl}")]
-    public async Task<IActionResult> GetPureCatalogsForUser (string friendlyUrl) {
+    public IActionResult GetPureCatalogsForUser (string friendlyUrl) {
       var catalogs = _graphRepo.GetPureCatalogs (UserId);
       return Ok (catalogs);
     }
 
     [HttpPost ("edit-catalog")]
-    public async Task<IActionResult> EditCatalog (CatalogEditDto catalog) {
+    public IActionResult EditCatalog (CatalogEditDto catalog) {
       var result = _graphRepo.EditCatalog (catalog.Id, catalog.IsPublic, catalog.Name, UserId);
       return Ok (result);
     }

@@ -1,6 +1,5 @@
 using System;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using BookApp.API.Data;
 using BookApp.API.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -32,7 +31,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpPost ("create-discussion")]
-    public async Task<IActionResult> CreateDiscussion (Discussion item) {
+    public IActionResult CreateDiscussion (Discussion item) {
 
       item.UserId = UserId;
       item.FriendlyUrl = Helpers.Url.GenerateFriendlyUrl (item.Title);
@@ -42,7 +41,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpPost ("add-discussion-item")]
-    public async Task<IActionResult> CreateDiscussionItem (DiscussionItem item) {
+    public IActionResult CreateDiscussionItem (DiscussionItem item) {
 
       item.UserId = UserId;
       var discussionItem = _discussionRepo.CreateDiscussionItem (item);
@@ -51,7 +50,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("get/{friendlyUrl}")]
-    public async Task<IActionResult> GetDiscussion (string friendlyUrl) {
+    public IActionResult GetDiscussion (string friendlyUrl) {
 
       var discussion = _discussionRepo.GetDiscussion (friendlyUrl);
 
@@ -59,7 +58,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("get-discussions")]
-    public async Task<IActionResult> GetDiscussions () {
+    public IActionResult GetDiscussions () {
 
       var discussion = _discussionRepo.GetDiscussions (null, null);
 
@@ -67,7 +66,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("get-by-book/{id}")]
-    public async Task<IActionResult> GetDiscussionByBook (int id) {
+    public IActionResult GetDiscussionByBook (int id) {
 
       var discussion = _discussionRepo.GetDiscussionsByBook (id);
 
@@ -75,7 +74,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("get-by-user/{id}")]
-    public async Task<IActionResult> GetDiscussionsByUser (int id) {
+    public IActionResult GetDiscussionsByUser (int id) {
 
       var discussion = _discussionRepo.GetDiscussionsByUser (id);
 

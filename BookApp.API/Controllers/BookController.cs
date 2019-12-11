@@ -1,7 +1,5 @@
 using System;
-using System.Collections.Generic;
 using System.Security.Claims;
-using System.Threading.Tasks;
 using AutoMapper;
 using BookApp.API.Data;
 using BookApp.API.Dtos;
@@ -56,7 +54,7 @@ namespace BookApp.API.Controllers {
     #region Book CRUD Actions
 
     [HttpGet ("get-books/{currentPage}")]
-    public async Task<IActionResult> GetAllBooks (int currentPage) {
+    public IActionResult GetAllBooks (int currentPage) {
 
       var books = _bookGraph.GetAll ();
       var booksss = _bookGraph.RecommendationByRelevance (currentPage, UserId);
@@ -71,14 +69,14 @@ namespace BookApp.API.Controllers {
 
     [AllowAnonymous]
     [HttpGet ("recommend-similiar-book/{similiarToFriendlyUrl}")]
-    public async Task<IActionResult> RecommendSimiliarBooks (string similiarToFriendlyUrl) {
+    public IActionResult RecommendSimiliarBooks (string similiarToFriendlyUrl) {
       var res = _bookGraph.RecommendSimiliarBooks (similiarToFriendlyUrl);
 
       return Ok (res);
     }
 
     [HttpGet ("recommend-relevance/{currentPage}")]
-    public async Task<IActionResult> RecommendationByRelevance (int currentPage = 0) {
+    public IActionResult RecommendationByRelevance (int currentPage = 0) {
       var result = _bookGraph.RecommendationByRelevance (currentPage, UserId);
       foreach (var item in result.Items) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
@@ -89,7 +87,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("recommend-novelty/{currentPage}")]
-    public async Task<IActionResult> RecommendByNovelty (int currentPage = 0) {
+    public IActionResult RecommendByNovelty (int currentPage = 0) {
 
       var result = _bookGraph.RecommendByNovelty (currentPage, UserId);
 
@@ -102,7 +100,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("recommend-serendipity/{currentPage}")]
-    public async Task<IActionResult> RecommendBySerendepity (int currentPage) {
+    public IActionResult RecommendBySerendepity (int currentPage) {
 
       var result = _bookGraph.RecommendBySerendipity (currentPage, UserId);
 
@@ -115,7 +113,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("get/{friendlyUrl?}")]
-    public async Task<IActionResult> GetBook (string friendlyUrl) {
+    public IActionResult GetBook (string friendlyUrl) {
       var book = _bookGraph.GetBook (friendlyUrl);
       if (book == null)
         return BadRequest ("No books");
@@ -128,30 +126,27 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("import-books")]
-    public async Task<IActionResult> ImportBooks () {
-
+    public IActionResult ImportBooks () {
       _bookGraph.ImportBooks ();
-      // var result =   _bookGraph.GetFavoriteCatalogsForUser (108);
-      // var result = _bookGraph.RecommendationByRelevance (0, UserId);
       return Ok ();
     }
 
     [HttpGet ("import-categories")]
-    public async Task<IActionResult> ImportCategories () {
+    public IActionResult ImportCategories () {
 
       _bookGraph.ImportTags ();
       return Ok ();
     }
 
     [HttpGet ("import-books-categories")]
-    public async Task<IActionResult> ImportBookCategories () {
+    public IActionResult ImportBookCategories () {
 
       _bookGraph.ImportBookTags ();
       return Ok ();
     }
 
     [HttpGet ("get-books-added-by-user/{friendlyUrl?}")]
-    public async Task<IActionResult> GetBooksAddedByUser (string friendlyUrl) {
+    public IActionResult GetBooksAddedByUser (string friendlyUrl) {
       var user = _userRepo.GetUser (friendlyUrl);
       if (user == null) {
         return NotFound ();
@@ -166,7 +161,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpPost ("add")]
-    public async Task<IActionResult> Add (BookCreateDto bookDto) {
+    public IActionResult Add (BookCreateDto bookDto) {
 
       bookDto.UserId = UserId;
       var result = _bookGraph.AddBook (bookDto);
@@ -175,7 +170,7 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("delete-book-from-catalog/{catalogId}/{bookId}")]
-    public async Task<IActionResult> RemoveBookFromCatalog (int catalogId, int bookId) {
+    public IActionResult RemoveBookFromCatalog (int catalogId, int bookId) {
       _bookGraph.RemoveBookToCatalog (catalogId, bookId);
 
       return Ok ();
@@ -184,17 +179,17 @@ namespace BookApp.API.Controllers {
 
     #region BookToCatalog Actions
     [HttpPost ("add-to-catalog")]
-    public async Task<IActionResult> AddBookToCatalog (BookCatalogCreateDto bookCatalogDto) {
-
+    public IActionResult AddBookToCatalog (BookCatalogCreateDto bookCatalogDto) {
       bookCatalogDto.UserId = UserId;
       var result = _bookGraph.AddBookToCatalog (bookCatalogDto);
+
       return Ok (result);
     }
 
     #endregion
 
     [HttpPost ("add-photo/{friendlyUrl}")]
-    public async Task<IActionResult> AddPhotoForBook (string friendlyUrl, [FromForm] PhotoForCreationDto photoForCreationDto) {
+    public IActionResult AddPhotoForBook (string friendlyUrl, [FromForm] PhotoForCreationDto photoForCreationDto) {
 
       var book = _bookGraph.GetBook (friendlyUrl);
       var file = photoForCreationDto.File;
@@ -222,13 +217,5 @@ namespace BookApp.API.Controllers {
       return BadRequest ("Could not add the photo");
     }
 
-    // private int UserId () {
-    //   var identity = HttpContext.User.Identity as ClaimsIdentity;
-    //   int userId = 0;
-    //   if (identity != null)
-    //     userId = Int32.Parse (identity.FindFirst (ClaimTypes.NameIdentifier).Value);
-
-    //   return userId;
-    // }
   }
 }

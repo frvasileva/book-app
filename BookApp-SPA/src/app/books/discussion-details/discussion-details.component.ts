@@ -66,7 +66,6 @@ export class DiscussionDetailsComponent implements OnInit {
   getCurrentUserName(): string {
     const token = localStorage.getItem("token");
     const currentUserName = this.jwtHelper.decodeToken(token).unique_name;
-    console.log("currentUserName", currentUserName);
     return currentUserName;
   }
 }

@@ -4,7 +4,6 @@ import { Routes, RouterModule } from "@angular/router";
 import { HomeComponent } from "./ui-core/home/home.component";
 import { AboutComponent } from "./ui-core/about/about.component";
 import { NotFoundComponent } from "./ui-core/not-found/not-found.component";
-import { ContactComponent } from "./ui-core/contact/contact.component";
 
 const appRoutes: Routes = [
   { path: "", component: HomeComponent },
@@ -21,7 +20,6 @@ const appRoutes: Routes = [
     loadChildren: "./user/user.module#UserModule"
   },
   { path: "about-us", component: AboutComponent },
-  { path: "contact-us", component: ContactComponent },
   { path: "404", component: NotFoundComponent },
   { path: "**", component: NotFoundComponent }
 ];

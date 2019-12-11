@@ -180,14 +180,14 @@ namespace BookApp.API.Controllers {
     }
 
     [HttpGet ("get-user-selected-preferences-catalog-list")]
-    public async Task<IActionResult> GetUserSelectedCatalogForPreferences () {
+    public IActionResult GetUserSelectedCatalogForPreferences () {
       var result = _graphRepo.GetFavoriteCatalogsForUser_Enriched (UserId);
       var defaultCategories = _userRepository.GetCatalogForPreferences ();
       return Ok (new { userSelectedCategories = result, defaultCategories = defaultCategories.Result });
     }
 
     [HttpGet ("toggle-preferences-catalog/{catalogId}/{catalogName}/{isSelected}")]
-    public async Task<IActionResult> TogglePreferencedCatalogs (int catalogId, string catalogName, int isSelected) {
+    public IActionResult TogglePreferencedCatalogs (int catalogId, string catalogName, int isSelected) {
       var selected = isSelected == 1;
 
       if (catalogId > 0) {
