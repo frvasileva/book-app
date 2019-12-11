@@ -60,25 +60,4 @@ export class BookSaverComponent implements OnInit {
       item => item.bookId !== this.bookId && item.catalogId !== catalogId
     );
   }
-
-  onSubmit() {
-    // const item = this.addToListForm.value;
-    // this.bookSaverService
-    //   .addBookToCatalog(null, item.bookSaverListItem, this.bookId)
-    //   .subscribe(next => {
-    //     console.log("next", next);
-    //   });
-    // this.addToListForm.reset();
-  }
-
-  onSaverFocus() {
-    // this.catalogs = this.bookSaverService.getUserLists(
-    //   this.addToListForm.value.bookSaverListItem
-    // );
-  }
-
-  onSaverFocusOut() {
-    // this.catalogs = [];
-    // console.log("focus out");
-  }
 }
