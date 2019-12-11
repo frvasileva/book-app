@@ -33,7 +33,6 @@ namespace BookApp.API.Data {
     public DbSet<Discussion> Discussions { get; set; }
     public DbSet<DiscussionItem> DiscussionItem { get; set; }
     public DbSet<Photo> Photos { get; set; }
-    public DbSet<BookListActions> BookListActions { get; set; }
     public DbSet<UserFollowers> UserFollowers { get; set; }
     public DbSet<Tag> Tags { get; set; }
     public DbSet<BookTags> BookTags { get; set; }

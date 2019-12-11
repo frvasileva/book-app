@@ -63,12 +63,10 @@ namespace BookApp.API.Helpers
         /// <returns></returns>
         public string EnglishToBulgarian(string word)
         {
-
             foreach (KeyValuePair<string, string> pair in cyrilicToEnglish)
             {
                 word = word.Replace(pair.Value, pair.Key);
             }
-
             return word;
         }
     }

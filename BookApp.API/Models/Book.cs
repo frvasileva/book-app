@@ -17,19 +17,13 @@ namespace BookApp.API.Models {
     public string PhotoPath { get; set; }
     public string FriendlyUrl { get; set; }
     public DateTime AddedOn { get; set; }
-
     public double AvarageRating { get; set; }
-
     public int? PublisherId { get; set; }
     public Publisher Publisher { get; set; }
-
     public User User { get; set; }
     public int UserId { get; set; }
-
     public Author Author { get; set; }
     public int? AuthorId { get; set; }
-
     public ICollection<BookCatalog> BookCatalogs { get; set; }
-
   }
 }

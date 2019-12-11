@@ -1,4 +1,3 @@
-using System;
 namespace BookApp.API.Helpers {
     public enum TransformationType {
         Book_Thumb_Preset,

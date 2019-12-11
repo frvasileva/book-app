@@ -7,6 +7,5 @@ namespace BookApp.API.Models {
         public string Name { get; set; }
         public DateTime AddedOn { get; set; }
         public string FriendlyUrl { get; set; }
-
     }
 }
