@@ -1,15 +1,9 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { Router } from "@angular/router";
 import { map } from "rxjs/operators";
 
 import { BookCreateDto } from "../_models/bookCreateDto";
-import { Store } from "@ngrx/store";
-import { Book } from "../_models/books";
-
-import { AlertifyService } from "./alertify.service";
-
 import { environment } from "src/environments/environment";
 
 @Injectable({
@@ -20,12 +14,7 @@ export class BookService {
   jwtHelper = new JwtHelperService();
   token = this.jwtHelper.decodeToken(localStorage.getItem("token"));
 
-  constructor(
-    private http: HttpClient,
-    private router: Router,
-    private store: Store<{ bookState: { books: Book[] } }>,
-    private alertify: AlertifyService
-  ) {}
+  constructor(private http: HttpClient) {}
 
   addBook(model: BookCreateDto) {
     model.userId = this.token.nameid;

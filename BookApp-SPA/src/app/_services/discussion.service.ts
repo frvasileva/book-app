@@ -1,11 +1,9 @@
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { Router } from "@angular/router";
 import { AlertifyService } from "./alertify.service";
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/internal/operators/map";
-import { DiscussionDto } from "../_models/discussionDto";
 
 @Injectable({
   providedIn: "root"
@@ -17,7 +15,6 @@ export class DiscussionService {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
     private alertify: AlertifyService
   ) {}
 

@@ -1,7 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AuthService } from "src/app/_services/auth.service";
-import { Router } from "@angular/router";
 import { AlertifyService } from "src/app/_services/alertify.service";
 
 @Component({
@@ -14,7 +13,6 @@ export class LoginComponent implements OnInit {
 
   constructor(
     private authService: AuthService,
-    private router: Router,
     private alertify: AlertifyService
   ) {}
 

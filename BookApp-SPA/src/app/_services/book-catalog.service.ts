@@ -14,7 +14,6 @@ import { environment } from "src/environments/environment";
 import { CatalogItemDto } from "../_models/catalogItem";
 import { CatalogPureDto } from "../_models/catalogPureDto";
 
-import { AlertifyService } from "./alertify.service";
 import { CatalogEditItemDto } from "../_models/catalogEditItemDto";
 
 @Injectable({
@@ -26,8 +25,7 @@ export class BookCatalogService {
 
   constructor(
     private http: HttpClient,
-    private store: Store<{ catalog: { catalog: CatalogCreateDto[] } }>,
-    private alertify: AlertifyService
+    private store: Store<{ catalog: { catalog: CatalogCreateDto[] } }>
   ) {}
 
   addCatalog(model: CatalogCreateDto) {
@@ -67,7 +65,6 @@ export class BookCatalogService {
     return this.http.post(this.baseUrl + "edit-catalog", model).pipe(
       map((response: CatalogEditItemDto) => {
         this.store.dispatch(
-          //TODO: Update user's pure catalogs if name changed
           new CatalogActions.UpdateCatalogAction(<CatalogEditItemDto>response)
         );
         return response;
