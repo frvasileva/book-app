@@ -101,10 +101,12 @@ namespace BookApp.API.Data {
 
     public BookCatalog AddBookToCatalog (BookCatalogCreateDto item) {
       var result = _graphClient.Cypher
-        .Match ("(book:Book)", "(catalog:Catalog)")
+        .Match ("(book:Book)", "(catalog:Catalog)", "(profile:Profile)")
         .Where ((BookItemDto book) => book.Id == item.BookId)
         .AndWhere ((CatalogCreateDto catalog) => catalog.Id == item.CatalogId)
+        .AndWhere ((ProfileDto profile) => profile.Id == item.UserId)
         .Create ("(book)-[r:BOOK_ADDED_TO_CATALOG {info}]->(catalog)")
+        .Create ("(profile)-[ur:USER_ADDED_BOOK_TO_CATALOG]->(book)")
         .WithParam ("info", new { addedOn = DateTime.Now, userId = item.UserId })
         .Return<CatalogCreateDto> ("catalog").Results.Single ();
 
@@ -118,12 +120,14 @@ namespace BookApp.API.Data {
       return bookCatalogEntity;
     }
 
-    public BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId) {
+    public BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId, int userId) {
       _graphClient.Cypher
         .Match ("(book:Book)-[r:BOOK_ADDED_TO_CATALOG]->(catalog:Catalog)")
+        .Match ("(book)<-[rp:USER_ADDED_BOOK_TO_CATALOG]-(profile:Profile)")
         .Where ((BookCatalogItemDto book) => book.Id == bookId)
         .AndWhere ((CatalogItemDto catalog) => catalog.Id == catalogId)
-        .Delete ("r")
+        .AndWhere ((ProfileDto profile) => profile.Id == userId)
+        .Delete ("r, rp")
         .ExecuteWithoutResults ();
 
       return new BookCatalogItemDto ();
@@ -184,7 +188,7 @@ namespace BookApp.API.Data {
           bookDetails.AuthorName = item.auth.Name;
           bookDetails.AuthorFriendlyUrl = item.auth.FriendlyUrl;
         }
-        
+
         foreach (var cat in item.catalogs) {
           bookDetails.BookCatalogs.Add (cat);
         }

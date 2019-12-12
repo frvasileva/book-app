@@ -17,7 +17,7 @@ namespace BookApp.API.Data {
     int GetBooksAddedToCatalogs (long userId);
     int GetUsersFollowingCount (long userId);
     BookCatalog AddBookToCatalog (BookCatalogCreateDto item);
-    BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId);
+    BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId, int userId);
 
     void ToggleUserCatalogFromFavorites(int userId, int catalogId, string catalogName, bool IsSelected);
     List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser);

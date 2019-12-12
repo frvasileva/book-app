@@ -172,7 +172,7 @@ namespace BookApp.API.Controllers {
 
     [HttpGet ("delete-book-from-catalog/{catalogId}/{bookId}")]
     public IActionResult RemoveBookFromCatalog (int catalogId, int bookId) {
-      _bookGraph.RemoveBookToCatalog (catalogId, bookId);
+      _bookGraph.RemoveBookToCatalog (catalogId, bookId, UserId);
 
       return Ok ();
     }

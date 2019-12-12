@@ -9,8 +9,7 @@
     "\\BookApp.API",
     "\\BookApp.API\\BookDataImports",
     "\\BookApp.API\\Controllers",
-    "\\BookApp.API\\Data"
+    "\\BookApp.API\\Migrations"
   ],
-  "SelectedNode": "\\BookApp.API\\Controllers\\DiscussionController.cs",
   "PreviewInSolutionExplorer": false
 }
