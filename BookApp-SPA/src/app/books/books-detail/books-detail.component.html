@@ -29,6 +29,10 @@
       <div *ngIf="book?.userId == 0">
         <i> {{ dummyBookDescription }}</i>
       </div>
+      <div *ngIf="book?.authorName" class="author-wrapper">
+        <strong>Author:</strong>
+        {{ book.authorName }}
+      </div>
       <hr />
       <h3 class="recommendation-section">You may also like:</h3>
 

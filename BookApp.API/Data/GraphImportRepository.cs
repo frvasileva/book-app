@@ -54,6 +54,7 @@ namespace BookApp.API.Data {
         var catalog = new Catalog ();
         catalog.AddedOn = DateTime.Now;
         catalog.Name = item.ItemArray[1].ToString ().Replace ("-", " ");
+        catalog.Name = StringHelper.UppercaseFirst (catalog.Name);
         catalog.FriendlyUrl = Url.GenerateFriendlyUrl (item.ItemArray[1].ToString ());
         catalog.ExternalId = Int32.Parse (item.ItemArray[0].ToString ());
         catalog.UserId = 0;
@@ -72,6 +73,7 @@ namespace BookApp.API.Data {
           .WithParam ("date", new { addedOn = DateTime.Now }).ExecuteWithoutResults ();
       }
     }
+    
     public void ImportBookTags () {
       var strFilePath = "D:\\diploma\\diploma\\BookApp.API\\BookDataImports\\book_tags.csv";
       var data = ConvertCSVtoDataTable (strFilePath);

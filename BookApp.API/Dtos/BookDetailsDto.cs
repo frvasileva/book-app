@@ -25,6 +25,8 @@ namespace BookApp.API.Dtos {
     public double AvarageRating { get; set; }
 
     public string RecommendationCategory { get; set; }
+    public string AuthorName { get; set; }
+    public string AuthorFriendlyUrl { get; set; }
 
     public List<BookCatalogListDto> BookCatalogs { get; set; }
 

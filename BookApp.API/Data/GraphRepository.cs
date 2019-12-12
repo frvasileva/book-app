@@ -163,12 +163,14 @@ namespace BookApp.API.Data {
 
       var result = _graphClient.Cypher
         .Match ("(book:Book)")
+        .OptionalMatch ("(author:Author)-[r:AUTHOR_ASSIGNED_TO_BOOK]-(book:Book)")
         .OptionalMatch ("(book:Book)-->(catalog:Catalog)")
-        .With ("book, catalog")
+        .With ("book, catalog, author")
         .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
-        .ReturnDistinct ((catalog, book) => new {
+        .ReturnDistinct ((catalog, book, author) => new {
           catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})[..20]"),
-            bk = book.As<BookDetailsDto> ()
+            bk = book.As<BookDetailsDto> (),
+            auth = author.As<Author> ()
         });
 
       var item = result.Results.ToList ().FirstOrDefault ();
@@ -178,7 +180,11 @@ namespace BookApp.API.Data {
 
         var bookCatalogList = new List<BookCatalogListDto> ();
         bookDetails = item.bk;
-
+        if (item.auth != null) {
+          bookDetails.AuthorName = item.auth.Name;
+          bookDetails.AuthorFriendlyUrl = item.auth.FriendlyUrl;
+        }
+        
         foreach (var cat in item.catalogs) {
           bookDetails.BookCatalogs.Add (cat);
         }
@@ -421,7 +427,7 @@ namespace BookApp.API.Data {
         .Return<Author> ("author");
 
       var authorDto = new Author () {
-        Name = authorName.Trim (),
+        Name = authorName.Trim ().Split (",") [0],
         FriendlyUrl = Url.GenerateFriendlyUrl (authorName)
       };
       var authors = resultAuthor.Results.FirstOrDefault ();
