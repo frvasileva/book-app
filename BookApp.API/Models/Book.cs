@@ -18,8 +18,6 @@ namespace BookApp.API.Models {
     public string FriendlyUrl { get; set; }
     public DateTime AddedOn { get; set; }
     public double AvarageRating { get; set; }
-    public int? PublisherId { get; set; }
-    public Publisher Publisher { get; set; }
     public User User { get; set; }
     public int UserId { get; set; }
     public Author Author { get; set; }

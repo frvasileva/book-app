@@ -125,22 +125,23 @@ namespace BookApp.API.Controllers {
       return Ok (bookToReturn);
     }
 
+    [AllowAnonymous]
     [HttpGet ("import-books")]
     public IActionResult ImportBooks () {
       _bookGraph.ImportBooks ();
       return Ok ();
     }
 
+    [AllowAnonymous]
     [HttpGet ("import-categories")]
     public IActionResult ImportCategories () {
-
       _bookGraph.ImportTags ();
       return Ok ();
     }
 
+    [AllowAnonymous]
     [HttpGet ("import-books-categories")]
     public IActionResult ImportBookCategories () {
-
       _bookGraph.ImportBookTags ();
       return Ok ();
     }

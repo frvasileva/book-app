@@ -1,12 +1,12 @@
 using System;
+using System.Data;
+using System.IO;
 using System.Linq;
+using System.Text.RegularExpressions;
 using BookApp.API.Dtos;
 using BookApp.API.Helpers;
 using BookApp.API.Models;
 using Neo4jClient;
-using System.Data;
-using System.IO;
-using System.Text.RegularExpressions;
 
 namespace BookApp.API.Data {
   public partial class GraphRepository : IGraphRepository {
@@ -20,6 +20,10 @@ namespace BookApp.API.Data {
         var item = data.Rows[i];
 
         var book = new Book ();
+
+        var authorName = item.ItemArray[7].ToString ();
+        var author = this.AddAuthor (authorName, book.Id, book.UserId);
+
         if (book.Title != "")
           book.Title = item.ItemArray[9].ToString ();
         else {
@@ -28,8 +32,7 @@ namespace BookApp.API.Data {
         book.Description = item.ItemArray[10].ToString ();
         book.PhotoPath = item.ItemArray[21].ToString ();
         book.FriendlyUrl = Url.GenerateFriendlyUrl (item.ItemArray[9].ToString ());
-        book.PublisherId = 0;
-        book.AuthorId = 0;
+        book.AuthorId = author.Id;
         book.AddedOn = DateTime.Now;
         book.Description = item.ItemArray[10].ToString ();
         book.ExternalId = Int32.Parse (item.ItemArray[1].ToString ());
@@ -37,14 +40,8 @@ namespace BookApp.API.Data {
         book.AvarageRating = Convert.ToDouble (item.ItemArray[12]);
         book.UserId = 0;
 
-        var authorName = item.ItemArray[7].ToString ();
-        //var author = this.AddAuthor (authorName, book.Id, book.UserId);
-        //book.AuthorId = author.Id;
-
         this.AddBook (book);
 
-        var author = this.AddAuthor (authorName, book.Id, book.UserId);
-        //TODO: Update author ID in book object
       }
     }
     public void ImportTags () {
@@ -56,7 +53,7 @@ namespace BookApp.API.Data {
 
         var catalog = new Catalog ();
         catalog.AddedOn = DateTime.Now;
-        catalog.Name = item.ItemArray[1].ToString ();
+        catalog.Name = item.ItemArray[1].ToString ().Replace ("-", " ");
         catalog.FriendlyUrl = Url.GenerateFriendlyUrl (item.ItemArray[1].ToString ());
         catalog.ExternalId = Int32.Parse (item.ItemArray[0].ToString ());
         catalog.UserId = 0;
@@ -95,41 +92,31 @@ namespace BookApp.API.Data {
           .Create ("(book)-[r:BOOK_ADDED_TO_CATALOG {info}]->(catalog)")
           .WithParam ("info", new { addedOn = DateTime.Now, userId = 0 })
           .ExecuteWithoutResults ();
-        // .Return ((catalog, book, r) => new {
-        //   cat = catalog.As<Catalog> (),
-        //     bk = book.As<Book> ()
-        // });
-        // var res = result.Return.result.;
-        //   this.AddCatalog()
       }
     }
-        #endregion ImportData
+    #endregion ImportData
 
-        #region Helpers
-        private static DataTable ConvertCSVtoDataTable(string strFilePath = "")
-        {
+    #region Helpers
+    private static DataTable ConvertCSVtoDataTable (string strFilePath = "") {
 
-            StreamReader sr = new StreamReader(strFilePath);
-            string[] headers = sr.ReadLine().Split(',');
-            DataTable dt = new DataTable();
-            foreach (string header in headers)
-            {
-                dt.Columns.Add(header);
-            }
-            while (!sr.EndOfStream)
-            {
-                string[] rows = Regex.Split(sr.ReadLine(), ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
-                DataRow dr = dt.NewRow();
-                for (int i = 0; i < headers.Length; i++)
-                {
-                    dr[i] = rows[i];
-                }
-
-                dt.Rows.Add(dr);
-            }
-            return dt;
+      StreamReader sr = new StreamReader (strFilePath);
+      string[] headers = sr.ReadLine ().Split (',');
+      DataTable dt = new DataTable ();
+      foreach (string header in headers) {
+        dt.Columns.Add (header);
+      }
+      while (!sr.EndOfStream) {
+        string[] rows = Regex.Split (sr.ReadLine (), ",(?=(?:[^\"]*\"[^\"]*\")*[^\"]*$)");
+        DataRow dr = dt.NewRow ();
+        for (int i = 0; i < headers.Length; i++) {
+          dr[i] = rows[i];
         }
 
-        #endregion Helpers
+        dt.Rows.Add (dr);
+      }
+      return dt;
     }
+
+    #endregion Helpers
+  }
 }

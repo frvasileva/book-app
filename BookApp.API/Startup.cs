@@ -106,7 +106,7 @@ namespace DatingApp.API {
     }
 
     private IGraphClient GraphClient () {
-      return new GraphClient (new Uri ("http://localhost:11006/db/data"), "neo4j", "parola") {
+      return new GraphClient (new Uri ("http://localhost:7474/db/data"), "neo4j", "parola") {
         JsonContractResolver = new CamelCasePropertyNamesContractResolver ()
       };
     }
