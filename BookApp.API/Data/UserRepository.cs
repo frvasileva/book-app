@@ -59,7 +59,7 @@ namespace BookApp.API.Data {
 
         public async Task<List<UserProfileDto>> GetAllProfiles (int currentUserId) {
 
-            var allUsers = await _context.Users.Include (user => user.Books).Where (item => item.Id != currentUserId).OrderByDescending (u => u.Created).ToListAsync ();
+            var allUsers = await _context.Users.Where (item => item.Id != currentUserId).OrderByDescending (u => u.Created).ToListAsync ();
             var mappedUsers = _mapper.Map<List<User>, List<UserProfileDto>> (allUsers);
             var userFollowers = await _context.UserFollowers.Where (item => item.UserId == currentUserId).ToListAsync ();
 
@@ -84,7 +84,7 @@ namespace BookApp.API.Data {
         }
 
         public async Task<UserProfileDto> GetUserProfile (string friendlyUrl, int currentUserId) {
-            var userProfile = await _context.Users.Include (itm => itm.Books).Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
+            var userProfile = await _context.Users.Where (item => item.FriendlyUrl == friendlyUrl).FirstOrDefaultAsync ();
             var mappedProfile = _mapper.Map<UserProfileDto> (userProfile);
 
             var userFollowers = await _context.UserFollowers.Where (itm => itm.FollowerUserId == userProfile.Id && itm.UserId == currentUserId).ToListAsync ();

@@ -89,7 +89,7 @@ namespace DatingApp.API.Controllers {
         user.LastActive = DateTime.UtcNow;
         await _userManager.UpdateAsync (user);
 
-        var appUser = await _userManager.Users.Include (p => p.Books).FirstOrDefaultAsync (u => u.NormalizedEmail == userForLoginDto.Email.ToUpper ());
+        var appUser = await _userManager.Users.FirstOrDefaultAsync (u => u.NormalizedEmail == userForLoginDto.Email.ToUpper ());
         var userToReturn = _mapper.Map<UserProfileDto> (appUser);
         userToReturn.ProfileActivities.BooksAddedToCatalogsCount = _graphRepository.GetBooksAddedToCatalogs (user.Id);
         userToReturn.ProfileActivities.UsersFollowingCount = _graphRepository.GetUsersFollowingCount (user.Id);

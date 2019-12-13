@@ -17,17 +17,17 @@ namespace BookApp.API.Data {
           .HasForeignKey (ur => ur.RoleId).IsRequired ();
       });
 
-      modelBuilder.Entity<BookCatalog> ().HasKey (sc => new { sc.BookId, sc.CatalogId });
+      //   modelBuilder.Entity<BookCatalog> ().HasKey (sc => new { sc.BookId, sc.CatalogId });
 
-      modelBuilder.Entity<BookCatalog> ()
-        .HasOne (bc => bc.Book)
-        .WithMany (b => b.BookCatalogs)
-        .OnDelete (DeleteBehavior.Restrict);
+      //   modelBuilder.Entity<BookCatalog> ()
+      //     .HasOne (bc => bc.Book)
+      //     .WithMany (b => b.BookCatalogs)
+      //     .OnDelete (DeleteBehavior.Restrict);
 
-      modelBuilder.Entity<BookCatalog> ()
-        .HasOne (bc => bc.Book)
-        .WithMany (c => c.BookCatalogs)
-        .OnDelete (DeleteBehavior.Restrict);
+      //   modelBuilder.Entity<BookCatalog> ()
+      //     .HasOne (bc => bc.Book)
+      //     .WithMany (c => c.BookCatalogs)
+      //     .OnDelete (DeleteBehavior.Restrict);
     }
 
     public DbSet<Discussion> Discussions { get; set; }
