@@ -36,7 +36,7 @@ namespace BookApp.API.Data {
         book.AddedOn = DateTime.Now;
         book.Description = item.ItemArray[10].ToString ();
         book.ExternalId = Int32.Parse (item.ItemArray[1].ToString ());
-        book.ISBN = item.ItemArray[5].ToString ();
+      //  book.ISBN = item.ItemArray[5].ToString ();
         book.AvarageRating = Convert.ToDouble (item.ItemArray[12]);
         book.UserId = 0;
 
