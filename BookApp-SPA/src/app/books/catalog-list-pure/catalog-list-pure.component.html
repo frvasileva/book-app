@@ -1,7 +1,7 @@
 <ul class="category-list">
   <li *ngFor="let item of bookCatalogs; let i = index" class="category-item">
     <a
-      [routerLink]="['/books/catalog/details', item?.friendlyUrl]"
+      [routerLink]="['/books/catalog/details/', item?.friendlyUrl, '0']"
       class="category-link"
     >
       {{ item.name }}</a
