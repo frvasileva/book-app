@@ -173,8 +173,8 @@ namespace BookApp.API.Data {
         .Where ((BookDetailsDto book) => book.FriendlyUrl == friendlyUrl)
         .ReturnDistinct ((catalog, book, author) => new {
           catalogs = Return.As<IEnumerable<BookCatalogListDto>> ("collect({catalogId:catalog.id, name:catalog.name, friendlyUrl:catalog.friendlyUrl})[..20]"),
-            bk = book.As<BookDetailsDto> (),
-            auth = author.As<Author> ()
+          bk = book.As<BookDetailsDto> (),
+          auth = author.As<Author> ()
         });
 
       var item = result.Results.ToList ().FirstOrDefault ();
