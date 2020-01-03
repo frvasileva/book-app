@@ -3,9 +3,9 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Store } from "@ngrx/store";
 import { ActivatedRoute, Params } from "@angular/router";
 
-import { BookSaverService } from "src/app/_services/bookSaver.service";
-import { CatalogPureDto } from "src/app/_models/catalogPureDto";
-import { UserState } from "src/app/_store/user.reducer";
+import { BookSaverService } from "../../_services/bookSaver.service";
+import { CatalogPureDto } from "../../_models/catalogPureDto";
+import { UserState } from "../../_store/user.reducer";
 
 @Component({
   selector: "app-book-saver",

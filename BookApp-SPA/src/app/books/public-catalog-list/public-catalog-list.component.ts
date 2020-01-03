@@ -1,5 +1,5 @@
 import { Component, OnInit } from "@angular/core";
-import { BookCatalogService } from "src/app/_services/book-catalog.service";
+import { BookCatalogService } from "../../_services/book-catalog.service";
 import { Router, ActivatedRoute, Params } from "@angular/router";
 
 @Component({

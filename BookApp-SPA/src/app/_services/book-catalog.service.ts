@@ -10,7 +10,7 @@ import { HttpClient } from "@angular/common/http";
 import * as CatalogActions from "../_store/catalog.actions";
 import * as UserActions from "../_store/user.actions";
 
-import { environment } from "src/environments/environment";
+import { environment } from "../../environments/environment";
 import { CatalogItemDto } from "../_models/catalogItem";
 import { CatalogPureDto } from "../_models/catalogPureDto";
 

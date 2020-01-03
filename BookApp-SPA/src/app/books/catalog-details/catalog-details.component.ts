@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params, Router } from "@angular/router";
-import { BookCatalogService } from "src/app/_services/book-catalog.service";
-import { SeoHelperService } from "src/app/_shared/seo-helper.service";
+import { BookCatalogService } from "../../_services/book-catalog.service";
+import { SeoHelperService } from "../../_shared/seo-helper.service";
 
 @Component({
   selector: "app-catalog-details",

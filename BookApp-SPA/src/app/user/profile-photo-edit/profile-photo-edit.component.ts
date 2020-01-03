@@ -1,7 +1,7 @@
 import { Component, OnInit } from "@angular/core";
-import { environment } from "src/environments/environment";
+import { environment } from "../../../environments/environment";
 import { Store } from "@ngrx/store";
-import { UserState } from "src/app/_store/user.reducer";
+import { UserState } from "../../_store/user.reducer";
 
 @Component({
   selector: "app-profile-photo-edit",

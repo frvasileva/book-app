@@ -4,7 +4,7 @@ import { JwtHelperService } from "@auth0/angular-jwt";
 import { map } from "rxjs/operators";
 
 import { BookCreateDto } from "../_models/bookCreateDto";
-import { environment } from "src/environments/environment";
+import { environment } from "../../environments/environment";
 
 @Injectable({
   providedIn: "root"

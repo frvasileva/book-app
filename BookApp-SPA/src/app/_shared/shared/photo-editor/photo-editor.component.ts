@@ -1,11 +1,11 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { Photo } from "src/app/_models/photo";
-import { environment } from "src/environments/environment";
+import { Photo } from "../../../_models/photo";
+import { environment } from "../../../../environments/environment";
 import { FileUploader } from "ng2-file-upload";
-import { AlertifyService } from "src/app/_services/alertify.service";
+import { AlertifyService } from "../../../_services/alertify.service";
 import { Router } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Profile } from "src/app/_models/profile";
+import { Profile } from "../../../_models/profile";
 import * as UserProfileActions from "../../../_store/user.actions";
 
 @Component({

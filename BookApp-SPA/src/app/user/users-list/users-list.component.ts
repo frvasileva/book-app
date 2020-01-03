@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { Store } from "@ngrx/store";
-import { User } from "src/app/_models/user";
-import { UserState } from "src/app/_store/user.reducer";
-import { SeoHelperService } from "src/app/_shared/seo-helper.service";
+import { User } from "../../_models/user";
+import { UserState } from "../../_store/user.reducer";
+import { SeoHelperService } from "../../_shared/seo-helper.service";
 
 @Component({
   selector: "app-users-list",
@@ -25,7 +25,7 @@ export class UsersListComponent implements OnInit {
       .subscribe(res => {
         this.userList = Object.values(res.userState.users) as User[];
 
-        //Remove current user
+        // Remove current user
         this.userList = this.userList.filter(
           item => item.friendlyUrl !== res.userState.currentUser
         );

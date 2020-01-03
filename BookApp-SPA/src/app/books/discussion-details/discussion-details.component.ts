@@ -1,11 +1,11 @@
 import { Component, OnInit } from "@angular/core";
-import { DiscussionService } from "src/app/_services/discussion.service";
-import { DiscussionDto } from "src/app/_models/discussionDto";
+import { DiscussionService } from "../../_services/discussion.service";
+import { DiscussionDto } from "../../_models/discussionDto";
 import { ActivatedRoute, Params } from "@angular/router";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { AlertifyService } from "src/app/_services/alertify.service";
+import { AlertifyService } from "../../_services/alertify.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
-import { SeoHelperService } from "src/app/_shared/seo-helper.service";
+import { SeoHelperService } from "../../_shared/seo-helper.service";
 
 @Component({
   selector: "app-discussion-details",

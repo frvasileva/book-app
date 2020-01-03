@@ -1,9 +1,9 @@
 import { Component, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { BookCatalogService } from "src/app/_services/book-catalog.service";
-import { CatalogCreateDto } from "src/app/_models/catalogCreateDto";
-import { AlertifyService } from "src/app/_services/alertify.service";
+import { BookCatalogService } from "../../_services/book-catalog.service";
+import { CatalogCreateDto } from "../../_models/catalogCreateDto";
+import { AlertifyService } from "../../_services/alertify.service";
 
 @Component({
   selector: "app-catalog-create",

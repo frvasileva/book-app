@@ -1,8 +1,8 @@
 import { Component, OnInit } from "@angular/core";
 import { FormGroup, Validators, FormControl } from "@angular/forms";
-import { AlertifyService } from "src/app/_services/alertify.service";
+import { AlertifyService } from "../../_services/alertify.service";
 import { Router, ActivatedRoute, Params } from "@angular/router";
-import { DiscussionService } from "src/app/_services/discussion.service";
+import { DiscussionService } from "../../_services/discussion.service";
 
 @Component({
   selector: "app-discussion-create",

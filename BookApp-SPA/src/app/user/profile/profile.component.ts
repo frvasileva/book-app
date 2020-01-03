@@ -1,13 +1,13 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute } from "@angular/router";
 import { Store } from "@ngrx/store";
-import { Profile } from "src/app/_models/profile";
-import { Book } from "src/app/books/book.model";
-import { UserService } from "src/app/_services/user.service";
-import { UserState } from "src/app/_store/user.reducer";
-import { BookService } from "src/app/_services/book.service";
+import { Profile } from "../../_models/profile";
+import { Book } from "../../books/book.model";
+import { UserService } from "../../_services/user.service";
+import { UserState } from "../../_store/user.reducer";
+import { BookService } from "../../_services/book.service";
 import { TabDirective } from "ngx-bootstrap/tabs";
-import { SeoHelperService } from "src/app/_shared/seo-helper.service";
+import { SeoHelperService } from "../../_shared/seo-helper.service";
 
 @Component({
   selector: "app-profile",

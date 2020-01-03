@@ -6,7 +6,7 @@ import { Store } from "@ngrx/store";
 import { JwtHelperService } from "@auth0/angular-jwt";
 
 import * as UserProfileActions from "../_store/user.actions";
-import { environment } from "src/environments/environment";
+import { environment } from "../../environments/environment";
 import { User } from "../_models/user";
 import { UserService } from "./user.service";
 import { BookSaverService } from "./bookSaver.service";

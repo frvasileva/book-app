@@ -1,13 +1,13 @@
 import { Component, OnInit } from "@angular/core";
-import { AlertifyService } from "src/app/_services/alertify.service";
+import { AlertifyService } from "../../_services/alertify.service";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router, ActivatedRoute } from "@angular/router";
 
-import { UserService } from "src/app/_services/user.service";
-import { User } from "src/app/_models/user";
+import { UserService } from "../../_services/user.service";
+import { User } from "../../_models/user";
 
-import { settings } from "src/app/_shared/settings";
-import { SeoHelperService } from "src/app/_shared/seo-helper.service";
+import { settings } from "../../_shared/settings";
+import { SeoHelperService } from "../../_shared/seo-helper.service";
 
 @Component({
   selector: "app-profile-edit",

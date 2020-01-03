@@ -1,10 +1,10 @@
 import { Component, OnInit } from "@angular/core";
 import { ActivatedRoute, Params } from "@angular/router";
 
-import { BookService } from "src/app/_services/book.service";
+import { BookService } from "../../_services/book.service";
 import { Meta, Title } from "@angular/platform-browser";
-import { AlertifyService } from "src/app/_services/alertify.service";
-import { settings } from "src/app/_shared/settings";
+import { AlertifyService } from "../../_services/alertify.service";
+import { settings } from "../../_shared/settings";
 
 @Component({
   selector: "app-books-detail",

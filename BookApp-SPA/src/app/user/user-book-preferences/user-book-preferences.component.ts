@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { UserBookCategoryPreferences } from "src/app/_models/userBookCategoryPreferences";
-import { AuthService } from "src/app/_services/auth.service";
+import { UserBookCategoryPreferences } from "../../_models/userBookCategoryPreferences";
+import { AuthService } from "../../_services/auth.service";
 
 @Component({
   selector: "app-user-book-preferences",

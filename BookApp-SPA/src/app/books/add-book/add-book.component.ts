@@ -2,9 +2,9 @@ import { Component, OnInit } from "@angular/core";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { Router } from "@angular/router";
 
-import { BookCreateDto } from "src/app/_models/bookCreateDto";
-import { BookService } from "src/app/_services/book.service";
-import { AlertifyService } from "src/app/_services/alertify.service";
+import { BookCreateDto } from "../../_models/bookCreateDto";
+import { BookService } from "../../_services/book.service";
+import { AlertifyService } from "../../_services/alertify.service";
 
 @Component({
   selector: "app-add-book",

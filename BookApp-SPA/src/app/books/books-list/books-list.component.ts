@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { BookService } from "src/app/_services/book.service";
-import { SeoHelperService } from "src/app/_shared/seo-helper.service";
+import { BookService } from "../../_services/book.service";
+import { SeoHelperService } from "../../_shared/seo-helper.service";
 
 @Component({
   selector: "app-books-list",

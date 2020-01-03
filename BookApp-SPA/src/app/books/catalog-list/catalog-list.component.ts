@@ -1,6 +1,6 @@
 import { Component, OnInit } from "@angular/core";
-import { BookCatalogService } from "src/app/_services/book-catalog.service";
-import { UserState } from "src/app/_store/user.reducer";
+import { BookCatalogService } from "../../_services/book-catalog.service";
+import { UserState } from "../../_store/user.reducer";
 import { ActivatedRoute, Params } from "@angular/router";
 import { Store } from "@ngrx/store";
 import { Router } from "@angular/router";

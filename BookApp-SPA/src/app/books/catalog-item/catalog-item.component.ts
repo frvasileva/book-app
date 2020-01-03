@@ -1,8 +1,8 @@
 import { Component, OnInit, Input } from "@angular/core";
-import { BookCatalogService } from "src/app/_services/book-catalog.service";
-import { CatalogEditItemDto } from "src/app/_models/catalogEditItemDto";
+import { BookCatalogService } from "../../_services/book-catalog.service";
+import { CatalogEditItemDto } from "../../_models/catalogEditItemDto";
 import { FormGroup, FormControl, Validators } from "@angular/forms";
-import { settings } from "src/app/_shared/settings";
+import { settings } from "../../_shared/settings";
 
 @Component({
   selector: "app-catalog-item",
