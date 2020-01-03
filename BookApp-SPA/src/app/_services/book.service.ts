@@ -1,23 +1,21 @@
 import { Injectable } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
-import { JwtHelperService } from "@auth0/angular-jwt";
 import { map } from "rxjs/operators";
 
 import { BookCreateDto } from "../_models/bookCreateDto";
 import { environment } from "../../environments/environment";
+import { AuthService } from "./auth.service";
 
 @Injectable({
   providedIn: "root"
 })
 export class BookService {
   baseUrl = environment.apiUrl + "book/";
-  jwtHelper = new JwtHelperService();
-  token = this.jwtHelper.decodeToken(localStorage.getItem("token"));
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   addBook(model: BookCreateDto) {
-    model.userId = this.token.nameid;
+    model.userId = this.authService.getDecodedToken().nameid;
     return this.http.post(this.baseUrl + "add", model).pipe(
       map((response: any) => {
         return response;

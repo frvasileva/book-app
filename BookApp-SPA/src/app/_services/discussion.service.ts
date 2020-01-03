@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { environment } from "../../environments/environment";
-import { JwtHelperService } from "@auth0/angular-jwt";
 import { AlertifyService } from "./alertify.service";
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/internal/operators/map";
@@ -10,8 +9,6 @@ import { map } from "rxjs/internal/operators/map";
 })
 export class DiscussionService {
   baseUrl = environment.apiUrl + "discussion/";
-  jwtHelper = new JwtHelperService();
-  token = this.jwtHelper.decodeToken(localStorage.getItem("token"));
 
   constructor(
     private http: HttpClient,

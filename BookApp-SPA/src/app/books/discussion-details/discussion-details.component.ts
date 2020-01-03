@@ -6,6 +6,7 @@ import { FormGroup, FormControl, Validators } from "@angular/forms";
 import { AlertifyService } from "../../_services/alertify.service";
 import { JwtHelperService } from "@auth0/angular-jwt";
 import { SeoHelperService } from "../../_shared/seo-helper.service";
+import { AuthService } from "../../_services/auth.service";
 
 @Component({
   selector: "app-discussion-details",
@@ -23,7 +24,8 @@ export class DiscussionDetailsComponent implements OnInit {
     private discussionService: DiscussionService,
     private route: ActivatedRoute,
     private alertify: AlertifyService,
-    private seoService: SeoHelperService
+    private seoService: SeoHelperService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
@@ -64,8 +66,7 @@ export class DiscussionDetailsComponent implements OnInit {
   }
 
   getCurrentUserName(): string {
-    const token = localStorage.getItem("token");
-    const currentUserName = this.jwtHelper.decodeToken(token).unique_name;
-    return currentUserName;
+    const token = this.authService.getDecodedToken();
+    return token.unique_name;
   }
 }

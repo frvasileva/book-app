@@ -8,7 +8,6 @@ import {
   NavigationError
 } from "@angular/router";
 import { BookSaverService } from "./_services/bookSaver.service";
-import { JwtHelperService } from "@auth0/angular-jwt";
 
 @Component({
   selector: "app-root",
@@ -22,8 +21,6 @@ export class AppComponent implements OnInit {
   currentUrl: string;
   currentModule: string;
   currentComponentPath: string;
-
-  jwtHelper = new JwtHelperService();
 
   constructor(
     private authService: AuthService,
@@ -65,11 +62,10 @@ export class AppComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    const token = localStorage.getItem("token");
+    const token = this.authService.getDecodedToken();
     if (token) {
-      const friendlyUrl = this.jwtHelper.decodeToken(token).unique_name;
       this.authService.getCurrentUser();
-      this.bookSaverService.getUserCatalogList(friendlyUrl);
+      this.bookSaverService.getUserCatalogList(token.unique_name);
     }
   }
 }
