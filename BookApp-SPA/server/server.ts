@@ -14,7 +14,7 @@ enableProdMode();
 
 // proxy api requests to the URL where the .NET server lives
 app.use('/api', proxy({
-  target: 'http://192.168.1.106:5000/api',
+  target: 'http://192.168.1.106:5000',
   changeOrigin: true,
   logLevel: 'debug'
 }));
