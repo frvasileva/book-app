@@ -1,16 +1,20 @@
 import 'zone.js/dist/zone-node';
 import 'reflect-metadata';
-import { renderModuleFactory } from '@angular/platform-server';
 import express from 'express';
-import { readFileSync } from 'fs';
-import { enableProdMode } from '@angular/core';
 import proxy from 'http-proxy-middleware';
-
-const { AppServerModuleNgFactory } = require('../dist/chetime-app-server/main');
-const indexHtml = readFileSync(__dirname + '/../dist/chetime-app/index.html', 'utf-8').toString();
-const app = express();
+import { enableProdMode } from '@angular/core';
+import { ngExpressEngine } from '@nguniversal/express-engine';
+import { provideModuleMap } from '@nguniversal/module-map-ngfactory-loader';
+import { AppServerModuleNgFactory, LAZY_MODULE_MAP } from '../dist/chetime-app-server/main';
 
 enableProdMode();
+
+const app = express();
+app.engine('html', ngExpressEngine({
+  bootstrap: AppServerModuleNgFactory,
+  providers: [provideModuleMap(LAZY_MODULE_MAP)]
+}));
+app.set('view engine', 'html');
 
 // proxy api requests to the URL where the .NET server lives
 app.use('/api', proxy({
@@ -24,17 +28,10 @@ app.get('*.*', express.static(__dirname + '/../dist/chetime-app'));
 
 // all other GET requests are to be served by the universal app
 app.get('*', (req, res) => {
-  renderModuleFactory(AppServerModuleNgFactory, {
-    document: indexHtml,
-    url: req.url
-  })
-    .then(html => {
-      res.status(200).send(html);
-    })
-    .catch(err => {
-      console.log(err);
-      res.sendStatus(500);
-    });
+  res.render('../dist/chetime-app/index', {
+    req,
+    res
+  });
 });
 
 app.listen(9000, () => {

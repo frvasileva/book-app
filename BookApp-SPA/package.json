@@ -29,6 +29,8 @@
     "@ngrx/core": "^1.2.0",
     "@ngrx/store": "^7.3.0",
     "@ngrx/store-devtools": "^7.1.0",
+    "@nguniversal/express-engine": "^8.2.6",
+    "@nguniversal/module-map-ngfactory-loader": "^8.2.6",
     "alertifyjs": "^1.11.2",
     "bootstrap": "^4.3.1",
     "core-js": "^2.6.5",
