@@ -7,7 +7,10 @@
         </div>
         <div class="clearfix"></div>
         <div class="book-cover">
-          <div class="book-actions-wrapper" *ngIf="book != undefined">
+          <div
+            class="book-actions-wrapper"
+            *ngIf="book != undefined && isUserAuthenticated"
+          >
             <div class="add-book-to-list">
               <i class="glyphicon glyphicon-plus"></i>
             </div>
@@ -33,27 +36,32 @@
         <strong>Author:</strong>
         {{ book.authorName }}
       </div>
-      <hr />
-      <h3 class="recommendation-section">You may also like:</h3>
+      <div class="similiar-books-wrapper" *ngIf="similiarBooksCount > 0">
+        <hr />
 
-      <div class="row">
-        <div
-          class="col-sm-6 col-md-3 col-6"
-          *ngFor="let bk of similiarBooks; let i = index"
-        >
-          <a
-            [routerLink]="['/books/details/' + bk?.friendlyUrl]"
-            class="book-title-link"
+        <h3 class="recommendation-section">
+          You may also like:
+        </h3>
+
+        <div class="row">
+          <div
+            class="col-sm-6 col-md-3 col-6"
+            *ngFor="let bk of similiarBooks; let i = index"
           >
-            <img
-              src="{{ bk?.photoPath }}"
-              alt="{{ bk?.title }}"
-              title="{{ bk?.title }}"
-              class="cover"
-            />
-            <br />
-            {{ bk.title }}
-          </a>
+            <a
+              [routerLink]="['/books/details/' + bk?.friendlyUrl]"
+              class="book-title-link"
+            >
+              <img
+                src="{{ bk?.photoPath }}"
+                alt="{{ bk?.title }}"
+                title="{{ bk?.title }}"
+                class="cover"
+              />
+              <br />
+              {{ bk.title }}
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -65,7 +73,7 @@
         <i class="fas fa-plus-circle"></i>
         Add discussion
       </a>
-      <a
+      <a *ngIf="similiarBooksCount > 0"
         [routerLink]="['/books/discussions/per-book/' + book?.id]"
         class="see-discussions"
       >

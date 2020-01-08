@@ -86,10 +86,11 @@ namespace BookApp.API.Controllers {
       return Ok (new { items = result.Items, totalNumber = result.TotalCount, currentPage = result.CurrentPage });
     }
 
+    [AllowAnonymous]
     [HttpGet ("recommend-novelty/{currentPage}")]
     public IActionResult RecommendByNovelty (int currentPage = 0) {
 
-      var result = _bookGraph.RecommendByNovelty (currentPage, UserId);
+      var result = _bookGraph.RecommendByNovelty (currentPage);
 
       foreach (var item in result.Items) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
@@ -99,10 +100,11 @@ namespace BookApp.API.Controllers {
       return Ok (new { items = result.Items, totalNumber = result.TotalCount, currentPage = result.CurrentPage });
     }
 
+    [AllowAnonymous]
     [HttpGet ("recommend-serendipity/{currentPage}")]
     public IActionResult RecommendBySerendepity (int currentPage) {
 
-      var result = _bookGraph.RecommendBySerendipity (currentPage, UserId);
+      var result = _bookGraph.RecommendBySerendipity (currentPage);
 
       foreach (var item in result.Items) {
         if (item.PhotoPath != null && item.PhotoPath.Contains ("cloudinary"))
@@ -112,6 +114,7 @@ namespace BookApp.API.Controllers {
       return Ok (new { items = result.Items, totalNumber = result.TotalCount, currentPage = result.CurrentPage });
     }
 
+    [AllowAnonymous]
     [HttpGet ("get/{friendlyUrl?}")]
     public IActionResult GetBook (string friendlyUrl) {
       var book = _bookGraph.GetBook (friendlyUrl);

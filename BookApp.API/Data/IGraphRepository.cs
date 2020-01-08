@@ -19,7 +19,7 @@ namespace BookApp.API.Data {
     BookCatalog AddBookToCatalog (BookCatalogCreateDto item);
     BookCatalogItemDto RemoveBookToCatalog (int catalogId, int bookId, int userId);
 
-    void ToggleUserCatalogFromFavorites(int userId, int catalogId, string catalogName, bool IsSelected);
+    void ToggleUserCatalogFromFavorites (int userId, int catalogId, string catalogName, bool IsSelected);
     List<CatalogItemDto> GetCatalogsForUser (int userId, bool isCurrentUser);
 
     List<UserBookCategoriesPreferencesDto> GetFavoriteCatalogsForUser_Enriched (int userId);
@@ -43,8 +43,8 @@ namespace BookApp.API.Data {
 
     #region Recommendations
     Helpers.PagedList<BookDetailsDto> RecommendationByRelevance (int currentPage, int userId);
-    Helpers.PagedList<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId);
-    Helpers.PagedList<BookDetailsDto> RecommendByNovelty (int currentPage, int userId);
+    Helpers.PagedList<BookDetailsDto> RecommendBySerendipity (int currentPage);
+    Helpers.PagedList<BookDetailsDto> RecommendByNovelty (int currentPage);
     List<BookDetailsDto> RecommendSimiliarBooks (string bookFriendlyUrl);
     List<string> GetFavoriteCatalogsForUser (int userId);
     #endregion Recommendations

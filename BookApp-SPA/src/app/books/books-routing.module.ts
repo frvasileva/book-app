@@ -23,13 +23,11 @@ const booksRoutes: Routes = [
     children: [
       {
         path: "",
-        component: BooksListComponent,
-        canActivate: [AuthenticationGuard]
+        component: BooksListComponent
       },
       {
         path: "details/:url",
-        component: BooksDetailComponent,
-        canActivate: [AuthenticationGuard]
+        component: BooksDetailComponent
       },
       {
         path: "add-cover/:friendly-url",
@@ -62,7 +60,7 @@ const booksRoutes: Routes = [
         path: "catalog/details/:friendly-url/:pageNumber",
         component: CatalogDetailsComponent,
         canActivate: [AuthenticationGuard],
-        pathMatch: 'full'
+        pathMatch: "full"
       },
       {
         path: "catalogs/:pageNumber",

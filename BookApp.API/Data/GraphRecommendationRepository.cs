@@ -129,7 +129,7 @@ namespace BookApp.API.Data {
       return pagedList;
     }
 
-    public Helpers.PagedList<BookDetailsDto> RecommendBySerendipity (int currentPage, int userId) {
+    public Helpers.PagedList<BookDetailsDto> RecommendBySerendipity (int currentPage) {
 
       var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
 
@@ -175,7 +175,7 @@ namespace BookApp.API.Data {
       return pagedList;
     }
 
-    public Helpers.PagedList<BookDetailsDto> RecommendByNovelty (int currentPage, int userId) {
+    public Helpers.PagedList<BookDetailsDto> RecommendByNovelty (int currentPage) {
 
       var skipResults = currentPage * SHOW_MAX_RESULTS_PER_PAGE;
 

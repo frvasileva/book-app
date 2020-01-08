@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { BookService } from "../../_services/book.service";
 import { SeoHelperService } from "../../_shared/seo-helper.service";
+import { AuthService } from "src/app/_services/auth.service";
 
 @Component({
   selector: "app-books-list",
@@ -11,13 +12,16 @@ export class BooksListComponent implements OnInit {
   booksByRelevance: any;
   booksByNovelty: any;
   booksBySerendipity: any;
-
+  isUserAuthenticated: boolean;
   constructor(
     private bookService: BookService,
-    private seoService: SeoHelperService
+    private seoService: SeoHelperService,
+    private authService: AuthService
   ) {}
 
   ngOnInit() {
+    this.isUserAuthenticated = this.authService.isAuthenticated();
+
     this.bookService.RecommendByRelevance(0).subscribe(data => {
       this.booksByRelevance = data.items;
     });

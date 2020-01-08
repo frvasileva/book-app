@@ -5,6 +5,7 @@ import { BookService } from "../../_services/book.service";
 import { Meta, Title } from "@angular/platform-browser";
 import { AlertifyService } from "../../_services/alertify.service";
 import { settings } from "../../_shared/settings";
+import { AuthService } from "src/app/_services/auth.service";
 
 @Component({
   selector: "app-books-detail",
@@ -16,16 +17,21 @@ export class BooksDetailComponent implements OnInit {
   book: any;
   similiarBooks: [];
   dummyBookDescription = settings.dummy_book_description;
+  isUserAuthenticated: boolean;
+  similiarBooksCount = 0;
 
   constructor(
     private route: ActivatedRoute,
     private bookService: BookService,
     private alertify: AlertifyService,
+    private authService: AuthService,
     private titleService: Title,
     private metaTagService: Meta
   ) {}
 
   ngOnInit() {
+    this.isUserAuthenticated = this.authService.isAuthenticated();
+
     this.route.params.subscribe((params: Params) => {
       this.friendlyUrl = params.url;
 
@@ -42,6 +48,7 @@ export class BooksDetailComponent implements OnInit {
       this.bookService
         .RecommendSimiliarBooks(this.friendlyUrl)
         .subscribe(data => {
+          this.similiarBooksCount = data.length;
           this.similiarBooks = data;
         });
     });

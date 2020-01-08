@@ -1,4 +1,4 @@
-<div class="section-wrapper relevance">
+<div class="section-wrapper relevance" *ngIf="this.isUserAuthenticated">
   <div class="container">
     <div class="row">
       <div class="col-md-8">
@@ -27,7 +27,6 @@
   </div>
 </div>
 
-
 <div class="section-wrapper novelty">
   <div class="container">
     <div class="row">
@@ -45,7 +44,6 @@
     </div>
   </div>
 </div>
-
 
 <div class="section-wrapper serendipity">
   <div class="container">
