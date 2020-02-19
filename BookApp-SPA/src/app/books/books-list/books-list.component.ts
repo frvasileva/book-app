@@ -13,6 +13,7 @@ export class BooksListComponent implements OnInit {
   booksByNovelty: any;
   booksBySerendipity: any;
   isUserAuthenticated: boolean;
+  
   constructor(
     private bookService: BookService,
     private seoService: SeoHelperService,

@@ -27,6 +27,7 @@ export class BooksListByCategoryComponent implements OnInit {
   ) {}
 
   ngOnInit() {
+    console.log("boos by category");
     this.route.params.subscribe((params: Params) => {
       this.category = params.category.trim().toUpperCase();
       this.currentPage = params.pageNumber;
