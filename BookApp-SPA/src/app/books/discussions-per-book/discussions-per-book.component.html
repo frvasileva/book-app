@@ -12,7 +12,19 @@
       </h2>
     </div>
   </div>
+  <div *ngIf="discussions.length == 0">
+    <div class="alert alert-info" role="alert">
+      No discussions for this book.
 
+      <a
+        [routerLink]="['/books/discussions/add/' + bookId]"
+        class="button neutral medium add-discussion-btn"
+      >
+        <i class="fas fa-plus-circle"></i>
+        Add discussion
+      </a>
+    </div>
+  </div>
   <div class="row item-wrapper" *ngFor="let item of discussions">
     <div class="col-md-8">
       <a [routerLink]="['/books/discussions/details/' + item.friendlyUrl]">{{

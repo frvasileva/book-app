@@ -16,7 +16,8 @@
 }
 
 .selected {
-  background-color: #93b77c;
+  background-color: #6ca04b;
+  color: white;
 }
 
 .not-selected {
@@ -26,4 +27,5 @@
 .list-group-item:hover {
   cursor: pointer;
   background-color: #e4e3e3;
+  color: black;
 }
