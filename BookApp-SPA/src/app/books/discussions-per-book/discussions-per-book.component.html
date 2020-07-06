@@ -35,7 +35,9 @@
       {{ item.addedOn | date: "medium" }}
       <br />
       <i class="fas fa-book"></i>
-      <a [routerLink]="['details/' + item.friendlyUrl]">{{ item.bookTitle }}</a>
+      <a [routerLink]="['/books/details/' + bookFriendlyUrl]">{{
+        item.bookTitle
+      }}</a>
     </div>
   </div>
 </div>

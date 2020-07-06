@@ -84,11 +84,11 @@ namespace BookApp.API.Data {
             similarity = Return.As<double> ("algo.similarity.jaccard(p1Catalog, p2Catalog)")
         }).OrderByDescending ("similarity")
         .Limit (SHOW_MAX_RESULTS_PER_PAGE);
-
       var bookList = new List<BookDetailsDto> ();
+      
 
       foreach (var b in result.Results) {
-        var bd = b.book;
+        var bd = b.recommendation;
         bd.RecommendationCategory = "RELEVANCE";
 
         bookList.Add (bd);
