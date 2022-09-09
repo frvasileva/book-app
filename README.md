@@ -46,7 +46,9 @@ Based on user preferences, collaborative filtering and content based filtering.
 ### Follow users
 ![Follow users](https://user-images.githubusercontent.com/2505620/189422607-5edffeb1-fb1d-47f9-b8d6-89d4f41d955e.PNG)
 
+---
 
-## Book Database source:
+
+Book Database source:
 http://fastml.com/goodbooks-10k-a-new-dataset-for-book-recommendations/
 
