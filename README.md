@@ -1,5 +1,5 @@
 
-##Book recommendation system based on user preferences, collaborative filtering and content based filtering.
+## Book recommendation system based on user preferences, collaborative filtering and content based filtering.
 
 
 ## Project structure:
